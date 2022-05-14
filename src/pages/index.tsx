@@ -3,12 +3,15 @@ import type { NextPage } from 'next';
 
 import Content from '@/components/content';
 import Seo from '@/components/Seo';
+import DashboardLayout from '@/dashboard/layout';
 
 const Home: NextPage = () => {
   return (
     <>
       <Seo />
-      <Content title='Users' />
+      <DashboardLayout>
+        <Content title='Users' />
+      </DashboardLayout>
     </>
   );
 };

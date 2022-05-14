@@ -1,7 +1,12 @@
 import Content from '@/components/content';
+import DashboardLayout from '@/dashboard/layout';
 
 const ContactsPage = () => {
-  return <Content title='Contacts' />;
+  return (
+    <DashboardLayout>
+      <Content title='Contacts' />
+    </DashboardLayout>
+  );
 };
 
 export default ContactsPage;

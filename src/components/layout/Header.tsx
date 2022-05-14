@@ -52,11 +52,11 @@ const Header = () => {
           'bg-light dark:bg-dark',
           'group dark:hover:text-primary-300',
           'focus:outline-none focus:ring focus:ring-primary-300',
-          'absolute top-4 left-4',
+          'absolute top-4 left-4 z-[1000]',
           '-translate-y-16 focus:translate-y-0'
         )}
       >
-        <Accent>Skip to main content</Accent>
+        <Accent>Skip to content</Accent>
       </a>
       {/* <div className='h-2 bg-gradient-to-tr from-primary-200 via-primary-300 to-primary-400' /> */}
       <div className='bg-light transition-colors dark:bg-dark dark:text-light'>

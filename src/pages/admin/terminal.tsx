@@ -1,7 +1,12 @@
 import Content from '@/components/content';
+import DashboardLayout from '@/dashboard/layout';
 
 const TerminalPage = () => {
-  return <Content title='Terminal' />;
+  return (
+    <DashboardLayout>
+      <Content title='Contacts' />
+    </DashboardLayout>
+  );
 };
 
 export default TerminalPage;
