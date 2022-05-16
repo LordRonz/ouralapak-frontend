@@ -8,7 +8,7 @@ const defaultMeta = {
   url: process.env.NEXT_PUBLIC_HOSTNAME
     ? `https://${process.env.NEXT_PUBLIC_HOSTNAME}`
     : 'https://lordronz.github.io',
-  image: '/vercel.svg',
+  image: '/images/ouralapak_logo.png',
   type: 'website',
   robots: 'follow, index',
   googlebot: 'follow, index',
