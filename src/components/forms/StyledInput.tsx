@@ -4,13 +4,12 @@ import clsxm from '@/lib/clsxm';
 
 type StyledInputProps = {
   underline?: boolean;
-} & React.ComponentPropsWithoutRef<'input'>;
+} & React.ComponentPropsWithRef<'input'>;
 
-const StyledInput = ({
-  className,
-  underline = false,
-  ...rest
-}: StyledInputProps) => {
+const StyledInput = (
+  { className, underline = false, ...rest }: StyledInputProps,
+  ref: React.ForwardedRef<null>
+) => {
   return (
     <input
       className={clsxm(
@@ -20,9 +19,10 @@ const StyledInput = ({
         'transition-all duration-200 focus:border-primary-300 focus:outline-none focus:ring-0 dark:focus:border-primary-300',
         className
       )}
+      ref={ref}
       {...rest}
     />
   );
 };
 
-export default StyledInput;
+export default React.forwardRef(StyledInput);
