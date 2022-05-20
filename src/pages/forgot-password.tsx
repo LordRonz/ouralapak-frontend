@@ -14,10 +14,9 @@ import { toastStyle } from '@/constant/toast';
 
 type IFormInput = {
   email: string;
-  password: string;
 };
 
-const Login: NextPage = () => {
+const ForgotPassword: NextPage = () => {
   const {
     register,
     handleSubmit,
@@ -39,7 +38,7 @@ const Login: NextPage = () => {
               className='rounded-xl bg-gray-300 py-8 px-24 shadow-lg shadow-slate-400 dark:bg-neutral-800 dark:shadow-neutral-700'
             >
               <div className='mb-8 flex items-center justify-center'>
-                <h1 className='text-4xl text-primary-300'>Login</h1>
+                <h1 className='text-4xl text-primary-300'>Lupa Password</h1>
               </div>
               <FormItem errorMessage={errors.email?.message}>
                 <label htmlFor='email'>Email</label>
@@ -53,16 +52,6 @@ const Login: NextPage = () => {
                         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                       message: 'Email tidak valid!',
                     },
-                  })}
-                />
-              </FormItem>
-              <FormItem errorMessage={errors.password?.message}>
-                <label htmlFor='password'>Password</label>
-                <StyledInput
-                  type='password'
-                  className='mb-4 block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
-                  {...register('password', {
-                    required: 'Password harus diisi',
                   })}
                 />
               </FormItem>
@@ -94,4 +83,4 @@ const Login: NextPage = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;

@@ -14,14 +14,19 @@ import { toastStyle } from '@/constant/toast';
 
 type IFormInput = {
   email: string;
+  name: string;
+  phone: string;
+  ig_username: string;
   password: string;
+  confirm_password: string;
 };
 
-const Login: NextPage = () => {
+const Register: NextPage = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<IFormInput>();
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
@@ -30,16 +35,16 @@ const Login: NextPage = () => {
 
   return (
     <Layout>
-      <Seo templateTitle='Login' />
+      <Seo templateTitle='Register' />
       <main>
         <section className=''>
-          <div className='layout flex min-h-screen flex-col items-center justify-center gap-y-12'>
+          <div className='layout flex min-h-screen flex-col items-center justify-center gap-y-12 py-12'>
             <form
               onSubmit={handleSubmit(onSubmit)}
               className='rounded-xl bg-gray-300 py-8 px-24 shadow-lg shadow-slate-400 dark:bg-neutral-800 dark:shadow-neutral-700'
             >
               <div className='mb-8 flex items-center justify-center'>
-                <h1 className='text-4xl text-primary-300'>Login</h1>
+                <h1 className='text-4xl text-primary-300'>Register</h1>
               </div>
               <FormItem errorMessage={errors.email?.message}>
                 <label htmlFor='email'>Email</label>
@@ -56,6 +61,16 @@ const Login: NextPage = () => {
                   })}
                 />
               </FormItem>
+              <FormItem errorMessage={errors.name?.message}>
+                <label htmlFor='name'>Nama</label>
+                <StyledInput
+                  type='text'
+                  className='block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
+                  {...register('name', {
+                    required: 'Nama harus diisi',
+                  })}
+                />
+              </FormItem>
               <FormItem errorMessage={errors.password?.message}>
                 <label htmlFor='password'>Password</label>
                 <StyledInput
@@ -63,6 +78,21 @@ const Login: NextPage = () => {
                   className='mb-4 block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
                   {...register('password', {
                     required: 'Password harus diisi',
+                  })}
+                />
+              </FormItem>
+              <FormItem errorMessage={errors.confirm_password?.message}>
+                <label htmlFor='confirm_password'>Konfirmasi Password</label>
+                <StyledInput
+                  type='confirm_password'
+                  className='mb-4 block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
+                  {...register('confirm_password', {
+                    required: 'Konfirmasi password anda!',
+                    validate: (val: string) => {
+                      if (watch('password') != val) {
+                        return 'Konfirmasi password tidak sesuai!';
+                      }
+                    },
                   })}
                 />
               </FormItem>
@@ -94,4 +124,4 @@ const Login: NextPage = () => {
   );
 };
 
-export default Login;
+export default Register;

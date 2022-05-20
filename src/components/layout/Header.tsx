@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -10,8 +11,8 @@ import UnstyledLink from '@/components/links/UnstyledLink';
 import clsxm from '@/lib/clsxm';
 
 export const links = [
-  { href: '/projects', label: 'Projects' },
-  { href: '/about', label: 'About' },
+  { href: '/login', label: 'Login' },
+  { href: '/register', label: 'Register' },
 ];
 
 const Header = () => {
@@ -63,16 +64,24 @@ const Header = () => {
         <nav className={clsxm('layout flex items-center justify-between py-4')}>
           <Link href='/' passHref>
             <motion.a
-              className='group relative z-50 whitespace-nowrap font-bold transition duration-300 hover:transition md:text-xl'
+              className='group relative z-50 flex items-center justify-center whitespace-nowrap font-bold transition duration-300 hover:transition md:text-xl'
               animate={{ opacity: 1, y: 0 }}
               initial={{ opacity: 0, y: -10 }}
             >
-              <span className='opacity-100 transition duration-300 group-hover:opacity-0'>
-                @lordronz
-              </span>
-              <Accent className='absolute left-0 bg-clip-text text-transparent opacity-0 transition duration-300 hover:bg-gradient-to-r group-hover:opacity-100'>
-                Aaron Christopher
-              </Accent>
+              <img
+                alt='Ouralapak logo'
+                src='/images/ouralapak_logo_small.png'
+                width={60}
+                height={60}
+                className='inline opacity-100 transition duration-300 group-hover:opacity-0'
+              />
+              <img
+                alt='Ouralapak logo'
+                src='/images/ouralapak_logo_compact.png'
+                width={101}
+                height={65}
+                className='absolute left-0 inline opacity-0 transition duration-300 hover:bg-gradient-to-r group-hover:opacity-100'
+              />
             </motion.a>
           </Link>
           <ul className='flex items-center justify-between space-x-3 text-xs md:space-x-4 md:text-base'>
