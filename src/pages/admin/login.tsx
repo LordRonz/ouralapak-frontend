@@ -38,7 +38,7 @@ const Login: NextPage = () => {
           <div className='layout flex min-h-screen flex-col items-center justify-center gap-y-12'>
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className='rounded-xl bg-gray-300 py-8 px-24 shadow-lg shadow-slate-400 dark:bg-neutral-800 dark:shadow-neutral-700'
+              className='w-96 rounded-xl bg-gray-300 py-8 px-12 shadow-lg shadow-slate-400 dark:bg-neutral-800 dark:shadow-neutral-700'
             >
               <div className='mb-8 flex flex-col items-center justify-center gap-y-4'>
                 <Image
