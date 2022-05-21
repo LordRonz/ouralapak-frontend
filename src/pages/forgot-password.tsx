@@ -29,7 +29,7 @@ const ForgotPassword: NextPage = () => {
 
   return (
     <Layout>
-      <Seo templateTitle='Login' />
+      <Seo templateTitle='Lupa Password' />
       <main>
         <section className=''>
           <div className='layout flex min-h-screen flex-col items-center justify-center gap-y-12'>

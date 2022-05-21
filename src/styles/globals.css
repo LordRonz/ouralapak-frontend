@@ -5,28 +5,54 @@
 :root {
   /* Customize these variable */
   /* https://github.com/adamwathan/tailwind-css-variable-text-opacity-demo */
-  --tw-clr-primary-50: 255 209 209;
-  --tw-clr-primary-100: 255 154 154;
-  --tw-clr-primary-200: 250 128 114;
-  --tw-clr-primary-300: 235 39 84;
-  --tw-clr-primary-400: 223 40 0;
-  --tw-clr-primary-500: 153 35 35;
-  --tw-clr-primary-600: 128 0 0;
-  --tw-clr-primary-700: 105 0 0;
+  --tw-clr-primary-50: 246 243 239;
+  --tw-clr-primary-100: 227 219 206;
+  --tw-clr-primary-200: 209 195 173;
+  --tw-clr-primary-300: 191 171 141;
+  --tw-clr-primary-400: 179 156 120;
+  --tw-clr-primary-500: 147 122 83;
+  --tw-clr-primary-600: 114 95 64;
+  --tw-clr-primary-700: 82 68 46;
+  --tw-clr-primary-800: 49 41 28;
+  --tw-clr-primary-900: 16 14 9;
 
-  --clr-primary-50: rgb(var(--tw-clr-primary-50)); /* #ffd1d1 */
-  --clr-primary-100: rgb(var(--tw-clr-primary-100)); /* #ff9a9a */
-  --clr-primary-200: rgb(var(--tw-clr-primary-200)); /* #fa8072 */
-  --clr-primary-300: rgb(var(--tw-clr-primary-300)); /* #eb2754 */
-  --clr-primary-400: rgb(var(--tw-clr-primary-400)); /* #df2800 */
-  --clr-primary-500: rgb(var(--tw-clr-primary-500)); /* #992323 */
-  --clr-primary-600: rgb(var(--tw-clr-primary-600)); /* #800000 */
-  --clr-primary-700: rgb(var(--tw-clr-primary-700)); /* #690000 */
+  --clr-primary-50: rgb(var(--tw-clr-primary-50)); /* #f6f3ef */
+  --clr-primary-100: rgb(var(--tw-clr-primary-100)); /* #e3dbce */
+  --clr-primary-200: rgb(var(--tw-clr-primary-200)); /* #d1c3ad */
+  --clr-primary-300: rgb(var(--tw-clr-primary-300)); /* #bfab8d */
+  --clr-primary-400: rgb(var(--tw-clr-primary-400)); /* #b39c78 */
+  --clr-primary-500: rgb(var(--tw-clr-primary-500)); /* #937a53 */
+  --clr-primary-600: rgb(var(--tw-clr-primary-600)); /* #725f40 */
+  --clr-primary-700: rgb(var(--tw-clr-primary-700)); /* #52442e */
+  --clr-primary-800: rgb(var(--tw-clr-primary-800)); /* #31291c */
+  --clr-primary-900: rgb(var(--tw-clr-primary-900)); /* #100e09 */
+
+  --tw-clr-secondary-50: 246 243 239;
+  --tw-clr-secondary-100: 227 219 206;
+  --tw-clr-secondary-200: 209 195 173;
+  --tw-clr-secondary-300: 191 171 141;
+  --tw-clr-secondary-400: 179 156 120;
+  --tw-clr-secondary-500: 147 122 83;
+  --tw-clr-secondary-600: 114 95 64;
+  --tw-clr-secondary-700: 82 68 46;
+  --tw-clr-secondary-800: 49 41 28;
+  --tw-clr-secondary-900: 16 14 9;
+
+  --clr-secondary-50: rgb(var(--tw-clr-secondary-50)); /* #eff1f6 */
+  --clr-secondary-100: rgb(var(--tw-clr-secondary-100)); /* #ced6e3 */
+  --clr-secondary-200: rgb(var(--tw-clr-secondary-200)); /* #adbbd1 */
+  --clr-secondary-300: rgb(var(--tw-clr-secondary-300)); /* #8da0bf */
+  --clr-secondary-400: rgb(var(--tw-clr-secondary-400)); /* #788fb3 */
+  --clr-secondary-500: rgb(var(--tw-clr-secondary-500)); /* #536c93 */
+  --clr-secondary-600: rgb(var(--tw-clr-secondary-600)); /* #405472 */
+  --clr-secondary-700: rgb(var(--tw-clr-secondary-700)); /* #2e3c52 */
+  --clr-secondary-800: rgb(var(--tw-clr-secondary-800)); /* #1c2431 */
+  --clr-secondary-900: rgb(var(--tw-clr-secondary-900)); /* #090c10 */
 }
 
 @layer base {
   @font-face {
-    font-family: Inter;
+    font-family: Lato;
     font-style: normal;
     font-weight: 100 900;
     font-display: optional;
@@ -100,13 +126,4 @@
   .animated-underline:focus-visible {
     background-size: 0 2px, 100% 2px;
   }
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
 }

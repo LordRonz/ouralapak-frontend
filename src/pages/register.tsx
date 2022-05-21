@@ -113,6 +113,10 @@ const Register: NextPage = () => {
                   className='mb-4 block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
                   {...register('password', {
                     required: 'Password harus diisi',
+                    minLength: {
+                      value: 8,
+                      message: 'Password harus berisi setidaknya 8 karakter',
+                    },
                   })}
                 />
               </FormItem>

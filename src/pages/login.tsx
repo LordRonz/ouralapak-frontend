@@ -10,6 +10,7 @@ import FormItem from '@/components/forms/FormItem';
 import StyledInput from '@/components/forms/StyledInput';
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
+import CustomLink from '@/components/links/CustomLink';
 import Seo from '@/components/Seo';
 import { toastStyle } from '@/constant/toast';
 import oura_long from '~/images/ouralapak_logo_long.png';
@@ -74,7 +75,10 @@ const Login: NextPage = () => {
                   })}
                 />
               </FormItem>
-              <div className='mt-2 flex items-center justify-center'>
+              <div>
+                <CustomLink href='/forgot-password'>Lupa password?</CustomLink>
+              </div>
+              <div className='mt-4 flex items-center justify-center'>
                 <Button type='submit'>Submit</Button>
               </div>
             </form>
