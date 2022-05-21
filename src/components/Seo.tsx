@@ -3,11 +3,11 @@ import { useRouter } from 'next/router';
 
 const defaultMeta = {
   title: 'Ouralapak',
-  siteName: process.env.NEXT_PUBLIC_HOSTNAME || 'lordronz.github.io',
+  siteName: process.env.NEXT_PUBLIC_HOSTNAME || 'ouralapak.com',
   description: 'NextJS Typescript Boilerplate.',
   url: process.env.NEXT_PUBLIC_HOSTNAME
     ? `https://${process.env.NEXT_PUBLIC_HOSTNAME}`
-    : 'https://lordronz.github.io',
+    : 'https://ouralapak.com',
   image: '/images/ouralapak_logo.png',
   type: 'website',
   robots: 'follow, index',

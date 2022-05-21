@@ -1,4 +1,5 @@
 import type { NextPage } from 'next';
+import Image from 'next/image';
 import React from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
@@ -11,6 +12,7 @@ import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
 import Seo from '@/components/Seo';
 import { toastStyle } from '@/constant/toast';
+import oura_long from '~/images/ouralapak_logo_long.png';
 
 type IFormInput = {
   email: string;
@@ -38,8 +40,14 @@ const Login: NextPage = () => {
               onSubmit={handleSubmit(onSubmit)}
               className='rounded-xl bg-gray-300 py-8 px-24 shadow-lg shadow-slate-400 dark:bg-neutral-800 dark:shadow-neutral-700'
             >
-              <div className='mb-8 flex items-center justify-center'>
-                <h1 className='text-4xl text-primary-300'>Login</h1>
+              <div className='mb-8 flex flex-col items-center justify-center gap-y-4'>
+                <Image
+                  src={oura_long}
+                  width={135}
+                  height={19}
+                  alt='Ouralapak logo'
+                />
+                <h1 className='text-4xl font-medium text-primary-300'>Login</h1>
               </div>
               <FormItem errorMessage={errors.email?.message}>
                 <label htmlFor='email'>Email</label>
