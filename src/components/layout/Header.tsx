@@ -11,8 +11,8 @@ import UnstyledLink from '@/components/links/UnstyledLink';
 import clsxm from '@/lib/clsxm';
 
 export const links = [
+  { href: '/explore', label: 'Explore' },
   { href: '/login', label: 'Login' },
-  { href: '/register', label: 'Register' },
 ];
 
 const Header = () => {
@@ -61,7 +61,7 @@ const Header = () => {
       </a>
       {/* <div className='h-2 bg-gradient-to-tr from-primary-200 via-primary-300 to-primary-400' /> */}
       <div className='bg-light transition-colors dark:bg-dark dark:text-light'>
-        <nav className={clsxm('layout flex items-center justify-between py-4')}>
+        <nav className={clsxm('layout flex items-center justify-between py-2')}>
           <Link href='/' passHref>
             <motion.a
               className='group relative z-50 flex items-center justify-center whitespace-nowrap font-bold transition duration-300 hover:transition md:text-xl'
@@ -84,14 +84,14 @@ const Header = () => {
               />
             </motion.a>
           </Link>
-          <ul className='flex items-center justify-between space-x-3 text-xs md:space-x-4 md:text-base'>
+          <ul className='text-md flex items-center justify-between space-x-3 md:space-x-4 md:text-lg'>
             {links.map(({ href, label }) => (
               <li key={`${href}${label}`}>
                 <UnstyledLink
                   href={href}
                   className={clsxm(
                     'rounded-sm py-2 transition-colors',
-                    'font-medium text-black dark:text-light',
+                    'font-bold text-black dark:text-light',
                     'group dark:hover:text-primary-300',
                     'focus:outline-none focus-visible:ring focus-visible:ring-primary-300',
                     href === baseRoute && 'font-bold'
@@ -102,7 +102,7 @@ const Header = () => {
                       'transition-colors',
                       'bg-primary-300/0 group-hover:bg-primary-300/20 dark:group-hover:bg-primary-300/0',
                       href === baseRoute &&
-                        'bg-primary-300/50 dark:bg-gradient-to-tr dark:from-primary-300 dark:to-primary-400 dark:bg-clip-text dark:text-transparent'
+                        'bg-primary-300/50 font-extrabold dark:bg-gradient-to-tr dark:from-primary-300 dark:to-primary-400 dark:bg-clip-text dark:text-transparent'
                     )}
                   >
                     {label}
@@ -110,8 +110,10 @@ const Header = () => {
                 </UnstyledLink>
               </li>
             ))}
+            <li>
+              <ColorModeToggle value={theme} onChange={setTheme} />
+            </li>
           </ul>
-          <ColorModeToggle value={theme} onChange={setTheme} />
         </nav>
       </div>
     </header>
