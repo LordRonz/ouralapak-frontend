@@ -54,7 +54,7 @@ const Home: NextPage = () => {
               </div>
             </div>
           </article>
-          <article className='layout flex flex-col gap-y-8'>
+          <article className='layout flex flex-col gap-y-8 border-t border-primary-300 dark:border-gray-500'>
             <div className='flex flex-col items-center justify-center gap-y-4 py-16'>
               <h1 className='text-4xl font-extrabold'>Produk terbaru</h1>
               <p>Temukan akun terbaru yang dijual hanya di sini.</p>

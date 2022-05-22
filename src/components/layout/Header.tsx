@@ -59,8 +59,8 @@ const Header = () => {
       >
         <Accent>Skip to content</Accent>
       </a>
-      {/* <div className='h-2 bg-gradient-to-tr from-primary-200 via-primary-300 to-primary-400' /> */}
-      <div className='bg-light transition-colors dark:bg-dark dark:text-light'>
+      <div className='h-2 bg-gradient-to-tr from-primary-200 via-primary-300 to-primary-400' />
+      <div className='bg-neutral-200 transition-colors dark:bg-neutral-800 dark:text-light'>
         <nav className={clsxm('layout flex items-center justify-between py-2')}>
           <Link href='/' passHref>
             <motion.a
