@@ -140,7 +140,7 @@ const Register: NextPage = () => {
               </div>
             </form>
 
-            <p className='text-xl text-primary-200'>
+            <p className='text-xl text-primary-500 dark:text-primary-200'>
               <ArrowLink href='/' openNewTab={false} direction='left'>
                 Back To Home
               </ArrowLink>

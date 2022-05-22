@@ -70,15 +70,19 @@ const Login: NextPage = () => {
                   })}
                 />
               </FormItem>
-              <div>
+              <div className='flex items-center justify-center'>
+                <Button type='submit'>Submit</Button>
+              </div>
+              <div className='mt-4 text-sm'>
                 <CustomLink href='/forgot-password'>Lupa password?</CustomLink>
               </div>
-              <div className='mt-4 flex items-center justify-center'>
-                <Button type='submit'>Submit</Button>
+              <div className='mt-4 text-sm'>
+                Belum punya?{' '}
+                <CustomLink href='/forgot-password'>Bikin akun</CustomLink> yuk
               </div>
             </form>
 
-            <p className='text-xl text-primary-200'>
+            <p className='text-xl text-primary-500 dark:text-primary-200'>
               <ArrowLink href='/' openNewTab={false} direction='left'>
                 Back To Home
               </ArrowLink>
