@@ -35,7 +35,7 @@ const ForgotPassword: NextPage = () => {
           <div className='layout flex min-h-screen flex-col items-center justify-center gap-y-12'>
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className='w-96 rounded-xl bg-gray-300 py-8 px-12 shadow-lg shadow-slate-400 dark:bg-neutral-800 dark:shadow-neutral-700'
+              className='w-96 rounded-xl bg-gray-200 py-8 px-12 shadow-lg shadow-slate-400 dark:bg-neutral-800 dark:shadow-neutral-700'
             >
               <div className='mb-8 flex items-center justify-center'>
                 <h1 className='text-4xl text-primary-300'>Lupa Password</h1>

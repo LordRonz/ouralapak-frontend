@@ -39,7 +39,7 @@ const Login: NextPage = () => {
           <div className='layout flex min-h-screen flex-col items-center justify-center gap-y-12'>
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className='w-96 rounded-xl bg-gray-300 py-8 px-12 shadow-lg shadow-slate-400 dark:bg-neutral-800 dark:shadow-neutral-700'
+              className='w-96 rounded-xl bg-gray-200 py-8 px-12 shadow-lg shadow-slate-400 dark:bg-neutral-800 dark:shadow-neutral-700'
             >
               <div className='mb-8 flex flex-col items-center justify-center gap-y-4'>
                 <Image
@@ -70,15 +70,15 @@ const Login: NextPage = () => {
                   })}
                 />
               </FormItem>
+              <div className='mb-4 text-sm'>
+                <CustomLink href='/forgot-password'>Lupa password?</CustomLink>
+              </div>
               <div className='flex items-center justify-center'>
                 <Button type='submit'>Submit</Button>
               </div>
               <div className='mt-4 text-sm'>
-                <CustomLink href='/forgot-password'>Lupa password?</CustomLink>
-              </div>
-              <div className='mt-4 text-sm'>
                 Belum punya?{' '}
-                <CustomLink href='/forgot-password'>Bikin akun</CustomLink> yuk
+                <CustomLink href='/register'>Bikin akun</CustomLink> yuk
               </div>
             </form>
 

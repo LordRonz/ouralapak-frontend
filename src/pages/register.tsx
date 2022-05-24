@@ -10,6 +10,7 @@ import FormItem from '@/components/forms/FormItem';
 import StyledInput from '@/components/forms/StyledInput';
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
+import CustomLink from '@/components/links/CustomLink';
 import Seo from '@/components/Seo';
 import { toastStyle } from '@/constant/toast';
 import oura_long from '~/images/ouralapak_logo_long.png';
@@ -43,7 +44,7 @@ const Register: NextPage = () => {
           <div className='layout flex min-h-screen flex-col items-center justify-center gap-y-12 py-12'>
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className='w-96 rounded-xl bg-gray-300 py-8 px-12 shadow-lg shadow-slate-400 dark:bg-neutral-800 dark:shadow-neutral-700'
+              className='w-96 rounded-xl bg-gray-200 py-8 px-12 shadow-lg shadow-slate-400 dark:bg-neutral-800 dark:shadow-neutral-700'
             >
               <div className='mb-8 flex flex-col items-center justify-center gap-y-4'>
                 <Image
@@ -135,8 +136,12 @@ const Register: NextPage = () => {
                   })}
                 />
               </FormItem>
-              <div className='mt-2 flex items-center justify-center'>
+              <div className='flex items-center justify-center'>
                 <Button type='submit'>Submit</Button>
+              </div>
+              <div className='mt-4 text-sm'>
+                Sudah punya akun? <CustomLink href='/login'>Login</CustomLink>{' '}
+                yuk
               </div>
             </form>
 
