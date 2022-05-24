@@ -61,7 +61,11 @@ const Header = () => {
       </a>
       <div className='h-2 bg-gradient-to-tr from-primary-200 via-primary-300 to-primary-400' />
       <div className='bg-neutral-200 transition-colors dark:bg-neutral-800 dark:text-light'>
-        <nav className={clsxm('layout flex items-center justify-between py-2')}>
+        <nav
+          className={clsxm(
+            'layout flex h-14 items-center justify-between py-2'
+          )}
+        >
           <Link href='/' passHref>
             <motion.a
               className='group relative z-50 flex items-center justify-center whitespace-nowrap font-bold transition duration-300 hover:transition md:text-xl'
@@ -70,17 +74,10 @@ const Header = () => {
             >
               <img
                 alt='Ouralapak logo'
-                src='/images/ouralapak_logo_small.png'
-                width={60}
-                height={60}
-                className='inline opacity-100 transition duration-300 group-hover:opacity-0'
-              />
-              <img
-                alt='Ouralapak logo'
-                src='/images/ouralapak_logo_compact.png'
-                width={101}
-                height={65}
-                className='absolute left-0 inline opacity-0 transition duration-300 hover:bg-gradient-to-r group-hover:opacity-100'
+                src='/images/ouralapak_logo_long.png'
+                width={180}
+                height={38}
+                className='inline opacity-100 transition duration-300'
               />
             </motion.a>
           </Link>

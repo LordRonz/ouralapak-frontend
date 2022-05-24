@@ -13,7 +13,7 @@ declare module 'next-themes' {
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
-    <ThemeProvider attribute='class' defaultTheme='dark' enableSystem={false}>
+    <ThemeProvider attribute='class' defaultTheme='light' enableSystem={false}>
       <NextNProgress
         color='#b39c78'
         startPosition={0.2}
