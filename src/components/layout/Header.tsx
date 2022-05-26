@@ -1,9 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
+import { Menu, Transition } from '@headlessui/react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
 import * as React from 'react';
+import { FiMenu } from 'react-icons/fi';
 
 import Accent from '@/components/Accent';
 import ColorModeToggle from '@/components/ColorModeToggle';
@@ -83,7 +85,7 @@ const Header = () => {
           </Link>
           <ul className='text-md flex items-center justify-between space-x-3 md:space-x-4 md:text-lg'>
             {links.map(({ href, label }) => (
-              <li key={`${href}${label}`}>
+              <li key={`${href}${label}`} className='hidden md:list-item'>
                 <UnstyledLink
                   href={href}
                   className={clsxm(
@@ -109,6 +111,52 @@ const Header = () => {
             ))}
             <li>
               <ColorModeToggle value={theme} onChange={setTheme} />
+            </li>
+            <li className='md:hidden'>
+              <Menu as='div' className='relative inline-block text-left'>
+                <div>
+                  <Menu.Button
+                    className={clsxm(
+                      'inline-flex items-center rounded px-4 py-2 font-semibold',
+                      'animate-shadow scale-100 transform-gpu transition duration-300 hover:scale-[1.03] active:scale-[0.97]',
+                      'transition-all duration-200 hover:text-primary-300'
+                    )}
+                  >
+                    <FiMenu className='text-2xl' />
+                  </Menu.Button>
+                </div>
+                <Transition
+                  as={React.Fragment}
+                  enter='transition ease-out duration-100'
+                  enterFrom='transform opacity-0 scale-95'
+                  enterTo='transform opacity-100 scale-100'
+                  leave='transition ease-in duration-75'
+                  leaveFrom='transform opacity-100 scale-100'
+                  leaveTo='transform opacity-0 scale-95'
+                >
+                  <Menu.Items className='absolute right-0 z-50 mt-2 w-56 origin-top-right divide-y divide-gray-600 rounded-md bg-neutral-200 shadow-lg ring-1 ring-light ring-opacity-5 focus:outline-none dark:bg-neutral-800'>
+                    <div className='px-1 py-1'>
+                      {links.map(({ href, label }) => (
+                        <Menu.Item key={label}>
+                          {({ active }) => (
+                            <UnstyledLink
+                              href={href}
+                              className={clsxm(
+                                active
+                                  ? 'bg-primary-300 text-white'
+                                  : 'text-dark dark:text-gray-100',
+                                'group flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors'
+                              )}
+                            >
+                              {label}
+                            </UnstyledLink>
+                          )}
+                        </Menu.Item>
+                      ))}
+                    </div>
+                  </Menu.Items>
+                </Transition>
+              </Menu>
             </li>
           </ul>
         </nav>
