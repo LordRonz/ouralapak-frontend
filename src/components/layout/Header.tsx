@@ -14,6 +14,7 @@ import clsxm from '@/lib/clsxm';
 
 export const links = [
   { href: '/explore', label: 'Explore' },
+  { href: '/iklan', label: 'Post Iklan' },
   { href: '/login', label: 'Login' },
 ];
 
