@@ -23,7 +23,7 @@ const DragNDrop = ({
         ref={ref}
         {...rootProps}
         className={clsxm(
-          'flex cursor-pointer items-center justify-center rounded-lg border-2 border-primary-400 p-14 text-center text-2xl dark:border-primary-100',
+          'flex cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-primary-400 p-14 text-center text-2xl dark:border-primary-100',
           className
         )}
       >

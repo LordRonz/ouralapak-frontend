@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import Image from 'next/image';
 import React, { useCallback, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
+import Dropzone from 'react-dropzone';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Toaster } from 'react-hot-toast';
 import { FiUpload } from 'react-icons/fi';
@@ -57,12 +57,13 @@ const Register: NextPage = () => {
   } = useForm<IFormInput>();
 
   const [selectedFile, setSelectedFile] = useState<File>();
+  const [favHeroes, setFavHeroes] = useState<File[]>([]);
 
   const onUpload = (files?: FileList | File[] | null) => {
     setSelectedFile(files?.[0]);
   };
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
+  const onBuktiTopUpDrop = useCallback((acceptedFiles: File[]) => {
     // Do something with the files
     if (!SUPPORTED_IMAGE_TYPES.includes(acceptedFiles[0].type)) {
       setSelectedFile(undefined);
@@ -72,22 +73,14 @@ const Register: NextPage = () => {
     onUpload(acceptedFiles);
   }, []);
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const onFavHeroesDrop = useCallback((files: File[]) => {
+    // Do something with the files
+    files.filter(
+      (file) => file.type && SUPPORTED_IMAGE_TYPES.includes(file.type)
+    );
 
-  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.persist();
-    e.preventDefault();
-    if (
-      e?.currentTarget?.files?.[0]?.type &&
-      !SUPPORTED_IMAGE_TYPES.includes(e.currentTarget.files[0].type)
-    ) {
-      e.target.value = '';
-      setSelectedFile(undefined);
-
-      return;
-    }
-    onUpload(e?.currentTarget?.files);
-  };
+    setFavHeroes((currentHeroes) => [...currentHeroes, ...files]);
+  }, []);
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data);
@@ -178,20 +171,23 @@ const Register: NextPage = () => {
                 </StyledSelect>
               </FormItem>
               <label htmlFor='confirm_password'>Foto bukti top up</label>
-              <DragNDrop
-                onChange={onFileChange}
-                rootProps={getRootProps()}
-                inputProps={getInputProps()}
-                className='mb-8 mt-4'
-              >
-                <FiUpload
-                  className={clsxm(
-                    'mr-4 text-4xl',
-                    !!selectedFile?.name && 'hidden'
-                  )}
-                />
-                {selectedFile?.name ?? 'Upload Image'}
-              </DragNDrop>
+              <Dropzone onDrop={onBuktiTopUpDrop}>
+                {({ getRootProps, getInputProps }) => (
+                  <DragNDrop
+                    rootProps={getRootProps()}
+                    inputProps={getInputProps()}
+                    className='mb-8 mt-4'
+                  >
+                    <FiUpload
+                      className={clsxm(
+                        'mr-4 text-4xl',
+                        !!selectedFile?.name && 'hidden'
+                      )}
+                    />
+                    {selectedFile?.name ?? 'Upload Image'}
+                  </DragNDrop>
+                )}
+              </Dropzone>
               <FormItem errorMessage={errors.account_bind?.[0].message}>
                 <label htmlFor='first_top_up_exist'>Binding account</label>
                 <Controller
@@ -216,28 +212,67 @@ const Register: NextPage = () => {
                   )}
                 />
               </FormItem>
-              <FormItem errorMessage={errors.account_bind?.[0].message}>
-                <label htmlFor='first_top_up_exist'>Binding account</label>
-                <Controller
-                  control={control}
-                  defaultValue={[]}
-                  name='account_bind'
-                  render={({ field: { onChange, value } }) => (
-                    <Select
+              <label htmlFor='favorite_heroes'>Favorite Heroes</label>
+              <Dropzone onDrop={onFavHeroesDrop}>
+                {({ getRootProps, getInputProps }) => (
+                  <DragNDrop
+                    rootProps={getRootProps()}
+                    inputProps={getInputProps()}
+                    className='mb-8 mt-4'
+                  >
+                    <FiUpload
                       className={clsxm(
-                        'w-full rounded-md dark:bg-dark',
-                        'border',
-                        'border-gray-800 dark:border-gray-500',
-                        'transition-all duration-200 focus:border-primary-300 focus:outline-none focus:ring-0 dark:focus:border-primary-300'
+                        'mr-4 text-4xl',
+                        !!favHeroes?.length && 'hidden'
                       )}
-                      options={accountBindOpts}
-                      value={accountBindOpts.filter((c) =>
-                        value.includes(c.value)
-                      )}
-                      onChange={(val) => onChange(val.map((c) => c.value))}
-                      isMulti
                     />
-                  )}
+                    {favHeroes.length
+                      ? favHeroes.length + ' heroes'
+                      : 'Upload Image'}
+                  </DragNDrop>
+                )}
+              </Dropzone>
+              <FormItem errorMessage={errors.win_rate?.message}>
+                <label htmlFor='win_rate'>Win Rate</label>
+                <StyledInput
+                  type='text'
+                  className='block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
+                  {...register('win_rate', {
+                    required: 'Win rate harus diisi',
+                    pattern: {
+                      value: /^(\d{0,2}(\.\d{1,2})?|100(\.00?)?)$/,
+                      message:
+                        'Win rate haruslah di antara 0 - 100 dan maksimum 2 desimal di belakang koma',
+                    },
+                  })}
+                />
+              </FormItem>
+              <FormItem errorMessage={errors.total_hero?.message}>
+                <label htmlFor='total_hero'>Total hero</label>
+                <StyledInput
+                  type='text'
+                  className='block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
+                  {...register('total_hero', {
+                    required: 'Total hero harus diisi',
+                    min: {
+                      value: 1,
+                      message: 'Minimum jumlah hero adalah 1',
+                    },
+                  })}
+                />
+              </FormItem>
+              <FormItem errorMessage={errors.total_skin?.message}>
+                <label htmlFor='total_skin'>Total skin</label>
+                <StyledInput
+                  type='text'
+                  className='block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
+                  {...register('total_skin', {
+                    required: 'Total skin harus diisi',
+                    min: {
+                      value: 0,
+                      message: 'Minimum jumlah skin adalah 0',
+                    },
+                  })}
                 />
               </FormItem>
               <div className='flex items-center justify-center'>
