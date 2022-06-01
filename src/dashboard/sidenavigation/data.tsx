@@ -1,3 +1,5 @@
+import { FiUsers } from 'react-icons/fi';
+
 import ContactIcon from '@/dashboard/sidenavigation/icons/contact';
 import DocumentationIcon from '@/dashboard/sidenavigation/icons/documentation';
 import HomeIcon from '@/dashboard/sidenavigation/icons/home';
@@ -6,7 +8,7 @@ import RecycleBinIcon from '@/dashboard/sidenavigation/icons/recycle-bin';
 import ServersIcon from '@/dashboard/sidenavigation/icons/servers';
 import TerminalIcon from '@/dashboard/sidenavigation/icons/terminal';
 
-const data = [
+const dataAdmin = [
   {
     section: 'Applications',
     content: [
@@ -59,4 +61,17 @@ const data = [
   },
 ];
 
-export default data;
+export const dataSuperAdmin = [
+  {
+    section: 'User',
+    content: [
+      {
+        title: 'User',
+        icon: <FiUsers />,
+        link: '/superadmin',
+      },
+    ],
+  },
+];
+
+export default dataAdmin;
