@@ -8,13 +8,13 @@ import { FiUpload } from 'react-icons/fi';
 import Select from 'react-select';
 
 import Button from '@/components/buttons/Button';
+import DeleteButton from '@/components/DeleteButton';
 import DragNDrop from '@/components/forms/DragNDrop';
 import FormItem from '@/components/forms/FormItem';
 import StyledInput from '@/components/forms/StyledInput';
 import StyledSelect from '@/components/forms/StyledSelect';
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
-import CustomLink from '@/components/links/CustomLink';
 import Seo from '@/components/Seo';
 import { toastStyle } from '@/constant/toast';
 import clsxm from '@/lib/clsxm';
@@ -58,6 +58,7 @@ const Register: NextPage = () => {
 
   const [selectedFile, setSelectedFile] = useState<File>();
   const [favHeroes, setFavHeroes] = useState<File[]>([]);
+  const [dndDisabled, setDndDisabled] = useState<boolean>(false);
 
   const onUpload = (files?: FileList | File[] | null) => {
     setSelectedFile(files?.[0]);
@@ -171,13 +172,18 @@ const Register: NextPage = () => {
                 </StyledSelect>
               </FormItem>
               <label htmlFor='confirm_password'>Foto bukti top up</label>
-              <Dropzone onDrop={onBuktiTopUpDrop}>
+              <Dropzone onDrop={onBuktiTopUpDrop} disabled={dndDisabled}>
                 {({ getRootProps, getInputProps }) => (
                   <DragNDrop
                     rootProps={getRootProps()}
                     inputProps={getInputProps()}
-                    className='mb-8 mt-4'
+                    className='group mb-8 mt-4'
                   >
+                    <DeleteButton
+                      onClick={(e) => e.preventDefault()}
+                      onMouseEnter={() => setDndDisabled(true)}
+                      onMouseLeave={() => setDndDisabled(false)}
+                    />
                     <FiUpload
                       className={clsxm(
                         'mr-4 text-4xl',
@@ -213,13 +219,18 @@ const Register: NextPage = () => {
                 />
               </FormItem>
               <label htmlFor='favorite_heroes'>Favorite Heroes</label>
-              <Dropzone onDrop={onFavHeroesDrop}>
+              <Dropzone onDrop={onFavHeroesDrop} disabled={dndDisabled}>
                 {({ getRootProps, getInputProps }) => (
                   <DragNDrop
                     rootProps={getRootProps()}
                     inputProps={getInputProps()}
-                    className='mb-8 mt-4'
+                    className='group mb-8 mt-4'
                   >
+                    <DeleteButton
+                      onClick={(e) => e.preventDefault()}
+                      onMouseEnter={() => setDndDisabled(true)}
+                      onMouseLeave={() => setDndDisabled(false)}
+                    />
                     <FiUpload
                       className={clsxm(
                         'mr-4 text-4xl',
@@ -235,7 +246,7 @@ const Register: NextPage = () => {
               <FormItem errorMessage={errors.win_rate?.message}>
                 <label htmlFor='win_rate'>Win Rate</label>
                 <StyledInput
-                  type='text'
+                  type='number'
                   className='block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
                   {...register('win_rate', {
                     required: 'Win rate harus diisi',
@@ -250,7 +261,7 @@ const Register: NextPage = () => {
               <FormItem errorMessage={errors.total_hero?.message}>
                 <label htmlFor='total_hero'>Total hero</label>
                 <StyledInput
-                  type='text'
+                  type='number'
                   className='block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
                   {...register('total_hero', {
                     required: 'Total hero harus diisi',
@@ -264,7 +275,7 @@ const Register: NextPage = () => {
               <FormItem errorMessage={errors.total_skin?.message}>
                 <label htmlFor='total_skin'>Total skin</label>
                 <StyledInput
-                  type='text'
+                  type='number'
                   className='block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
                   {...register('total_skin', {
                     required: 'Total skin harus diisi',
@@ -277,10 +288,6 @@ const Register: NextPage = () => {
               </FormItem>
               <div className='flex items-center justify-center'>
                 <Button type='submit'>Submit</Button>
-              </div>
-              <div className='mt-4 text-sm'>
-                Sudah punya akun? <CustomLink href='/login'>Login</CustomLink>{' '}
-                yuk
               </div>
             </form>
 
