@@ -128,7 +128,7 @@ export default function ReactTable<T extends object>({
                           <td
                             {...cell.getCellProps()}
                             className={clsx(
-                              'whitespace-nowrap px-6 py-4 text-sm text-gray-700',
+                              'whitespace-nowrap px-6 py-4 text-center text-sm text-gray-700',
                               i === 0
                                 ? 'font-medium text-gray-900 dark:text-gray-50'
                                 : 'text-gray-500  dark:text-gray-200'

@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-starter",
+  "name": "ouralapak-frontend",
   "private": true,
   "scripts": {
     "dev": "next dev",
