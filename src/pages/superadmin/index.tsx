@@ -1,13 +1,48 @@
+import { useTheme } from 'next-themes';
 import * as React from 'react';
 import { FiCheckCircle, FiLock, FiTrash2, FiXCircle } from 'react-icons/fi';
 import { Column } from 'react-table';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 import Button from '@/components/buttons/Button';
 import ReactTable from '@/components/ReactTable';
 import DashboardLayout from '@/dashboard/layout';
 import clsxm from '@/lib/clsxm';
 
+const MySwal = withReactContent(Swal);
+
 const IndexPage = () => {
+  const { theme } = useTheme();
+
+  const onClickDelete = React.useCallback(() => {
+    MySwal.fire({
+      title: 'Yakin ingin hapus user ini?',
+      text: 'Tindakan ini tidak bisa dibatalkan!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Hapus',
+      color: !theme || theme === 'dark' ? '#eee' : '#111',
+      background: !theme || theme === 'dark' ? '#111' : '#eee',
+    });
+  }, [theme]);
+
+  const onClickResetPassword = React.useCallback(() => {
+    MySwal.fire({
+      title: 'Yakin ingin reset password user ini?',
+      text: 'Tindakan ini tidak bisa dibatalkan!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Reset',
+      color: !theme || theme === 'dark' ? '#eee' : '#111',
+      background: !theme || theme === 'dark' ? '#111' : '#eee',
+    });
+  }, [theme]);
+
   const data = React.useMemo(
     () => [
       {
@@ -55,14 +90,18 @@ const IndexPage = () => {
         accessor: 'delete',
         Header: 'Delete',
         Cell: () => (
-          <Button variant='light' className='text-red-500 hover:text-red-600'>
+          <Button
+            variant='light'
+            className='text-red-500 hover:text-red-600'
+            onClick={() => onClickDelete()}
+          >
             <FiTrash2 />
           </Button>
         ),
       },
       {
         accessor: 'verify',
-        Header: 'Nggatau',
+        Header: 'Toggle Verifikasi',
         Cell: ({ cell }) => (
           <Button
             variant='light'
@@ -82,13 +121,14 @@ const IndexPage = () => {
           <Button
             variant='light'
             className='text-yellow-500 hover:text-yellow-600'
+            onClick={() => onClickResetPassword()}
           >
             <FiLock />
           </Button>
         ),
       },
     ],
-    []
+    [onClickDelete, onClickResetPassword]
   );
 
   return (
