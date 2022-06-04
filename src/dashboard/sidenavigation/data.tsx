@@ -66,7 +66,7 @@ export const dataSuperAdmin = [
     section: 'User',
     content: [
       {
-        title: 'User',
+        title: 'Admin',
         icon: <FiUsers />,
         link: '/superadmin',
       },

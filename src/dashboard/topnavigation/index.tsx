@@ -53,8 +53,8 @@ const TopNavigation = () => {
           <div className='relative ml-5 flex w-1/4 items-center justify-end p-1 sm:right-auto sm:mr-0'>
             <a href='#' className='relative block'>
               <img
-                alt='CR7'
-                src='/images/1.png'
+                alt='Ouralapak'
+                src='/images/ouralapak_logo_small.png'
                 className='mx-auto h-10 w-10 rounded-full object-cover '
               />
             </a>

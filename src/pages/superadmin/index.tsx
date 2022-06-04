@@ -7,6 +7,7 @@ import withReactContent from 'sweetalert2-react-content';
 
 import Button from '@/components/buttons/Button';
 import ReactTable from '@/components/ReactTable';
+import { mySwalOpts } from '@/constant/swal';
 import DashboardLayout from '@/dashboard/layout';
 import clsxm from '@/lib/clsxm';
 
@@ -21,11 +22,8 @@ const IndexPage = () => {
       text: 'Tindakan ini tidak bisa dibatalkan!',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
       confirmButtonText: 'Hapus',
-      color: !theme || theme === 'dark' ? '#eee' : '#111',
-      background: !theme || theme === 'dark' ? '#111' : '#eee',
+      ...mySwalOpts(theme),
     });
   }, [theme]);
 
@@ -35,11 +33,8 @@ const IndexPage = () => {
       text: 'Tindakan ini tidak bisa dibatalkan!',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
       confirmButtonText: 'Reset',
-      color: !theme || theme === 'dark' ? '#eee' : '#111',
-      background: !theme || theme === 'dark' ? '#111' : '#eee',
+      ...mySwalOpts(theme),
     });
   }, [theme]);
 
@@ -47,7 +42,7 @@ const IndexPage = () => {
     () => [
       {
         username: 'Bruh',
-        col2: 'World',
+        email: 'World',
         delete: {},
         verify: {
           isVerified: true,
@@ -56,7 +51,7 @@ const IndexPage = () => {
       },
       {
         username: 'react-table',
-        col2: 'rocks',
+        email: 'rocks',
         delete: {},
         verify: {
           isVerified: true,
@@ -65,7 +60,7 @@ const IndexPage = () => {
       },
       {
         username: 'whatever',
-        col2: 'you want',
+        email: 'you want',
         delete: {},
         verify: {
           isVerified: false,
@@ -83,8 +78,8 @@ const IndexPage = () => {
         accessor: 'username', // accessor is the "key" in the data
       },
       {
-        Header: 'Column 2',
-        accessor: 'col2',
+        Header: 'Email',
+        accessor: 'email',
       },
       {
         accessor: 'delete',

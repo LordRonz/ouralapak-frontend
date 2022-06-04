@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import * as React from 'react';
 import { GoTriangleDown, GoTriangleUp } from 'react-icons/go';
 import { HiSearch } from 'react-icons/hi';
+import ReactPaginate from 'react-paginate';
 import {
   Column,
   PluginHook,
@@ -165,6 +166,14 @@ export default function ReactTable<T extends object>({
                       ))}
                     </tr>
                   ))}
+                  <tr>
+                    <td colSpan={columns.length} className='text-center'>
+                      <ReactPaginate
+                        pageCount={10}
+                        className='mb-8 flex list-none flex-row justify-between px-20'
+                      />
+                    </td>
+                  </tr>
                 </tfoot>
               )}
             </table>
