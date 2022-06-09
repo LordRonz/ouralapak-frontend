@@ -39,7 +39,7 @@ const Header = ({ HeaderStatic }: HeaderProps) => {
                     <Link href='/'>
                       <a className='logo-bb'>
                         <img
-                          src='assets/img/logo/oction-logo.png'
+                          src='images/ouralapak_logo_long.png'
                           alt='logo-img'
                         />
                       </a>
@@ -47,7 +47,7 @@ const Header = ({ HeaderStatic }: HeaderProps) => {
                     <Link href='/'>
                       <a className='logo-bw'>
                         <img
-                          src='assets/img/logo/oction-logo-bw.png'
+                          src='images/ouralapak_logo_long.png'
                           alt='logo-img'
                         />
                       </a>

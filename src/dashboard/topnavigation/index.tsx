@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { useToggle } from '../provider/context';
 
 const TopNavigation = () => {

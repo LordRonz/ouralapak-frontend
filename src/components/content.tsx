@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 const Content = ({ title }: { title: React.ReactNode }) => (
   <div>
     <div className='container mx-auto'>

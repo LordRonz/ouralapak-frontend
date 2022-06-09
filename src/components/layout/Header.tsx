@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { Menu, Transition } from '@headlessui/react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';

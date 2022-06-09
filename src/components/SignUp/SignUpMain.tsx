@@ -123,32 +123,6 @@ const SignUpMain = () => {
                       background: 'url(assets/img/bg/sign-up-social-bg.jpg)',
                     }}
                   ></div>
-                  <div className='sign-up-with-social-content'>
-                    <div className='text-or'>Or</div>
-                    <div className='sign-up-media'>
-                      <a href='#' className='sign-up-media-single'>
-                        <img
-                          src='assets/img/svg-icon/gmail.svg'
-                          alt='media-img'
-                        />{' '}
-                        Signup with Email
-                      </a>
-                      <a href='#' className='sign-up-media-single'>
-                        <img
-                          src='assets/img/svg-icon/facebook.svg'
-                          alt='media-img'
-                        />{' '}
-                        Signup with Facebook
-                      </a>
-                      <a href='#' className='sign-up-media-single'>
-                        <img
-                          src='assets/img/svg-icon/twitter.svg'
-                          alt='media-img'
-                        />{' '}
-                        Signup with Twitter
-                      </a>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
