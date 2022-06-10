@@ -8,11 +8,10 @@ import ThemeChanger from '@/components/Common/ThemeChanger';
 import { API_URL } from '@/constant/config';
 
 type IFormInput = {
-  emailOrUsername: string;
-  password: string;
+  email: string;
 };
 
-const LoginMain = () => {
+const ForgotPassword = () => {
   const {
     register,
     handleSubmit,
@@ -20,7 +19,7 @@ const LoginMain = () => {
   } = useForm<IFormInput>();
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    const res = await axios.post(`${API_URL}/auth/user/login`, data);
+    const res = await axios.post(`${API_URL}/auth/forgot-password`, data);
     console.log(res.data);
   };
 
@@ -28,7 +27,10 @@ const LoginMain = () => {
     <main>
       <ThemeChanger />
 
-      <Breadcrumbs breadcrumbTitle='Sign in' breadcrumbSubTitle='Sign in' />
+      <Breadcrumbs
+        breadcrumbTitle='Forgot Password'
+        breadcrumbSubTitle='Forgot Password'
+      />
 
       <section
         className='login-area pt-130 pb-90'
@@ -40,7 +42,7 @@ const LoginMain = () => {
               <div className='login-wrapper pos-rel wow fadeInUp mb-40'>
                 <div className=' login-inner'>
                   <div className='login-content'>
-                    <h4>Sign in Account</h4>
+                    <h4>Forgot Password</h4>
                     <form
                       className='login-form'
                       onSubmit={handleSubmit(onSubmit)}
@@ -48,39 +50,23 @@ const LoginMain = () => {
                       <div className='row'>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='email'>Email or username</label>
+                            <label htmlFor='email'>Email</label>
                             <input
                               type='text'
                               placeholder='Your email or username'
-                              {...register('emailOrUsername', {
+                              {...register('email', {
                                 required: 'Username/Email harus diisi',
                               })}
                             />
                           </div>
                           <p className='text-red-500'>
-                            {errors.emailOrUsername?.message}
-                          </p>
-                        </div>
-                        <div className='col-md-12'>
-                          <div className='single-input-unit'>
-                            <label htmlFor='password'>Password</label>
-                            <input
-                              type='password'
-                              id='password'
-                              placeholder='********'
-                              {...register('password', {
-                                required: 'Password harus diisi',
-                              })}
-                            />
-                          </div>
-                          <p className='text-red-500'>
-                            {errors.password?.message}
+                            {errors.email?.message}
                           </p>
                         </div>
                       </div>
                       <div className='login-btn'>
                         <button className='fill-btn' type='submit'>
-                          Sign in Account
+                          Reset Password
                         </button>
                         <div className='note'>
                           Not yet registered?{' '}
@@ -101,4 +87,4 @@ const LoginMain = () => {
   );
 };
 
-export default LoginMain;
+export default ForgotPassword;

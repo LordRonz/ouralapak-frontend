@@ -28,9 +28,9 @@ type IFormInput = {
   change_name_status: boolean;
   first_top_up_exist: boolean;
   first_top_up_image: string;
-  account_bind: string[];
-  favorite_heroes: string[];
-  win_rate: string;
+  account_bind: number[];
+  favorite_heroes: number[];
+  win_rate: number;
   total_hero: number;
   total_skin: number;
   total_skin_rare: string[];
@@ -212,7 +212,7 @@ const Register: NextPage = () => {
                         )}
                         options={accountBindOpts}
                         value={accountBindOpts.filter((c) =>
-                          value.includes(c.value)
+                          value.includes(+c.value)
                         )}
                         onChange={(val) => onChange(val.map((c) => c.value))}
                         isMulti

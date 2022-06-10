@@ -11,6 +11,7 @@ import { AnimatePresence } from 'framer-motion';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
 import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 import { SWRConfig } from 'swr';
 
 import { store } from '@/redux/store';
@@ -42,6 +43,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           </AnimatePresence>
         </SWRConfig>
       </ThemeProvider>
+      <ToastContainer />
     </Provider>
   );
 };

@@ -1,10 +1,34 @@
+import axios from 'axios';
 import Link from 'next/link';
 import React from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 import Breadcrumbs from '@/components/Common/PageTitle';
 import ThemeChanger from '@/components/Common/ThemeChanger';
+import { API_URL } from '@/constant/config';
+
+type IFormInput = {
+  email: string;
+  name: string;
+  phone: string;
+  ig_username: string;
+  password: string;
+  confirm_password: string;
+};
 
 const SignUpMain = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<IFormInput>();
+
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    const res = await axios.post(`${API_URL}/auth/user/register`, data);
+    console.log(res.data);
+  };
+
   return (
     <main>
       <ThemeChanger />
@@ -30,82 +54,126 @@ const SignUpMain = () => {
                       and sale your any items independently online securely in
                       the world.
                     </p>
-                    <form className='sign-up-form' action='#'>
+                    <form
+                      className='sign-up-form'
+                      onSubmit={handleSubmit(onSubmit)}
+                    >
                       <div className='row'>
                         <div className='col-md-6'>
                           <div className='single-input-unit'>
-                            <label htmlFor='f-name'>First Name</label>
-                            <input
-                              type='text'
-                              name='f-name'
-                              id='f-name'
-                              placeholder='Your first name'
-                            />
-                          </div>
-                        </div>
-                        <div className='col-md-6'>
-                          <div className='single-input-unit'>
-                            <label htmlFor='l-name'>Last Name</label>
-                            <input
-                              type='text'
-                              name='l-name'
-                              id='l-name'
-                              placeholder='Your last name'
-                            />
-                          </div>
-                        </div>
-                        <div className='col-md-6'>
-                          <div className='single-input-unit mb-30'>
-                            <label htmlFor='g-select'>Gender</label>
-                            <div className='common-select-arrow common-select-arrow-60 w-full'>
-                              <select
-                                name='g-select'
-                                id='g-select'
-                                className='gender-category-select'
-                              >
-                                <option value='1'>Male</option>
-                                <option value='2'>Female</option>
-                                <option value='3'>Other</option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-                        <div className='col-md-6'>
-                          <div className='single-input-unit'>
-                            <label htmlFor='m-id'>Email</label>
+                            <label htmlFor='email'>Email</label>
                             <input
                               type='email'
-                              name='m-id'
-                              id='m-id'
                               placeholder='Your email'
+                              {...register('email', {
+                                required: 'Email harus diisi',
+                                pattern: {
+                                  value:
+                                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                  message: 'Email tidak valid!',
+                                },
+                              })}
                             />
                           </div>
+                          <p className='text-red-500'>
+                            {errors.email?.message}
+                          </p>
                         </div>
                         <div className='col-md-6'>
                           <div className='single-input-unit'>
-                            <label htmlFor='u-name'>Username</label>
+                            <label htmlFor='name'>Nama</label>
                             <input
                               type='text'
-                              name='u-name'
-                              id='u-name'
-                              placeholder='Username'
+                              placeholder='Your name'
+                              {...register('name', {
+                                required: 'Nama harus diisi',
+                              })}
                             />
                           </div>
+                          <p className='text-red-500'>{errors.name?.message}</p>
+                        </div>
+                        <div className='col-md-6'>
+                          <div className='single-input-unit'>
+                            <label htmlFor='name'>Nomor Telepon</label>
+                            <input
+                              type='text'
+                              placeholder='Your number'
+                              {...register('phone', {
+                                required: 'Nomor telepon harus diisi',
+                                pattern: {
+                                  value:
+                                    /^(\+62|62)?[\s-]?0?8[1-9]{1}\d{1}[\s-]?\d{4}[\s-]?\d{2,5}$/,
+                                  message: 'Nomor telepon tidak valid!',
+                                },
+                              })}
+                            />
+                          </div>
+                          <p className='text-red-500'>
+                            {errors.phone?.message}
+                          </p>
+                        </div>
+                        <div className='col-md-6'>
+                          <div className='single-input-unit'>
+                            <label htmlFor='ig_username'>IG Username</label>
+                            <input
+                              type='text'
+                              placeholder='Your IG username'
+                              {...register('ig_username', {
+                                required: 'Username instagram harus diisi',
+                              })}
+                            />
+                          </div>
+                          <p className='text-red-500'>
+                            {errors.ig_username?.message}
+                          </p>
                         </div>
                         <div className='col-md-6'>
                           <div className='single-input-unit'>
                             <label htmlFor='password'>Password</label>
                             <input
                               type='password'
-                              name='password'
-                              id='password'
-                              placeholder='********'
+                              placeholder='Your password'
+                              {...register('password', {
+                                required: 'Password harus diisi',
+                                minLength: {
+                                  value: 8,
+                                  message:
+                                    'Password harus berisi setidaknya 8 karakter',
+                                },
+                              })}
                             />
                           </div>
+                          <p className='text-red-500'>
+                            {errors.password?.message}
+                          </p>
+                        </div>
+                        <div className='col-md-6'>
+                          <div className='single-input-unit'>
+                            <label htmlFor='confirm_password'>
+                              Konfirmasi Password
+                            </label>
+                            <input
+                              type='password'
+                              placeholder='Your password confirmation'
+                              {...register('confirm_password', {
+                                required: 'Konfirmasi password anda!',
+                                validate: (val: string) => {
+                                  if (watch('password') != val) {
+                                    return 'Konfirmasi password tidak sesuai!';
+                                  }
+                                },
+                              })}
+                            />
+                          </div>
+                          <p className='text-red-500'>
+                            {errors.confirm_password?.message}
+                          </p>
                         </div>
                       </div>
                       <div className='sign-up-btn'>
-                        <button className='fill-btn'>Create Account</button>
+                        <button className='fill-btn' type='submit'>
+                          Create Account
+                        </button>
                         <div className='note'>
                           Already have an account?{' '}
                           <Link href='/login'>
