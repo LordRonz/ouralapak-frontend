@@ -3,8 +3,8 @@ import Link from 'next/link';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import ButtonGradient from '@/components/buttons/ButtonGradient';
 import Breadcrumbs from '@/components/Common/PageTitle';
-import ThemeChanger from '@/components/Common/ThemeChanger';
 import { API_URL } from '@/constant/config';
 
 type IFormInput = {
@@ -31,8 +31,6 @@ const SignUpMain = () => {
 
   return (
     <main>
-      <ThemeChanger />
-
       <Breadcrumbs
         breadcrumbTitle='Sign up'
         breadcrumbSubTitle='Create Account'
@@ -43,17 +41,12 @@ const SignUpMain = () => {
         style={{ background: 'url(assets/img/bg/sign-up-bg.jpg)' }}
       >
         <div className='container'>
-          <div className='row'>
-            <div className='col-lg-12'>
+          <div className='row justify-content-center'>
+            <div className='col-xxl-6 col-xl-7 col-lg-8'>
               <div className='sign-up-wrapper pos-rel wow fadeInUp mb-40'>
                 <div className='sign-up-inner'>
                   <div className='sign-up-content'>
-                    <h4>Create Account</h4>
-                    <p className='mb-35'>
-                      It{"'"}s easy to create an account for Non-fungible tokens
-                      and sale your any items independently online securely in
-                      the world.
-                    </p>
+                    <h4>Buat Akun</h4>
                     <form
                       className='sign-up-form'
                       onSubmit={handleSubmit(onSubmit)}
@@ -64,7 +57,7 @@ const SignUpMain = () => {
                             <label htmlFor='email'>Email</label>
                             <input
                               type='email'
-                              placeholder='Your email'
+                              placeholder='Email anda'
                               {...register('email', {
                                 required: 'Email harus diisi',
                                 pattern: {
@@ -84,7 +77,7 @@ const SignUpMain = () => {
                             <label htmlFor='name'>Nama</label>
                             <input
                               type='text'
-                              placeholder='Your name'
+                              placeholder='Nama anda'
                               {...register('name', {
                                 required: 'Nama harus diisi',
                               })}
@@ -97,7 +90,7 @@ const SignUpMain = () => {
                             <label htmlFor='name'>Nomor Telepon</label>
                             <input
                               type='text'
-                              placeholder='Your number'
+                              placeholder='Nomor telepon anda'
                               {...register('phone', {
                                 required: 'Nomor telepon harus diisi',
                                 pattern: {
@@ -117,7 +110,7 @@ const SignUpMain = () => {
                             <label htmlFor='ig_username'>IG Username</label>
                             <input
                               type='text'
-                              placeholder='Your IG username'
+                              placeholder='Username IG anda'
                               {...register('ig_username', {
                                 required: 'Username instagram harus diisi',
                               })}
@@ -132,7 +125,7 @@ const SignUpMain = () => {
                             <label htmlFor='password'>Password</label>
                             <input
                               type='password'
-                              placeholder='Your password'
+                              placeholder='Password anda'
                               {...register('password', {
                                 required: 'Password harus diisi',
                                 minLength: {
@@ -154,7 +147,7 @@ const SignUpMain = () => {
                             </label>
                             <input
                               type='password'
-                              placeholder='Your password confirmation'
+                              placeholder='Konfirmasi password anda'
                               {...register('confirm_password', {
                                 required: 'Konfirmasi password anda!',
                                 validate: (val: string) => {
@@ -171,11 +164,11 @@ const SignUpMain = () => {
                         </div>
                       </div>
                       <div className='sign-up-btn'>
-                        <button className='fill-btn' type='submit'>
-                          Create Account
-                        </button>
+                        <ButtonGradient className='text-white' type='submit'>
+                          Buat Akun
+                        </ButtonGradient>
                         <div className='note'>
-                          Already have an account?{' '}
+                          Sudah punya akun?{' '}
                           <Link href='/login'>
                             <a className='text-btn'>Sign In</a>
                           </Link>
@@ -183,14 +176,6 @@ const SignUpMain = () => {
                       </div>
                     </form>
                   </div>
-                </div>
-                <div className='sign-up-with-social'>
-                  <div
-                    className='sign-up-with-social-bg'
-                    style={{
-                      background: 'url(assets/img/bg/sign-up-social-bg.jpg)',
-                    }}
-                  ></div>
                 </div>
               </div>
             </div>

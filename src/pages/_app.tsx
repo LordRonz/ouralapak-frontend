@@ -28,7 +28,7 @@ if (typeof window !== 'undefined') {
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <Provider store={store}>
-      <ThemeProvider defaultTheme='dark'>
+      <ThemeProvider defaultTheme='light'>
         <SWRConfig
           value={{
             fetcher: (url) => axios.get(url).then((res) => res.data),

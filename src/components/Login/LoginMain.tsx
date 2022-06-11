@@ -3,8 +3,8 @@ import Link from 'next/link';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import ButtonGradient from '@/components/buttons/ButtonGradient';
 import Breadcrumbs from '@/components/Common/PageTitle';
-import ThemeChanger from '@/components/Common/ThemeChanger';
 import { API_URL } from '@/constant/config';
 
 type IFormInput = {
@@ -26,8 +26,6 @@ const LoginMain = () => {
 
   return (
     <main>
-      <ThemeChanger />
-
       <Breadcrumbs breadcrumbTitle='Sign in' breadcrumbSubTitle='Sign in' />
 
       <section
@@ -40,7 +38,7 @@ const LoginMain = () => {
               <div className='login-wrapper pos-rel wow fadeInUp mb-40'>
                 <div className=' login-inner'>
                   <div className='login-content'>
-                    <h4>Sign in Account</h4>
+                    <h4>Masuk Akun</h4>
                     <form
                       className='login-form'
                       onSubmit={handleSubmit(onSubmit)}
@@ -48,10 +46,10 @@ const LoginMain = () => {
                       <div className='row'>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='email'>Email or username</label>
+                            <label htmlFor='email'>Email atau username</label>
                             <input
                               type='text'
-                              placeholder='Your email or username'
+                              placeholder='Email atau username anda'
                               {...register('emailOrUsername', {
                                 required: 'Username/Email harus diisi',
                               })}
@@ -80,17 +78,17 @@ const LoginMain = () => {
                       </div>
                       <div className='note mb-2'>
                         <Link href='/forgot-password'>
-                          <a className='text-btn'>Forgot password?</a>
+                          <a className='text-btn'>Lupa password?</a>
                         </Link>
                       </div>
                       <div className='login-btn'>
-                        <button className='fill-btn' type='submit'>
-                          Sign in Account
-                        </button>
+                        <ButtonGradient className='text-white' type='submit'>
+                          Masuk akun
+                        </ButtonGradient>
                         <div className='note'>
-                          Not yet registered?{' '}
+                          Belum terdaftar?{' '}
                           <Link href='/register'>
-                            <a className='text-btn'>Sign up</a>
+                            <a className='text-btn'>Buat akun</a>
                           </Link>
                         </div>
                       </div>

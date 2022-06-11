@@ -1,3 +1,4 @@
+import { useTheme } from 'next-themes';
 import React, { useEffect, useState } from 'react';
 import { FiMoon, FiSun } from 'react-icons/fi';
 
@@ -7,18 +8,15 @@ type Props = {
   buttonClassName?: string;
   className?: string;
   iconClassName?: string;
-  value?: string;
-  onChange: (v: string) => void;
 };
 
 const ColorModeToggle = ({
   buttonClassName,
   className,
   iconClassName,
-  value,
-  onChange,
 }: Props): JSX.Element => {
   const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
@@ -33,20 +31,20 @@ const ColorModeToggle = ({
           buttonClassName
         )}
         type='button'
-        onClick={() => onChange(value === 'dark' ? 'light' : 'dark')}
+        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
       >
         {mounted && (
           <>
             <FiSun
               className={clsxm(
-                value !== 'light' && 'hidden',
+                theme !== 'light' && 'hidden',
                 'text-2xl',
                 iconClassName
               )}
             />
             <FiMoon
               className={clsxm(
-                value !== 'dark' && 'hidden',
+                theme !== 'dark' && 'hidden',
                 'text-2xl',
                 iconClassName
               )}

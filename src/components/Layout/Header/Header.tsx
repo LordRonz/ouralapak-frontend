@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 
+import ColorModeToggle from '@/components/ColorModeToggle';
 import MobileMenu from '@/components/Layout/Header/MobileMenu';
 import useSticky from '@/hooks/useSticky';
 
@@ -177,11 +178,6 @@ const Header = ({ HeaderStatic }: HeaderProps) => {
                           </ul>
                         </li>
                         <li>
-                          <Link href='/forum'>
-                            <a>Forum</a>
-                          </Link>
-                        </li>
-                        <li>
                           <Link href='/contact'>
                             <a>Contact</a>
                           </Link>
@@ -198,11 +194,7 @@ const Header = ({ HeaderStatic }: HeaderProps) => {
                       <i className='fal fa-search'></i>
                     </button>
                   </form>
-                  <div className='header-btn d-none d-xxl-inline-block ml-20'>
-                    <Link href='/wallet-connect'>
-                      <a className='fill-btn'>Connect Wallet</a>
-                    </Link>
-                  </div>
+                  <ColorModeToggle className='mx-2' />
                   <div className='profile-item profile-item-header d-none d-md-inline-block pos-rel ml-20'>
                     <div
                       className={`profile-img pos-rel ${
