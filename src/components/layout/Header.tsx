@@ -2,7 +2,6 @@ import { Menu, Transition } from '@headlessui/react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useTheme } from 'next-themes';
 import * as React from 'react';
 import { FiMenu } from 'react-icons/fi';
 
@@ -18,8 +17,6 @@ export const links = [
 ];
 
 const Header = () => {
-  const { theme, setTheme } = useTheme();
-
   //#region  //*=========== Route Functionality ===========
   const router = useRouter();
   /** Ex: /projects/petrolida-2021 -> ['', 'projects', 'petrolida-2021'] */
@@ -110,7 +107,7 @@ const Header = () => {
               </li>
             ))}
             <li>
-              <ColorModeToggle value={theme} onChange={setTheme} />
+              <ColorModeToggle />
             </li>
             <li className='md:hidden'>
               <Menu as='div' className='relative inline-block text-left'>
