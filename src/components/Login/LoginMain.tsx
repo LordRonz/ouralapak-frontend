@@ -78,6 +78,11 @@ const LoginMain = () => {
                           </p>
                         </div>
                       </div>
+                      <div className='note mb-2'>
+                        <Link href='/forgot-password'>
+                          <a className='text-btn'>Forgot password?</a>
+                        </Link>
+                      </div>
                       <div className='login-btn'>
                         <button className='fill-btn' type='submit'>
                           Sign in Account
