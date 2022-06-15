@@ -20,7 +20,7 @@ const LoginMain = () => {
   } = useForm<IFormInput>();
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    const res = await axios.post(`${API_URL}/auth/user/login`, data);
+    const res = await axios.post(`${API_URL}/auth/login`, data);
     console.log(res.data);
   };
 

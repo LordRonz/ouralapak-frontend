@@ -14,7 +14,8 @@
     "tsc": "tsc --pretty --noEmit --incremental false",
     "format": "prettier -w .",
     "format:check": "prettier -c .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "pm2:start": "pm2 start ecosystem.config.json --no-daemon"
   },
   "dependencies": {
     "@headlessui/react": "^1.6.4",
