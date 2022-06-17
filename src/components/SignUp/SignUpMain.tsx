@@ -2,6 +2,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 import ButtonGradient from '@/components/buttons/ButtonGradient';
 import Breadcrumbs from '@/components/Common/PageTitle';
@@ -11,6 +12,7 @@ type IFormInput = {
   email: string;
   name: string;
   phone: string;
+  username: string;
   ig_username: string;
   password: string;
   confirm_password: string;
@@ -24,9 +26,29 @@ const SignUpMain = () => {
     formState: { errors },
   } = useForm<IFormInput>();
 
+  const [signUpBtnDisabled, setSignUpBtnDisabled] = React.useState(false);
+
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    const res = await axios.post(`${API_URL}/auth/user/register`, data);
-    console.log(res.data);
+    await toast.promise(axios.post(`${API_URL}/auth/user/register`, data), {
+      pending: {
+        render: () => {
+          setSignUpBtnDisabled(true);
+          return 'Loading';
+        },
+      },
+      success: {
+        render: () => {
+          setSignUpBtnDisabled(false);
+          return 'Kamu sudah terdaftar, konfirmasi email untuk aktivasi akun';
+        },
+      },
+      error: {
+        render: () => {
+          setSignUpBtnDisabled(false);
+          return 'Gagal register!';
+        },
+      },
+    });
   };
 
   return (
@@ -107,6 +129,21 @@ const SignUpMain = () => {
                         </div>
                         <div className='col-md-6'>
                           <div className='single-input-unit'>
+                            <label htmlFor='ig_username'>Username</label>
+                            <input
+                              type='text'
+                              placeholder='Username anda'
+                              {...register('username', {
+                                required: 'Username harus diisi',
+                              })}
+                            />
+                          </div>
+                          <p className='text-red-500'>
+                            {errors.ig_username?.message}
+                          </p>
+                        </div>
+                        <div className='col-md-6'>
+                          <div className='single-input-unit'>
                             <label htmlFor='ig_username'>IG Username</label>
                             <input
                               type='text'
@@ -164,7 +201,11 @@ const SignUpMain = () => {
                         </div>
                       </div>
                       <div className='sign-up-btn'>
-                        <ButtonGradient className='text-white' type='submit'>
+                        <ButtonGradient
+                          className='text-white'
+                          type='submit'
+                          disabled={signUpBtnDisabled}
+                        >
                           Buat Akun
                         </ButtonGradient>
                         <div className='note'>

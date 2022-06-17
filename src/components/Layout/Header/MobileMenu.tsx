@@ -12,35 +12,6 @@ const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
     setActive14(!isActive14);
   };
 
-  const [home, setHome] = useState(false);
-  const [courses, setcourses] = useState(false);
-  const [pages, setPages] = useState(false);
-  const [project, setProject] = useState(false);
-
-  const openMobileMenu = (menu: string) => {
-    if (menu == 'home') {
-      setHome(!home);
-      setcourses(false);
-      setPages(false);
-      setProject(false);
-    } else if (menu == 'courses') {
-      setHome(false);
-      setcourses(!courses);
-      setPages(false);
-      setProject(false);
-    } else if (menu == 'pages') {
-      setHome(false);
-      setcourses(false);
-      setProject(false);
-      setPages(!pages);
-    } else if (menu == 'project') {
-      setHome(false);
-      setcourses(false);
-      setPages(false);
-      setProject(!project);
-    }
-  };
-
   return (
     <>
       <div className='fix'>
@@ -51,10 +22,7 @@ const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
                 <div className='col-9'>
                   <Link href='/'>
                     <a>
-                      <img
-                        src='assets/img/logo/oction-logo-bw.png'
-                        alt='Logo'
-                      />
+                      <img src='images/ouralapak_logo_long.png' alt='Logo' />
                     </a>
                   </Link>
                 </div>
@@ -70,155 +38,14 @@ const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
             </div>
             <div className='mm-menu mm-menu-1 d-lg-none mb-60'>
               <ul>
-                <li className={home ? 'has-droupdown active' : 'has-droupdown'}>
-                  <a
-                    onClick={() => {
-                      openMobileMenu('home');
-                    }}
-                  >
-                    Home
-                  </a>
-                  <ul className={home ? 'sub-menu active' : 'sub-menu'}>
-                    <li>
-                      <Link href='/'>
-                        <a>Home Style 1</a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href='/index-2'>
-                        <a>Home Style 2</a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href='/index-3'>
-                        <a>Home Style 3</a>
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
                 <li>
-                  <Link href='/explore-arts'>
-                    <a>Explore</a>
-                  </Link>
-                </li>
-                <li
-                  className={courses ? 'has-droupdown active' : 'has-droupdown'}
-                >
-                  <a
-                    onClick={() => {
-                      openMobileMenu('courses');
-                    }}
-                  >
-                    Creator
-                  </a>
-                  <ul className={courses ? 'sub-menu active' : 'sub-menu'}>
-                    <li>
-                      <Link href='/creators'>
-                        <a>Creators</a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href='/creator-profile'>
-                        <a>Creator Profile</a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href='/creator-profile-info-personal'>
-                        <a>Creator Personal Info</a>
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-
-                <li
-                  className={project ? 'has-droupdown active' : 'has-droupdown'}
-                >
-                  <a
-                    onClick={() => {
-                      openMobileMenu('project');
-                    }}
-                  >
-                    Art
-                  </a>
-                  <ul className={project ? 'sub-menu active' : 'sub-menu'}>
-                    <li>
-                      <Link href='/upload-category'>
-                        <a>Upload Category</a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href='/upload'>
-                        <a>Upload</a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href='/art-details'>
-                        <a>Art Details</a>
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-                <li
-                  className={pages ? 'has-droupdown active' : 'has-droupdown'}
-                >
-                  <a
-                    onClick={() => {
-                      openMobileMenu('pages');
-                    }}
-                  >
-                    Pages
-                  </a>
-                  <ul className={pages ? 'sub-menu active' : 'sub-menu'}>
-                    <li>
-                      <Link href='/faq'>
-                        <a>FAQ</a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href='/register'>
-                        <a>Register</a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href='/login'>
-                        <a>Login</a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href='/terms'>
-                        <a>Terms</a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href='/wallet-connect'>
-                        <a>Wallet Connect</a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href='/activity'>
-                        <a>Activity</a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href='/art-ranking'>
-                        <a>Ranking</a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href='/error-404'>
-                        <a>404 page</a>
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <Link href='/forum'>
-                    <a>Forum</a>
+                  <Link href='/rekber'>
+                    <a>Jasa Rekber</a>
                   </Link>
                 </li>
                 <li>
-                  <Link href='/contact'>
-                    <a>Contact</a>
+                  <Link href='/jual-akun'>
+                    <a>Jual Akun</a>
                   </Link>
                 </li>
               </ul>

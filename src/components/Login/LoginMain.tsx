@@ -1,7 +1,10 @@
 import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { useLocalStorage } from 'react-use';
 
 import ButtonGradient from '@/components/buttons/ButtonGradient';
 import Breadcrumbs from '@/components/Common/PageTitle';
@@ -19,9 +22,37 @@ const LoginMain = () => {
     formState: { errors },
   } = useForm<IFormInput>();
 
+  const router = useRouter();
+
+  const [, setToken] = useLocalStorage<string>('token');
+
+  const [loginBtnDisabled, setLoginBtnDisabled] = React.useState(false);
+
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    const res = await axios.post(`${API_URL}/auth/login`, data);
-    console.log(res.data);
+    const res = await toast.promise(axios.post(`${API_URL}/auth/login`, data), {
+      pending: {
+        render: () => {
+          setLoginBtnDisabled(true);
+          return 'Loading';
+        },
+      },
+      success: {
+        render: () => {
+          setLoginBtnDisabled(false);
+          if (res.data.data.token) {
+            setToken(res.data.data.token as string);
+          }
+          setTimeout(() => router.push('/'), 1000);
+          return 'Berhasil login';
+        },
+      },
+      error: {
+        render: () => {
+          setLoginBtnDisabled(false);
+          return 'Gagal login!';
+        },
+      },
+    });
   };
 
   return (
@@ -82,7 +113,11 @@ const LoginMain = () => {
                         </Link>
                       </div>
                       <div className='login-btn'>
-                        <ButtonGradient className='text-white' type='submit'>
+                        <ButtonGradient
+                          className='text-white'
+                          type='submit'
+                          disabled={loginBtnDisabled}
+                        >
                           Masuk akun
                         </ButtonGradient>
                         <div className='note'>

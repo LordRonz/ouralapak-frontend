@@ -27,16 +27,16 @@
   --clr-primary-800: rgb(var(--tw-clr-primary-800)); /* #31291c */
   --clr-primary-900: rgb(var(--tw-clr-primary-900)); /* #100e09 */
 
-  --tw-clr-secondary-50: 246 243 239;
-  --tw-clr-secondary-100: 227 219 206;
-  --tw-clr-secondary-200: 209 195 173;
-  --tw-clr-secondary-300: 191 171 141;
-  --tw-clr-secondary-400: 179 156 120;
-  --tw-clr-secondary-500: 147 122 83;
-  --tw-clr-secondary-600: 114 95 64;
-  --tw-clr-secondary-700: 82 68 46;
-  --tw-clr-secondary-800: 49 41 28;
-  --tw-clr-secondary-900: 16 14 9;
+  --tw-clr-secondary-50: 239 241 246;
+  --tw-clr-secondary-100: 206 214 227;
+  --tw-clr-secondary-200: 173 187 209;
+  --tw-clr-secondary-300: 141 160 191;
+  --tw-clr-secondary-400: 120 143 179;
+  --tw-clr-secondary-500: 83 108 147;
+  --tw-clr-secondary-600: 64 84 114;
+  --tw-clr-secondary-700: 46 60 82;
+  --tw-clr-secondary-800: 28 36 49;
+  --tw-clr-secondary-900: 9 12 16;
 
   --clr-secondary-50: rgb(var(--tw-clr-secondary-50)); /* #eff1f6 */
   --clr-secondary-100: rgb(var(--tw-clr-secondary-100)); /* #ced6e3 */

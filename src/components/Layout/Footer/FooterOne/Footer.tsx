@@ -13,7 +13,7 @@ const Footer = () => {
                   <Link href='/'>
                     <a className='logo-bb'>
                       <img
-                        src='assets/img/logo/oction-logo.png'
+                        src='images/ouralapak_logo_long.png'
                         alt='logo-img'
                       />
                     </a>
@@ -21,7 +21,7 @@ const Footer = () => {
                   <Link href='/'>
                     <a className='logo-bw'>
                       <img
-                        src='assets/img/logo/oction-logo-bw.png'
+                        src='images/ouralapak_logo_long.png'
                         alt='logo-img'
                       />
                     </a>
@@ -60,32 +60,22 @@ const Footer = () => {
             <div className='col-lg-3 col-md-6 col-sm-6'>
               <div className='footer-widget footer1-widget footer1-widget2 mb-40'>
                 <div className='footer-widget-title'>
-                  <h4>Marketplace</h4>
+                  <h4>Layanan</h4>
                 </div>
                 <ul>
                   <li>
-                    <Link href='/terms'>
-                      <a>Proper Guidelines</a>
+                    <Link href='/jual-akun'>
+                      <a>Jual Akun</a>
                     </Link>
                   </li>
                   <li>
-                    <Link href='/explore-arts'>
-                      <a>Buy Products</a>
+                    <Link href='/beli-akun'>
+                      <a>Beli Akun</a>
                     </Link>
                   </li>
                   <li>
-                    <Link href='/faq'>
-                      <a>Compare Us</a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href='/faq'>
-                      <a>Career</a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href='/explore-arts'>
-                      <a>Build Ecommerce</a>
+                    <Link href='/rekber'>
+                      <a>Jasa Rekber</a>
                     </Link>
                   </li>
                 </ul>
@@ -162,39 +152,6 @@ const Footer = () => {
           </div>
         </div>
       </section>
-      <div className='copyright-area copyright1-area'>
-        <div className='container'>
-          <div className='copyright1-inner'>
-            <div className='row align-items-center'>
-              <div className='col-lg-3 col-md-6'>
-                <div className='copyright-text copyright1-text'>
-                  © Copyrighted & Designed by{' '}
-                  <a href='https://themeforest.net/user/bdevs'>BDevs</a>
-                </div>
-              </div>
-              <div className='col-lg-4 col-md-6'>
-                <div className='irc-item copyright-support copyright1-support copyright-support-lines'>
-                  <div className='irc-item-icon'>
-                    <i className='flaticon-support'></i>
-                  </div>
-                  <div className='irc-item-content'>
-                    <p>Have a question? Call us 24/7</p>
-                    <a href='tel:(987)547587587'>(987) 547587587</a>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-5 col-md-12'>
-                <form className='subscribe-form subscribe-form-copyright1'>
-                  <input type='text' placeholder='Enter email' />
-                  <button type='submit'>
-                    Subscribe<i className='fas fa-paper-plane'></i>
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </footer>
   );
 };

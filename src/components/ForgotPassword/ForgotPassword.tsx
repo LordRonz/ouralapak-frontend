@@ -2,10 +2,13 @@ import axios from 'axios';
 import Link from 'next/link';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 import Breadcrumbs from '@/components/Common/PageTitle';
 import ThemeChanger from '@/components/Common/ThemeChanger';
 import { API_URL } from '@/constant/config';
+
+import ButtonGradient from '../buttons/ButtonGradient';
 
 type IFormInput = {
   email: string;
@@ -18,9 +21,29 @@ const ForgotPassword = () => {
     formState: { errors },
   } = useForm<IFormInput>();
 
+  const [submitBtnDisabled, setSubmitBtnDisabled] = React.useState(false);
+
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    const res = await axios.post(`${API_URL}/auth/forgot-password`, data);
-    console.log(res.data);
+    await toast.promise(axios.post(`${API_URL}/auth/forgot-password`, data), {
+      pending: {
+        render: () => {
+          setSubmitBtnDisabled(true);
+          return 'Loading';
+        },
+      },
+      success: {
+        render: () => {
+          setSubmitBtnDisabled(false);
+          return 'Silahkan cek email anda';
+        },
+      },
+      error: {
+        render: () => {
+          setSubmitBtnDisabled(false);
+          return 'Gagal melakukan lupa password!';
+        },
+      },
+    });
   };
 
   return (
@@ -28,8 +51,8 @@ const ForgotPassword = () => {
       <ThemeChanger />
 
       <Breadcrumbs
-        breadcrumbTitle='Forgot Password'
-        breadcrumbSubTitle='Forgot Password'
+        breadcrumbTitle='Lupa Password'
+        breadcrumbSubTitle='Lupa Password'
       />
 
       <section
@@ -42,7 +65,7 @@ const ForgotPassword = () => {
               <div className='login-wrapper pos-rel wow fadeInUp mb-40'>
                 <div className=' login-inner'>
                   <div className='login-content'>
-                    <h4>Forgot Password</h4>
+                    <h4>Lupa Password</h4>
                     <form
                       className='login-form'
                       onSubmit={handleSubmit(onSubmit)}
@@ -52,10 +75,10 @@ const ForgotPassword = () => {
                           <div className='single-input-unit'>
                             <label htmlFor='email'>Email</label>
                             <input
-                              type='text'
-                              placeholder='Your email or username'
+                              type='email'
+                              placeholder='Email anda'
                               {...register('email', {
-                                required: 'Username/Email harus diisi',
+                                required: 'Email harus diisi',
                               })}
                             />
                           </div>
@@ -65,13 +88,17 @@ const ForgotPassword = () => {
                         </div>
                       </div>
                       <div className='login-btn'>
-                        <button className='fill-btn' type='submit'>
-                          Reset Password
-                        </button>
+                        <ButtonGradient
+                          className='text-white'
+                          type='submit'
+                          disabled={submitBtnDisabled}
+                        >
+                          Kirim
+                        </ButtonGradient>
                         <div className='note'>
-                          Not yet registered?{' '}
-                          <Link href='/register'>
-                            <a className='text-btn'>Sign up</a>
+                          Sudah punya akun?{' '}
+                          <Link href='/login'>
+                            <a className='text-btn'>Sign In</a>
                           </Link>
                         </div>
                       </div>

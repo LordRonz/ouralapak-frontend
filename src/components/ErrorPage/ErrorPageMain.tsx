@@ -2,13 +2,10 @@ import Link from 'next/link';
 import React from 'react';
 
 import Breadcrumbs from '@/components/Common/PageTitle';
-import ThemeChanger from '@/components/Common/ThemeChanger';
 
 const ErrorPageMain = () => {
   return (
     <main>
-      <ThemeChanger />
-
       <Breadcrumbs breadcrumbTitle='404 Error' breadcrumbSubTitle='404 Error' />
 
       <section className='error-404-area pt-130 pb-90'>

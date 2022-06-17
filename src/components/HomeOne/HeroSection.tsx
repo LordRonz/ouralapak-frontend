@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 import ReactPlayer from 'react-player';
 import Modal from 'react-responsive-modal';
 
+import ButtonLinkGradient from '../links/ButtonLinkGradient';
+
 const HeroSection = () => {
   const [open, setOpen] = useState(false);
-  const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
 
   return (
@@ -81,20 +82,25 @@ const HeroSection = () => {
                           data-animation='fadeInUp'
                           data-delay='.7s'
                         >
-                          <Link href='/explore-arts'>
-                            <a className='fill-btn'>Explore Now</a>
-                          </Link>
-                          <div className='oc-banner-video'>
-                            <a
-                              href='#!'
-                              className='popup-video'
-                              onClick={onOpenModal}
-                            >
-                              {' '}
-                              <i className='fas fa-play'></i>
-                            </a>
-                            <span>Watch Video</span>
-                          </div>
+                          <ButtonLinkGradient
+                            href='/beli-akun'
+                            className='text-white'
+                          >
+                            Beli Akun
+                          </ButtonLinkGradient>
+                          <ButtonLinkGradient
+                            href='/jual-akun'
+                            className='text-white'
+                            variant='secondary'
+                          >
+                            Jual Akun
+                          </ButtonLinkGradient>
+                          <ButtonLinkGradient
+                            href='/jasa-rekber'
+                            variant='outline'
+                          >
+                            Jasa Rekber
+                          </ButtonLinkGradient>
                         </div>
                         <div className='oc-banner-counter'>
                           <div className='art-meta-item'>

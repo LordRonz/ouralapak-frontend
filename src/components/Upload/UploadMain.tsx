@@ -133,6 +133,14 @@ const UploadMain = () => {
     { value: 2, label: 'BNI' },
   ];
 
+  const [imageProfile, setImageProfile] = useState<File | File[] | null>(null);
+  const [imageWinRate, setImageWinRate] = useState<File | File[] | null>(null);
+  const [imageWinRateHero, setImageWinRateHero] = useState<
+    File | File[] | null
+  >(null);
+  const [imageEmblem, setImageEmblem] = useState<File | File[] | null>(null);
+  const [imageSkin, setImageSkin] = useState<File | File[] | null>(null);
+
   return (
     <main>
       <Breadcrumbs
@@ -607,7 +615,37 @@ const UploadMain = () => {
                 <div className='col-lg-4'>
                   <div className='row'>
                     <div className='col-lg-12 col-md-12'>
-                      <DragDropSection />
+                      <DragDropSection
+                        file={imageProfile}
+                        setFile={setImageProfile}
+                        title='Gambar profile'
+                        note='Format gambar | Max 20 MB'
+                      />
+                      <DragDropSection
+                        file={imageWinRate}
+                        setFile={setImageWinRate}
+                        title='Gambar win rate'
+                        note='Format gambar | Max 20 MB'
+                      />
+                      <DragDropSection
+                        file={imageWinRateHero}
+                        setFile={setImageWinRateHero}
+                        title='Gambar win rate hero'
+                        note='Format gambar | Max 20 MB'
+                      />
+                      <DragDropSection
+                        file={imageEmblem}
+                        setFile={setImageEmblem}
+                        title='Gambar emblem'
+                        note='Format gambar | Max 20 MB'
+                      />
+                      <DragDropSection
+                        file={imageSkin}
+                        setFile={setImageSkin}
+                        title='Gambar skin'
+                        note='Format gambar | Max 20 MB'
+                        multiple
+                      />
                     </div>
                   </div>
                 </div>

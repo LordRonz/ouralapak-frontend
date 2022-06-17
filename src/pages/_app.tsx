@@ -2,7 +2,7 @@ import '@/styles/globals.css';
 import '@/styles/default.css';
 import '@/styles/flaticon.css';
 import '@/styles/fontAwesome5Pro.css';
-import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.min.css';
 import 'react-responsive-modal/styles.css';
 import './index.scss';
 

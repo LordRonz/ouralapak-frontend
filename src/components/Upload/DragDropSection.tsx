@@ -1,5 +1,4 @@
 import React from 'react';
-import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 type DragDropSectionProps = {
@@ -8,18 +7,18 @@ type DragDropSectionProps = {
   multiple?: boolean;
   note?: string;
   types?: string[];
+  file: File | File[] | null;
+  setFile: React.Dispatch<React.SetStateAction<File | File[] | null>>;
 };
-
-const SUPPORTED_IMAGE_TYPES = ['jpeg', 'jpg', 'png', 'webp'];
 
 const DragDropSection = ({
   name = 'file',
   title = 'Drop your artwork here',
   multiple = false,
   note = 'Allowed all format | Max 1 GB',
-  types = SUPPORTED_IMAGE_TYPES,
+  file,
+  setFile,
 }: DragDropSectionProps) => {
-  const [file, setFile] = useState<File[] | File | null>(null);
   const handleChange = (file: File[] | File) => {
     setFile(file);
   };
@@ -35,7 +34,6 @@ const DragDropSection = ({
           multiple={multiple}
           handleChange={handleChange}
           name={name}
-          types={types}
           hoverTitle='Drop here'
         />
         <div className='browse-file-note'>{note}</div>
