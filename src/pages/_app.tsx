@@ -15,6 +15,7 @@ import { ToastContainer } from 'react-toastify';
 import { SWRConfig } from 'swr';
 
 import { store } from '@/redux/store';
+import useAuthHeader from '@/services/authHeader';
 declare module 'next-themes' {
   interface ThemeProviderProps {
     children: React.ReactNode;
@@ -26,6 +27,12 @@ if (typeof window !== 'undefined') {
 }
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
+  const { Authorization } = useAuthHeader();
+
+  if (Authorization) {
+    axios.defaults.headers.common['Authorization'] = Authorization;
+  }
+
   return (
     <Provider store={store}>
       <ThemeProvider defaultTheme='light'>

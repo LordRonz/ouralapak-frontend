@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import {
@@ -7,18 +9,20 @@ import {
   useForm,
 } from 'react-hook-form';
 import Select from 'react-select';
+import { toast } from 'react-toastify';
+import useSWR from 'swr';
 
+import ButtonGradient from '@/components/buttons/ButtonGradient';
 import Breadcrumbs from '@/components/Common/PageTitle';
 import DragDropSection from '@/components/Upload/DragDropSection';
+import { API_URL } from '@/constant/config';
 import clsxm from '@/lib/clsxm';
+import useAuthHeader from '@/services/authHeader';
 
 type IFormInput = {
-  judul: string;
-  first_hand_status: boolean;
-  platform: number;
-  change_name_status: boolean;
-  first_top_up_exist: boolean;
-  first_top_up_image: string;
+  title: string;
+  platform_id: number;
+  change_name_status?: number;
   account_bind: number[];
   favorite_heroes: number[];
   win_rate: number;
@@ -61,6 +65,12 @@ const UploadMain = () => {
     },
   });
 
+  const { error } = useSWR(`${API_URL}/profile/1`);
+  const router = useRouter();
+  if (error) {
+    router.push('/iklan');
+  }
+
   const totalSkinRareFields = useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormContext)
     name: 'total_skin_rare', // unique name for your Field Array
@@ -71,6 +81,8 @@ const UploadMain = () => {
     name: 'total_emblem', // unique name for your Field Array
   });
   const [recallEffectCnt, setRecallEffectCnt] = useState<number>(0);
+
+  const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
 
   // const [selectedFile, setSelectedFile] = useState<File>();
   // const [favHeroes, setFavHeroes] = useState<File[]>([]);
@@ -129,6 +141,16 @@ const UploadMain = () => {
     { value: 2, label: 'BNI' },
   ];
 
+  const platformId = [
+    { value: 1, label: 'Android' },
+    { value: 2, label: 'IOS' },
+  ];
+
+  const packageId = [
+    { value: 1, label: '1' },
+    { value: 2, label: '2' },
+  ];
+
   const [imageProfile, setImageProfile] = useState<File | File[] | null>(null);
   const [imageWinRate, setImageWinRate] = useState<File | File[] | null>(null);
   const [imageWinRateHero, setImageWinRateHero] = useState<
@@ -136,11 +158,82 @@ const UploadMain = () => {
   >(null);
   const [imageEmblem, setImageEmblem] = useState<File | File[] | null>(null);
   const [imageSkin, setImageSkin] = useState<File | File[] | null>(null);
+  const headers = useAuthHeader();
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     console.log(data);
-    console.log(imageProfile);
-    console.log(imageSkin);
+    if (
+      !headers.Authorization ||
+      !imageProfile ||
+      !imageWinRate ||
+      !imageWinRateHero ||
+      !imageEmblem ||
+      !imageSkin
+    ) {
+      return;
+    }
+    const form = new FormData();
+
+    Object.entries(data).forEach((v) => {
+      if ((Array.isArray(v[1]) && v[1].length === 0) || v[1] === undefined) {
+        return;
+      }
+      form.append(v[0], JSON.stringify(v[1]));
+      console.log(v[0] + ' ' + JSON.stringify(v[1]));
+    });
+    if (Array.isArray(imageProfile)) {
+      imageProfile.forEach((v) => form.append('image_profile', v));
+    } else {
+      form.append('image_profile', imageProfile);
+    }
+    if (Array.isArray(imageWinRate)) {
+      imageWinRate.forEach((v) => form.append('image_win_rate', v));
+    } else {
+      form.append('image_win_rate', imageWinRate);
+    }
+    if (Array.isArray(imageWinRateHero)) {
+      imageWinRateHero.forEach((v) => form.append('image_win_rate_hero', v));
+    } else {
+      form.append('image_win_rate_hero', imageWinRateHero);
+    }
+    if (Array.isArray(imageEmblem)) {
+      imageEmblem.forEach((v) => form.append('image_emblem', v));
+    } else {
+      form.append('image_emblem', imageEmblem);
+    }
+    if (Array.isArray(imageSkin)) {
+      imageSkin.forEach((v) => form.append('image_skin', v));
+    } else {
+      form.append('image_skin', imageSkin);
+    }
+
+    const res = await toast.promise(
+      axios.post(`${API_URL}/user/iklan`, form, { headers }),
+      {
+        pending: {
+          render: () => {
+            setSubmitBtnDisabled(true);
+            return 'Loading';
+          },
+        },
+        success: {
+          render: () => {
+            setSubmitBtnDisabled(false);
+            return 'Berhasil posting iklan';
+          },
+        },
+        error: {
+          render: () => {
+            setSubmitBtnDisabled(false);
+            return 'Gagal Submit Iklan!';
+          },
+        },
+      }
+    );
+    console.log(res.data);
+    // for (const pair of form.entries()) {
+    //   console.log(pair[0] + ', ' + pair[1]);
+    // }
   };
 
   return (
@@ -163,48 +256,33 @@ const UploadMain = () => {
                         <input
                           type='text'
                           placeholder='Isi Judul'
-                          {...register('judul', {
+                          {...register('title', {
                             required: 'Judul harus diisi',
                           })}
                         />
                       </div>
-                      <p className='text-red-500'>{errors.judul?.message}</p>
+                      <p className='text-red-500'>{errors.title?.message}</p>
                     </div>
                     <div className='col-md-6'>
                       <div className='single-input-unit'>
-                        <label>First Hand Status</label>
-                        <div className='common-select-arrow common-select-arrow-60 w-full'>
-                          <select
-                            className='art-category-select art-category-select2 w-full'
-                            {...register('first_hand_status', {
-                              required: 'First hand status harus diisi',
-                            })}
-                          >
-                            <option value='0'>Akun Pribadi</option>
-                            <option value='1'>Akun Beli</option>
-                          </select>
-                        </div>
+                        <label htmlFor='platform_id'>Platform</label>
+                        <Controller
+                          control={control}
+                          defaultValue={platformId[0].value}
+                          name='platform_id'
+                          render={({ field: { onChange, value } }) => (
+                            <Select
+                              className={clsxm()}
+                              options={platformId}
+                              value={platformId.find((c) => c.value === value)}
+                              onChange={(val) => onChange(val?.value)}
+                            />
+                          )}
+                        />
                       </div>
                       <p className='text-red-500'>
-                        {errors.first_hand_status?.message}
+                        {errors.platform_id?.message}
                       </p>
-                    </div>
-                    <div className='col-md-6'>
-                      <div className='single-input-unit'>
-                        <label>Platform</label>
-                        <div className='common-select-arrow common-select-arrow-60 w-full'>
-                          <select
-                            className='art-category-select art-category-select2 w-full'
-                            {...register('platform', {
-                              required: 'Platform harus diisi',
-                            })}
-                          >
-                            <option value='0'>Android</option>
-                            <option value='1'>iOS</option>
-                          </select>
-                        </div>
-                      </div>
-                      <p className='text-red-500'>{errors.platform?.message}</p>
                     </div>
                     <div className='col-md-6'>
                       <div className='single-input-unit'>
@@ -214,6 +292,7 @@ const UploadMain = () => {
                             className='art-category-select art-category-select2 w-full'
                             {...register('change_name_status', {
                               required: 'Change name status harus diisi',
+                              valueAsNumber: true,
                             })}
                           >
                             <option value='0'>Change name non-aktif</option>
@@ -223,25 +302,6 @@ const UploadMain = () => {
                       </div>
                       <p className='text-red-500'>
                         {errors.change_name_status?.message}
-                      </p>
-                    </div>
-                    <div className='col-md-6'>
-                      <div className='single-input-unit'>
-                        <label>Bukti top up</label>
-                        <div className='common-select-arrow common-select-arrow-60 w-full'>
-                          <select
-                            className='art-category-select art-category-select2 w-full'
-                            {...register('first_top_up_exist', {
-                              required: 'Bukti top up harus diisi',
-                            })}
-                          >
-                            <option value='0'>Bukti top-up ada</option>
-                            <option value='1'>Bukti top-up tidak ada</option>
-                          </select>
-                        </div>
-                      </div>
-                      <p className='text-red-500'>
-                        {errors.first_top_up_exist?.message}
                       </p>
                     </div>
                     <div className='col-md-6'>
@@ -303,6 +363,7 @@ const UploadMain = () => {
                               message:
                                 'Win rate haruslah di antara 0 - 100 dan maksimum 2 desimal di belakang koma',
                             },
+                            valueAsNumber: true,
                           })}
                         />
                       </div>
@@ -320,6 +381,7 @@ const UploadMain = () => {
                               value: 1,
                               message: 'Minimum jumlah hero adalah 1',
                             },
+                            valueAsNumber: true,
                           })}
                         />
                       </div>
@@ -339,6 +401,7 @@ const UploadMain = () => {
                               value: 0,
                               message: 'Minimum jumlah skin adalah 0',
                             },
+                            valueAsNumber: true,
                           })}
                         />
                       </div>
@@ -377,6 +440,7 @@ const UploadMain = () => {
                                     value: 1,
                                     message: 'Minimum jumlah skin adalah 1',
                                   },
+                                  valueAsNumber: true,
                                 }
                               )}
                             />
@@ -408,7 +472,7 @@ const UploadMain = () => {
                           )}
                         </div>
                       </div>
-                      <p className='text-red-500'>{errors.judul?.message}</p>
+                      <p className='text-red-500'>{errors.title?.message}</p>
                     </div>
                     <div className='col-md-6'>
                       <div className='single-input-unit'>
@@ -446,6 +510,7 @@ const UploadMain = () => {
                                     value: 1,
                                     message: 'Minimum level adalah 1',
                                   },
+                                  valueAsNumber: true,
                                 }
                               )}
                             />
@@ -477,7 +542,6 @@ const UploadMain = () => {
                           )}
                         </div>
                       </div>
-                      <p className='text-red-500'>{errors.judul?.message}</p>
                     </div>
                     <div className='col-md-6'>
                       <div className='single-input-unit'>
@@ -556,6 +620,7 @@ const UploadMain = () => {
                               value: 1,
                               message: 'Minimum harga adalah 1',
                             },
+                            valueAsNumber: true,
                           })}
                         />
                       </div>
@@ -575,6 +640,7 @@ const UploadMain = () => {
                               value: 1,
                               message: 'Minimum total pembayaran adalah 1',
                             },
+                            valueAsNumber: true,
                           })}
                         />
                       </div>
@@ -604,14 +670,33 @@ const UploadMain = () => {
                         />
                       </div>
                     </div>
+                    <div className='col-md-6'>
+                      <div className='single-input-unit'>
+                        <label htmlFor='package_id'>Paket Penjualan Akun</label>
+                        <Controller
+                          control={control}
+                          defaultValue={packageId[0].value}
+                          name='package_id'
+                          render={({ field: { onChange, value } }) => (
+                            <Select
+                              className={clsxm()}
+                              options={packageId}
+                              value={packageId.find((c) => c.value === value)}
+                              onChange={(val) => onChange(val?.value)}
+                            />
+                          )}
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className='upload-btn wow fadeInUp'>
-                    <button id='upload-btn' className='fill-btn' type='submit'>
-                      Upload Now
-                    </button>
-                    <button id='preview-btn' className='fill-btn-orange'>
-                      Preview
-                    </button>
+                    <ButtonGradient
+                      type='submit'
+                      disabled={submitBtnDisabled}
+                      className='text-black'
+                    >
+                      Submit Iklan
+                    </ButtonGradient>
                   </div>
                 </div>
                 <div className='col-lg-4'>

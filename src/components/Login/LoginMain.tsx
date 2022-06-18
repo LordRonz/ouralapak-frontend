@@ -53,6 +53,7 @@ const LoginMain = () => {
         },
       },
     });
+    console.log(res.data);
   };
 
   return (
