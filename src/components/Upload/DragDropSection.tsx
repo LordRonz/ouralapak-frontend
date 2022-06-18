@@ -19,8 +19,27 @@ const DragDropSection = ({
   file,
   setFile,
 }: DragDropSectionProps) => {
-  const handleChange = (file: File[] | File) => {
-    setFile(file);
+  const handleChange = (fileNew: FileList | File) => {
+    if (Array.isArray(file)) {
+      if (fileNew instanceof FileList) {
+        setFile([...file, ...Array.from(fileNew)]);
+      } else {
+        setFile([...file, fileNew]);
+      }
+    } else {
+      if (fileNew instanceof FileList) {
+        setFile(Array.from(fileNew));
+      } else {
+        if (multiple) {
+          setFile([
+            ...(Array.isArray(file) ? file : file ? [file] : []),
+            fileNew,
+          ]);
+        } else {
+          setFile(fileNew);
+        }
+      }
+    }
   };
 
   return (
@@ -40,7 +59,11 @@ const DragDropSection = ({
       </div>
       <p>
         {file
-          ? `File name: ${Array.isArray(file) ? file?.[0].name : file.name}`
+          ? `File name: ${
+              Array.isArray(file)
+                ? file?.map((f) => f.name).join(', ')
+                : file.name
+            }`
           : 'no files uploaded yet'}
       </p>
     </>

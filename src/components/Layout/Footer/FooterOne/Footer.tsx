@@ -64,7 +64,7 @@ const Footer = () => {
                 </div>
                 <ul>
                   <li>
-                    <Link href='/jual-akun'>
+                    <Link href='/iklan'>
                       <a>Jual Akun</a>
                     </Link>
                   </li>

@@ -89,7 +89,7 @@ const HeroSection = () => {
                             Beli Akun
                           </ButtonLinkGradient>
                           <ButtonLinkGradient
-                            href='/jual-akun'
+                            href='/iklan'
                             className='text-white'
                             variant='secondary'
                           >

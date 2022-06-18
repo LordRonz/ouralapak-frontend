@@ -9,7 +9,12 @@ type HeaderProps = {
   HeaderStatic?: string;
 };
 
-const Header = ({ HeaderStatic }: HeaderProps) => {
+const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
+  const [isActive11, setActive11] = useState(false);
+
+  const handleToggle11 = () => {
+    setActive11(!isActive11);
+  };
   // sticky nav
   const { sticky } = useSticky();
 
@@ -78,6 +83,40 @@ const Header = ({ HeaderStatic }: HeaderProps) => {
                     </nav>
                   </div>
                   <ColorModeToggle className='mx-2' />
+                  <div className='profile-item profile-item-header d-none d-md-inline-block pos-rel ml-20'>
+                    <div
+                      className={`profile-img pos-rel ${
+                        isActive11 ? '' : 'show-element'
+                      }`}
+                      onClick={handleToggle11}
+                    >
+                      <div className='profile-action'>
+                        <ul>
+                          <li>
+                            <Link href='/creator-profile-info-personal'>
+                              <a>
+                                <i className='fal fa-user'></i>Profile
+                              </a>
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href='/login'>
+                              <a>
+                                <i className='fal fa-sign-out'></i>Logout
+                              </a>
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
+                      <img
+                        src='assets/img/profile/profile4.jpg'
+                        alt='profile-img'
+                      />
+                      <div className='profile-verification verified'>
+                        <i className='fas fa-check'></i>
+                      </div>
+                    </div>
+                  </div>
                   <div className='menu-bar d-xl-none ml-20'>
                     <a
                       className='side-toggle'
@@ -111,4 +150,4 @@ const Header = ({ HeaderStatic }: HeaderProps) => {
   );
 };
 
-export default Header;
+export default HeaderIklan;

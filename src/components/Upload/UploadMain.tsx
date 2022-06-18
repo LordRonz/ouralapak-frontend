@@ -99,10 +99,6 @@ const UploadMain = () => {
   //   setFavHeroes((currentHeroes) => [...currentHeroes, ...files]);
   // }, []);
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log(data);
-  };
-
   const accountBindOpts = [
     { value: 1, label: 'Moonton' },
     { value: 2, label: 'Facebook' },
@@ -140,6 +136,12 @@ const UploadMain = () => {
   >(null);
   const [imageEmblem, setImageEmblem] = useState<File | File[] | null>(null);
   const [imageSkin, setImageSkin] = useState<File | File[] | null>(null);
+
+  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    console.log(data);
+    console.log(imageProfile);
+    console.log(imageSkin);
+  };
 
   return (
     <main>

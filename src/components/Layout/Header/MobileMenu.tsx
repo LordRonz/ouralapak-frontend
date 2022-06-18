@@ -44,7 +44,7 @@ const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
                   </Link>
                 </li>
                 <li>
-                  <Link href='/jual-akun'>
+                  <Link href='/iklan'>
                     <a>Jual Akun</a>
                   </Link>
                 </li>

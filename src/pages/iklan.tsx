@@ -1,22 +1,36 @@
 import type { NextPage } from 'next';
+import React from 'react';
+import { Toaster } from 'react-hot-toast';
 
 import AnimatePage from '@/components/AnimatePage';
+import Iklan from '@/components/Iklan/Iklan';
 import Footer from '@/components/Layout/Footer/FooterOne/Footer';
-import Header from '@/components/Layout/Header/Header';
+import HeaderIklan from '@/components/Layout/Header/HeaderIklan';
 import Seo from '@/components/Seo';
-import UploadMain from '@/components/Upload/UploadMain';
+import { toastStyle } from '@/constant/toast';
 
-const Home: NextPage = () => {
+const IklanPage: NextPage = () => {
   return (
     <>
-      <Seo />
+      <Seo templateTitle='Iklan' />
       <AnimatePage>
-        <Header />
-        <UploadMain />
+        <HeaderIklan />
+        <Iklan />
         <Footer />
       </AnimatePage>
+      <Toaster
+        toastOptions={{
+          style: toastStyle,
+          loading: {
+            iconTheme: {
+              primary: '#eb2754',
+              secondary: 'black',
+            },
+          },
+        }}
+      />
     </>
   );
 };
 
-export default Home;
+export default IklanPage;
