@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { useTheme } from 'next-themes';
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import {
@@ -8,12 +9,15 @@ import {
   useFieldArray,
   useForm,
 } from 'react-hook-form';
+import Lightbox from 'react-image-lightbox';
 import Select from 'react-select';
-import { toast } from 'react-toastify';
+import { Theme, toast } from 'react-toastify';
 import useSWR from 'swr';
 
+import MyButton from '@/components/buttons/Button';
 import ButtonGradient from '@/components/buttons/ButtonGradient';
 import Breadcrumbs from '@/components/Common/PageTitle';
+import ConfirmationDialog from '@/components/Upload/Dialog';
 import DragDropSection from '@/components/Upload/DragDropSection';
 import { API_URL } from '@/constant/config';
 import clsxm from '@/lib/clsxm';
@@ -59,6 +63,7 @@ const UploadMain = () => {
     handleSubmit,
     formState: { errors },
     setValue,
+    getValues,
   } = useForm<IFormInput>({
     defaultValues: {
       recall_effect: [],
@@ -68,8 +73,11 @@ const UploadMain = () => {
   const { error } = useSWR(`${API_URL}/profile/1`);
   const router = useRouter();
   if (error) {
-    router.push('/iklan');
+    router.push('/login');
   }
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
 
   const totalSkinRareFields = useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormContext)
@@ -84,32 +92,12 @@ const UploadMain = () => {
 
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
 
-  // const [selectedFile, setSelectedFile] = useState<File>();
-  // const [favHeroes, setFavHeroes] = useState<File[]>([]);
-  // const [dndDisabled, setDndDisabled] = useState<boolean>(false);
+  const { theme } = useTheme();
 
-  // const onUpload = (files?: FileList | File[] | null) => {
-  //   setSelectedFile(files?.[0]);
-  // };
-
-  // const onBuktiTopUpDrop = useCallback((acceptedFiles: File[]) => {
-  //   // Do something with the files
-  //   if (!SUPPORTED_IMAGE_TYPES.includes(acceptedFiles[0].type)) {
-  //     setSelectedFile(undefined);
-
-  //     return;
-  //   }
-  //   onUpload(acceptedFiles);
-  // }, []);
-
-  // const onFavHeroesDrop = useCallback((files: File[]) => {
-  //   // Do something with the files
-  //   files.filter(
-  //     (file) => file.type && SUPPORTED_IMAGE_TYPES.includes(file.type)
-  //   );
-
-  //   setFavHeroes((currentHeroes) => [...currentHeroes, ...files]);
-  // }, []);
+  const changeNameOpts = [
+    { value: 0, label: 'Change name non-aktif' },
+    { value: 1, label: 'Change name aktif' },
+  ];
 
   const accountBindOpts = [
     { value: 1, label: 'Moonton' },
@@ -151,6 +139,13 @@ const UploadMain = () => {
     { value: 2, label: '2' },
   ];
 
+  const [previewImgProfile, setPreviewImgProfile] = useState(false);
+  const [previewWinRate, setPreviewWinRate] = useState(false);
+  const [previewWinRateHero, setPreviewWinRateHero] = useState(false);
+  const [previewEmblem, setPreviewEmblem] = useState(false);
+  const [previewSkin, setPreviewSkin] = useState(false);
+  const [skinIndex, setSkinIndex] = useState(0);
+
   const [imageProfile, setImageProfile] = useState<File | File[] | null>(null);
   const [imageWinRate, setImageWinRate] = useState<File | File[] | null>(null);
   const [imageWinRateHero, setImageWinRateHero] = useState<
@@ -170,6 +165,7 @@ const UploadMain = () => {
       !imageEmblem ||
       !imageSkin
     ) {
+      toast.error('Semua gambar harus diisi', { theme: theme as Theme });
       return;
     }
     const form = new FormData();
@@ -206,25 +202,31 @@ const UploadMain = () => {
     } else {
       form.append('image_skin', imageSkin);
     }
-
+    if (!openDialog) {
+      setOpenDialog(true);
+      return;
+    }
     const res = await toast.promise(
       axios.post(`${API_URL}/user/iklan`, form, { headers }),
       {
         pending: {
           render: () => {
             setSubmitBtnDisabled(true);
+            setOpenDialog(false);
             return 'Loading';
           },
         },
         success: {
           render: () => {
             setSubmitBtnDisabled(false);
+            setOpenDialog(false);
             return 'Berhasil posting iklan';
           },
         },
         error: {
           render: () => {
             setSubmitBtnDisabled(false);
+            setOpenDialog(false);
             return 'Gagal Submit Iklan!';
           },
         },
@@ -239,8 +241,8 @@ const UploadMain = () => {
   return (
     <main>
       <Breadcrumbs
-        breadcrumbTitle='Upload Artwork'
-        breadcrumbSubTitle='Upload Artwork'
+        breadcrumbTitle='Posting Iklan'
+        breadcrumbSubTitle='Posting Iklan'
       />
 
       <div className='upload-area pt-130 pb-90'>
@@ -287,18 +289,21 @@ const UploadMain = () => {
                     <div className='col-md-6'>
                       <div className='single-input-unit'>
                         <label>Change Name Status</label>
-                        <div className='common-select-arrow common-select-arrow-60 w-full'>
-                          <select
-                            className='art-category-select art-category-select2 w-full'
-                            {...register('change_name_status', {
-                              required: 'Change name status harus diisi',
-                              valueAsNumber: true,
-                            })}
-                          >
-                            <option value='0'>Change name non-aktif</option>
-                            <option value='1'>Change name aktif</option>
-                          </select>
-                        </div>
+                        <Controller
+                          control={control}
+                          defaultValue={changeNameOpts[0].value}
+                          name='change_name_status'
+                          render={({ field: { onChange, value } }) => (
+                            <Select
+                              className={clsxm()}
+                              options={changeNameOpts}
+                              value={changeNameOpts.find(
+                                (c) => c.value === value
+                              )}
+                              onChange={(val) => onChange(val?.value)}
+                            />
+                          )}
+                        />
                       </div>
                       <p className='text-red-500'>
                         {errors.change_name_status?.message}
@@ -355,6 +360,9 @@ const UploadMain = () => {
                         <label>Win Rate</label>
                         <input
                           type='number'
+                          onWheel={(e) =>
+                            e.target instanceof HTMLElement && e.target.blur()
+                          }
                           placeholder='69'
                           {...register('win_rate', {
                             required: 'Win rate harus diisi',
@@ -374,6 +382,9 @@ const UploadMain = () => {
                         <label>Total Hero</label>
                         <input
                           type='number'
+                          onWheel={(e) =>
+                            e.target instanceof HTMLElement && e.target.blur()
+                          }
                           placeholder='69'
                           {...register('total_hero', {
                             required: 'Total hero harus diisi',
@@ -394,6 +405,9 @@ const UploadMain = () => {
                         <label>Total Skin</label>
                         <input
                           type='number'
+                          onWheel={(e) =>
+                            e.target instanceof HTMLElement && e.target.blur()
+                          }
                           placeholder='69'
                           {...register('total_skin', {
                             required: 'Total skin harus diisi',
@@ -431,6 +445,10 @@ const UploadMain = () => {
                             <label>Total Skin</label>
                             <input
                               type='number'
+                              onWheel={(e) =>
+                                e.target instanceof HTMLElement &&
+                                e.target.blur()
+                              }
                               placeholder='69'
                               {...register(
                                 `total_skin_rare.${index}.total_skin` as const,
@@ -501,6 +519,10 @@ const UploadMain = () => {
                             <label>Level</label>
                             <input
                               type='number'
+                              onWheel={(e) =>
+                                e.target instanceof HTMLElement &&
+                                e.target.blur()
+                              }
                               placeholder='1'
                               {...register(
                                 `total_emblem.${index}.level` as const,
@@ -516,6 +538,7 @@ const UploadMain = () => {
                             />
                           </div>
                         ))}
+
                         <div className='flex items-center justify-evenly'>
                           <Button
                             variant='success'
@@ -557,7 +580,7 @@ const UploadMain = () => {
                               })}
                             />
                             <p className='text-red-500'>
-                              {errors.recall_effect?.[index].message}
+                              {errors.recall_effect?.[index]?.message}
                             </p>
                           </>
                         ))}
@@ -576,6 +599,9 @@ const UploadMain = () => {
                                   unregister(
                                     `recall_effect.${recallEffectCnt - 1}`
                                   );
+                                  const arr = getValues('recall_effect');
+                                  arr.pop();
+                                  setValue('recall_effect', arr);
                                 } else {
                                   setValue('recall_effect', []);
                                 }
@@ -610,9 +636,12 @@ const UploadMain = () => {
                     </div>
                     <div className='col-md-6'>
                       <div className='single-input-unit'>
-                        <label>Harga Akun</label>
+                        <label>Harga Akun (IDR)</label>
                         <input
                           type='number'
+                          onWheel={(e) =>
+                            e.target instanceof HTMLElement && e.target.blur()
+                          }
                           placeholder='69000'
                           {...register('harga_akun', {
                             required: 'Harga akun harus diisi',
@@ -630,9 +659,12 @@ const UploadMain = () => {
                     </div>
                     <div className='col-md-6'>
                       <div className='single-input-unit'>
-                        <label>Total Pembayaran</label>
+                        <label>Total Pembayaran (IDR)</label>
                         <input
                           type='number'
+                          onWheel={(e) =>
+                            e.target instanceof HTMLElement && e.target.blur()
+                          }
                           placeholder='69000'
                           {...register('total_pembayaran', {
                             required: 'Total pembayaran harus diisi',
@@ -689,15 +721,284 @@ const UploadMain = () => {
                       </div>
                     </div>
                   </div>
-                  <div className='upload-btn wow fadeInUp'>
+                  <div className='upload-btn wow fadeInUp mt-4'>
                     <ButtonGradient
-                      type='submit'
                       disabled={submitBtnDisabled}
                       className='text-black'
+                      type='submit'
+                      onClick={() => setIsChecked(false)}
                     >
                       Submit Iklan
                     </ButtonGradient>
                   </div>
+                  <ConfirmationDialog open={openDialog} setOpen={setOpenDialog}>
+                    <div className='space-y-4'>
+                      <h1 className='text-black'>Konfirmasi form</h1>
+                      <div>
+                        <label className='font-bold'>Judul</label>
+                        <p className='text-black'>{getValues('title')}</p>
+                      </div>
+                      <div>
+                        <label className='font-bold'>Platform</label>
+                        <p className='text-black'>
+                          {
+                            platformId.find(
+                              (p) => p.value === getValues('platform_id')
+                            )?.label
+                          }
+                        </p>
+                      </div>
+                      <div>
+                        <label className='font-bold'>Change Name Status</label>
+                        <p className='text-black'>
+                          {
+                            changeNameOpts.find(
+                              (p) => p.value === getValues('change_name_status')
+                            )?.label
+                          }
+                        </p>
+                      </div>
+                      <div>
+                        <label className='font-bold'>Binding account</label>
+                        <p className='text-black'>{getValues('title')}</p>
+                      </div>
+                      <div>
+                        <label className='font-bold'>Favorite Heroes</label>
+                        <p className='text-black'>
+                          {getValues('favorite_heroes')
+                            ?.map(
+                              (v) =>
+                                favHeroesOpts.find((p) => p.value === v)?.label
+                            )
+                            .join(', ')}
+                        </p>
+                      </div>
+                      <div>
+                        <label className='font-bold'>Win Rate</label>
+                        <p className='text-black'>{getValues('win_rate')} %</p>
+                      </div>
+                      <div>
+                        <label className='font-bold'>Total Hero</label>
+                        <p className='text-black'>{getValues('total_hero')}</p>
+                      </div>
+                      <div>
+                        <label className='font-bold'>Total Skin</label>
+                        <p className='text-black'>{getValues('total_skin')}</p>
+                      </div>
+                      <div>
+                        <label className='font-bold'>Total Skin Rare</label>
+                        <ul>
+                          {getValues('total_skin_rare')?.map(
+                            ({ jenis, total_skin }, index) => (
+                              <li key={`${jenis}${index}`}>
+                                Jenis: {jenis}, total: {total_skin}
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                      <div>
+                        <label className='font-bold'>Total Emblem</label>
+                        <ul>
+                          {getValues('total_emblem')?.map(
+                            ({ id_emblem, level }, index) => (
+                              <li key={`${id_emblem}${index}`}>
+                                Emblem:{' '}
+                                {
+                                  emblemOpts.find((v) => v.value == id_emblem)
+                                    ?.label
+                                }
+                                , level: {level}
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                      <div>
+                        <label className='font-bold'>Recall Effect</label>
+                        <p className='text-black'>
+                          {getValues('recall_effect').join(', ')}
+                        </p>
+                      </div>
+                      <div>
+                        <label className='font-bold'>Jenis Refund</label>
+                        <p className='text-black'>
+                          {
+                            jenisRefundOpts.find(
+                              (p) => p.value === getValues('jenis_refund')
+                            )?.label
+                          }
+                        </p>
+                      </div>
+                      <div>
+                        <label className='font-bold'>Harga Akun (IDR)</label>
+                        <p className='text-black'>
+                          {new Intl.NumberFormat('id-ID', {
+                            style: 'currency',
+                            currency: 'IDR',
+                          }).format(getValues('harga_akun'))}
+                        </p>
+                      </div>
+                      <div>
+                        <label className='font-bold'>
+                          Total Pembayaran (IDR)
+                        </label>
+                        <p className='text-black'>
+                          {new Intl.NumberFormat('id-ID', {
+                            style: 'currency',
+                            currency: 'IDR',
+                          }).format(getValues('total_pembayaran'))}
+                        </p>
+                      </div>
+                      <div>
+                        <label className='font-bold'>Jenis Pembayaran</label>
+                        <p className='text-black'>
+                          {
+                            jenisPembayaranOpts.find(
+                              (p) => p.value === getValues('jenis_pembayaran')
+                            )?.label
+                          }
+                        </p>
+                      </div>
+                      <div>
+                        <label className='font-bold'>
+                          Paket Penjualan Akun
+                        </label>
+                        <p className='text-black'>
+                          {
+                            packageId.find(
+                              (p) => p.value === getValues('package_id')
+                            )?.label
+                          }
+                        </p>
+                      </div>
+                      <div>
+                        <label className='font-bold'>Screenshot profile</label>
+                        <MyButton
+                          className='block'
+                          onClick={() => setPreviewImgProfile(true)}
+                        >
+                          Preview
+                        </MyButton>
+                        {previewImgProfile && (
+                          <Lightbox
+                            mainSrc={URL.createObjectURL(imageProfile as File)}
+                            onCloseRequest={() => setPreviewImgProfile(false)}
+                          />
+                        )}
+                      </div>
+                      <div>
+                        <label className='font-bold'>Screenshot win rate</label>
+                        <MyButton
+                          className='block'
+                          onClick={() => setPreviewWinRate(true)}
+                        >
+                          Preview
+                        </MyButton>
+                        {previewWinRate && (
+                          <Lightbox
+                            mainSrc={URL.createObjectURL(imageWinRate as File)}
+                            onCloseRequest={() => setPreviewWinRate(false)}
+                          />
+                        )}
+                      </div>
+                      <div>
+                        <label className='font-bold'>
+                          Screenshot win rate hero
+                        </label>
+                        <MyButton
+                          className='block'
+                          onClick={() => setPreviewWinRateHero(true)}
+                        >
+                          Preview
+                        </MyButton>
+                        {previewWinRateHero && (
+                          <Lightbox
+                            mainSrc={URL.createObjectURL(
+                              imageWinRateHero as File
+                            )}
+                            onCloseRequest={() => setPreviewWinRateHero(false)}
+                          />
+                        )}
+                      </div>
+                      <div>
+                        <label className='font-bold'>Screenshot emblem</label>
+                        <MyButton
+                          className='block'
+                          onClick={() => setPreviewEmblem(true)}
+                        >
+                          Preview
+                        </MyButton>
+                        {previewEmblem && (
+                          <Lightbox
+                            mainSrc={URL.createObjectURL(imageEmblem as File)}
+                            onCloseRequest={() => setPreviewEmblem(false)}
+                          />
+                        )}
+                      </div>
+                      <div>
+                        <label className='font-bold'>Screenshot skin</label>
+                        <MyButton
+                          className='block'
+                          onClick={() => setPreviewSkin(true)}
+                        >
+                          Preview
+                        </MyButton>
+                        {previewSkin && (
+                          <Lightbox
+                            mainSrc={URL.createObjectURL(
+                              (imageSkin as File[])[skinIndex] as File
+                            )}
+                            nextSrc={URL.createObjectURL(
+                              (imageSkin as File[])[
+                                (skinIndex + 1) % (imageSkin as File[]).length
+                              ] as File
+                            )}
+                            prevSrc={URL.createObjectURL(
+                              (imageSkin as File[])[
+                                (skinIndex + (imageSkin as File[]).length - 1) %
+                                  (imageSkin as File[]).length
+                              ] as File
+                            )}
+                            onCloseRequest={() => setPreviewSkin(false)}
+                            onMovePrevRequest={() =>
+                              setSkinIndex(
+                                (skinIndex + (imageSkin as File[]).length - 1) %
+                                  (imageSkin as File[]).length
+                              )
+                            }
+                            onMoveNextRequest={() =>
+                              setSkinIndex(
+                                (skinIndex + 1) % (imageSkin as File[]).length
+                              )
+                            }
+                          />
+                        )}
+                      </div>
+                      <div>
+                        <input
+                          type='checkbox'
+                          value='agreed'
+                          checked={isChecked}
+                          onChange={() => setIsChecked((v) => !v)}
+                          className='mr-4'
+                        />
+                        <p className='inline rounded-md bg-rose-100 text-red-500'>
+                          Data yang diisi sudah benar dan tidak dapat diubah
+                          jika sudah di submit
+                        </p>
+                      </div>
+                      <div className='flex items-center justify-center'>
+                        <ButtonGradient
+                          disabled={!isChecked || submitBtnDisabled}
+                          className='text-black'
+                          onClick={() => handleSubmit(onSubmit)()}
+                        >
+                          Submit Iklan
+                        </ButtonGradient>
+                      </div>
+                    </div>
+                  </ConfirmationDialog>
                 </div>
                 <div className='col-lg-4'>
                   <div className='row'>
@@ -705,31 +1006,31 @@ const UploadMain = () => {
                       <DragDropSection
                         file={imageProfile}
                         setFile={setImageProfile}
-                        title='Gambar profile'
+                        title='Screenshot profile'
                         note='Format gambar | Max 20 MB'
                       />
                       <DragDropSection
                         file={imageWinRate}
                         setFile={setImageWinRate}
-                        title='Gambar win rate'
+                        title='Screenshot win rate'
                         note='Format gambar | Max 20 MB'
                       />
                       <DragDropSection
                         file={imageWinRateHero}
                         setFile={setImageWinRateHero}
-                        title='Gambar win rate hero'
+                        title='Screenshot win rate hero'
                         note='Format gambar | Max 20 MB'
                       />
                       <DragDropSection
                         file={imageEmblem}
                         setFile={setImageEmblem}
-                        title='Gambar emblem'
+                        title='Screenshot emblem'
                         note='Format gambar | Max 20 MB'
                       />
                       <DragDropSection
                         file={imageSkin}
                         setFile={setImageSkin}
-                        title='Gambar skin'
+                        title='Screenshot skin'
                         note='Format gambar | Max 20 MB'
                         multiple
                       />
