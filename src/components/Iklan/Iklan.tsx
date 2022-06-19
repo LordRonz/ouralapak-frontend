@@ -1,13 +1,22 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import useSWR from 'swr';
 
 import Pagination from '@/components/Common/Pagination';
 import ExploreArtsSingle from '@/components/ExploreArts/ExploreArtsSingle';
 import ButtonLink from '@/components/links/ButtonLink';
+import { API_URL } from '@/constant/config';
 import { RootState } from '@/redux/store';
 
 const Iklan = () => {
+  const { error } = useSWR(`${API_URL}/profile/1`);
+  const router = useRouter();
+  if (error) {
+    router.push('/login');
+  }
+
   const products = useSelector((state: RootState) => state.products.products);
   const creatorItem = useSelector(
     (state: RootState) => state.creators.specificItem

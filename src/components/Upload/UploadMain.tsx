@@ -23,6 +23,8 @@ import { API_URL } from '@/constant/config';
 import clsxm from '@/lib/clsxm';
 import useAuthHeader from '@/services/authHeader';
 
+import Captcha from '../Common/Captcha';
+
 type IFormInput = {
   title: string;
   platform_id: number;
@@ -975,6 +977,7 @@ const UploadMain = () => {
                           />
                         )}
                       </div>
+                      <Captcha onChange={(token) => console.log(token)} />
                       <div>
                         <input
                           type='checkbox'

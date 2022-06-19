@@ -41,6 +41,8 @@ const LoginMain = () => {
           setLoginBtnDisabled(false);
           if (res.data.data.token) {
             setToken(res.data.data.token as string);
+            axios.defaults.headers.common['Authorization'] =
+              res.data.data.token;
           }
           setTimeout(() => router.push('/'), 1000);
           return 'Berhasil login';
