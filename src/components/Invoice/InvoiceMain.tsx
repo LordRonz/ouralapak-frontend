@@ -33,7 +33,7 @@ const InvoiceMain = () => {
 
   return (
     <main>
-      <section className='login-area pt-[130px] pb-[90px]'>
+      <section className='login-area pt-8 pb-12'>
         <div className='container '>
           <div className='space-y-10'>
             <div className='flex justify-between'>

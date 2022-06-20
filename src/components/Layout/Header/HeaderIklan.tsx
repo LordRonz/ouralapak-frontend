@@ -119,7 +119,7 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
                       <div className='profile-action'>
                         <ul>
                           <li>
-                            <Link href='/creator-profile-info-personal'>
+                            <Link href='/profile'>
                               <a>
                                 <i className='fal fa-user'></i>Profile
                               </a>
