@@ -36,7 +36,7 @@
     "react-burger-menu": "^3.0.8",
     "react-calendar": "^3.7.0",
     "react-copy-to-clipboard": "^5.1.0",
-    "react-dom": "18.1.0",
+    "react-dom": "18.2.0",
     "react-drag-drop-files": "^2.3.7",
     "react-dropzone": "^14.2.1",
     "react-google-recaptcha": "^2.1.0",
