@@ -41,7 +41,7 @@ const Login: NextPage = () => {
             <div className='layout flex min-h-screen flex-col items-center justify-center gap-y-12'>
               <form
                 onSubmit={handleSubmit(onSubmit)}
-                className='w-96 rounded-xl bg-gray-200 py-8 px-12 shadow-lg shadow-slate-400 dark:bg-neutral-800 dark:shadow-neutral-700'
+                className='w-96 rounded-xl bg-gray-200 py-8 px-12 shadow-lg shadow-slate-400 dark:!bg-neutral-800 dark:!shadow-neutral-700'
               >
                 <div className='mb-8 flex flex-col items-center justify-center gap-y-4'>
                   <Image
@@ -58,7 +58,7 @@ const Login: NextPage = () => {
                   <label htmlFor='email'>Username/Email</label>
                   <StyledInput
                     type='text'
-                    className='block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
+                    className='block rounded-lg border-2 bg-gray-300 p-2 dark:!bg-gray-900'
                     {...register('email', {
                       required: 'Username/Email harus diisi',
                     })}
@@ -68,7 +68,7 @@ const Login: NextPage = () => {
                   <label htmlFor='password'>Password</label>
                   <StyledInput
                     type='password'
-                    className='mb-4 block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
+                    className='mb-4 block rounded-lg border-2 bg-gray-300 p-2 dark:!bg-gray-900'
                     {...register('password', {
                       required: 'Password harus diisi',
                     })}
@@ -88,7 +88,7 @@ const Login: NextPage = () => {
                 </div>
               </form>
 
-              <p className='text-xl text-primary-500 dark:text-primary-200'>
+              <p className='text-xl text-primary-500 dark:!text-primary-200'>
                 <ArrowLink href='/' openNewTab={false} direction='left'>
                   Back To Home
                 </ArrowLink>

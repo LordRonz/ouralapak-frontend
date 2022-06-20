@@ -12,9 +12,11 @@ import { AnimatePresence } from 'framer-motion';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
 import { Provider } from 'react-redux';
-import { ToastContainer } from 'react-toastify';
+import { Theme, ToastContainer } from 'react-toastify';
 import { SWRConfig } from 'swr';
 
+import getAuthHeader from '@/lib/getAuthHeader';
+import getFromLocalStorage from '@/lib/getFromLocalStorage';
 import { store } from '@/redux/store';
 import useAuthHeader from '@/services/authHeader';
 declare module 'next-themes' {
@@ -36,10 +38,21 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   return (
     <Provider store={store}>
-      <ThemeProvider defaultTheme='light'>
+      <ThemeProvider
+        defaultTheme='light'
+        enableSystem={false}
+        attribute='class'
+      >
         <SWRConfig
           value={{
-            fetcher: (url) => axios.get(url).then((res) => res.data),
+            fetcher: (url) =>
+              axios
+                .get(url, {
+                  headers: {
+                    Authorization: getAuthHeader() ?? Authorization ?? '',
+                  },
+                })
+                .then((res) => res.data),
           }}
         >
           <AnimatePresence
@@ -51,7 +64,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           </AnimatePresence>
         </SWRConfig>
       </ThemeProvider>
-      <ToastContainer />
+      <ToastContainer theme={getFromLocalStorage('theme') as Theme} />
     </Provider>
   );
 };

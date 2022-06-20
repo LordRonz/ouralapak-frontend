@@ -38,7 +38,7 @@
   filter: blur(2px);
 }
 
-[data-theme='dark'] {
+[data-theme='dark'], .dark {
   .banner-bg-light {
     display: none;
   }
@@ -402,7 +402,7 @@
 }
 
 @-moz-document url-prefix() {
-  [data-theme='dark'] .oc-banner-client {
+  [data-theme='dark'] .oc-banner-client, .dark .oc-banner-client {
     background: #3841547a;
   }
 

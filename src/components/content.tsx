@@ -307,7 +307,7 @@ const Content = ({ title }: { title: React.ReactNode }) => (
     </div>
 
     <div className='flex-wrap items-center justify-center gap-8 text-center sm:flex'>
-      <div className='mt-6 w-full rounded-lg bg-white px-4 py-4 shadow-lg dark:bg-gray-800  sm:w-1/2 md:w-1/2 lg:w-1/4'>
+      <div className='mt-6 w-full rounded-lg bg-white px-4 py-4 shadow-lg dark:!bg-gray-800  sm:w-1/2 md:w-1/2 lg:w-1/4'>
         <div className='flex-shrink-0'>
           <div className='mx-auto flex h-12 w-12 items-center justify-center rounded-md bg-gray-600 text-white'>
             <svg
@@ -322,15 +322,15 @@ const Content = ({ title }: { title: React.ReactNode }) => (
             </svg>
           </div>
         </div>
-        <h3 className='py-4 text-2xl font-semibold text-gray-700 dark:text-white sm:text-xl'>
+        <h3 className='py-4 text-2xl font-semibold text-gray-700 dark:!text-white sm:text-xl'>
           Website Design
         </h3>
-        <p className='text-md  py-4 text-gray-500 dark:text-gray-300'>
+        <p className='text-md  py-4 text-gray-500 dark:!text-gray-300'>
           Encompassing today’s website design technology to integrated and build
           solutions relevant to your business.
         </p>
       </div>
-      <div className='mt-6 w-full rounded-lg bg-white px-4 py-4 shadow-lg dark:bg-gray-800 sm:mt-16 sm:w-1/2 md:mt-20 md:w-1/2 lg:mt-24 lg:w-1/4'>
+      <div className='mt-6 w-full rounded-lg bg-white px-4 py-4 shadow-lg dark:!bg-gray-800 sm:mt-16 sm:w-1/2 md:mt-20 md:w-1/2 lg:mt-24 lg:w-1/4'>
         <div className='flex-shrink-0'>
           <div className='mx-auto flex h-12 w-12 items-center justify-center rounded-md bg-gray-600 text-white'>
             <svg
@@ -345,10 +345,10 @@ const Content = ({ title }: { title: React.ReactNode }) => (
             </svg>
           </div>
         </div>
-        <h3 className='py-4 text-2xl font-semibold text-gray-700 dark:text-white sm:text-xl'>
+        <h3 className='py-4 text-2xl font-semibold text-gray-700 dark:!text-white sm:text-xl'>
           Branding
         </h3>
-        <p className='text-md py-4 text-gray-500 dark:text-gray-300'>
+        <p className='text-md py-4 text-gray-500 dark:!text-gray-300'>
           Share relevant, engaging, and inspirational brand messages to create a
           connection with your audience.
         </p>
@@ -371,7 +371,7 @@ const Content = ({ title }: { title: React.ReactNode }) => (
         <h3 className='py-4 text-2xl font-semibold text-gray-700 sm:text-xl'>
           SEO Marketing
         </h3>
-        <p className='text-md  py-4 text-gray-500 dark:text-gray-300'>
+        <p className='text-md  py-4 text-gray-500 dark:!text-gray-300'>
           Let us help you level up your search engine game, explore our
           solutions for digital marketing for your business.
         </p>

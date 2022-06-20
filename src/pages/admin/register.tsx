@@ -43,7 +43,7 @@ const Register: NextPage = () => {
           <div className='layout flex min-h-screen flex-col items-center justify-center gap-y-12 py-12'>
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className='w-96 rounded-xl bg-gray-300 py-8 px-12 shadow-lg shadow-slate-400 dark:bg-neutral-800 dark:shadow-neutral-700'
+              className='w-96 rounded-xl bg-gray-300 py-8 px-12 shadow-lg shadow-slate-400 dark:!bg-neutral-800 dark:!shadow-neutral-700'
             >
               <div className='mb-8 flex flex-col items-center justify-center gap-y-4'>
                 <Image
@@ -60,7 +60,7 @@ const Register: NextPage = () => {
                 <label htmlFor='email'>Email</label>
                 <StyledInput
                   type='text'
-                  className='block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
+                  className='block rounded-lg border-2 bg-gray-300 p-2 dark:!bg-gray-900'
                   {...register('email', {
                     required: 'Email harus diisi',
                     pattern: {
@@ -75,7 +75,7 @@ const Register: NextPage = () => {
                 <label htmlFor='name'>Nama</label>
                 <StyledInput
                   type='text'
-                  className='block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
+                  className='block rounded-lg border-2 bg-gray-300 p-2 dark:!bg-gray-900'
                   {...register('name', {
                     required: 'Nama harus diisi',
                   })}
@@ -85,7 +85,7 @@ const Register: NextPage = () => {
                 <label htmlFor='password'>Password</label>
                 <StyledInput
                   type='password'
-                  className='mb-4 block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
+                  className='mb-4 block rounded-lg border-2 bg-gray-300 p-2 dark:!bg-gray-900'
                   {...register('password', {
                     required: 'Password harus diisi',
                   })}
@@ -95,7 +95,7 @@ const Register: NextPage = () => {
                 <label htmlFor='confirm_password'>Konfirmasi Password</label>
                 <StyledInput
                   type='confirm_password'
-                  className='mb-4 block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
+                  className='mb-4 block rounded-lg border-2 bg-gray-300 p-2 dark:!bg-gray-900'
                   {...register('confirm_password', {
                     required: 'Konfirmasi password anda!',
                     validate: (val: string) => {

@@ -48,9 +48,9 @@ const Header = () => {
         href='#skip-nav'
         className={clsxm(
           'rounded-sm p-2 transition',
-          'font-medium text-dark dark:text-white',
-          'bg-light dark:bg-dark',
-          'group dark:hover:text-primary-300',
+          'font-medium text-dark dark:!text-white',
+          'bg-light dark:!bg-dark',
+          'dark:!hover:text-primary-300 group',
           'focus:outline-none focus:ring focus:ring-primary-300',
           'absolute top-4 left-4 z-[1000]',
           '-translate-y-16 focus:translate-y-0'
@@ -59,7 +59,7 @@ const Header = () => {
         <Accent>Skip to content</Accent>
       </a>
       <div className='h-2 bg-gradient-to-tr from-primary-200 via-primary-300 to-primary-400' />
-      <div className='bg-neutral-200 transition-colors dark:bg-neutral-800 dark:text-light'>
+      <div className='bg-neutral-200 transition-colors dark:!bg-neutral-800 dark:!text-light'>
         <nav
           className={clsxm(
             'layout flex h-14 items-center justify-between py-2'
@@ -87,8 +87,8 @@ const Header = () => {
                   href={href}
                   className={clsxm(
                     'rounded-sm py-2 transition-colors',
-                    'font-bold text-black dark:text-light',
-                    'group dark:hover:text-primary-300',
+                    'font-bold text-black dark:!text-light',
+                    'dark:!hover:text-primary-300 group',
                     'focus:outline-none focus-visible:ring focus-visible:ring-primary-300',
                     href === baseRoute && 'font-bold'
                   )}
@@ -96,9 +96,9 @@ const Header = () => {
                   <span
                     className={clsxm(
                       'transition-colors',
-                      'bg-primary-300/0 group-hover:bg-primary-300/20 dark:group-hover:bg-primary-300/0',
+                      'dark:!group-hover:bg-primary-300/0 bg-primary-300/0 group-hover:bg-primary-300/20',
                       href === baseRoute &&
-                        'bg-primary-300/50 font-extrabold dark:bg-gradient-to-tr dark:from-primary-300 dark:to-primary-400 dark:bg-clip-text dark:text-transparent'
+                        'bg-primary-300/50 font-extrabold dark:!bg-gradient-to-tr dark:!from-primary-300 dark:!to-primary-400 dark:!bg-clip-text dark:!text-transparent'
                     )}
                   >
                     {label}
@@ -131,7 +131,7 @@ const Header = () => {
                   leaveFrom='transform opacity-100 scale-100'
                   leaveTo='transform opacity-0 scale-95'
                 >
-                  <Menu.Items className='absolute right-0 z-50 mt-2 w-56 origin-top-right divide-y divide-gray-600 rounded-md bg-neutral-200 shadow-lg ring-1 ring-light ring-opacity-5 focus:outline-none dark:bg-neutral-800'>
+                  <Menu.Items className='absolute right-0 z-50 mt-2 w-56 origin-top-right divide-y divide-gray-600 rounded-md bg-neutral-200 shadow-lg ring-1 ring-light ring-opacity-5 focus:outline-none dark:!bg-neutral-800'>
                     <div className='px-1 py-1'>
                       {links.map(({ href, label }) => (
                         <Menu.Item key={label}>
@@ -141,7 +141,7 @@ const Header = () => {
                               className={clsxm(
                                 active
                                   ? 'bg-primary-300 text-white'
-                                  : 'text-dark dark:text-gray-100',
+                                  : 'text-dark dark:!text-gray-100',
                                 'group flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors'
                               )}
                             >

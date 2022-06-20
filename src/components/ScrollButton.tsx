@@ -55,7 +55,7 @@ const ScrollButton = ({
       <button
         type='button'
         className={clsxm(
-          'inline-flex items-center justify-center rounded-md border border-transparent bg-primary-500 p-2 text-white hover:bg-primary-400 focus:outline-none dark:bg-slate-800 dark:hover:bg-slate-700',
+          'dark:!hover:bg-slate-700 inline-flex items-center justify-center rounded-md border border-transparent bg-primary-500 p-2 text-white hover:bg-primary-400 focus:outline-none dark:!bg-slate-800',
           className
         )}
         onClick={(): void => scrollToTop()}

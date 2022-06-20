@@ -109,7 +109,7 @@ const Register: NextPage = () => {
             <div className='layout flex min-h-screen flex-col items-center justify-center gap-y-12 py-12'>
               <form
                 onSubmit={handleSubmit(onSubmit)}
-                className='w-96 rounded-xl bg-gray-200 py-8 px-12 shadow-lg shadow-slate-400 dark:bg-neutral-800 dark:shadow-neutral-700'
+                className='w-96 rounded-xl bg-gray-200 py-8 px-12 shadow-lg shadow-slate-400 dark:!bg-neutral-800 dark:!shadow-neutral-700'
               >
                 <div className='mb-8 flex flex-col items-center justify-center gap-y-4'>
                   <Image
@@ -126,7 +126,7 @@ const Register: NextPage = () => {
                   <label htmlFor='judul'>Judul</label>
                   <StyledInput
                     type='text'
-                    className='block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
+                    className='block rounded-lg border-2 bg-gray-300 p-2 dark:!bg-gray-900'
                     {...register('judul', {
                       required: 'Judul harus diisi',
                     })}
@@ -135,7 +135,7 @@ const Register: NextPage = () => {
                 <FormItem errorMessage={errors.first_hand_status?.message}>
                   <label htmlFor='first_hand_status'>First Hand Status</label>
                   <StyledSelect
-                    className='block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
+                    className='block rounded-lg border-2 bg-gray-300 p-2 dark:!bg-gray-900'
                     {...register('first_hand_status', {
                       required: 'First hand status harus diisi',
                     })}
@@ -147,7 +147,7 @@ const Register: NextPage = () => {
                 <FormItem errorMessage={errors.platform?.message}>
                   <label htmlFor='platform'>Nomor Telepon</label>
                   <StyledSelect
-                    className='block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
+                    className='block rounded-lg border-2 bg-gray-300 p-2 dark:!bg-gray-900'
                     {...register('platform', {
                       required: 'Platform harus diisi',
                     })}
@@ -159,7 +159,7 @@ const Register: NextPage = () => {
                 <FormItem errorMessage={errors.change_name_status?.message}>
                   <label htmlFor='change_name_status'>Change Name Status</label>
                   <StyledSelect
-                    className='block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
+                    className='block rounded-lg border-2 bg-gray-300 p-2 dark:!bg-gray-900'
                     {...register('change_name_status', {
                       required: 'Change name status harus diisi',
                     })}
@@ -171,7 +171,7 @@ const Register: NextPage = () => {
                 <FormItem errorMessage={errors.first_top_up_exist?.message}>
                   <label htmlFor='first_top_up_exist'>Bukti top up</label>
                   <StyledSelect
-                    className='block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
+                    className='block rounded-lg border-2 bg-gray-300 p-2 dark:!bg-gray-900'
                     {...register('first_top_up_exist', {
                       required: 'Bukti top up harus diisi',
                     })}
@@ -212,10 +212,10 @@ const Register: NextPage = () => {
                     render={({ field: { onChange, value } }) => (
                       <Select
                         className={clsxm(
-                          'w-full rounded-md dark:bg-dark',
+                          'w-full rounded-md dark:!bg-dark',
                           'border',
-                          'border-gray-800 dark:border-gray-500',
-                          'transition-all duration-200 focus:border-primary-300 focus:outline-none focus:ring-0 dark:focus:border-primary-300'
+                          'border-gray-800 dark:!border-gray-500',
+                          'dark:!focus:border-primary-300 transition-all duration-200 focus:border-primary-300 focus:outline-none focus:ring-0'
                         )}
                         options={accountBindOpts}
                         value={accountBindOpts.filter((c) =>
@@ -256,7 +256,7 @@ const Register: NextPage = () => {
                   <label htmlFor='win_rate'>Win Rate</label>
                   <StyledInput
                     type='number'
-                    className='block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
+                    className='block rounded-lg border-2 bg-gray-300 p-2 dark:!bg-gray-900'
                     {...register('win_rate', {
                       required: 'Win rate harus diisi',
                       pattern: {
@@ -271,7 +271,7 @@ const Register: NextPage = () => {
                   <label htmlFor='total_hero'>Total hero</label>
                   <StyledInput
                     type='number'
-                    className='block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
+                    className='block rounded-lg border-2 bg-gray-300 p-2 dark:!bg-gray-900'
                     {...register('total_hero', {
                       required: 'Total hero harus diisi',
                       min: {
@@ -285,7 +285,7 @@ const Register: NextPage = () => {
                   <label htmlFor='total_skin'>Total skin</label>
                   <StyledInput
                     type='number'
-                    className='block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
+                    className='block rounded-lg border-2 bg-gray-300 p-2 dark:!bg-gray-900'
                     {...register('total_skin', {
                       required: 'Total skin harus diisi',
                       min: {
@@ -300,7 +300,7 @@ const Register: NextPage = () => {
                 </div>
               </form>
 
-              <p className='text-xl text-primary-500 dark:text-primary-200'>
+              <p className='text-xl text-primary-500 dark:!text-primary-200'>
                 <ArrowLink href='/' openNewTab={false} direction='left'>
                   Back To Home
                 </ArrowLink>

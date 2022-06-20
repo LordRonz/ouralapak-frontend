@@ -29,7 +29,7 @@ const ProjectCard = ({ project }: ProjectCardProp) => {
     <div
       ref={ref}
       className={clsxm(
-        'relative transform overflow-hidden rounded-lg bg-gray-300 transition duration-200 hover:-translate-y-1 hover:shadow-2xl dark:bg-gray-800',
+        'relative transform overflow-hidden rounded-lg bg-gray-300 transition duration-200 hover:-translate-y-1 hover:shadow-2xl dark:!bg-gray-800',
         'opacity-0 transition duration-500 ease-out motion-reduce:opacity-100',
         inView && 'opacity-100'
       )}
@@ -64,7 +64,7 @@ const ProjectCard = ({ project }: ProjectCardProp) => {
               rel='noopener noreferrer'
               title='Open demo'
             >
-              <MdOpenInNew className='h-6 w-6 align-middle text-gray-600 transition-colors hover:scale-105 hover:text-primary-300 dark:text-gray-300 dark:hover:text-primary-300' />
+              <MdOpenInNew className='dark:!hover:text-primary-300 h-6 w-6 align-middle text-gray-600 transition-colors hover:scale-105 hover:text-primary-300 dark:!text-gray-300' />
             </a>
           )}
           {project.github && (
@@ -76,7 +76,7 @@ const ProjectCard = ({ project }: ProjectCardProp) => {
               target='_blank'
               rel='noopener noreferrer'
             >
-              <SiGithub className='h-6 w-6 align-middle text-gray-600 transition-colors hover:scale-105 hover:text-primary-300 dark:text-gray-300 dark:hover:text-primary-300' />
+              <SiGithub className='dark:!hover:text-primary-300 h-6 w-6 align-middle text-gray-600 transition-colors hover:scale-105 hover:text-primary-300 dark:!text-gray-300' />
             </a>
           )}
           <div className='flex-1'></div>

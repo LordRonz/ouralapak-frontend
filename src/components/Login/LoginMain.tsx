@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { useLocalStorage } from 'react-use';
+import { useEffectOnce, useLocalStorage } from 'react-use';
 
 import ButtonGradient from '@/components/buttons/ButtonGradient';
 import Breadcrumbs from '@/components/Common/PageTitle';
@@ -23,6 +23,15 @@ const LoginMain = () => {
   } = useForm<IFormInput>();
 
   const router = useRouter();
+
+  useEffectOnce(() => {
+    const { state } = router.query;
+    if (state === 'unauthorized') {
+      toast.warning('Silahkan login terlebih dahulu', {
+        toastId: 'unauthorized',
+      });
+    }
+  });
 
   const [, setToken] = useLocalStorage<string>('token');
 
@@ -44,14 +53,17 @@ const LoginMain = () => {
             axios.defaults.headers.common['Authorization'] =
               res.data.data.token;
           }
-          setTimeout(() => router.push('/'), 1000);
+          setTimeout(
+            () => router.push((router.query.returnTo as string) ?? '/'),
+            1000
+          );
           return 'Berhasil login';
         },
       },
       error: {
         render: () => {
           setLoginBtnDisabled(false);
-          return 'Gagal login!';
+          return 'Gagal login!, Silahkan cek email untuk verifikasi';
         },
       },
     });

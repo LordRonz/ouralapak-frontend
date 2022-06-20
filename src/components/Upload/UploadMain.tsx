@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
-import React, { useState } from 'react';
+import queryString from 'query-string';
+import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import {
   Controller,
@@ -12,18 +13,17 @@ import {
 import Lightbox from 'react-image-lightbox';
 import Select from 'react-select';
 import { Theme, toast } from 'react-toastify';
-import useSWR from 'swr';
 
 import MyButton from '@/components/buttons/Button';
 import ButtonGradient from '@/components/buttons/ButtonGradient';
+import Captcha from '@/components/Common/Captcha';
 import Breadcrumbs from '@/components/Common/PageTitle';
 import ConfirmationDialog from '@/components/Upload/Dialog';
 import DragDropSection from '@/components/Upload/DragDropSection';
 import { API_URL } from '@/constant/config';
 import clsxm from '@/lib/clsxm';
+import getAuthHeader from '@/lib/getAuthHeader';
 import useAuthHeader from '@/services/authHeader';
-
-import Captcha from '../Common/Captcha';
 
 type IFormInput = {
   title: string;
@@ -72,11 +72,23 @@ const UploadMain = () => {
     },
   });
 
-  const { error } = useSWR(`${API_URL}/profile/1`);
   const router = useRouter();
-  if (error) {
-    router.push('/login');
-  }
+  useEffect(() => {
+    (async () => {
+      axios
+        .get(`${API_URL}/profile/2`, {
+          headers: { Authorization: getAuthHeader() ?? '' },
+        })
+        .catch(() =>
+          router.push(
+            `/login?${queryString.stringify({
+              state: 'unauthorized',
+              returnTo: router.pathname,
+            })}`
+          )
+        );
+    })();
+  }, [router]);
 
   const [openDialog, setOpenDialog] = useState(false);
   const [isChecked, setIsChecked] = useState(false);

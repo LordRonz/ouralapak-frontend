@@ -13,7 +13,7 @@ const Footer = () => {
                   <Link href='/'>
                     <a className='logo-bb'>
                       <img
-                        src='images/ouralapak_logo_long.png'
+                        src='/images/ouralapak_logo_long.png'
                         alt='logo-img'
                       />
                     </a>
@@ -21,7 +21,7 @@ const Footer = () => {
                   <Link href='/'>
                     <a className='logo-bw'>
                       <img
-                        src='images/ouralapak_logo_long.png'
+                        src='/images/ouralapak_logo_long.png'
                         alt='logo-img'
                       />
                     </a>

@@ -1,16 +1,26 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useTheme } from 'next-themes';
 import React, { useState } from 'react';
+import { useLocalStorage } from 'react-use';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 import ColorModeToggle from '@/components/ColorModeToggle';
 import MobileMenu from '@/components/Layout/Header/MobileMenu';
+import { mySwalOpts } from '@/constant/swal';
 import useSticky from '@/hooks/useSticky';
 
 type HeaderProps = {
   HeaderStatic?: string;
 };
 
+const MySwal = withReactContent(Swal);
+
 const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
+  const { theme } = useTheme();
   const [isActive11, setActive11] = useState(false);
+  const [, , removeToken] = useLocalStorage('token');
 
   const handleToggle11 = () => {
     setActive11(!isActive11);
@@ -19,6 +29,22 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
   const { sticky } = useSticky();
 
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    const { isConfirmed } = await MySwal.fire({
+      title: 'Yakin ingin logout?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Logout',
+      ...mySwalOpts(theme),
+    });
+    if (isConfirmed) {
+      removeToken();
+      router.push('/login');
+    }
+  };
 
   return (
     <>
@@ -39,7 +65,7 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
                     <Link href='/'>
                       <a className='logo-bb'>
                         <img
-                          src='images/ouralapak_logo_long.png'
+                          src='/images/ouralapak_logo_long.png'
                           alt='logo-img'
                         />
                       </a>
@@ -47,7 +73,7 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
                     <Link href='/'>
                       <a className='logo-bw'>
                         <img
-                          src='images/ouralapak_logo_long.png'
+                          src='/images/ouralapak_logo_long.png'
                           alt='logo-img'
                         />
                       </a>
@@ -100,16 +126,19 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
                             </Link>
                           </li>
                           <li>
-                            <Link href='/login'>
+                            <button
+                              className='hover:text-primary-400'
+                              onClick={() => handleLogout()}
+                            >
                               <a>
                                 <i className='fal fa-sign-out'></i>Logout
                               </a>
-                            </Link>
+                            </button>
                           </li>
                         </ul>
                       </div>
                       <img
-                        src='assets/img/profile/profile4.jpg'
+                        src='/assets/img/profile/profile4.jpg'
                         alt='profile-img'
                       />
                       <div className='profile-verification verified'>

@@ -27,7 +27,7 @@ const LatestCard = ({ slug, image, title, content, price }: LatestCardProp) => {
       <div
         ref={ref}
         className={clsxm(
-          'relative transform overflow-hidden rounded-lg bg-gray-300 transition duration-200 hover:-translate-y-1 hover:shadow-2xl dark:bg-gray-800',
+          'relative transform overflow-hidden rounded-lg bg-gray-300 transition duration-200 hover:-translate-y-1 hover:shadow-2xl dark:!bg-gray-800',
           'opacity-0 transition duration-500 ease-out motion-reduce:opacity-100',
           'ring-primary-300 hover:ring',
           inView && 'opacity-100'
@@ -39,7 +39,7 @@ const LatestCard = ({ slug, image, title, content, price }: LatestCardProp) => {
           </div>
         )}
         <div className='px-4 pt-4 pb-6'>
-          <div className='flex justify-end text-primary-600 dark:text-primary-200'>{`Rp. ${price}`}</div>
+          <div className='flex justify-end text-primary-600 dark:!text-primary-200'>{`Rp. ${price}`}</div>
           {title}
           <p className='text-sm'>{content}</p>
         </div>

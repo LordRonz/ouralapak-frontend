@@ -1,21 +1,35 @@
+import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import queryString from 'query-string';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import useSWR from 'swr';
 
 import Pagination from '@/components/Common/Pagination';
 import ExploreArtsSingle from '@/components/ExploreArts/ExploreArtsSingle';
 import ButtonLink from '@/components/links/ButtonLink';
 import { API_URL } from '@/constant/config';
+import getAuthHeader from '@/lib/getAuthHeader';
 import { RootState } from '@/redux/store';
 
 const Iklan = () => {
-  const { error } = useSWR(`${API_URL}/profile/1`);
   const router = useRouter();
-  if (error) {
-    router.push('/login');
-  }
+  useEffect(() => {
+    (async () => {
+      axios
+        .get(`${API_URL}/profile/2`, {
+          headers: { Authorization: getAuthHeader() ?? '' },
+        })
+        .catch(() =>
+          router.push(
+            `/login?${queryString.stringify({
+              state: 'unauthorized',
+              returnTo: router.pathname,
+            })}`
+          )
+        );
+    })();
+  }, [router]);
 
   const products = useSelector((state: RootState) => state.products.products);
   const creatorItem = useSelector(

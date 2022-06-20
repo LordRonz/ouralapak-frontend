@@ -53,12 +53,12 @@ export default function ReactTable<T extends object>({
           <input
             placeholder='Find...'
             className={clsx(
-              'w-full rounded-md dark:bg-dark sm:max-w-xs',
+              'w-full rounded-md dark:!bg-dark sm:max-w-xs',
               'px-4 py-2 pl-9',
               'placeholder-gray-400',
               'text-sm md:text-base',
-              'border border-gray-300 dark:border-gray-600',
-              'focus:border-primary-300 focus:outline-none dark:focus:border-primary-300'
+              'border border-gray-300 dark:!border-gray-600',
+              'dark:!focus:border-primary-300 focus:border-primary-300 focus:outline-none'
             )}
           />
           <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2'>
@@ -69,12 +69,12 @@ export default function ReactTable<T extends object>({
 
       <div className='-my-2 mt-2 overflow-x-auto'>
         <div className='inline-block min-w-full py-2 align-middle'>
-          <div className='overflow-hidden border-b border-gray-200 shadow-sm dark:border-gray-800 sm:rounded-lg'>
+          <div className='overflow-hidden border-b border-gray-200 shadow-sm dark:!border-gray-800 sm:rounded-lg'>
             <table
               {...getTableProps()}
-              className='min-w-full divide-y divide-gray-200 dark:divide-gray-800'
+              className='min-w-full divide-y divide-gray-200 dark:!divide-gray-800'
             >
-              <thead className='bg-gray-50 dark:bg-gray-700'>
+              <thead className='bg-gray-50 dark:!bg-gray-700'>
                 {headerGroups.map((headerGroup, index) => (
                   <tr {...headerGroup.getHeaderGroupProps()} key={index}>
                     {headerGroup.headers.map((column) => (
@@ -82,7 +82,7 @@ export default function ReactTable<T extends object>({
                         {...column.getHeaderProps()}
                         key={column.id}
                         scope='col'
-                        className='group px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-200'
+                        className='group px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:!text-gray-200'
                       >
                         <div
                           className={clsx(
@@ -95,13 +95,13 @@ export default function ReactTable<T extends object>({
                             <GoTriangleUp
                               className={clsx(
                                 'transition-opacity',
-                                'text-gray-700 dark:text-gray-200'
+                                'text-gray-700 dark:!text-gray-200'
                               )}
                             />
                             <GoTriangleDown
                               className={clsx(
                                 '-mt-1 transition-opacity',
-                                'text-gray-700 dark:text-gray-200'
+                                'text-gray-700 dark:!text-gray-200'
                               )}
                             />
                           </span>
@@ -120,8 +120,8 @@ export default function ReactTable<T extends object>({
                       key={index}
                       className={clsx(
                         index % 2 === 0
-                          ? 'bg-white dark:bg-dark'
-                          : 'bg-gray-50 dark:bg-gray-800'
+                          ? 'bg-white dark:!bg-dark'
+                          : 'bg-gray-50 dark:!bg-gray-800'
                       )}
                     >
                       {row?.cells?.map((cell, i) => {
@@ -131,8 +131,8 @@ export default function ReactTable<T extends object>({
                             className={clsx(
                               'whitespace-nowrap px-6 py-4 text-center text-sm text-gray-700',
                               i === 0
-                                ? 'font-medium text-gray-900 dark:text-gray-50'
-                                : 'text-gray-500  dark:text-gray-200'
+                                ? 'font-medium text-gray-900 dark:!text-gray-50'
+                                : 'text-gray-500  dark:!text-gray-200'
                             )}
                             key={i}
                           >
@@ -145,18 +145,18 @@ export default function ReactTable<T extends object>({
                 })}
               </tbody>
               {withFooter && (
-                <tfoot className='bg-gray-50 dark:bg-gray-700'>
+                <tfoot className='bg-gray-50 dark:!bg-gray-700'>
                   {footerGroups.map((footerGroup, index) => (
                     <tr
                       {...footerGroup.getFooterGroupProps()}
                       key={index}
-                      className='group px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-200'
+                      className='group px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:!text-gray-200'
                     >
                       {footerGroup.headers.map((column) => (
                         <td
                           {...column.getFooterProps()}
                           className={clsx(
-                            'px-6 py-3 text-sm font-medium uppercase tracking-wider text-gray-500 dark:text-gray-200',
+                            'px-6 py-3 text-sm font-medium uppercase tracking-wider text-gray-500 dark:!text-gray-200',
                             'text-center'
                           )}
                           key={column.id}
