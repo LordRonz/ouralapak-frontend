@@ -17,7 +17,7 @@ import { RootState } from '@/redux/store';
 import type Iklan from '@/types/iklan';
 import User from '@/types/user';
 
-const Iklan = () => {
+const IklanMain = () => {
   const router = useRouter();
   useEffect(() => {
     (async () => {
@@ -1469,4 +1469,4 @@ const Iklan = () => {
   );
 };
 
-export default Iklan;
+export default IklanMain;

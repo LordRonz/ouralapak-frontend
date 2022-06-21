@@ -3,7 +3,7 @@ import React from 'react';
 import { Toaster } from 'react-hot-toast';
 
 import AnimatePage from '@/components/AnimatePage';
-import Iklan from '@/components/Iklan/Iklan';
+import IklanMain from '@/components/Iklan/IklanMain';
 import Footer from '@/components/Layout/Footer/FooterOne/Footer';
 import HeaderIklan from '@/components/Layout/Header/HeaderIklan';
 import Seo from '@/components/Seo';
@@ -15,7 +15,7 @@ const IklanPage: NextPage = () => {
       <Seo templateTitle='Iklan' />
       <AnimatePage>
         <HeaderIklan />
-        <Iklan />
+        <IklanMain />
         <Footer />
       </AnimatePage>
       <Toaster
