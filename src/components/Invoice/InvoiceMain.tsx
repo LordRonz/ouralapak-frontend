@@ -1,16 +1,39 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import queryString from 'query-string';
+import React, { useEffect, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Tooltip as TooltipTippy } from 'react-tippy';
 import useSWR from 'swr';
 
+import ButtonLinkGradient from '@/components/links/ButtonLinkGradient';
 import { API_URL } from '@/constant/config';
 import formatDateStrId from '@/lib/formatDateStrId';
+import getAuthHeader from '@/lib/getAuthHeader';
 import toIDRCurrency from '@/lib/toIDRCurrency';
 import Iklan from '@/types/iklan';
 import Invoice from '@/types/invoice';
 import User from '@/types/user';
 
 const InvoiceMain = () => {
+  const router = useRouter();
+  useEffect(() => {
+    (async () => {
+      axios
+        .get(`${API_URL}/profile/2`, {
+          headers: { Authorization: getAuthHeader() ?? '' },
+        })
+        .catch(() =>
+          router.push(
+            `/login?${queryString.stringify({
+              state: 'unauthorized',
+              returnTo: router.pathname,
+            })}`
+          )
+        );
+    })();
+  }, [router]);
+
   const { data: invoice } = useSWR<{
     data: Invoice;
     message: string;
@@ -30,6 +53,13 @@ const InvoiceMain = () => {
   }>(() => `${API_URL}/profile/2`);
 
   const [copyStatus, setCopyStatus] = useState<string>('Click to copy');
+
+  const waLink = queryString.stringifyUrl({
+    url: 'https://wa.me/6281696969696',
+    query: {
+      text: 'Perkentotan duniawi\nherp',
+    },
+  });
 
   return (
     <main>
@@ -76,7 +106,7 @@ const InvoiceMain = () => {
             </div>
             <div className='border-3 space-y-5 rounded-xl border-gray-400 p-4'>
               <div>
-                <h2 className='text-lg md:text-4xl'>Data Pembeli</h2>
+                <h2 className='text-lg md:text-4xl'>Data Penjual</h2>
               </div>
               <div className='flex flex-col items-start'>
                 <p className='text-xs text-dark dark:!text-light md:text-lg'>
@@ -97,27 +127,27 @@ const InvoiceMain = () => {
               <div>
                 <h2 className='text-lg md:text-4xl'>Rincian Pesanan</h2>
               </div>
-              <div className='grid grid-cols-4 divide-x divide-neutral-400'>
+              <div className='divide-0 grid grid-cols-2 divide-neutral-400 md:grid-cols-4 md:divide-x'>
                 <div className='flex flex-col items-center justify-center px-4'>
-                  <h3 className='text-lg'>Judul Iklan</h3>
+                  <h3 className='text-base md:text-lg'>Judul Iklan</h3>
                   <p className='text-dark dark:!text-light'>
                     {iklan?.data.title}
                   </p>
                 </div>
                 <div className='flex flex-col items-center justify-center px-4'>
-                  <h3 className='text-lg'>Harga Akun</h3>
+                  <h3 className='text-base md:text-lg'>Harga Akun</h3>
                   <p className='text-dark dark:!text-light'>
                     {toIDRCurrency(iklan?.data.harga_akun)}
                   </p>
                 </div>
                 <div className='flex flex-col items-center justify-center px-4'>
-                  <h3 className='text-lg'>Jenis Refund Iklan</h3>
+                  <h3 className='text-base md:text-lg'>Jenis Refund Iklan</h3>
                   <p className='text-dark dark:!text-light'>
                     {iklan?.data.jenis_refund}
                   </p>
                 </div>
                 <div className='flex flex-col items-center justify-center px-4'>
-                  <h3 className='text-lg'>Metode Pembayaran</h3>
+                  <h3 className='text-base md:text-lg'>Metode Pembayaran</h3>
                   <p className='text-dark dark:!text-light'>WA Admin</p>
                 </div>
               </div>
@@ -174,6 +204,11 @@ const InvoiceMain = () => {
                 HARAP DIBAYAR SESUAI DENGAN {'"'}Total Yang Harus Dibayar{'"'}{' '}
                 SEBELUM INVOICE KADALUARSA
               </h4>
+            </div>
+            <div className='text-center'>
+              <ButtonLinkGradient href={waLink} className='text-black'>
+                Bayar
+              </ButtonLinkGradient>
             </div>
           </div>
         </div>

@@ -66,7 +66,8 @@
   }
 
   ::selection {
-    background: rgb(var(--tw-clr-primary-300) / 0.3);
+    background: rgb(var(--tw-clr-primary-200) / 0.69);
+    color: rgb(var(--tw-clr-primary-800));
   }
 
   /* #region  /**=========== Typography =========== */

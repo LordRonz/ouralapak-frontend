@@ -1,10 +1,15 @@
 import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useTheme } from 'next-themes';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FiEye } from 'react-icons/fi';
 import Lightbox from 'react-image-lightbox';
 import { toast } from 'react-toastify';
+import { useLocalStorage } from 'react-use';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import useSWR from 'swr';
 
 import ButtonGradient from '@/components/buttons/ButtonGradient';
@@ -13,6 +18,7 @@ import Breadcrumbs from '@/components/Common/PageTitle';
 import XButton from '@/components/Common/XButton';
 import DragDropSection from '@/components/Upload/DragDropSection';
 import { API_URL } from '@/constant/config';
+import { mySwalOpts } from '@/constant/swal';
 import useAuthHeader from '@/services/authHeader';
 import User from '@/types/user';
 
@@ -23,6 +29,8 @@ type IFormInput = {
   password?: string;
   confirm_password?: string;
 };
+
+const MySwal = withReactContent(Swal);
 
 const ProfileMain = () => {
   const {
@@ -83,6 +91,25 @@ const ProfileMain = () => {
     console.log(res);
   };
 
+  const { theme } = useTheme();
+  const [, , removeToken] = useLocalStorage('token');
+
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    const { isConfirmed } = await MySwal.fire({
+      title: 'Yakin ingin logout?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Logout',
+      ...mySwalOpts(theme),
+    });
+    if (isConfirmed) {
+      removeToken();
+      router.push('/login');
+    }
+  };
+
   return (
     <main>
       <Breadcrumbs
@@ -116,12 +143,12 @@ const ProfileMain = () => {
                   </div>
                   <div className='creator-name-id'>
                     <h4 className='artist-name pos-rel'>
-                      Kallaban Joy
+                      {user?.data.name}
                       <span className='profile-verification verified'>
                         <i className='fas fa-check'></i>
                       </span>
                     </h4>
-                    <div className='artist-id'>@Kalla.ban</div>
+                    <div className='artist-id'>@{user?.data.username}</div>
                   </div>
                 </div>
                 <div className='profile-setting-list'>
@@ -134,9 +161,13 @@ const ProfileMain = () => {
                       </Link>
                     </li>
                     <li>
-                      <a href='#'>
-                        <i className='flaticon-logout'></i>Log Out
-                      </a>
+                      <button
+                        onClick={() => handleLogout()}
+                        className='space-x-4 hover:text-primary-500'
+                      >
+                        <i className='flaticon-logout'></i>
+                        <span>Log Out</span>
+                      </button>
                     </li>
                   </ul>
                 </div>

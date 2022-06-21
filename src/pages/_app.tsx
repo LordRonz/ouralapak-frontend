@@ -10,7 +10,7 @@ import './index.scss';
 import axios from 'axios';
 import { AnimatePresence } from 'framer-motion';
 import type { AppProps } from 'next/app';
-import { ThemeProvider } from 'next-themes';
+import { ThemeProvider, useTheme } from 'next-themes';
 import { Provider } from 'react-redux';
 import { Theme, ToastContainer } from 'react-toastify';
 import { SWRConfig } from 'swr';
@@ -30,6 +30,7 @@ if (typeof window !== 'undefined') {
 }
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
+  const { theme } = useTheme();
   const { Authorization } = useAuthHeader();
 
   if (Authorization) {
@@ -64,7 +65,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           </AnimatePresence>
         </SWRConfig>
       </ThemeProvider>
-      <ToastContainer theme={getFromLocalStorage('theme') as Theme} />
+      <ToastContainer
+        theme={(getFromLocalStorage('theme') as Theme) ?? theme ?? 'light'}
+      />
     </Provider>
   );
 };

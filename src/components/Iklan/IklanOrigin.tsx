@@ -1,59 +1,13 @@
-import axios from 'axios';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import queryString from 'query-string';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import useSWR from 'swr';
 
-import IklanCard from '@/components/Cards/IklanCard';
 import Pagination from '@/components/Common/Pagination';
 import ExploreArtsSingle from '@/components/ExploreArts/ExploreArtsSingle';
 import ButtonLink from '@/components/links/ButtonLink';
-import { API_URL } from '@/constant/config';
-import formatDateStrId from '@/lib/formatDateStrId';
-import getAuthHeader from '@/lib/getAuthHeader';
 import { RootState } from '@/redux/store';
-import type Iklan from '@/types/iklan';
-import User from '@/types/user';
 
-const Iklan = () => {
-  const router = useRouter();
-  useEffect(() => {
-    (async () => {
-      axios
-        .get(`${API_URL}/profile/2`, {
-          headers: { Authorization: getAuthHeader() ?? '' },
-        })
-        .catch(() =>
-          router.push(
-            `/login?${queryString.stringify({
-              state: 'unauthorized',
-              returnTo: router.pathname,
-            })}`
-          )
-        );
-    })();
-  }, [router]);
-
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const { data: iklans } = useSWR<{
-    data: Iklan[];
-    message: string;
-    success: boolean;
-  }>(mounted ? `${API_URL}/user/iklan` : null);
-
-  const { data: user } = useSWR<{
-    data: User;
-    message: string;
-    success: boolean;
-  }>(mounted ? `${API_URL}/profile/2` : null);
-
+const IklanOrigin = () => {
   const products = useSelector((state: RootState) => state.products.products);
   const creatorItem = useSelector(
     (state: RootState) => state.creators.specificItem
@@ -98,21 +52,27 @@ const Iklan = () => {
                   <img src={creatorItem.profileImage} alt='img' />
                 </div>
                 <h4 className='artist-name pos-rel'>
-                  {user?.data.name}
+                  {creatorItem.name}
                   <span className='profile-verification verified'>
                     <i className='fas fa-check'></i>
                   </span>
                 </h4>
-                <div className='artist-id'>@{user?.data.username}</div>
+                <div className='artist-id'>{creatorItem.artistId}</div>
                 <p>
                   My name is Justin Baker & change my occupation after five
                   years of working in sales. I still like drawing.
                 </p>
                 <ul>
                   <li>
-                    <i className='flaticon-calendar'></i>Bergabung{' '}
-                    {user &&
-                      `${formatDateStrId(user?.data.created_at, 'MMMM yyyy')}`}
+                    <i className='fas fa-map-marker-alt'></i>Bran Street New
+                    York, USA
+                  </li>
+                  <li>
+                    <i className='flaticon-link'></i>
+                    <a href='#'>bit.ly/yte89k6</a>
+                  </li>
+                  <li>
+                    <i className='flaticon-calendar'></i>Joined March 2010
                   </li>
                 </ul>
                 <div className='message-creator-btn'>
@@ -136,13 +96,9 @@ const Iklan = () => {
               <div className='creator-info-tab wow fadeInUp'>
                 <div className='creator-info-tab-nav mb-30'>
                   <nav>
-                    <div
-                      className='nav nav-tabs gap-x-4'
-                      id='nav-tab'
-                      role='tablist'
-                    >
+                    <div className='nav nav-tabs' id='nav-tab' role='tablist'>
                       <button
-                        className='nav-link active mb-3'
+                        className='nav-link active'
                         id='nav-created-tab'
                         data-bs-toggle='tab'
                         data-bs-target='#tab-nav1'
@@ -157,7 +113,7 @@ const Iklan = () => {
                         </span>
                       </button>
                       <button
-                        className='nav-link mx-4'
+                        className='nav-link'
                         id='nav-collection-tab'
                         data-bs-toggle='tab'
                         data-bs-target='#tab-nav2'
@@ -167,9 +123,7 @@ const Iklan = () => {
                       >
                         <span className='profile-nav-button'>
                           <span className='artist-meta-item  artist-meta-item-border'>
-                            <span className='artist-meta-type'>
-                              Dipublikasi
-                            </span>
+                            <span className='artist-meta-type'>Status 1</span>
                             <span className='artist-art-collection'></span>
                           </span>
                         </span>
@@ -185,7 +139,7 @@ const Iklan = () => {
                       >
                         <span className='profile-nav-button'>
                           <span className='artist-meta-item  artist-meta-item-border'>
-                            <span className='artist-meta-type'>Ditolak</span>
+                            <span className='artist-meta-type'>Status 2</span>
                             <span className='artist-art-featured'></span>
                           </span>
                         </span>
@@ -201,7 +155,7 @@ const Iklan = () => {
                       >
                         <span className='profile-nav-button'>
                           <span className='artist-meta-item  artist-meta-item-border'>
-                            <span className='artist-meta-type'>Dibatalkan</span>
+                            <span className='artist-meta-type'>Status 3</span>
                             <span className='artist-art-sold'></span>
                           </span>
                         </span>
@@ -217,62 +171,8 @@ const Iklan = () => {
                       >
                         <span className='profile-nav-button'>
                           <span className='artist-meta-item'>
-                            <span className='artist-meta-type'>
-                              Menunggu Pembayaran Penjual
-                            </span>
+                            <span className='artist-meta-type'>Status 4</span>
                             <span className='artist-art-bids'></span>
-                          </span>
-                        </span>
-                      </button>
-                      <button
-                        className='nav-link'
-                        id='nav-sold-tab'
-                        data-bs-toggle='tab'
-                        data-bs-target='#tab-nav6'
-                        type='button'
-                        role='tab'
-                        aria-selected='false'
-                      >
-                        <span className='profile-nav-button'>
-                          <span className='artist-meta-item  artist-meta-item-border'>
-                            <span className='artist-meta-type'>
-                              Menunggu Konfirmasi
-                            </span>
-                            <span className='artist-art-sold'></span>
-                          </span>
-                        </span>
-                      </button>
-                      <button
-                        className='nav-link'
-                        id='nav-sold-tab'
-                        data-bs-toggle='tab'
-                        data-bs-target='#tab-nav7'
-                        type='button'
-                        role='tab'
-                        aria-selected='false'
-                      >
-                        <span className='profile-nav-button'>
-                          <span className='artist-meta-item  artist-meta-item-border'>
-                            <span className='artist-meta-type'>Selesai</span>
-                            <span className='artist-art-sold'></span>
-                          </span>
-                        </span>
-                      </button>
-                      <button
-                        className='nav-link'
-                        id='nav-sold-tab'
-                        data-bs-toggle='tab'
-                        data-bs-target='#tab-nav8'
-                        type='button'
-                        role='tab'
-                        aria-selected='false'
-                      >
-                        <span className='profile-nav-button'>
-                          <span className='artist-meta-item  artist-meta-item-border'>
-                            <span className='artist-meta-type'>
-                              Menunggu Pembayaran Pembeli
-                            </span>
-                            <span className='artist-art-sold'></span>
                           </span>
                         </span>
                       </button>
@@ -289,9 +189,12 @@ const Iklan = () => {
                     >
                       <div className='created-items-wrapper'>
                         <div className='row'>
-                          {iklans && (
-                            <IklanCard iklan={iklans.data[0]}></IklanCard>
-                          )}
+                          {products.slice(35, 41).map((product) => (
+                            <ExploreArtsSingle
+                              key={product.id}
+                              product={product}
+                            />
+                          ))}
                         </div>
                         <div className='row'>
                           <div className='col-12'>
@@ -1469,4 +1372,4 @@ const Iklan = () => {
   );
 };
 
-export default Iklan;
+export default IklanOrigin;
