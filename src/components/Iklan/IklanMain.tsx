@@ -22,7 +22,7 @@ const IklanMain = () => {
   useEffect(() => {
     (async () => {
       axios
-        .get(`${API_URL}/profile/2`, {
+        .get(`${API_URL}/profile`, {
           headers: { Authorization: getAuthHeader() ?? '' },
         })
         .catch(() =>
@@ -43,7 +43,7 @@ const IklanMain = () => {
   }, []);
 
   const { data: iklans } = useSWR<{
-    data: Iklan[];
+    data: { data: Iklan[] };
     message: string;
     success: boolean;
   }>(mounted ? `${API_URL}/user/iklan` : null);
@@ -52,7 +52,7 @@ const IklanMain = () => {
     data: User;
     message: string;
     success: boolean;
-  }>(mounted ? `${API_URL}/profile/2` : null);
+  }>(mounted ? `${API_URL}/profile` : null);
 
   const products = useSelector((state: RootState) => state.products.products);
   const creatorItem = useSelector(
@@ -289,8 +289,8 @@ const IklanMain = () => {
                     >
                       <div className='created-items-wrapper'>
                         <div className='row'>
-                          {iklans && (
-                            <IklanCard iklan={iklans.data[0]}></IklanCard>
+                          {iklans?.data.data[0] && (
+                            <IklanCard iklan={iklans.data.data[0]} />
                           )}
                         </div>
                         <div className='row'>

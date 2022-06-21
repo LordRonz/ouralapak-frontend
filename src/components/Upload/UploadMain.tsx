@@ -76,7 +76,7 @@ const UploadMain = () => {
   useEffect(() => {
     (async () => {
       axios
-        .get(`${API_URL}/profile/2`, {
+        .get(`${API_URL}/profile`, {
           headers: { Authorization: getAuthHeader() ?? '' },
         })
         .catch(() =>

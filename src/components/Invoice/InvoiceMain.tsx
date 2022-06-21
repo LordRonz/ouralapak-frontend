@@ -20,7 +20,7 @@ const InvoiceMain = () => {
   useEffect(() => {
     (async () => {
       axios
-        .get(`${API_URL}/profile/2`, {
+        .get(`${API_URL}/profile`, {
           headers: { Authorization: getAuthHeader() ?? '' },
         })
         .catch(() =>
@@ -50,16 +50,21 @@ const InvoiceMain = () => {
     data: User;
     message: string;
     success: boolean;
-  }>(() => `${API_URL}/profile/2`);
+  }>(() => `${API_URL}/profile`);
 
   const [copyStatus, setCopyStatus] = useState<string>('Click to copy');
 
-  const waLink = queryString.stringifyUrl({
-    url: 'https://wa.me/6281696969696',
-    query: {
-      text: 'Perkentotan duniawi\nherp',
-    },
-  });
+  const getWaLink = () =>
+    queryString.stringifyUrl({
+      url: 'https://wa.me/6281696969696',
+      query: {
+        text: `Halo admin,\n\nSaya melakukan order dengan nomor invoice ${
+          invoice?.data.no_invoice
+        } (${typeof window !== 'undefined' ? window.location.origin : ''}/${
+          router.pathname
+        }))`,
+      },
+    });
 
   return (
     <main>
@@ -104,7 +109,7 @@ const InvoiceMain = () => {
                 </p>
               </div>
             </div>
-            <div className='border-3 space-y-5 rounded-xl border-gray-400 p-4'>
+            <div className='border-3 space-y-5 rounded-xl border-gray-400 bg-light p-4 dark:!bg-neutral-800'>
               <div>
                 <h2 className='text-lg md:text-4xl'>Data Penjual</h2>
               </div>
@@ -206,7 +211,7 @@ const InvoiceMain = () => {
               </h4>
             </div>
             <div className='text-center'>
-              <ButtonLinkGradient href={waLink} className='text-black'>
+              <ButtonLinkGradient href={getWaLink()} className='text-black'>
                 Bayar
               </ButtonLinkGradient>
             </div>

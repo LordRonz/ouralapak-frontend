@@ -4,7 +4,6 @@ import React from 'react';
 import Iklan from '@/types/iklan';
 
 const IklanCard = ({ iklan }: { iklan: Iklan }) => {
-  console.log(iklan);
   return (
     <div className='grid grid-cols-3 rounded-lg border-2 border-primary-200 bg-neutral-50 py-6 dark:bg-neutral-800'>
       <div className='flex flex-col items-start justify-center'>

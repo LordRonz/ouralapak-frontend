@@ -56,7 +56,7 @@ const ProfileMain = () => {
     data: User;
     message: string;
     success: boolean;
-  }>(() => `${API_URL}/profile/2`);
+  }>(() => `${API_URL}/profile`);
 
   const headers = useAuthHeader();
 
