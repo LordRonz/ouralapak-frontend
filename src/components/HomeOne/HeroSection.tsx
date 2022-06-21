@@ -45,18 +45,8 @@ const HeroSection = () => {
                   alt='img not found'
                   className='b1-shape1'
                 />
-                <div
-                  className='banner-bg'
-                  style={{
-                    background: 'url(assets/img/banner/oc-banner-bg.png)',
-                  }}
-                ></div>
-                <div
-                  className='banner-bg-light'
-                  style={{
-                    background: 'url(assets/img/banner/oc-banner-bg-light.png)',
-                  }}
-                ></div>
+                <div className='banner-bg'></div>
+                <div className='banner-bg-light'></div>
                 <div className='pos-rel container'>
                   <div className='row align-items-center justify-content-between'>
                     <div className='col-xl-6 col-lg-6'>

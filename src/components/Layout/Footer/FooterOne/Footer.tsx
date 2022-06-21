@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import React from 'react';
 
+import CustomLink from '@/components/links/CustomLink';
+
 const Footer = () => {
   return (
     <footer className='footer1-bg'>
@@ -40,19 +42,19 @@ const Footer = () => {
                 </div>
                 <ul>
                   <li>
-                    <Link href='/iklan'>
+                    <CustomLink className='border-none' href='/iklan'>
                       <a>Jual Akun</a>
-                    </Link>
+                    </CustomLink>
                   </li>
                   <li>
-                    <Link href='/beli-akun'>
+                    <CustomLink className='border-none' href='/beli-akun'>
                       <a>Beli Akun</a>
-                    </Link>
+                    </CustomLink>
                   </li>
                   <li>
-                    <Link href='/rekber'>
+                    <CustomLink className='border-none' href='/rekber'>
                       <a>Jasa Rekber</a>
-                    </Link>
+                    </CustomLink>
                   </li>
                 </ul>
               </div>

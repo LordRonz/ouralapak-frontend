@@ -53,10 +53,7 @@ const LoginMain = () => {
             axios.defaults.headers.common['Authorization'] =
               res.data.data.token;
           }
-          setTimeout(
-            () => router.push((router.query.returnTo as string) ?? '/'),
-            1000
-          );
+          router.push((router.query.returnTo as string) ?? '/');
           return 'Berhasil login';
         },
       },
