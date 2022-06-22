@@ -44,7 +44,6 @@
 }
 
 body {
-  font-family: $urbanist;
   font-size: 16px;
   font-weight: normal;
   color: var(--clr-common-body-text);
@@ -134,7 +133,6 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: $urbanist;
   color: var(--clr-common-heading);
   margin-top: 0px;
   font-weight: 700;
@@ -176,7 +174,6 @@ li {
 }
 
 p {
-  font-family: $urbanist;
   font-size: 16px;
   font-weight: normal;
   color: var(--clr-common-body-text);
@@ -443,7 +440,6 @@ p {
   padding-right: 22px;
   display: inline-block;
   text-transform: uppercase;
-  font-family: $urbanist;
 
   & i {
     position: absolute;

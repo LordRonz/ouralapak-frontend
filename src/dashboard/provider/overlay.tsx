@@ -8,7 +8,7 @@ const Overlay = () => {
     <div
       className={clsxm(
         open &&
-          'fixed left-0 top-0 z-30 h-screen w-screen bg-black opacity-40 lg:hidden'
+          '!lg:hidden !fixed !left-0 !top-0 !z-30 !h-screen !w-screen !bg-light !opacity-40 dark:!bg-black'
       )}
     />
   );

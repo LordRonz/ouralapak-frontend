@@ -137,12 +137,12 @@ const IklanMain = () => {
                 <div className='creator-info-tab-nav mb-30'>
                   <nav>
                     <div
-                      className='nav nav-tabs gap-x-4'
+                      className='nav nav-tabs flex flex-nowrap gap-x-8 overflow-auto whitespace-nowrap'
                       id='nav-tab'
                       role='tablist'
                     >
                       <button
-                        className='nav-link active mb-3'
+                        className='nav-link active mb-2'
                         id='nav-created-tab'
                         data-bs-toggle='tab'
                         data-bs-target='#tab-nav1'
@@ -151,13 +151,13 @@ const IklanMain = () => {
                         aria-selected='true'
                       >
                         <span className='profile-nav-button'>
-                          <span className='artist-meta-item  artist-meta-item-border'>
+                          <span className='artist-meta-item'>
                             <span className='artist-meta-type'>Semua</span>
                           </span>
                         </span>
                       </button>
                       <button
-                        className='nav-link mx-4'
+                        className='nav-link'
                         id='nav-collection-tab'
                         data-bs-toggle='tab'
                         data-bs-target='#tab-nav2'
@@ -166,7 +166,7 @@ const IklanMain = () => {
                         aria-selected='false'
                       >
                         <span className='profile-nav-button'>
-                          <span className='artist-meta-item  artist-meta-item-border'>
+                          <span className='artist-meta-item'>
                             <span className='artist-meta-type'>
                               Dipublikasi
                             </span>
@@ -184,7 +184,7 @@ const IklanMain = () => {
                         aria-selected='false'
                       >
                         <span className='profile-nav-button'>
-                          <span className='artist-meta-item  artist-meta-item-border'>
+                          <span className='artist-meta-item'>
                             <span className='artist-meta-type'>Ditolak</span>
                             <span className='artist-art-featured'></span>
                           </span>
@@ -200,7 +200,7 @@ const IklanMain = () => {
                         aria-selected='false'
                       >
                         <span className='profile-nav-button'>
-                          <span className='artist-meta-item  artist-meta-item-border'>
+                          <span className='artist-meta-item'>
                             <span className='artist-meta-type'>Dibatalkan</span>
                             <span className='artist-art-sold'></span>
                           </span>
@@ -234,7 +234,7 @@ const IklanMain = () => {
                         aria-selected='false'
                       >
                         <span className='profile-nav-button'>
-                          <span className='artist-meta-item  artist-meta-item-border'>
+                          <span className='artist-meta-item'>
                             <span className='artist-meta-type'>
                               Menunggu Konfirmasi
                             </span>
@@ -252,7 +252,7 @@ const IklanMain = () => {
                         aria-selected='false'
                       >
                         <span className='profile-nav-button'>
-                          <span className='artist-meta-item  artist-meta-item-border'>
+                          <span className='artist-meta-item'>
                             <span className='artist-meta-type'>Selesai</span>
                             <span className='artist-art-sold'></span>
                           </span>
@@ -268,7 +268,7 @@ const IklanMain = () => {
                         aria-selected='false'
                       >
                         <span className='profile-nav-button'>
-                          <span className='artist-meta-item  artist-meta-item-border'>
+                          <span className='artist-meta-item'>
                             <span className='artist-meta-type'>
                               Menunggu Pembayaran Pembeli
                             </span>
