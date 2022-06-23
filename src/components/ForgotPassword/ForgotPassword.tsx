@@ -1,14 +1,14 @@
 import axios from 'axios';
 import Link from 'next/link';
-import React from 'react';
+import { stringifyUrl } from 'query-string';
+import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
+import ButtonGradient from '@/components/buttons/ButtonGradient';
+import Captcha from '@/components/Common/Captcha';
 import Breadcrumbs from '@/components/Common/PageTitle';
-import ThemeChanger from '@/components/Common/ThemeChanger';
 import { API_URL } from '@/constant/config';
-
-import ButtonGradient from '../buttons/ButtonGradient';
 
 type IFormInput = {
   email: string;
@@ -21,35 +21,46 @@ const ForgotPassword = () => {
     formState: { errors },
   } = useForm<IFormInput>();
 
-  const [submitBtnDisabled, setSubmitBtnDisabled] = React.useState(false);
-
+  const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
+  const [recaptchaResponse, setRecaptchaResponse] = useState<string | null>(
+    null
+  );
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    await toast.promise(axios.post(`${API_URL}/auth/forgot-password`, data), {
-      pending: {
-        render: () => {
-          setSubmitBtnDisabled(true);
-          return 'Loading';
+    await toast.promise(
+      axios.post(
+        stringifyUrl({
+          url: `${API_URL}/auth/forgot-password`,
+          query: {
+            recaptcha_response: recaptchaResponse,
+          },
+        }),
+        data
+      ),
+      {
+        pending: {
+          render: () => {
+            setSubmitBtnDisabled(true);
+            return 'Loading';
+          },
         },
-      },
-      success: {
-        render: () => {
-          setSubmitBtnDisabled(false);
-          return 'Silahkan cek email anda';
+        success: {
+          render: () => {
+            setSubmitBtnDisabled(false);
+            return 'Silahkan cek email anda';
+          },
         },
-      },
-      error: {
-        render: () => {
-          setSubmitBtnDisabled(false);
-          return 'Gagal melakukan lupa password!';
+        error: {
+          render: () => {
+            setSubmitBtnDisabled(false);
+            return 'Gagal melakukan lupa password!';
+          },
         },
-      },
-    });
+      }
+    );
   };
 
   return (
     <main>
-      <ThemeChanger />
-
       <Breadcrumbs
         breadcrumbTitle='Lupa Password'
         breadcrumbSubTitle='Lupa Password'
@@ -87,7 +98,10 @@ const ForgotPassword = () => {
                           </p>
                         </div>
                       </div>
-                      <div className='login-btn'>
+                      <Captcha
+                        onChange={(token) => setRecaptchaResponse(token)}
+                      />
+                      <div className='login-btn mt-4'>
                         <ButtonGradient
                           className='text-white'
                           type='submit'

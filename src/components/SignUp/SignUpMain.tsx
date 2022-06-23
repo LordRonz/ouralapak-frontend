@@ -1,10 +1,12 @@
 import axios from 'axios';
 import Link from 'next/link';
-import React from 'react';
+import { stringifyUrl } from 'query-string';
+import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import ButtonGradient from '@/components/buttons/ButtonGradient';
+import Captcha from '@/components/Common/Captcha';
 import Breadcrumbs from '@/components/Common/PageTitle';
 import { API_URL } from '@/constant/config';
 
@@ -26,29 +28,42 @@ const SignUpMain = () => {
     formState: { errors },
   } = useForm<IFormInput>();
 
-  const [signUpBtnDisabled, setSignUpBtnDisabled] = React.useState(false);
-
+  const [signUpBtnDisabled, setSignUpBtnDisabled] = useState(false);
+  const [recaptchaResponse, setRecaptchaResponse] = useState<string | null>(
+    null
+  );
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    await toast.promise(axios.post(`${API_URL}/auth/user/register`, data), {
-      pending: {
-        render: () => {
-          setSignUpBtnDisabled(true);
-          return 'Loading';
+    await toast.promise(
+      axios.post(
+        stringifyUrl({
+          url: `${API_URL}/auth/user/register`,
+          query: {
+            recaptcha_response: recaptchaResponse,
+          },
+        }),
+        data
+      ),
+      {
+        pending: {
+          render: () => {
+            setSignUpBtnDisabled(true);
+            return 'Loading';
+          },
         },
-      },
-      success: {
-        render: () => {
-          setSignUpBtnDisabled(false);
-          return 'Kamu sudah terdaftar, konfirmasi email untuk aktivasi akun';
+        success: {
+          render: () => {
+            setSignUpBtnDisabled(false);
+            return 'Kamu sudah terdaftar, konfirmasi email untuk aktivasi akun';
+          },
         },
-      },
-      error: {
-        render: () => {
-          setSignUpBtnDisabled(false);
-          return 'Gagal register!';
+        error: {
+          render: () => {
+            setSignUpBtnDisabled(false);
+            return 'Gagal register!';
+          },
         },
-      },
-    });
+      }
+    );
   };
 
   return (
@@ -200,7 +215,10 @@ const SignUpMain = () => {
                           </p>
                         </div>
                       </div>
-                      <div className='sign-up-btn'>
+                      <Captcha
+                        onChange={(token) => setRecaptchaResponse(token)}
+                      />
+                      <div className='sign-up-btn mt-4'>
                         <ButtonGradient
                           className='text-white'
                           type='submit'

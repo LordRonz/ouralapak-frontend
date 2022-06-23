@@ -43,17 +43,17 @@ const Footer = () => {
                 <ul>
                   <li>
                     <CustomLink className='border-none' href='/iklan'>
-                      <a>Jual Akun</a>
+                      Jual Akun
                     </CustomLink>
                   </li>
                   <li>
                     <CustomLink className='border-none' href='/beli-akun'>
-                      <a>Beli Akun</a>
+                      Beli Akun
                     </CustomLink>
                   </li>
                   <li>
                     <CustomLink className='border-none' href='/rekber'>
-                      <a>Jasa Rekber</a>
+                      Jasa Rekber
                     </CustomLink>
                   </li>
                 </ul>

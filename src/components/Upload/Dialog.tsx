@@ -9,6 +9,7 @@ type ConfirmationDialogProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   title?: string;
   description?: string;
+  onClose?: () => void;
 };
 
 const ConfirmationDialog = ({
@@ -17,13 +18,16 @@ const ConfirmationDialog = ({
   setOpen,
   title = 'my-modal-title',
   description = 'my-modal-description',
+  onClose,
 }: ConfirmationDialogProps) => {
-  const onCloseModal = () => setOpen(false);
+  if (!onClose) {
+    onClose = () => setOpen(false);
+  }
 
   return (
     <Modal
       open={open}
-      onClose={onCloseModal}
+      onClose={onClose}
       center
       aria-labelledby={title}
       aria-describedby={description}

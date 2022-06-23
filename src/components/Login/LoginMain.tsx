@@ -9,6 +9,7 @@ import { useEffectOnce, useLocalStorage } from 'react-use';
 import ButtonGradient from '@/components/buttons/ButtonGradient';
 import Breadcrumbs from '@/components/Common/PageTitle';
 import { API_URL } from '@/constant/config';
+import Roles from '@/types/roles';
 
 type IFormInput = {
   emailOrUsername: string;
@@ -53,7 +54,11 @@ const LoginMain = () => {
             axios.defaults.headers.common['Authorization'] =
               res.data.data.token;
           }
-          router.push((router.query.returnTo as string) ?? '/');
+          if ((res.data.data.user.roles as string[]).includes(Roles.ADMIN)) {
+            router.push((router.query.returnTo as string) ?? '/admin');
+          } else {
+            router.push((router.query.returnTo as string) ?? '/');
+          }
           return 'Berhasil login';
         },
       },

@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
-import queryString from 'query-string';
+import queryString, { stringifyUrl } from 'query-string';
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
+import ReCAPTCHA from 'react-google-recaptcha';
 import {
   Controller,
   SubmitHandler,
@@ -169,6 +170,8 @@ const UploadMain = () => {
   const [imageSkin, setImageSkin] = useState<File | File[] | null>(null);
   const headers = useAuthHeader();
 
+  const [responseCaptcha, setResponseCapthca] = useState<string | null>(null);
+
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     console.log(data);
     if (
@@ -220,8 +223,28 @@ const UploadMain = () => {
       setOpenDialog(true);
       return;
     }
-    const res = await toast.promise(
-      axios.post(`${API_URL}/user/iklan`, form, { headers }),
+    if (!responseCaptcha) {
+      if (!recaptchaRef.current) {
+        toast.warn('Captcha harus diselesaikan');
+      } else {
+        recaptchaRef.current.execute();
+      }
+      return;
+    }
+    // for (const pair of form.entries()) {
+    //   console.log(pair[0] + ', ' + pair[1]);
+    // }
+    await toast.promise(
+      axios.post(
+        stringifyUrl({
+          url: `${API_URL}/user/iklan`,
+          query: {
+            recaptcha_response: responseCaptcha,
+          },
+        }),
+        form,
+        { headers }
+      ),
       {
         pending: {
           render: () => {
@@ -246,11 +269,9 @@ const UploadMain = () => {
         },
       }
     );
-    console.log(res.data);
-    // for (const pair of form.entries()) {
-    //   console.log(pair[0] + ', ' + pair[1]);
-    // }
   };
+
+  const recaptchaRef = React.createRef<ReCAPTCHA>();
 
   return (
     <main>
@@ -745,7 +766,13 @@ const UploadMain = () => {
                       Submit Iklan
                     </ButtonGradient>
                   </div>
-                  <ConfirmationDialog open={openDialog} setOpen={setOpenDialog}>
+                  <ConfirmationDialog
+                    open={openDialog}
+                    setOpen={setOpenDialog}
+                    onClose={() => {
+                      setOpenDialog(false);
+                    }}
+                  >
                     <div className='space-y-4'>
                       <h1 className='text-black'>Konfirmasi form</h1>
                       <div>
@@ -989,7 +1016,11 @@ const UploadMain = () => {
                           />
                         )}
                       </div>
-                      <Captcha onChange={(token) => console.log(token)} />
+                      <Captcha
+                        show={openDialog}
+                        ref={recaptchaRef}
+                        onChange={(token) => setResponseCapthca(token)}
+                      />
                       <div>
                         <input
                           type='checkbox'

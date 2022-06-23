@@ -1,12 +1,19 @@
 import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
+import { LegacyRef, useEffect, useState } from 'react';
+import ReCAPTCHA, { ReCAPTCHAProps } from 'react-google-recaptcha';
 
 type CaptchaProps = {
   onChange?: (token: string | null) => void;
-};
+  ref?: LegacyRef<ReCAPTCHA>;
+  show?: boolean;
+} & Partial<ReCAPTCHAProps>;
 
-const Captcha = ({ onChange }: CaptchaProps) => {
+const Captcha = ({
+  onChange,
+  sitekey = '6Lcjyn0gAAAAAPaLMst9Q6qvxvC7SXZnv2LdFCKd',
+  show = true,
+  ...rest
+}: CaptchaProps) => {
   const [mounted, setMounted] = useState(false);
   const { theme } = useTheme();
 
@@ -15,11 +22,18 @@ const Captcha = ({ onChange }: CaptchaProps) => {
   }, []);
 
   return (
-    <ReCAPTCHA
-      sitekey='6Lcjyn0gAAAAAPaLMst9Q6qvxvC7SXZnv2LdFCKd'
-      onChange={onChange}
-      theme={(mounted ? theme : 'light') as 'light' | 'dark'}
-    />
+    <>
+      {show ? (
+        <ReCAPTCHA
+          onChange={onChange}
+          theme={(mounted ? theme : 'light') as 'light' | 'dark'}
+          {...rest}
+          sitekey={sitekey}
+        />
+      ) : (
+        <></>
+      )}
+    </>
   );
 };
 

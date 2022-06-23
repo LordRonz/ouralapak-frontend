@@ -1,135 +1,174 @@
+import axios from 'axios';
 import { useTheme } from 'next-themes';
 import * as React from 'react';
-import { FiCheckCircle, FiLock, FiTrash2, FiXCircle } from 'react-icons/fi';
+import { FiEdit2, FiSearch, FiTrash2 } from 'react-icons/fi';
 import { Column } from 'react-table';
+import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import useSWR from 'swr';
 
+import AnimatePage from '@/components/AnimatePage';
 import Button from '@/components/buttons/Button';
+import ButtonLink from '@/components/links/ButtonLink';
 import ReactTable from '@/components/ReactTable';
+import Seo from '@/components/Seo';
+import Tooltip from '@/components/Tooltip';
+import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
 import DashboardLayout from '@/dashboard/layout';
-import clsxm from '@/lib/clsxm';
+import getAuthHeader from '@/lib/getAuthHeader';
+import InvoiceAdmin from '@/types/invoiceAdmin';
+import Pagination from '@/types/pagination';
 
 const MySwal = withReactContent(Swal);
 
 const IndexPage = () => {
   const { theme } = useTheme();
 
-  const onClickDelete = React.useCallback(() => {
-    MySwal.fire({
-      title: 'Yakin ingin hapus user ini?',
-      text: 'Tindakan ini tidak bisa dibatalkan!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Hapus',
-      ...mySwalOpts(theme),
-    });
-  }, [theme]);
+  const [delBtnDisabled, setDelBtnDisabled] = React.useState(false);
 
-  const onClickResetPassword = React.useCallback(() => {
-    MySwal.fire({
-      title: 'Yakin ingin reset password user ini?',
-      text: 'Tindakan ini tidak bisa dibatalkan!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Reset',
-      ...mySwalOpts(theme),
-    });
-  }, [theme]);
+  const onClickDelete = React.useCallback(
+    async (id: number) => {
+      const { isConfirmed } = await MySwal.fire({
+        title: 'Yakin ingin hapus user ini?',
+        text: 'Tindakan ini tidak bisa dibatalkan!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Hapus',
+        ...mySwalOpts(theme),
+      });
+      if (isConfirmed) {
+        toast.promise(axios.delete(`${API_URL}/admin/iklan/${id}`), {
+          pending: {
+            render: () => {
+              setDelBtnDisabled(true);
+              return 'Loading';
+            },
+          },
+          success: {
+            render: () => {
+              setDelBtnDisabled(false);
+              return 'Berhasil hapus iklan!';
+            },
+          },
+          error: {
+            render: () => {
+              setDelBtnDisabled(false);
+              return 'Gagal melakukan lupa password!';
+            },
+          },
+        });
+      }
+    },
+    [theme]
+  );
+
+  const { data: Iklans } = useSWR<{
+    data: {
+      data: InvoiceAdmin[];
+      pagination: Pagination;
+    };
+    message: string;
+    success: boolean;
+  }>(`${API_URL}/admin/invoice`);
 
   const data = React.useMemo(
-    () => [
-      {
-        username: 'Bruh',
-        email: 'World',
-        delete: {},
-        verify: {
-          isVerified: true,
-        },
-        resetPassword: {},
-      },
-      {
-        username: 'react-table',
-        email: 'rocks',
-        delete: {},
-        verify: {
-          isVerified: true,
-        },
-        resetPassword: {},
-      },
-      {
-        username: 'whatever',
-        email: 'you want',
-        delete: {},
-        verify: {
-          isVerified: false,
-        },
-        resetPassword: {},
-      },
-    ],
-    []
+    () =>
+      Iklans?.data.data.map((invoice) => {
+        return {
+          biayaAdmin: invoice.biaya_admin,
+          biayaPenjualan: invoice.biaya_penjualan,
+          createdAt: invoice.created_at,
+          createdBy: invoice.created_by,
+          expiredAt: invoice.expired_at,
+          id: invoice.id,
+          iklanId: invoice.iklan_id,
+          jenisInvoice: invoice.jenis_invoice,
+          jenisPembayaran: invoice.jenis_pembayaran,
+          noInvoice: invoice.jenis_invoice,
+          status: invoice.status,
+          updatedAt: invoice.updated_at,
+          updatedBy: invoice.updated_by,
+          userId: invoice.user_id ?? invoice.user.id,
+          user: invoice.user,
+          action: {},
+        };
+      }) ?? [],
+    [Iklans?.data.data]
   );
+
+  React.useEffect(() => {
+    axios
+      .get(`${API_URL}/admin/invoice`, {
+        headers: { Authorization: getAuthHeader() ?? '' },
+      })
+      .then(({ data }) => console.log(data));
+  }, []);
 
   const columns = React.useMemo<Column<typeof data[number]>[]>(
     () => [
       {
-        Header: 'Username',
-        accessor: 'username', // accessor is the "key" in the data
+        Header: 'ID',
+        accessor: 'id',
       },
       {
-        Header: 'Email',
-        accessor: 'email',
+        Header: 'Status',
+        accessor: 'status', // accessor is the "key" in the data
       },
       {
-        accessor: 'delete',
-        Header: 'Delete',
-        Cell: () => (
-          <Button
-            variant='light'
-            className='text-red-500 hover:text-red-600'
-            onClick={() => onClickDelete()}
-          >
-            <FiTrash2 />
-          </Button>
-        ),
+        Header: 'Nomor Invoice',
+        accessor: 'noInvoice',
       },
       {
-        accessor: 'verify',
-        Header: 'Toggle Verifikasi',
-        Cell: ({ cell }) => (
-          <Button
-            variant='light'
-            className={clsxm(
-              cell.value.isVerified && 'text-red-500 hover:text-red-600',
-              !cell.value.isVerified && 'text-green-500 hover:text-green-600'
-            )}
-          >
-            {cell.value.isVerified ? <FiXCircle /> : <FiCheckCircle />}
-          </Button>
-        ),
-      },
-      {
-        accessor: 'resetPassword',
-        Header: 'Reset password',
-        Cell: () => (
-          <Button
-            variant='light'
-            className='text-yellow-500 hover:text-yellow-600'
-            onClick={() => onClickResetPassword()}
-          >
-            <FiLock />
-          </Button>
+        Header: 'Aksi',
+        accessor: 'action',
+        Cell: ({ row }) => (
+          <>
+            <Tooltip interactive={false} content='Lihat'>
+              <ButtonLink
+                variant={theme === 'dark' ? 'dark' : 'light'}
+                className='text-green-500 hover:text-green-600'
+                href={`/admin/iklan/id`}
+              >
+                <FiSearch />
+              </ButtonLink>
+            </Tooltip>
+            <Tooltip interactive={false} content='Edit'>
+              <ButtonLink
+                variant={theme === 'dark' ? 'dark' : 'light'}
+                className='hover:text-ywllow-600 text-yellow-500'
+                href={`/admin/iklan/id`}
+              >
+                <FiEdit2 />
+              </ButtonLink>
+            </Tooltip>
+            <Tooltip interactive={false} content='Hapus'>
+              <Button
+                variant={theme === 'dark' ? 'dark' : 'light'}
+                className='text-red-500 hover:text-red-600'
+                onClick={() => onClickDelete(row.original.iklanId)}
+                disabled={delBtnDisabled}
+              >
+                <FiTrash2 />
+              </Button>
+            </Tooltip>
+          </>
         ),
       },
     ],
-    [onClickDelete, onClickResetPassword]
+    [delBtnDisabled, onClickDelete, theme]
   );
 
   return (
-    <DashboardLayout superAdmin>
-      <ReactTable data={data} columns={columns} />
-    </DashboardLayout>
+    <>
+      <Seo templateTitle='Admin | Iklan' />
+      <AnimatePage>
+        <DashboardLayout>
+          <ReactTable data={data} columns={columns} />
+        </DashboardLayout>
+      </AnimatePage>
+    </>
   );
 };
 
