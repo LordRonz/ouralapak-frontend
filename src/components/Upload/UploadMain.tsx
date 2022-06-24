@@ -14,6 +14,7 @@ import {
 import Lightbox from 'react-image-lightbox';
 import Select from 'react-select';
 import { Theme, toast } from 'react-toastify';
+import useSWR from 'swr';
 
 import MyButton from '@/components/buttons/Button';
 import ButtonGradient from '@/components/buttons/ButtonGradient';
@@ -24,11 +25,21 @@ import DragDropSection from '@/components/Upload/DragDropSection';
 import { API_URL } from '@/constant/config';
 import clsxm from '@/lib/clsxm';
 import getAuthHeader from '@/lib/getAuthHeader';
+import toIDRCurrency from '@/lib/toIDRCurrency';
 import useAuthHeader from '@/services/authHeader';
+import Bank from '@/types/bank';
+import BindingAcc from '@/types/bindingAccount';
+import EmblemMaster from '@/types/emblemMaster';
+import HeroMaster from '@/types/heroMaster';
+import Packages from '@/types/packages';
+import Pagination from '@/types/pagination';
+import Platform from '@/types/platform';
+import Refund from '@/types/refund';
 
 type IFormInput = {
   title: string;
   platform_id: number;
+  first_hand_status: number;
   change_name_status?: number;
   account_bind: number[];
   favorite_heroes: number[];
@@ -109,49 +120,98 @@ const UploadMain = () => {
 
   const { theme } = useTheme();
 
+  const { data: banks } = useSWR<{
+    data: { data: Bank[]; pagination: Pagination };
+    message: string;
+    success: boolean;
+  }>(`${API_URL}/master/bank`);
+
+  const { data: platform } = useSWR<{
+    data: { data: Platform[]; pagination: Pagination };
+    message: string;
+    success: boolean;
+  }>(`${API_URL}/master/platform`);
+
+  const { data: packages } = useSWR<{
+    data: { data: Packages[]; pagination: Pagination };
+    message: string;
+    success: boolean;
+  }>(`${API_URL}/master/packages`);
+
+  const { data: bindingAcc } = useSWR<{
+    data: { data: BindingAcc[]; pagination: Pagination };
+    message: string;
+    success: boolean;
+  }>(`${API_URL}/master/binding-account`);
+  console.log(bindingAcc);
+
+  const { data: heroes } = useSWR<{
+    data: { data: HeroMaster[]; pagination: Pagination };
+    message: string;
+    success: boolean;
+  }>(`${API_URL}/master/hero?perPage=200`);
+
+  const { data: emblem } = useSWR<{
+    data: { data: EmblemMaster[]; pagination: Pagination };
+    message: string;
+    success: boolean;
+  }>(`${API_URL}/master/emblem?perPage=200`);
+
+  const { data: refund } = useSWR<{
+    data: { data: Refund[]; pagination: Pagination };
+    message: string;
+    success: boolean;
+  }>(`${API_URL}/master/refund?perPage=200`);
+
   const changeNameOpts = [
     { value: 0, label: 'Change name non-aktif' },
     { value: 1, label: 'Change name aktif' },
   ];
 
-  const accountBindOpts = [
-    { value: 1, label: 'Moonton' },
-    { value: 2, label: 'Facebook' },
-  ];
+  const accountBindOpts = bindingAcc?.data.data.map((acc) => ({
+    value: acc.id,
+    label: acc.name,
+  }));
 
-  const favHeroesOpts = [
-    { value: 1, label: 'Balmond' },
-    { value: 2, label: 'Eudora' },
-  ];
+  const favHeroesOpts = heroes?.data.data.map((hero) => ({
+    value: hero.id,
+    label: hero.name,
+  }));
 
-  const emblemOpts = [
-    { value: 1, label: 'Tank' },
-    { value: 2, label: 'Support' },
-  ];
+  const emblemOpts = emblem?.data.data.map((e) => ({
+    value: e.id,
+    label: e.name,
+  }));
 
-  const jenisRefundOpts = [
+  const jenisRefundOpts = refund?.data.data.map((re) => ({
+    value: re.id,
+    label: re.desc,
+  }));
+
+  const jenisPembayaranOpts = banks?.data.data.map((b) => ({
+    value: b.id,
+    label: b.rekening_name,
+  }));
+
+  const platformId = platform?.data.data.map((p) => ({
+    value: p.id,
+    label: p.name,
+  }));
+
+  const packageId = packages?.data.data.map((p) => ({
+    value: p.id,
+    label: `${p.description} (${toIDRCurrency(p.price)})`,
+  }));
+
+  const firstHandStatusOpts = [
+    {
+      value: 0,
+      label: 'Akun pribadi',
+    },
     {
       value: 1,
-      label:
-        'Refund player (refund untuk pembeli, namun jika akunnya dijual lagi oleh si pembeli refund akan tidak berlaku)',
+      label: 'Akun beli',
     },
-    { value: 2, label: 'Refund full apapun kondisinya' },
-    { value: 3, label: 'No refund' },
-  ];
-
-  const jenisPembayaranOpts = [
-    { value: 1, label: 'Mandiri' },
-    { value: 2, label: 'BNI' },
-  ];
-
-  const platformId = [
-    { value: 1, label: 'Android' },
-    { value: 2, label: 'IOS' },
-  ];
-
-  const packageId = [
-    { value: 1, label: '1' },
-    { value: 2, label: '2' },
   ];
 
   const [previewImgProfile, setPreviewImgProfile] = useState(false);
@@ -192,7 +252,6 @@ const UploadMain = () => {
         return;
       }
       form.append(v[0], JSON.stringify(v[1]));
-      console.log(v[0] + ' ' + JSON.stringify(v[1]));
     });
     if (Array.isArray(imageProfile)) {
       imageProfile.forEach((v) => form.append('image_profile', v));
@@ -273,6 +332,18 @@ const UploadMain = () => {
 
   const recaptchaRef = React.createRef<ReCAPTCHA>();
 
+  if (
+    !accountBindOpts ||
+    !favHeroesOpts ||
+    !emblemOpts ||
+    !jenisRefundOpts ||
+    !jenisPembayaranOpts ||
+    !platformId ||
+    !packageId
+  ) {
+    return <></>;
+  }
+
   return (
     <main>
       <Breadcrumbs
@@ -319,6 +390,29 @@ const UploadMain = () => {
                       </div>
                       <p className='text-red-500'>
                         {errors.platform_id?.message}
+                      </p>
+                    </div>
+                    <div className='col-md-6'>
+                      <div className='single-input-unit'>
+                        <label htmlFor='platform_id'>First Hand Status</label>
+                        <Controller
+                          control={control}
+                          defaultValue={firstHandStatusOpts[0].value}
+                          name='first_hand_status'
+                          render={({ field: { onChange, value } }) => (
+                            <Select
+                              className={clsxm()}
+                              options={firstHandStatusOpts}
+                              value={firstHandStatusOpts.find(
+                                (c) => c.value === value
+                              )}
+                              onChange={(val) => onChange(val?.value)}
+                            />
+                          )}
+                        />
+                      </div>
+                      <p className='text-red-500'>
+                        {errors.first_hand_status?.message}
                       </p>
                     </div>
                     <div className='col-md-6'>
