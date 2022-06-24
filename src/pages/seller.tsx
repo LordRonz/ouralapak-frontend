@@ -3,19 +3,19 @@ import React from 'react';
 import { Toaster } from 'react-hot-toast';
 
 import AnimatePage from '@/components/AnimatePage';
-import IklanMain from '@/components/Iklan/IklanMain';
+import SellerMain from '@/components/Iklan/SellerMain';
 import Footer from '@/components/Layout/Footer/FooterOne/Footer';
 import HeaderIklan from '@/components/Layout/Header/HeaderIklan';
 import Seo from '@/components/Seo';
 import { toastStyle } from '@/constant/toast';
 
-const IklanPage: NextPage = () => {
+const SellerPage: NextPage = () => {
   return (
     <>
-      <Seo templateTitle='Iklan' />
+      <Seo templateTitle='Seller' />
       <AnimatePage>
         <HeaderIklan />
-        <IklanMain />
+        <SellerMain />
         <Footer />
       </AnimatePage>
       <Toaster
@@ -33,4 +33,4 @@ const IklanPage: NextPage = () => {
   );
 };
 
-export default IklanPage;
+export default SellerPage;

@@ -42,7 +42,7 @@ const Footer = () => {
                 </div>
                 <ul>
                   <li>
-                    <CustomLink className='border-none' href='/iklan'>
+                    <CustomLink className='border-none' href='/seller'>
                       Jual Akun
                     </CustomLink>
                   </li>

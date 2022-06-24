@@ -1,10 +1,35 @@
-import React from 'react';
+import { stringifyUrl } from 'query-string';
+import React, { useState } from 'react';
+import useSWR from 'swr';
 
+import { API_URL } from '@/constant/config';
 import { IklanHome } from '@/types/iklan';
+import Pagination from '@/types/pagination';
 
 import IklanCardSingle from '../Cards/IklanCardSingle';
 
-const JelajahIklanSection = ({ iklans }: { iklans: IklanHome[] }) => {
+const JelajahIklanSection = () => {
+  const [sortBy, setSortBy] = useState('0');
+  const [sortDir, setSortDir] = useState('0');
+
+  const { data: iklans } = useSWR<{
+    data: { data: IklanHome[]; pagination: Pagination };
+    message: string;
+    success: boolean;
+  }>(
+    stringifyUrl({
+      url: `${API_URL}/iklan`,
+      query: {
+        orderBy: sortBy === '0' ? undefined : sortBy,
+        orderDir: sortDir === '0' ? undefined : sortDir,
+      },
+    })
+  );
+
+  if (!iklans) {
+    return <></>;
+  }
+
   return (
     <section className='artworks-area artworks-area-bg pt-110 pb-100 z-index-1'>
       <div className='container'>
@@ -21,11 +46,12 @@ const JelajahIklanSection = ({ iklans }: { iklans: IklanHome[] }) => {
                   name='s-t-select'
                   id='s-t-select'
                   className='sale-type-select'
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
                 >
-                  <option value='1'>Sale Type</option>
-                  <option value='2'>Fixed</option>
-                  <option value='3'>Auction</option>
-                  <option value='3'>On sale</option>
+                  <option value='0'>Urutkan Dengan</option>
+                  <option value='harga_akun'>Harga Akun</option>
+                  <option value='win_rate'>Win Rate</option>
                 </select>
               </div>
               <div className='common-select-arrow common-select-arrow-40 white-bg'>
@@ -33,44 +59,19 @@ const JelajahIklanSection = ({ iklans }: { iklans: IklanHome[] }) => {
                   name='cat-select'
                   id='cat-select'
                   className='category-select'
+                  value={sortDir}
+                  onChange={(e) => setSortDir(e.target.value)}
                 >
-                  <option value='1'>Category</option>
-                  <option value='2'>3D Artwork</option>
-                  <option value='3'>Video</option>
-                  <option value='3'>Animation</option>
-                  <option value='3'>Games</option>
-                  <option value='3'>Software</option>
-                  <option value='3'>Photography</option>
-                </select>
-              </div>
-              <div className='common-select-arrow common-select-arrow-40 white-bg'>
-                <select
-                  name='st-select'
-                  id='st-select'
-                  className='status-select'
-                >
-                  <option value='1'>Status</option>
-                  <option value='2'>New</option>
-                  <option value='3'>Featured</option>
-                </select>
-              </div>
-              <div className='common-select-arrow common-select-arrow-40 white-bg'>
-                <select
-                  name='pr-select'
-                  id='pr-select'
-                  className='price-select'
-                >
-                  <option value='1'>Price</option>
-                  <option value='2'>High</option>
-                  <option value='3'>Medium</option>
-                  <option value='3'>Low</option>
+                  <option value='0'>Urutan</option>
+                  <option value='ASC'>Rendah ke tinggi</option>
+                  <option value='DESC'>Tinggi ke rendah</option>
                 </select>
               </div>
             </form>
           </div>
         </div>
         <div className='row wow fadeInUp'>
-          {iklans.map((iklan, index) => (
+          {iklans.data.data.map((iklan, index) => (
             <IklanCardSingle iklan={iklan} key={`${iklan.id}${index}`} />
           ))}
         </div>

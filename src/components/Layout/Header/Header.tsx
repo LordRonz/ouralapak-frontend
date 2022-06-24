@@ -70,7 +70,7 @@ const Header = ({ HeaderStatic }: HeaderProps) => {
                           </Link>
                         </li>
                         <li>
-                          <Link href='/iklan'>
+                          <Link href='/seller'>
                             <a>Jual Akun</a>
                           </Link>
                         </li>
