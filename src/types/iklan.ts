@@ -54,4 +54,41 @@ export type IklanHome = {
   win_rate: number;
 };
 
+export type IklanDetail = {
+  account_bind: string[];
+  emblem: Emblem[];
+  first_hand_status: number;
+  id: number;
+  user_id: number;
+  title: string;
+  platform_id: number;
+  change_name_status: number;
+  first_top_up_exist: boolean | null;
+  first_top_up_image: string | null;
+  hero: Hero[];
+  platform: string;
+  win_rate: number;
+  total_hero: number;
+  total_skin: number;
+  total_skin_rare: {
+    jenis: string;
+    total_skin: number;
+  }[];
+  recall_effect: string[];
+  jenis_refund: string;
+  harga_akun: string;
+  image_profile: string;
+  image_win_rate: string;
+  image_win_rate_hero: string;
+  image_emblem: string;
+  image_skin: string[];
+  status: number;
+  created_by: string | null;
+  updated_by: number | null;
+  created_at: string;
+  updated_at: string;
+  package_id: number;
+  user: User;
+};
+
 export default Iklan;

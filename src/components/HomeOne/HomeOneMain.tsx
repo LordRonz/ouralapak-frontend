@@ -1,7 +1,6 @@
 import React from 'react';
 
 import HeroSection from '@/components/HomeOne/HeroSection';
-import WorkProcessSection from '@/components/HomeOne/WorkProcessSection';
 
 import JelajahIklanSection from './JelajahIklanSection';
 
@@ -10,7 +9,6 @@ const HomeOneMain = () => {
     <main>
       <HeroSection />
       <JelajahIklanSection />
-      <WorkProcessSection />
     </main>
   );
 };

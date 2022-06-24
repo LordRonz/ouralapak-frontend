@@ -14,7 +14,7 @@ const IklanCardSingle = ({ iklan }: { iklan: IklanHome }) => {
         <div className='art-item-wraper'>
           <div className='art-item-inner'>
             <div className='art-item-img pos-rel'>
-              <Link href='/art-details'>
+              <Link href={`/iklan/${iklan.id}`}>
                 <a>
                   <img src='assets/img/art/sadhasdocasdc.jpg' alt='art-img' />
                 </a>
@@ -38,7 +38,7 @@ const IklanCardSingle = ({ iklan }: { iklan: IklanHome }) => {
                 <div className='artist-id'>{user.name}</div>
               </div>
               <h4 className='art-name'>
-                <Link href='/art-details'>
+                <Link href={`/iklan/${iklan.id}`}>
                   <a>{title}</a>
                 </Link>
               </h4>
