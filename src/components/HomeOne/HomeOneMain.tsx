@@ -1,24 +1,29 @@
 import React from 'react';
+import useSWR from 'swr';
 
-import ArtWorksSection from '@/components/HomeOne/ArtWorksSection';
-import BrowseCategorySection from '@/components/HomeOne/BrowseCategorySection';
 import HeroSection from '@/components/HomeOne/HeroSection';
-import LiveOctionSection from '@/components/HomeOne/LiveOctionSection';
-import PopularSection from '@/components/HomeOne/PopularSection';
-import TopSellerSection from '@/components/HomeOne/TopSellerSection';
-import WalletSection from '@/components/HomeOne/WalletSection';
 import WorkProcessSection from '@/components/HomeOne/WorkProcessSection';
+import { API_URL } from '@/constant/config';
+import { IklanHome } from '@/types/iklan';
+import Pagination from '@/types/pagination';
+
+import JelajahIklanSection from './JelajahIklanSection';
 
 const HomeOneMain = () => {
+  const { data: iklans } = useSWR<{
+    data: { data: IklanHome[]; pagination: Pagination };
+    message: string;
+    success: boolean;
+  }>(`${API_URL}/iklan`);
+
+  if (!iklans) {
+    return <></>;
+  }
+
   return (
     <main>
       <HeroSection />
-      <WalletSection />
-      <LiveOctionSection />
-      <BrowseCategorySection />
-      <TopSellerSection />
-      <PopularSection />
-      <ArtWorksSection />
+      <JelajahIklanSection iklans={iklans?.data.data} />
       <WorkProcessSection />
     </main>
   );
