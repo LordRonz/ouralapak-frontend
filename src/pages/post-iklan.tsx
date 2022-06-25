@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 
 import AnimatePage from '@/components/AnimatePage';
 import Footer from '@/components/Layout/Footer/FooterOne/Footer';
-import Header from '@/components/Layout/Header/Header';
+import HeaderIklan from '@/components/Layout/Header/HeaderIklan';
 import Seo from '@/components/Seo';
 import UploadMain from '@/components/Upload/UploadMain';
 
@@ -11,7 +11,7 @@ const PostIklan: NextPage = () => {
     <>
       <Seo />
       <AnimatePage>
-        <Header />
+        <HeaderIklan />
         <UploadMain />
         <Footer />
       </AnimatePage>

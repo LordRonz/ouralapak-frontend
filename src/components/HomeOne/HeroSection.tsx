@@ -1,9 +1,8 @@
-import Link from 'next/link';
 import React, { useState } from 'react';
 import ReactPlayer from 'react-player';
 import Modal from 'react-responsive-modal';
 
-import ButtonLinkGradient from '../links/ButtonLinkGradient';
+import ButtonLinkGradient from '@/components/links/ButtonLinkGradient';
 
 const HeroSection = () => {
   const [open, setOpen] = useState(false);
@@ -40,11 +39,6 @@ const HeroSection = () => {
           <div className='swiper-wrapper'>
             <div className='swiper-slide'>
               <div className='single-banner single-banner-1 banner-900 d-flex align-items-center pos-rel mb-30'>
-                <img
-                  src='assets/img/banner/b1-shape1.png'
-                  alt='img not found'
-                  className='b1-shape1'
-                />
                 <div className='banner-bg'></div>
                 <div className='banner-bg-light'></div>
                 <div className='pos-rel container'>
@@ -56,16 +50,15 @@ const HeroSection = () => {
                           data-delay='.3s'
                           className='mb-25 font-prata'
                         >
-                          Discover Digital Artworks & Collect Best{' '}
-                          <span>NFTs</span>
+                          Lorem ipsum dolor sit amet <span>cumque</span>
                         </h1>
                         <p
                           data-animation='fadeInUp'
                           data-delay='.5s'
                           className='mb-40'
                         >
-                          There is enough digital artworks available online to
-                          help you put together crypto currency website.
+                          Lorem ipsum dolor sit amet, consectetur adipisicing
+                          elit. Minima inventore dignissimos cumque earum.
                         </p>
                         <div
                           className='banner-btn mb-105'
@@ -91,22 +84,6 @@ const HeroSection = () => {
                           >
                             Jasa Rekber
                           </ButtonLinkGradient>
-                        </div>
-                        <div className='oc-banner-counter'>
-                          <div className='art-meta-item'>
-                            <div className='art-meta-notice'>
-                              <span className='counter'>85</span>k+
-                            </div>
-                            <div className='art-meta-type'>
-                              Digital Artworks
-                            </div>
-                          </div>
-                          <div className='art-meta-item'>
-                            <div className='art-meta-notice'>
-                              <span className='counter'>25</span>k+
-                            </div>
-                            <div className='art-meta-type'>Global Creators</div>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -141,62 +118,6 @@ const HeroSection = () => {
                             src='assets/img/banner/oc-banner-4.jpg'
                             alt='img not found'
                           />
-                        </div>
-                        <div className='oc-banner-client-wrapper stuff5'>
-                          <div className='oc-banner-client ' data-depth='.3'>
-                            <div className='q-meta-item'>
-                              <div className='q-meta-viewed-members'>
-                                <Link href='/creator-profile'>
-                                  <a>
-                                    <img
-                                      src='assets/img/profile/profile1.jpg'
-                                      alt='profile-img'
-                                    />
-                                  </a>
-                                </Link>
-                                <Link href='/creator-profile'>
-                                  <a>
-                                    <img
-                                      src='assets/img/profile/profile2.jpg'
-                                      alt='profile-img'
-                                    />
-                                  </a>
-                                </Link>
-                                <Link href='/creator-profile'>
-                                  <a>
-                                    <img
-                                      src='assets/img/profile/profile3.jpg'
-                                      alt='profile-img'
-                                    />
-                                  </a>
-                                </Link>
-                                <Link href='/creator-profile'>
-                                  <a>
-                                    <img
-                                      src='assets/img/profile/profile4.jpg'
-                                      alt='profile-img'
-                                    />
-                                  </a>
-                                </Link>
-                                <Link href='/creator-profile'>
-                                  <a>
-                                    <img
-                                      src='assets/img/profile/profile5.jpg'
-                                      alt='profile-img'
-                                    />
-                                  </a>
-                                </Link>
-                              </div>
-                              <div className='q-meta-viewed-members-count'>
-                                <span className='q-meta-views'>More Than</span>
-                                <span className='q-meta-type'>25k+</span>
-                              </div>
-                            </div>
-                            <p>
-                              Digital art creators and sellers joined us to sale
-                              and create their own NFT to our marketplace
-                            </p>
-                          </div>
                         </div>
                       </div>
                     </div>

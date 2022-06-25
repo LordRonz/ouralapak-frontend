@@ -852,7 +852,7 @@ const UploadMain = () => {
                       </div>
                     </div>
                   </div>
-                  <div className='upload-btn wow fadeInUp mt-4'>
+                  <div className='upload-btn wow fadeInUp mt-4 !hidden md:!block'>
                     <ButtonGradient
                       disabled={submitBtnDisabled}
                       className='text-black'
@@ -1177,6 +1177,16 @@ const UploadMain = () => {
                         multiple
                       />
                     </div>
+                  </div>
+                  <div className='upload-btn wow fadeInUp mt-4 md:!hidden'>
+                    <ButtonGradient
+                      disabled={submitBtnDisabled}
+                      className='text-black'
+                      type='submit'
+                      onClick={() => setIsChecked(false)}
+                    >
+                      Submit Iklan
+                    </ButtonGradient>
                   </div>
                 </div>
               </div>

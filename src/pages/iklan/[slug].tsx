@@ -6,7 +6,7 @@ import { Toaster } from 'react-hot-toast';
 import AnimatePage from '@/components/AnimatePage';
 import IklanMain from '@/components/Iklan/IklanMain';
 import Footer from '@/components/Layout/Footer/FooterOne/Footer';
-import HeaderIklan from '@/components/Layout/Header/HeaderIklan';
+import Header from '@/components/Layout/Header/Header';
 import Seo from '@/components/Seo';
 import { toastStyle } from '@/constant/toast';
 
@@ -18,7 +18,7 @@ const SellerPage: NextPage = () => {
     <>
       <Seo templateTitle='Iklan' />
       <AnimatePage>
-        <HeaderIklan />
+        <Header />
         <IklanMain id={+(slug as string)} />
         {/* <ArtDetailsMain /> */}
         <Footer />
