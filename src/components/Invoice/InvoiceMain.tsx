@@ -15,7 +15,7 @@ import Iklan from '@/types/iklan';
 import Invoice from '@/types/invoice';
 import User from '@/types/user';
 
-const InvoiceMain = () => {
+const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
   const router = useRouter();
   useEffect(() => {
     (async () => {
@@ -38,14 +38,14 @@ const InvoiceMain = () => {
     data: Invoice;
     message: string;
     success: boolean;
-  }>(`${API_URL}/user/invoice/1`);
+  }>(`${API_URL}/user/check-invoice/${no_invoice}`);
 
   const { data: iklan } = useSWR<{
     data: Iklan;
     message: string;
     success: boolean;
   }>(() => `${API_URL}/user/iklan/` + invoice!.data.iklan_id);
-
+  console.log(iklan);
   const { data: user } = useSWR<{
     data: User;
     message: string;

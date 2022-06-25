@@ -15,8 +15,7 @@ const Invoice = () => {
       <Seo templateTitle='Invoice' />
       <AnimatePage>
         <HeaderIklan />
-        <InvoiceMain />
-        {slug}
+        <InvoiceMain no_invoice={slug as string} />
         <Footer />
       </AnimatePage>
     </>

@@ -143,7 +143,6 @@ const UploadMain = () => {
     message: string;
     success: boolean;
   }>(`${API_URL}/master/binding-account`);
-  console.log(bindingAcc);
 
   const { data: heroes } = useSWR<{
     data: { data: HeroMaster[]; pagination: Pagination };
@@ -233,7 +232,6 @@ const UploadMain = () => {
   const [responseCaptcha, setResponseCapthca] = useState<string | null>(null);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    console.log(data);
     if (
       !headers.Authorization ||
       !imageProfile ||
@@ -293,7 +291,7 @@ const UploadMain = () => {
     // for (const pair of form.entries()) {
     //   console.log(pair[0] + ', ' + pair[1]);
     // }
-    await toast.promise(
+    const res = await toast.promise(
       axios.post(
         stringifyUrl({
           url: `${API_URL}/user/iklan`,
@@ -328,6 +326,10 @@ const UploadMain = () => {
         },
       }
     );
+
+    const no_invoice = res.data.data.no_invoice as string;
+
+    router.push(`/invoice/${no_invoice}`);
   };
 
   const recaptchaRef = React.createRef<ReCAPTCHA>();
@@ -492,7 +494,7 @@ const UploadMain = () => {
                           onWheel={(e) =>
                             e.target instanceof HTMLElement && e.target.blur()
                           }
-                          placeholder='69'
+                          placeholder='0'
                           {...register('win_rate', {
                             required: 'Win rate harus diisi',
                             pattern: {
@@ -514,7 +516,7 @@ const UploadMain = () => {
                           onWheel={(e) =>
                             e.target instanceof HTMLElement && e.target.blur()
                           }
-                          placeholder='69'
+                          placeholder='0'
                           {...register('total_hero', {
                             required: 'Total hero harus diisi',
                             min: {
@@ -537,7 +539,7 @@ const UploadMain = () => {
                           onWheel={(e) =>
                             e.target instanceof HTMLElement && e.target.blur()
                           }
-                          placeholder='69'
+                          placeholder='0'
                           {...register('total_skin', {
                             required: 'Total skin harus diisi',
                             min: {
@@ -578,7 +580,7 @@ const UploadMain = () => {
                                 e.target instanceof HTMLElement &&
                                 e.target.blur()
                               }
-                              placeholder='69'
+                              placeholder='0'
                               {...register(
                                 `total_skin_rare.${index}.total_skin` as const,
                                 {
@@ -599,7 +601,7 @@ const UploadMain = () => {
                             onClick={() =>
                               totalSkinRareFields.append({
                                 jenis: 'medium',
-                                total_skin: 69,
+                                total_skin: 0,
                               })
                             }
                           >
@@ -771,7 +773,7 @@ const UploadMain = () => {
                           onWheel={(e) =>
                             e.target instanceof HTMLElement && e.target.blur()
                           }
-                          placeholder='69000'
+                          placeholder='10000'
                           {...register('harga_akun', {
                             required: 'Harga akun harus diisi',
                             min: {
@@ -794,7 +796,7 @@ const UploadMain = () => {
                           onWheel={(e) =>
                             e.target instanceof HTMLElement && e.target.blur()
                           }
-                          placeholder='69000'
+                          placeholder='10000'
                           {...register('total_pembayaran', {
                             required: 'Total pembayaran harus diisi',
                             min: {
