@@ -203,7 +203,7 @@ const Register: NextPage = () => {
                     </DragNDrop>
                   )}
                 </Dropzone>
-                <FormItem errorMessage={errors.account_bind?.[0].message}>
+                <FormItem errorMessage={errors.account_bind?.[0]?.message}>
                   <label htmlFor='first_top_up_exist'>Binding account</label>
                   <Controller
                     control={control}
