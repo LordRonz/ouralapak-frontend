@@ -87,13 +87,10 @@ const SellerMain = () => {
       </section>
 
       <section className='creator-details-area pb-90 pt-0'>
-        <div className='creator-cover-img creator-details-cover-img pos-rel wow fadeInUp'>
-          <img src={creatorItem.coverImage} alt='cover-img' />
-        </div>
         <div className='container'>
           <div className='row'>
             <div className='col-xl-3 col-lg-6 col-md-8'>
-              <div className='creator-about wow fadeInUp mb-40'>
+              <div className='creator-about wow fadeInUp mb-40 overflow-hidden'>
                 <div className='profile-img pos-rel'>
                   <img src={creatorItem.profileImage} alt='img' />
                 </div>
@@ -115,11 +112,6 @@ const SellerMain = () => {
                       `${formatDateStrId(user?.data.created_at, 'MMMM yyyy')}`}
                   </li>
                 </ul>
-                <div className='message-creator-btn'>
-                  <a href='#' className='fill-btn icon-left'>
-                    <i className='fas fa-paper-plane'></i>Message to Creator
-                  </a>
-                </div>
               </div>
             </div>
             <div className='col-xl-9'>

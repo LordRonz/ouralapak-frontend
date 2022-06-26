@@ -1,39 +1,10 @@
-import React, { useState } from 'react';
-import ReactPlayer from 'react-player';
-import Modal from 'react-responsive-modal';
+import React from 'react';
 
 import ButtonLinkGradient from '@/components/links/ButtonLinkGradient';
 
 const HeroSection = () => {
-  const [open, setOpen] = useState(false);
-  const onCloseModal = () => setOpen(false);
-
   return (
     <React.Fragment>
-      <Modal
-        open={open}
-        onClose={onCloseModal}
-        styles={{
-          modal: {
-            maxWidth: 'unset',
-            width: '70%',
-            padding: 'unset',
-          },
-          overlay: {
-            background: 'rgba(0, 0, 0, 0.5)',
-          },
-          closeButton: {
-            background: 'yellow',
-          },
-        }}
-        center
-      >
-        <ReactPlayer
-          url='https://youtu.be/YRIHdCJqQOg'
-          width='100%'
-          height='calc(100vh - 200px)'
-        />
-      </Modal>
       <div className='banner-area banner-area1 pos-rel fix'>
         <div className='swiper-container'>
           <div className='swiper-wrapper'>

@@ -57,7 +57,6 @@ type IFormInput = {
   recall_effect: string[];
   jenis_refund: number;
   harga_akun: number;
-  total_pembayaran: number;
   jenis_pembayaran: number;
   package_id: number;
   image_profile: string;
@@ -382,7 +381,7 @@ const UploadMain = () => {
                           name='platform_id'
                           render={({ field: { onChange, value } }) => (
                             <Select
-                              className={clsxm()}
+                              className={clsxm('py-3 pt-0')}
                               options={platformId}
                               value={platformId.find((c) => c.value === value)}
                               onChange={(val) => onChange(val?.value)}
@@ -403,7 +402,7 @@ const UploadMain = () => {
                           name='first_hand_status'
                           render={({ field: { onChange, value } }) => (
                             <Select
-                              className={clsxm()}
+                              className={clsxm('py-3 pt-0')}
                               options={firstHandStatusOpts}
                               value={firstHandStatusOpts.find(
                                 (c) => c.value === value
@@ -426,7 +425,7 @@ const UploadMain = () => {
                           name='change_name_status'
                           render={({ field: { onChange, value } }) => (
                             <Select
-                              className={clsxm()}
+                              className={clsxm('py-3 pt-0')}
                               options={changeNameOpts}
                               value={changeNameOpts.find(
                                 (c) => c.value === value
@@ -449,7 +448,7 @@ const UploadMain = () => {
                           name='account_bind'
                           render={({ field: { onChange, value } }) => (
                             <Select
-                              className={clsxm()}
+                              className={clsxm('py-3 pt-0')}
                               options={accountBindOpts}
                               value={accountBindOpts.filter((c) =>
                                 value.includes(c.value)
@@ -472,12 +471,13 @@ const UploadMain = () => {
                           name='favorite_heroes'
                           render={({ field: { onChange, value } }) => (
                             <Select
-                              className={clsxm()}
+                              className={clsxm('py-3 pt-0')}
                               options={favHeroesOpts}
                               value={favHeroesOpts.filter((c) =>
                                 value.includes(c.value)
                               )}
                               onChange={(val) =>
+                                val.length <= 5 &&
                                 onChange(val.map((c) => c.value))
                               }
                               isMulti
@@ -555,14 +555,14 @@ const UploadMain = () => {
                       </p>
                     </div>
                     <div className='col-md-6'>
-                      <div className='single-input-unit'>
+                      <div className='single-input-unit space-y-4'>
                         <label>Total Skin Rare</label>
                         {totalSkinRareFields.fields.map((field, index) => (
                           <div
-                            className='border-1 rounded-xl border-primary-200'
+                            className='border-1 rounded-xl border-primary-200 px-4'
                             key={field.id}
                           >
-                            <label>Jenis</label>
+                            <label className='py-2'>Jenis</label>
                             <input
                               type='text'
                               placeholder='Jenis'
@@ -595,7 +595,7 @@ const UploadMain = () => {
                             />
                           </div>
                         ))}
-                        <div className='flex items-center justify-evenly'>
+                        <div className='flex items-center justify-evenly py-4'>
                           <Button
                             variant='success'
                             onClick={() =>
@@ -624,22 +624,48 @@ const UploadMain = () => {
                       <p className='text-red-500'>{errors.title?.message}</p>
                     </div>
                     <div className='col-md-6'>
-                      <div className='single-input-unit'>
+                      <div className='single-input-unit space-y-4'>
                         <label>Total Emblem</label>
                         {totalEmblemFields.fields.map((field, index) => (
                           <div
-                            className='border-1 rounded-xl border-primary-200'
+                            className='border-1 rounded-xl border-primary-200 px-4'
                             key={field.id}
                           >
-                            <label>Emblem</label>
+                            <label className='py-2'>Emblem</label>
                             <Controller
                               control={control}
-                              defaultValue={emblemOpts[0].value}
+                              defaultValue={
+                                emblemOpts.filter(
+                                  (x) =>
+                                    !getValues('total_emblem')
+                                      .filter(
+                                        (x) =>
+                                          x.id_emblem !==
+                                          getValues(
+                                            `total_emblem.${index}.id_emblem`
+                                          )
+                                      )
+                                      .map((x) => x.id_emblem)
+                                      .includes(x.value)
+                                )[0]?.value
+                              }
                               name={`total_emblem.${index}.id_emblem`}
                               render={({ field: { onChange, value } }) => (
                                 <Select
-                                  className={clsxm()}
-                                  options={emblemOpts}
+                                  className={clsxm('py-3 pt-0')}
+                                  options={emblemOpts.filter(
+                                    (x) =>
+                                      !getValues('total_emblem')
+                                        .filter(
+                                          (x) =>
+                                            x.id_emblem !==
+                                            getValues(
+                                              `total_emblem.${index}.id_emblem`
+                                            )
+                                        )
+                                        .map((x) => x.id_emblem)
+                                        .includes(x.value)
+                                  )}
                                   value={emblemOpts.find(
                                     (c) => c.value === value
                                   )}
@@ -647,7 +673,7 @@ const UploadMain = () => {
                                 />
                               )}
                             />
-                            <label>Level</label>
+                            <label className='py-2'>Level</label>
                             <input
                               type='number'
                               onWheel={(e) =>
@@ -670,18 +696,26 @@ const UploadMain = () => {
                           </div>
                         ))}
 
-                        <div className='flex items-center justify-evenly'>
-                          <Button
-                            variant='success'
-                            onClick={() =>
-                              totalEmblemFields.append({
-                                id_emblem: 1,
-                                level: 1,
-                              })
-                            }
-                          >
-                            Tambah
-                          </Button>
+                        <div className='flex items-center justify-evenly py-4'>
+                          {totalEmblemFields.fields.length <
+                            emblemOpts.length && (
+                            <Button
+                              variant='success'
+                              onClick={() =>
+                                totalEmblemFields.append({
+                                  id_emblem: emblemOpts.filter(
+                                    (x) =>
+                                      !getValues('total_emblem')
+                                        .map((x) => x.id_emblem)
+                                        .includes(x.value)
+                                  )[0]?.value,
+                                  level: 1,
+                                })
+                              }
+                            >
+                              Tambah
+                            </Button>
+                          )}
                           {!!totalEmblemFields.fields.length && (
                             <Button
                               variant='danger'
@@ -715,7 +749,7 @@ const UploadMain = () => {
                             </p>
                           </>
                         ))}
-                        <div className='mb-2 flex items-center justify-evenly'>
+                        <div className='mb-2 flex items-center justify-evenly py-4'>
                           <Button
                             variant='success'
                             onClick={() => setRecallEffectCnt((v) => v + 1)}
@@ -754,7 +788,7 @@ const UploadMain = () => {
                           name='jenis_refund'
                           render={({ field: { onChange, value } }) => (
                             <Select
-                              className={clsxm()}
+                              className={clsxm('py-3 pt-0')}
                               options={jenisRefundOpts}
                               value={jenisRefundOpts.find(
                                 (c) => c.value === value
@@ -790,29 +824,6 @@ const UploadMain = () => {
                     </div>
                     <div className='col-md-6'>
                       <div className='single-input-unit'>
-                        <label>Total Pembayaran (IDR)</label>
-                        <input
-                          type='number'
-                          onWheel={(e) =>
-                            e.target instanceof HTMLElement && e.target.blur()
-                          }
-                          placeholder='10000'
-                          {...register('total_pembayaran', {
-                            required: 'Total pembayaran harus diisi',
-                            min: {
-                              value: 1,
-                              message: 'Minimum total pembayaran adalah 1',
-                            },
-                            valueAsNumber: true,
-                          })}
-                        />
-                      </div>
-                      <p className='text-red-500'>
-                        {errors.total_pembayaran?.message}
-                      </p>
-                    </div>
-                    <div className='col-md-6'>
-                      <div className='single-input-unit'>
                         <label htmlFor='jenis_pembayaran'>
                           Jenis Pembayaran
                         </label>
@@ -822,7 +833,7 @@ const UploadMain = () => {
                           name='jenis_pembayaran'
                           render={({ field: { onChange, value } }) => (
                             <Select
-                              className={clsxm()}
+                              className={clsxm('py-3 pt-0')}
                               options={jenisPembayaranOpts}
                               value={jenisPembayaranOpts.find(
                                 (c) => c.value === value
@@ -842,7 +853,7 @@ const UploadMain = () => {
                           name='package_id'
                           render={({ field: { onChange, value } }) => (
                             <Select
-                              className={clsxm()}
+                              className={clsxm('py-3 pt-0')}
                               options={packageId}
                               value={packageId.find((c) => c.value === value)}
                               onChange={(val) => onChange(val?.value)}
@@ -974,17 +985,6 @@ const UploadMain = () => {
                             style: 'currency',
                             currency: 'IDR',
                           }).format(getValues('harga_akun'))}
-                        </p>
-                      </div>
-                      <div>
-                        <label className='font-bold'>
-                          Total Pembayaran (IDR)
-                        </label>
-                        <p className='text-black'>
-                          {new Intl.NumberFormat('id-ID', {
-                            style: 'currency',
-                            currency: 'IDR',
-                          }).format(getValues('total_pembayaran'))}
                         </p>
                       </div>
                       <div>
