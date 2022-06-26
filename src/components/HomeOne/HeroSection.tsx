@@ -9,7 +9,7 @@ const HeroSection = () => {
         <div className='swiper-container'>
           <div className='swiper-wrapper'>
             <div className='swiper-slide'>
-              <div className='single-banner banner-900 d-flex align-items-center pos-rel mb-30'>
+              <div className='single-banner banner-900 d-flex align-items-center pos-rel mb-30 pt-32 md:pt-0'>
                 <div className='pos-rel container'>
                   <div className='row align-items-center justify-content-between'>
                     <div className='col-xl-6 col-lg-6'>

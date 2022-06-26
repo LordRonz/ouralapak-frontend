@@ -2,7 +2,7 @@ export type Pagination = {
   total: number;
   lastPage: number;
   perPage: number;
-  currentPage: number;
+  currentPage: number | string;
   from: number;
   to: number;
 };

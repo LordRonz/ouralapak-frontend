@@ -55,13 +55,11 @@ const SellerMain = () => {
       ? stringifyUrl({
           url: `${API_URL}/user/iklan`,
           query: {
-            page: curPage,
+            page: curPage + 1,
           },
         })
       : null
   );
-
-  console.log(iklans);
 
   const { data: user } = useSWR<{
     data: User;
@@ -304,8 +302,8 @@ const SellerMain = () => {
                           <div className='row mt-3'>
                             <div className='col-12'>
                               <p>
-                                Menampilkan {iklans.data.pagination.perPage}{' '}
-                                dari {iklans.data.pagination.total} iklan
+                                Menampilkan {iklans.data.data.length} dari{' '}
+                                {iklans.data.pagination.total} iklan
                               </p>
                               <Pagination
                                 pageCount={iklans?.data.pagination.lastPage}

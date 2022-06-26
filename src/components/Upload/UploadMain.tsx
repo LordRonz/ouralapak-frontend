@@ -35,6 +35,7 @@ import Packages from '@/types/packages';
 import Pagination from '@/types/pagination';
 import Platform from '@/types/platform';
 import Refund from '@/types/refund';
+import User from '@/types/user';
 
 type IFormInput = {
   title: string;
@@ -119,6 +120,18 @@ const UploadMain = () => {
 
   const { theme } = useTheme();
 
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const { data: user } = useSWR<{
+    data: User;
+    message: string;
+    success: boolean;
+  }>(mounted ? `${API_URL}/profile` : null);
+
   const { data: banks } = useSWR<{
     data: { data: Bank[]; pagination: Pagination };
     message: string;
@@ -181,10 +194,17 @@ const UploadMain = () => {
     label: e.name,
   }));
 
-  const jenisRefundOpts = refund?.data.data.map((re) => ({
-    value: re.id,
-    label: re.desc,
-  }));
+  const jenisRefundOpts = user?.data.is_verified
+    ? refund?.data.data.map((re) => ({
+        value: re.id,
+        label: re.desc,
+      }))
+    : refund?.data.data
+        .map((re) => ({
+          value: re.id,
+          label: re.desc,
+        }))
+        .slice(0, 1);
 
   const jenisPembayaranOpts = banks?.data.data.map((b) => ({
     value: b.id,
@@ -248,7 +268,10 @@ const UploadMain = () => {
       if ((Array.isArray(v[1]) && v[1].length === 0) || v[1] === undefined) {
         return;
       }
-      form.append(v[0], JSON.stringify(v[1]));
+      form.append(
+        v[0],
+        Array.isArray(v[1]) ? JSON.stringify(v[1]) : v[1].toString()
+      );
     });
     if (Array.isArray(imageProfile)) {
       imageProfile.forEach((v) => form.append('image_profile', v));
@@ -797,6 +820,13 @@ const UploadMain = () => {
                             />
                           )}
                         />
+                        {!user?.data.is_verified && (
+                          <p className='text-sm text-yellow-500'>
+                            Akun anda belum diverifikasi, silahkan upload
+                            identitas terlebih dahulu agar dapat memilih opsi
+                            Refund lainnya
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className='col-md-6'>
