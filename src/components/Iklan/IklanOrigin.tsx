@@ -2,7 +2,7 @@ import Link from 'next/link';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import Pagination from '@/components/Common/Pagination';
+import PaginationOld from '@/components/Common/PaginationOld';
 import ExploreArtsSingle from '@/components/ExploreArts/ExploreArtsSingle';
 import ButtonLink from '@/components/links/ButtonLink';
 import { RootState } from '@/redux/store';
@@ -198,7 +198,7 @@ const IklanOrigin = () => {
                         </div>
                         <div className='row'>
                           <div className='col-12'>
-                            <Pagination />
+                            <PaginationOld />
                           </div>
                         </div>
                       </div>
@@ -814,7 +814,7 @@ const IklanOrigin = () => {
                         </div>
                         <div className='row'>
                           <div className='col-12'>
-                            <Pagination />
+                            <PaginationOld />
                           </div>
                         </div>
                       </div>
@@ -836,7 +836,7 @@ const IklanOrigin = () => {
                         </div>
                         <div className='row'>
                           <div className='col-12'>
-                            <Pagination />
+                            <PaginationOld />
                           </div>
                         </div>
                       </div>
@@ -859,7 +859,7 @@ const IklanOrigin = () => {
                           </div>
                           <div className='row'>
                             <div className='col-12'>
-                              <Pagination />
+                              <PaginationOld />
                             </div>
                           </div>
                         </div>
@@ -1356,7 +1356,7 @@ const IklanOrigin = () => {
                         </div>
                         <div className='row pt-30'>
                           <div className='col-12'>
-                            <Pagination />
+                            <PaginationOld />
                           </div>
                         </div>
                       </div>

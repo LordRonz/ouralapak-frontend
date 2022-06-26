@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import Breadcrumbs from '@/components/Common/PageTitle';
-import Pagination from '@/components/Common/Pagination';
+import PaginationOld from '@/components/Common/PaginationOld';
 import ThemeChanger from '@/components/Common/ThemeChanger';
 import ExploreCategorySlider from '@/components/Elements/Slider/ExploreCategorySlider';
 import ExploreArtsBar from '@/components/ExploreArts/ExploreArtsBar';
@@ -32,7 +32,7 @@ const ExploreArtsMain = () => {
           </div>
           <div className='row wow fadeInUp'>
             <div className='col-12'>
-              <Pagination />
+              <PaginationOld />
             </div>
           </div>
         </div>
