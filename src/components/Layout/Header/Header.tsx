@@ -1,13 +1,9 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
-import useSWR from 'swr';
 
 import ColorModeToggle from '@/components/ColorModeToggle';
 import MobileMenu from '@/components/Layout/Header/MobileMenu';
-import { API_URL } from '@/constant/config';
 import useSticky from '@/hooks/useSticky';
-import { IklanHome } from '@/types/iklan';
-import Pagination from '@/types/pagination';
 
 type HeaderProps = {
   HeaderStatic?: string;
@@ -19,12 +15,6 @@ const Header = ({ HeaderStatic }: HeaderProps) => {
 
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const { data: iklans } = useSWR<{
-    data: { data: IklanHome[]; pagination: Pagination };
-    message: string;
-    success: boolean;
-  }>(`${API_URL}/master/config`);
-  console.log(iklans);
   return (
     <>
       <header className={`header1 ${HeaderStatic ? HeaderStatic : ''}`}>

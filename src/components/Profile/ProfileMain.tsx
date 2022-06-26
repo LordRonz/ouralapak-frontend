@@ -61,34 +61,29 @@ const ProfileMain = () => {
   const headers = useAuthHeader();
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    console.log(data);
     if (!headers.Authorization) {
       return;
     }
-    const res = await toast.promise(
-      axios.put(`${API_URL}/profile`, data, { headers }),
-      {
-        pending: {
-          render: () => {
-            setUpdateBtnDisabled(true);
-            return 'Loading';
-          },
+    await toast.promise(axios.put(`${API_URL}/profile`, data, { headers }), {
+      pending: {
+        render: () => {
+          setUpdateBtnDisabled(true);
+          return 'Loading';
         },
-        success: {
-          render: () => {
-            setUpdateBtnDisabled(false);
-            return 'Berhasil update profil';
-          },
+      },
+      success: {
+        render: () => {
+          setUpdateBtnDisabled(false);
+          return 'Berhasil update profil';
         },
-        error: {
-          render: () => {
-            setUpdateBtnDisabled(false);
-            return 'Gagal update profil!';
-          },
+      },
+      error: {
+        render: () => {
+          setUpdateBtnDisabled(false);
+          return 'Gagal update profil!';
         },
-      }
-    );
-    console.log(res);
+      },
+    });
   };
 
   const { theme } = useTheme();

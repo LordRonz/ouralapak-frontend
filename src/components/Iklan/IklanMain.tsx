@@ -23,8 +23,6 @@ const IklanMain = ({ id }: { id: number }) => {
     success: boolean;
   }>(`${API_URL}/master/hero?perPage=200`);
 
-  console.log(iklan);
-
   if (!iklan) {
     return <></>;
   }

@@ -45,7 +45,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
     message: string;
     success: boolean;
   }>(() => `${API_URL}/user/iklan/` + invoice!.data.iklan_id);
-  console.log(iklan);
+
   const { data: user } = useSWR<{
     data: User;
     message: string;

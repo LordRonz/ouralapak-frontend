@@ -9,12 +9,12 @@ type MobileMenuProps = {
 const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
   const [isActive14, setActive14] = useState(false);
   const handleToggle14 = () => {
-    setActive14(!isActive14);
+    setActive14((a) => !a);
   };
 
   return (
     <>
-      <div className='fix'>
+      <div className='fix md:hidden'>
         <div className={menuOpen ? 'side-info info-open' : 'side-info'}>
           <div className='side-info-content'>
             <div className='offset-widget offset-logo mb-40'>

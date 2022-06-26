@@ -2,7 +2,6 @@ import type { NextPage } from 'next';
 import React from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import { Toaster } from 'react-hot-toast';
 
 import AnimatePage from '@/components/AnimatePage';
 import Button from '@/components/buttons/Button';
@@ -11,7 +10,6 @@ import StyledInput from '@/components/forms/StyledInput';
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
 import Seo from '@/components/Seo';
-import { toastStyle } from '@/constant/toast';
 
 type IFormInput = {
   email: string;
@@ -71,17 +69,6 @@ const ForgotPassword: NextPage = () => {
           </section>
         </main>
       </AnimatePage>
-      <Toaster
-        toastOptions={{
-          style: toastStyle,
-          loading: {
-            iconTheme: {
-              primary: '#eb2754',
-              secondary: 'black',
-            },
-          },
-        }}
-      />
     </Layout>
   );
 };

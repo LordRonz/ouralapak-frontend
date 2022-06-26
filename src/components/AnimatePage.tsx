@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
+import { useWindowSize } from 'react-use';
 
 type AnimatePageProps = {
   children: ReactNode;
@@ -11,6 +12,12 @@ const AnimatePage = ({ children }: AnimatePageProps) => {
     enter: { opacity: 1, x: 0, y: 0 },
     exit: { opacity: 0, x: 0, y: -100 },
   };
+
+  const { width } = useWindowSize();
+
+  if (width && width < 768) {
+    return <div>{children}</div>;
+  }
 
   return (
     <motion.div

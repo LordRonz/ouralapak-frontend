@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 
+import toIDRCurrency from '@/lib/toIDRCurrency';
 import Iklan from '@/types/iklan';
 
 const IklanCard = ({ iklan }: { iklan: Iklan }) => {
@@ -32,7 +33,9 @@ const IklanCard = ({ iklan }: { iklan: Iklan }) => {
         <h2 className='text-lg  dark:!text-light md:text-2xl'>
           Status: {iklan.status}
         </h2>
-        <p className='dark:!text-light'>Harga: {iklan.harga_akun}</p>
+        <p className='dark:!text-light'>
+          Harga: {toIDRCurrency(iklan.harga_akun)}
+        </p>
       </div>
     </div>
   );
