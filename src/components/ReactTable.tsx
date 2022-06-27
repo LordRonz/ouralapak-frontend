@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import * as React from 'react';
 import { GoTriangleDown, GoTriangleUp } from 'react-icons/go';
 import { HiSearch } from 'react-icons/hi';
-import ReactPaginate from 'react-paginate';
 import {
   Column,
   PluginHook,
@@ -12,6 +11,8 @@ import {
   useTable,
 } from 'react-table';
 
+import Pagination from '@/components/Common/Pagination';
+
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props<T extends object = {}> = {
   data: readonly T[];
@@ -20,6 +21,8 @@ type Props<T extends object = {}> = {
   plugins?: PluginHook<T>[];
   className?: string;
   withFooter?: boolean;
+  pageCount: number;
+  onPageChange?: (selectedItem: { selected: number }) => void;
 };
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -30,6 +33,8 @@ export default function ReactTable<T extends object>({
   plugins = [],
   className,
   withFooter = true,
+  pageCount,
+  onPageChange,
 }: Props<T>) {
   const {
     getTableProps,
@@ -168,9 +173,9 @@ export default function ReactTable<T extends object>({
                   ))}
                   <tr>
                     <td colSpan={columns.length} className='text-center'>
-                      <ReactPaginate
-                        pageCount={10}
-                        className='mb-8 flex list-none flex-row justify-between px-20'
+                      <Pagination
+                        pageCount={pageCount}
+                        onPageChange={onPageChange}
                       />
                     </td>
                   </tr>

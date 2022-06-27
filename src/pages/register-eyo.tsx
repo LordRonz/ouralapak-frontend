@@ -3,7 +3,6 @@ import Image from 'next/image';
 import React from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import { Toaster } from 'react-hot-toast';
 
 import AnimatePage from '@/components/AnimatePage';
 import Button from '@/components/buttons/Button';
@@ -13,7 +12,6 @@ import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
 import CustomLink from '@/components/links/CustomLink';
 import Seo from '@/components/Seo';
-import { toastStyle } from '@/constant/toast';
 import oura_long from '~/images/ouralapak_logo_long.png';
 
 type IFormInput = {
@@ -156,17 +154,6 @@ const Register: NextPage = () => {
           </section>
         </main>
       </AnimatePage>
-      <Toaster
-        toastOptions={{
-          style: toastStyle,
-          loading: {
-            iconTheme: {
-              primary: '#eb2754',
-              secondary: 'black',
-            },
-          },
-        }}
-      />
     </Layout>
   );
 };

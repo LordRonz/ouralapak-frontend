@@ -3,12 +3,11 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import AnimatePage from '@/components/AnimatePage';
-import IklanMain from '@/components/Iklan/IklanMain';
-import Footer from '@/components/Layout/Footer/FooterOne/Footer';
-import Header from '@/components/Layout/Header/Header';
+import IklanAdmin from '@/components/Iklan/IklanAdmin';
 import Seo from '@/components/Seo';
+import DashboardLayout from '@/dashboard/layout';
 
-const SellerPage: NextPage = () => {
+const AdminIklanPage: NextPage = () => {
   const router = useRouter();
   const { slug } = router.query;
 
@@ -16,13 +15,12 @@ const SellerPage: NextPage = () => {
     <>
       <Seo templateTitle='Iklan' />
       <AnimatePage>
-        <Header />
-        <IklanMain id={+(slug as string)} />
-        {/* <ArtDetailsMain /> */}
-        <Footer />
+        <DashboardLayout>
+          <IklanAdmin id={+(slug as string)} />
+        </DashboardLayout>
       </AnimatePage>
     </>
   );
 };
 
-export default SellerPage;
+export default AdminIklanPage;

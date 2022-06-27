@@ -52,13 +52,13 @@ const IndexPage = () => {
           success: {
             render: () => {
               setDelBtnDisabled(false);
-              return 'Berhasil hapus iklan!';
+              return 'Berhasil hapus invoice!';
             },
           },
           error: {
             render: () => {
               setDelBtnDisabled(false);
-              return 'Gagal menghapus iklan!';
+              return 'Gagal menghapus invoice!';
             },
           },
         });
@@ -75,7 +75,7 @@ const IndexPage = () => {
     setMounted(true);
   }, []);
 
-  const { data: iklans } = useSWR<{
+  const { data: invoices } = useSWR<{
     data: {
       data: InvoiceAdmin[];
       pagination: Pagination;
@@ -93,9 +93,11 @@ const IndexPage = () => {
       : null
   );
 
+  console.log(invoices);
+
   const data = React.useMemo(
     () =>
-      iklans?.data.data.map((invoice) => {
+      invoices?.data.data.map((invoice) => {
         return {
           biayaAdmin: invoice.biaya_admin,
           biayaPenjualan: invoice.biaya_penjualan,
@@ -105,7 +107,7 @@ const IndexPage = () => {
           id: invoice.id,
           iklanId: invoice.iklan_id,
           jenisInvoice: invoice.jenis_invoice,
-          jenisPembayaran: invoice.jenis_pembayaran,
+          jenisPembayaran: invoice.jenis_pembayaran.rekening_name,
           judulIklan: invoice.iklan.title,
           noInvoice: invoice.no_invoice,
           status: getStatusIklan(invoice.status),
@@ -116,7 +118,7 @@ const IndexPage = () => {
           action: {},
         };
       }) ?? [],
-    [iklans?.data.data]
+    [invoices?.data.data]
   );
 
   const columns = React.useMemo<Column<typeof data[number]>[]>(
@@ -126,16 +128,16 @@ const IndexPage = () => {
         accessor: 'createdAt',
       },
       {
-        Header: 'Status',
-        accessor: 'status', // accessor is the "key" in the data
-      },
-      {
-        Header: 'Judul Iklan',
-        accessor: 'judulIklan',
-      },
-      {
         Header: 'Nomor Invoice',
         accessor: 'noInvoice',
+      },
+      {
+        Header: 'Metode Pembayaran',
+        accessor: 'jenisPembayaran',
+      },
+      {
+        Header: 'Status',
+        accessor: 'status', // accessor is the "key" in the data
       },
       {
         Header: 'Aksi',
@@ -146,7 +148,7 @@ const IndexPage = () => {
               <ButtonLink
                 variant={theme === 'dark' ? 'dark' : 'light'}
                 className='text-green-500 hover:text-green-600'
-                href={`/admin/iklan/${row.original.iklanId}`}
+                href={`/admin/invoice/${row.original.id}`}
               >
                 <FiSearch />
               </ButtonLink>
@@ -155,7 +157,7 @@ const IndexPage = () => {
               <ButtonLink
                 variant={theme === 'dark' ? 'dark' : 'light'}
                 className='hover:text-ywllow-600 text-yellow-500'
-                href={`/admin/iklan/id`}
+                href={`/admin/invoice/id`}
               >
                 <FiEdit2 />
               </ButtonLink>
@@ -182,11 +184,11 @@ const IndexPage = () => {
       <Seo templateTitle='Admin | Iklan' />
       <AnimatePage>
         <DashboardLayout>
-          {iklans && (
+          {invoices && (
             <ReactTable
               data={data}
               columns={columns}
-              pageCount={iklans?.data.pagination.lastPage}
+              pageCount={invoices?.data.pagination.lastPage}
               onPageChange={({ selected }) => setCurPage(selected)}
             />
           )}

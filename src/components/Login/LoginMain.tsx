@@ -97,6 +97,7 @@ const LoginMain = () => {
                             <input
                               type='text'
                               placeholder='Email atau username anda'
+                              autoFocus
                               {...register('emailOrUsername', {
                                 required: 'Username/Email harus diisi',
                               })}

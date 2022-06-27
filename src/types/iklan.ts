@@ -55,7 +55,10 @@ export type IklanHome = {
 };
 
 export type IklanDetail = {
-  account_bind: string[];
+  account_bind: {
+    name: string;
+    id: number;
+  }[];
   emblem: Emblem[];
   first_hand_status: number;
   id: number;
@@ -65,7 +68,10 @@ export type IklanDetail = {
   change_name_status: number;
   first_top_up_exist: boolean | null;
   first_top_up_image: string | null;
-  hero: Hero[];
+  hero: {
+    name: string;
+    id: number;
+  }[];
   platform: string;
   win_rate: number;
   total_hero: number;

@@ -3,7 +3,6 @@ import Image from 'next/image';
 import React from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import { Toaster } from 'react-hot-toast';
 
 import Button from '@/components/buttons/Button';
 import FormItem from '@/components/forms/FormItem';
@@ -11,7 +10,6 @@ import StyledInput from '@/components/forms/StyledInput';
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
 import Seo from '@/components/Seo';
-import { toastStyle } from '@/constant/toast';
 import oura_long from '~/images/ouralapak_logo_long.png';
 
 type IFormInput = {
@@ -54,6 +52,7 @@ const Login: NextPage = () => {
                 <StyledInput
                   type='text'
                   className='block rounded-lg border-2 bg-gray-300 p-2 dark:!bg-gray-900'
+                  autoFocus
                   {...register('email', {
                     required: 'Email harus diisi',
                     pattern: {
@@ -87,17 +86,6 @@ const Login: NextPage = () => {
           </div>
         </section>
       </main>
-      <Toaster
-        toastOptions={{
-          style: toastStyle,
-          loading: {
-            iconTheme: {
-              primary: '#eb2754',
-              secondary: 'black',
-            },
-          },
-        }}
-      />
     </Layout>
   );
 };

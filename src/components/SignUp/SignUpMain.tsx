@@ -95,6 +95,7 @@ const SignUpMain = () => {
                             <input
                               type='email'
                               placeholder='Email anda'
+                              autoFocus
                               {...register('email', {
                                 required: 'Email harus diisi',
                                 pattern: {

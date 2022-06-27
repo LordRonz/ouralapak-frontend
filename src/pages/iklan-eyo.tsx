@@ -3,7 +3,6 @@ import Image from 'next/image';
 import React, { useCallback, useState } from 'react';
 import Dropzone from 'react-dropzone';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { Toaster } from 'react-hot-toast';
 import { FiUpload } from 'react-icons/fi';
 import Select from 'react-select';
 
@@ -17,7 +16,6 @@ import StyledSelect from '@/components/forms/StyledSelect';
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
 import Seo from '@/components/Seo';
-import { toastStyle } from '@/constant/toast';
 import clsxm from '@/lib/clsxm';
 import oura_long from '~/images/ouralapak_logo_long.png';
 
@@ -309,17 +307,6 @@ const Register: NextPage = () => {
           </section>
         </main>
       </AnimatePage>
-      <Toaster
-        toastOptions={{
-          style: toastStyle,
-          loading: {
-            iconTheme: {
-              primary: '#eb2754',
-              secondary: 'black',
-            },
-          },
-        }}
-      />
     </Layout>
   );
 };

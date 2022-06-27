@@ -3,17 +3,18 @@ import Link from 'next/link';
 import React from 'react';
 import useSWR from 'swr';
 
-import ButtonLink from '@/components/links/ButtonLink';
 import { API_URL } from '@/constant/config';
 import toIDRCurrency from '@/lib/toIDRCurrency';
 import { IklanDetail } from '@/types/iklan';
 
-const IklanMain = ({ id }: { id: number }) => {
+const IklanAdmin = ({ id }: { id: number }) => {
   const { data: iklan } = useSWR<{
     data: IklanDetail;
     message: string;
     success: boolean;
-  }>(`${API_URL}/iklan/${id}`);
+  }>(`${API_URL}/admin/iklan/${id}`);
+
+  console.log(iklan);
 
   if (!iklan) {
     return <></>;
@@ -21,33 +22,7 @@ const IklanMain = ({ id }: { id: number }) => {
 
   return (
     <main>
-      <section className='page-title-area'>
-        <div className='container'>
-          <div className='row wow fadeInUp'>
-            <div className='col-lg-12'>
-              <div className='page-title'>
-                <h2 className='breadcrumb-title mb-10'>{iklan.data.title}</h2>
-                <div className='breadcrumb-menu'>
-                  <nav className='breadcrumb-trail breadcrumbs'>
-                    <ul className='trail-items'>
-                      <li className='trail-item trail-begin'>
-                        <Link href='/'>
-                          <a>Home</a>
-                        </Link>
-                      </li>
-                      <li className='trail-item trail-end'>
-                        <span>{iklan.data.title}</span>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className='art-details-area pt-130 pb-0'>
+      <section className='art-details-area pb-0'>
         <div className='container'>
           <div className='art-details-wrapper'>
             <div className='row'>
@@ -115,6 +90,10 @@ const IklanMain = ({ id }: { id: number }) => {
                           : 'Change name aktif'}
                       </p>
                     </div>
+                    <div className='space-x-4'>
+                      <h5 className='inline'>Status:</h5>
+                      <p className='inline'>{iklan.data.status}</p>
+                    </div>
                   </div>
                   <div className='artist-meta-info art-details-meta-info'>
                     <div className='art-meta-item artist-meta-item-border'>
@@ -139,10 +118,6 @@ const IklanMain = ({ id }: { id: number }) => {
                         </span>
                       </div>
                     </div>
-                  </div>
-                  <div className='mt-50 mb-50 flex items-center justify-around'>
-                    <ButtonLink href='#'>Hubungi Penjual</ButtonLink>
-                    <ButtonLink href='#'>Beli</ButtonLink>
                   </div>
                 </div>
               </div>
@@ -177,7 +152,7 @@ const IklanMain = ({ id }: { id: number }) => {
               </div>
             </div>
             <div className='row my-8'>
-              <div className='grid grid-cols-3 rounded-lg border-2 border-primary-200 bg-neutral-50 py-6 dark:bg-neutral-800'>
+              <div className='rounded-lg border-2 border-primary-200 bg-neutral-50 py-6 dark:bg-neutral-800'>
                 <div className='flex flex-col justify-between'>
                   <h1 className='text-xl  md:text-4xl'>Info Akun</h1>
                   <p className='text-sm dark:!text-light md:text-base'>
@@ -206,4 +181,4 @@ const IklanMain = ({ id }: { id: number }) => {
   );
 };
 
-export default IklanMain;
+export default IklanAdmin;

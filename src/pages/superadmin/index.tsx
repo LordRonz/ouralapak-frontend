@@ -128,7 +128,7 @@ const IndexPage = () => {
 
   return (
     <DashboardLayout superAdmin>
-      <ReactTable data={data} columns={columns} />
+      <ReactTable data={data} columns={columns} pageCount={69} />
     </DashboardLayout>
   );
 };

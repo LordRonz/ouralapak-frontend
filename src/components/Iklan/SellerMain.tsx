@@ -12,6 +12,7 @@ import ButtonLink from '@/components/links/ButtonLink';
 import { API_URL } from '@/constant/config';
 import formatDateStrId from '@/lib/formatDateStrId';
 import getAuthHeader from '@/lib/getAuthHeader';
+import { StatusIklanEnum } from '@/lib/getStatusIklan';
 import { RootState } from '@/redux/store';
 import type Iklan from '@/types/iklan';
 import PaginationType from '@/types/pagination';
@@ -42,6 +43,8 @@ const SellerMain = () => {
 
   const [curPage, setCurPage] = useState(0);
 
+  const [curStatus, setCurStatus] = useState(-1);
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -56,6 +59,7 @@ const SellerMain = () => {
           url: `${API_URL}/user/iklan`,
           query: {
             page: curPage + 1,
+            status: curStatus === -1 ? undefined : curStatus,
           },
         })
       : null
@@ -151,6 +155,7 @@ const SellerMain = () => {
                         type='button'
                         role='tab'
                         aria-selected='true'
+                        onClick={() => setCurStatus(-1)}
                       >
                         <span className='profile-nav-button'>
                           <span className='artist-meta-item'>
@@ -166,6 +171,9 @@ const SellerMain = () => {
                         type='button'
                         role='tab'
                         aria-selected='false'
+                        onClick={() =>
+                          setCurStatus(StatusIklanEnum.DIPUBLIKASI)
+                        }
                       >
                         <span className='profile-nav-button'>
                           <span className='artist-meta-item'>
@@ -184,6 +192,7 @@ const SellerMain = () => {
                         type='button'
                         role='tab'
                         aria-selected='false'
+                        onClick={() => setCurStatus(StatusIklanEnum.DITOLAK)}
                       >
                         <span className='profile-nav-button'>
                           <span className='artist-meta-item'>
@@ -200,6 +209,7 @@ const SellerMain = () => {
                         type='button'
                         role='tab'
                         aria-selected='false'
+                        onClick={() => setCurStatus(StatusIklanEnum.DIBATALKAN)}
                       >
                         <span className='profile-nav-button'>
                           <span className='artist-meta-item'>
@@ -216,6 +226,9 @@ const SellerMain = () => {
                         type='button'
                         role='tab'
                         aria-selected='false'
+                        onClick={() =>
+                          setCurStatus(StatusIklanEnum.MENUNGGU_PEMBAYARAN)
+                        }
                       >
                         <span className='profile-nav-button'>
                           <span className='artist-meta-item'>
@@ -234,6 +247,9 @@ const SellerMain = () => {
                         type='button'
                         role='tab'
                         aria-selected='false'
+                        onClick={() =>
+                          setCurStatus(StatusIklanEnum.MENUNGGU_KONFIRMASI)
+                        }
                       >
                         <span className='profile-nav-button'>
                           <span className='artist-meta-item'>
@@ -252,6 +268,7 @@ const SellerMain = () => {
                         type='button'
                         role='tab'
                         aria-selected='false'
+                        onClick={() => setCurStatus(StatusIklanEnum.SELESAI)}
                       >
                         <span className='profile-nav-button'>
                           <span className='artist-meta-item'>
@@ -268,6 +285,11 @@ const SellerMain = () => {
                         type='button'
                         role='tab'
                         aria-selected='false'
+                        onClick={() =>
+                          setCurStatus(
+                            StatusIklanEnum.MENUNGGU_PEMBAYARAN_PEMBELI
+                          )
+                        }
                       >
                         <span className='profile-nav-button'>
                           <span className='artist-meta-item'>

@@ -7,9 +7,21 @@ export type InvoiceAdmin = {
   created_by: number;
   expired_at: string;
   id: number;
+  iklan: {
+    created_at: string;
+    id: number;
+    status: number;
+    title: string;
+    updated_at: string;
+  };
   iklan_id: number;
   jenis_invoice: number;
-  jenis_pembayaran: number;
+  jenis_pembayaran: {
+    id: number;
+    name: string;
+    rekening_name: string;
+    rekening_number: string;
+  };
   no_invoice: string;
   status: number;
   updated_at: string;
