@@ -29,7 +29,7 @@ const ResetPasswordMain = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     await toast.promise(
-      axios.post(`${API_URL}/auth/reset-password/${token}`, data),
+      axios.put(`${API_URL}/auth/reset-password/${token}`, data),
       {
         pending: {
           render: () => {

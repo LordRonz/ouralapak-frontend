@@ -1,10 +1,9 @@
 import axios from 'axios';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FiCheck, FiX } from 'react-icons/fi';
 import ClipLoader from 'react-spinners/ClipLoader';
-import { useEffectOnce } from 'react-use';
 
 import AnimatePage from '@/components/AnimatePage';
 import Footer from '@/components/Layout/Footer/FooterOne/Footer';
@@ -21,9 +20,11 @@ const Verify: NextPage = () => {
   const router = useRouter();
   const { slug: token } = router.query;
 
-  useEffectOnce(() => {
+  useEffect(() => {
+    if (!token) return;
+    console.log(token);
     (async () => {
-      const res = await axios.get(`${API_URL}/auth/user/activate/${token}`);
+      const res = await axios.put(`${API_URL}/auth/user/activate/${token}`);
       setLoading(false);
       if (res.data.success) {
         setSuccess(true);
@@ -31,7 +32,7 @@ const Verify: NextPage = () => {
         setSuccess(false);
       }
     })();
-  });
+  }, [token]);
 
   return (
     <>
