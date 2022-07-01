@@ -19,7 +19,7 @@
     "pm2:start": "pm2 start ecosystem.config.json --no-daemon"
   },
   "dependencies": {
-    "@hcaptcha/react-hcaptcha": "^1.4.1",
+    "@hcaptcha/react-hcaptcha": "^1.4.3",
     "@headlessui/react": "^1.6.5",
     "@reduxjs/toolkit": "^1.8.3",
     "axios": "^0.27.2",

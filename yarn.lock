@@ -442,10 +442,10 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@hcaptcha/react-hcaptcha@^1.4.1":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@hcaptcha/react-hcaptcha/-/react-hcaptcha-1.4.1.tgz#3e2ca1cbcb166edb8a2706c1f3bd82e857ff8396"
-  integrity sha512-Pm6p8hTui/qPFsTRSnmQTag2pPLWqRhqCSoNN8iXlsz6fwaawNdSyoZvDqh9aZoJ4mXBwkpmHsjnHlBbhb62Wg==
+"@hcaptcha/react-hcaptcha@^1.4.3":
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/@hcaptcha/react-hcaptcha/-/react-hcaptcha-1.4.3.tgz#7dc9df288e0a9ff54d20902260a92b18bb6fb2d6"
+  integrity sha512-kBXP9xEH1REIsuoZWowNcSQeL9cnBkRmeJkj2Rvzy8NstkQr/qahgNXUV7YaUxqntYf2mCwFOGTZbacqfqwaQw==
   dependencies:
     "@babel/runtime" "^7.17.9"
     "@types/react" "^18.0.0"
