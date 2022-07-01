@@ -35,4 +35,24 @@ export const getStatusIklan = (status: number | string) => {
   }
 };
 
+export const getStatusIklanByString = (status?: string) => {
+  if (status === undefined) return;
+
+  return StatusIklanEnum[
+    status
+      .toUpperCase()
+      .trim()
+      .split(' ')
+      .join('_') as keyof typeof StatusIklanEnum
+  ];
+};
+
+export const statusIklanArray: {
+  value: StatusIklanEnum;
+  label: string;
+}[] = [...new Array(9)].map((_, i) => ({
+  label: getStatusIklan(i),
+  value: i,
+}));
+
 export default getStatusIklan;

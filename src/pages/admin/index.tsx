@@ -108,7 +108,7 @@ const IndexPage = () => {
           jenisPembayaran: invoice.jenis_pembayaran,
           judulIklan: invoice.iklan.title,
           noInvoice: invoice.no_invoice,
-          status: getStatusIklan(invoice.status),
+          status: getStatusIklan(invoice.iklan.status),
           updatedAt: invoice.updated_at,
           updatedBy: invoice.updated_by,
           userId: invoice.user_id ?? invoice.user.id,
@@ -155,7 +155,7 @@ const IndexPage = () => {
               <ButtonLink
                 variant={theme === 'dark' ? 'dark' : 'light'}
                 className='hover:text-ywllow-600 text-yellow-500'
-                href={`/admin/iklan/id`}
+                href={`/admin/iklan/edit/${row.original.iklanId}`}
               >
                 <FiEdit2 />
               </ButtonLink>

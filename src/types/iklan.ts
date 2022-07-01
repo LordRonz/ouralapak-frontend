@@ -88,7 +88,7 @@ export type IklanDetail = {
   image_win_rate_hero: string;
   image_emblem: string;
   image_skin: string[];
-  status: number;
+  status: number | string;
   created_by: string | null;
   updated_by: number | null;
   created_at: string;

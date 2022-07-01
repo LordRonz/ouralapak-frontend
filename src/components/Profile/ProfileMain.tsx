@@ -112,10 +112,10 @@ const ProfileMain = () => {
         breadcrumbSubTitle='Informasi Profil'
       />
 
-      <section className='creator-info-area pt-130 pb-90'>
+      <section className='creator-info-area pb-90'>
         <div className='container'>
           <div className='row'>
-            <div className='col-lg-4 col-md-8'>
+            <div className='col-lg-3 col-md-8'>
               <div className='creator-info-details wow fadeInUp mb-40'>
                 <div className='creator-cover-img pos-rel'>
                   <div className='change-photo'>

@@ -15,6 +15,8 @@ const IklanMain = ({ id }: { id: number }) => {
     success: boolean;
   }>(`${API_URL}/iklan/${id}`);
 
+  console.log(iklan);
+
   if (!iklan) {
     return <></>;
   }
@@ -47,7 +49,7 @@ const IklanMain = ({ id }: { id: number }) => {
         </div>
       </section>
 
-      <section className='art-details-area pt-130 pb-0'>
+      <section className='art-details-area'>
         <div className='container'>
           <div className='art-details-wrapper'>
             <div className='row'>
@@ -141,8 +143,17 @@ const IklanMain = ({ id }: { id: number }) => {
                     </div>
                   </div>
                   <div className='mt-50 mb-50 flex items-center justify-around'>
-                    <ButtonLink href='#'>Hubungi Penjual</ButtonLink>
-                    <ButtonLink href='#'>Beli</ButtonLink>
+                    <ButtonLink
+                      href={`https://wa.me/${iklan.data.user.phone
+                        .replace(/\+/g, '')
+                        .replace(/-/g, '')
+                        .replace(/\(/g, '')
+                        .replace(/\)/g, '')
+                        .trim()}`}
+                    >
+                      Hubungi Penjual
+                    </ButtonLink>
+                    <ButtonLink href={`/beli/${id}`}>Beli</ButtonLink>
                   </div>
                 </div>
               </div>
