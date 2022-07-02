@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import * as React from 'react';
+import { useClickAway } from 'react-use';
 
 type ToggleContextType = {
   open?: boolean;
@@ -20,12 +21,13 @@ const DashboardProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   // set the html tag style overflow to hidden
-  React.useEffect(() => {
-    document.documentElement.style.overflow = 'hidden';
-  }, []);
+  // React.useEffect(() => {
+  //   document.documentElement.style.overflow = 'hidden';
+  // }, []);
 
   // close side navigation on mobile when route changes. it's triggered when viewport is less than 1024px
   React.useEffect(() => {
+    console.log(open);
     if (open && window.innerWidth < 1024) {
       router.events.on('routeChangeStart', () => setOpen(false));
     }
@@ -37,18 +39,23 @@ const DashboardProvider = ({ children }: { children: React.ReactNode }) => {
   }, [open, router]);
 
   // close side navigation on click outside when viewport is less than 1024px
-  React.useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent) => {
-      if (window.innerWidth < 1024) {
-        if (!ref.current?.contains(event.target as HTMLElement)) {
-          if (!open) return;
-          setOpen(false);
-        }
-      }
-    };
-    window.addEventListener('click', handleOutsideClick);
-    return () => window.removeEventListener('click', handleOutsideClick);
-  }, [open, ref]);
+  // React.useEffect(() => {
+  //   const handleOutsideClick = (event: MouseEvent) => {
+  //     if (open && window.innerWidth < 1024) {
+  //       if (!ref.current?.contains(event.target as HTMLElement)) {
+  //         setOpen(false);
+  //       }
+  //     }
+  //   };
+  //   window.addEventListener('click', handleOutsideClick);
+  //   return () => window.removeEventListener('click', handleOutsideClick);
+  // }, [open, ref]);
+
+  useClickAway(ref, () => {
+    if (open && window.innerWidth < 1024) {
+      setOpen(false);
+    }
+  });
 
   return (
     <Context.Provider value={{ open, ref, toggle }}>

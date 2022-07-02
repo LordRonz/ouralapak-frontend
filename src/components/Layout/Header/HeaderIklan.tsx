@@ -42,6 +42,7 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
     });
     if (isConfirmed) {
       removeToken();
+      //setTimeout(() => router.push('/login'), 100);
       router.push('/login');
     }
   };
@@ -82,7 +83,7 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
                 </div>
               </div>
               <div className='col-xl-10 col-lg-10 col-md-8 col-8'>
-                <div className='header-main-right'>
+                <div className='header-main-right py-3'>
                   <form
                     action='#'
                     className='filter-search-input header-search d-none d-xl-inline-block'
@@ -94,18 +95,7 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
                   </form>
                   <div className='main-menu main-menu1 d-none d-lg-block'>
                     <nav id='mobile-menu'>
-                      <ul>
-                        <li>
-                          <Link href='/rekber'>
-                            <a>Jasa Rekber</a>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href='/seller'>
-                            <a>Jual Akun</a>
-                          </Link>
-                        </li>
-                      </ul>
+                      <ul></ul>
                     </nav>
                   </div>
                   <ColorModeToggle className='mx-2' />

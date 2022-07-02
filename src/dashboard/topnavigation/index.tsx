@@ -45,7 +45,7 @@ const TopNavigation = () => {
                 aria-expanded='false'
                 aria-label='Toggle sidenav'
                 onClick={toggle}
-                className='!text-4xl !text-white focus:!outline-none lg:!hidden'
+                className='!text-4xl !text-black focus:!outline-none dark:!text-white lg:!hidden'
               >
                 &#8801;
               </button>

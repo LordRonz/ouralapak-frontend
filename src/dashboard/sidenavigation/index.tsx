@@ -5,8 +5,8 @@ import clsxm from '@/lib/clsxm';
 
 const style = {
   mobilePosition: {
-    left: 'left-0',
-    right: 'right-0',
+    left: '!left-0',
+    right: '!right-0',
   },
   close: `!hidden`,
   container: `!pb-32 !lg:pb-6`,

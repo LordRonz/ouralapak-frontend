@@ -24,7 +24,7 @@ const DashboardLayout = ({
       <div className={style.container}>
         <div className='!flex !items-start'>
           <Overlay />
-          <SideNavigation mobilePosition='right' superAdmin={superAdmin} />
+          <SideNavigation mobilePosition='left' superAdmin={superAdmin} />
           <div className={style.mainContainer}>
             <TopNavigation />
             <main className={style.main}>{children}</main>

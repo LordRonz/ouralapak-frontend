@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
 import { stringifyUrl } from 'query-string';
 import * as React from 'react';
@@ -30,6 +31,8 @@ const IndexPage = () => {
   const { theme } = useTheme();
 
   const [delBtnDisabled, setDelBtnDisabled] = React.useState(false);
+
+  const router = useRouter();
 
   const onClickDelete = React.useCallback(
     async (id: number) => {
@@ -75,7 +78,7 @@ const IndexPage = () => {
     setMounted(true);
   }, []);
 
-  const { data: iklans } = useSWR<{
+  const { data: iklans, error } = useSWR<{
     data: {
       data: InvoiceAdmin[];
       pagination: Pagination;
@@ -92,6 +95,10 @@ const IndexPage = () => {
         })
       : null
   );
+
+  if (error) {
+    router.push('/');
+  }
 
   const data = React.useMemo(
     () =>
@@ -111,7 +118,7 @@ const IndexPage = () => {
           status: getStatusIklan(invoice.iklan.status),
           updatedAt: invoice.updated_at,
           updatedBy: invoice.updated_by,
-          userId: invoice.user_id ?? invoice.user.id,
+          userId: invoice.user_id ?? invoice.user?.id,
           user: invoice.user,
           action: {},
         };
