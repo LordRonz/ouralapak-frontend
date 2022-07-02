@@ -25,4 +25,25 @@ type Invoice = {
   user_id: number;
 };
 
+export type InvoicePembeli = {
+  bank: {
+    id: number;
+    name: string;
+    rekening_name: string;
+    rekening_number: string;
+  };
+  biaya_admin: number;
+  biaya_penjualan: number;
+  created_at: string;
+  expired_at: string;
+  id: number;
+  iklan_id: number;
+  jenis_invoice: number;
+  jenis_pembayaran: number;
+  no_invoice: string;
+  status: number;
+  updated_at: string;
+  user_id: number;
+};
+
 export default Invoice;

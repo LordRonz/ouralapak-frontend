@@ -1,18 +1,20 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import React from 'react';
+import { stringifyUrl } from 'query-string';
+import React, { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
 import useSWR from 'swr';
 
 import ButtonGradient from '@/components/buttons/ButtonGradient';
+import Captcha from '@/components/Common/Captcha';
 import Breadcrumbs from '@/components/Common/PageTitle';
 import { API_URL } from '@/constant/config';
 import clsxm from '@/lib/clsxm';
 import Bank from '@/types/bank';
+import { InvoicePembeli } from '@/types/invoice';
 import Pagination from '@/types/pagination';
-import Roles from '@/types/roles';
 
 type IFormInput = {
   jenis_pembayaran: number;
@@ -28,11 +30,12 @@ const BeliAkunMain = ({ id }: { id: number }) => {
     formState: { errors },
   } = useForm<IFormInput>();
 
-  console.log(id);
-
   const router = useRouter();
 
   const [beliBtnDisabled, setBeliBtnDisabled] = React.useState(false);
+  const [recaptchaResponse, setRecaptchaResponse] = useState<string | null>(
+    null
+  );
 
   const { data: banks } = useSWR<{
     data: { data: Bank[]; pagination: Pagination };
@@ -46,31 +49,42 @@ const BeliAkunMain = ({ id }: { id: number }) => {
   }));
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    const res = await toast.promise(axios.post(`${API_URL}/auth/login`, data), {
-      pending: {
-        render: () => {
-          setBeliBtnDisabled(true);
-          return 'Loading';
+    if (!recaptchaResponse) {
+      toast.warn('Captcha harus diselesaikan');
+    }
+    const res = await toast.promise(
+      axios.post<{ data: InvoicePembeli; message: string; success: boolean }>(
+        stringifyUrl({
+          url: `${API_URL}/invoice/${id}`,
+          query: {
+            recaptcha_response: recaptchaResponse,
+          },
+        }),
+        data
+      ),
+      {
+        pending: {
+          render: () => {
+            setBeliBtnDisabled(true);
+            return 'Loading';
+          },
         },
-      },
-      success: {
-        render: () => {
-          setBeliBtnDisabled(false);
-          if ((res.data.data.user.roles as string[]).includes(Roles.ADMIN)) {
-            router.push((router.query.returnTo as string) ?? '/admin');
-          } else {
-            router.push((router.query.returnTo as string) ?? '/');
-          }
-          return 'Berhasil login';
+        success: {
+          render: () => {
+            setBeliBtnDisabled(false);
+            router.push(`/invoice-beli/${res.data.data.no_invoice}`);
+            return 'Berhasil beli, menuju laman invoice';
+          },
         },
-      },
-      error: {
-        render: () => {
-          setBeliBtnDisabled(false);
-          return 'Gagal beli akun!';
+        error: {
+          render: () => {
+            setBeliBtnDisabled(false);
+            return 'Gagal beli akun!';
+          },
         },
-      },
-    });
+      }
+    );
+    console.log(res);
   };
 
   if (!jenisPembayaranOpts?.[0]) {
@@ -155,7 +169,10 @@ const BeliAkunMain = ({ id }: { id: number }) => {
                           </div>
                         </div>
                       </div>
-                      <div className='login-btn'>
+                      <Captcha
+                        onChange={(token) => setRecaptchaResponse(token)}
+                      />
+                      <div className='login-btn mt-4'>
                         <ButtonGradient
                           className='text-white'
                           type='submit'
