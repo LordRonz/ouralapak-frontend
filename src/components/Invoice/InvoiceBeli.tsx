@@ -53,10 +53,10 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
   return (
     <main>
       <section className='login-area pt-8 pb-12'>
-        <div className='container '>
-          <div className='space-y-10'>
+        <div className='container flex items-center justify-center'>
+          <div className='border-1 max-w-2xl space-y-10 rounded-xl border-primary-400 bg-neutral-100 p-8'>
             <div className='flex justify-between'>
-              <h1 className='text-lg md:text-5xl'>Invoice Pembelian Akun</h1>
+              <h1 className='text-lg md:text-4xl'>Invoice Pembelian Akun</h1>
               <div className='flex flex-col items-end'>
                 <TooltipTippy
                   trigger='mouseenter'
@@ -137,7 +137,11 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
                 </div>
                 <div className='flex flex-col items-center justify-center px-4'>
                   <h3 className='text-base md:text-lg'>Metode Pembayaran</h3>
-                  <p className='text-dark dark:!text-light'>WA Admin</p>
+                  <p className='text-dark dark:!text-light'>
+                    {invoice?.data.jenis_pembayaran.rekening_name} (
+                    {invoice?.data.jenis_pembayaran.rekening_number})
+                  </p>
+                  <p className='text-dark dark:!text-light'></p>
                 </div>
               </div>
             </div>

@@ -69,10 +69,10 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
   return (
     <main>
       <section className='login-area pt-8 pb-12'>
-        <div className='container '>
-          <div className='space-y-10'>
+        <div className='container flex items-center justify-center'>
+          <div className='border-1 max-w-2xl space-y-10 rounded-xl border-primary-400 bg-neutral-100 p-8'>
             <div className='flex justify-between'>
-              <h1 className='text-lg md:text-5xl'>Invoice Penjualan Akun</h1>
+              <h1 className='text-lg md:text-4xl'>Invoice Penjualan Akun</h1>
               <div className='flex flex-col items-end'>
                 <TooltipTippy
                   trigger='mouseenter'
