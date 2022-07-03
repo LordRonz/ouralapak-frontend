@@ -7,4 +7,14 @@ type Emblem = {
   updated_at: string;
 };
 
+export type Config = {
+  created_at: string;
+  created_by: number | null;
+  id: number;
+  key: string;
+  updated_at: string;
+  updated_by: number | null;
+  value: string;
+};
+
 export default Emblem;

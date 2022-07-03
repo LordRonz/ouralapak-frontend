@@ -11,6 +11,7 @@ import { API_URL } from '@/constant/config';
 import formatDateStrId from '@/lib/formatDateStrId';
 import getAuthHeader from '@/lib/getAuthHeader';
 import toIDRCurrency from '@/lib/toIDRCurrency';
+import { Config } from '@/types/config';
 import Iklan from '@/types/iklan';
 import Invoice from '@/types/invoice';
 import User from '@/types/user';
@@ -52,11 +53,17 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
     success: boolean;
   }>(() => `${API_URL}/profile`);
 
+  const { data: config } = useSWR<{
+    data: Config;
+    message: string;
+    success: boolean;
+  }>(() => `${API_URL}/master/configs/4`);
+
   const [copyStatus, setCopyStatus] = useState<string>('Click to copy');
 
   const getWaLink = () =>
     queryString.stringifyUrl({
-      url: 'https://wa.me/6281696969696',
+      url: `https://wa.me/${config?.data?.value}`,
       query: {
         text: `Halo admin,\n\nSaya melakukan order dengan nomor invoice ${
           invoice?.data.no_invoice

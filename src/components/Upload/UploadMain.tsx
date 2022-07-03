@@ -11,6 +11,7 @@ import {
   useFieldArray,
   useForm,
 } from 'react-hook-form';
+import { HiPlus } from 'react-icons/hi';
 import Lightbox from 'react-image-lightbox';
 import Select from 'react-select';
 import { Theme, toast } from 'react-toastify';
@@ -36,6 +37,8 @@ import Pagination from '@/types/pagination';
 import Platform from '@/types/platform';
 import Refund from '@/types/refund';
 import User from '@/types/user';
+
+import XButton from '../Common/XButton';
 
 type IFormInput = {
   title: string;
@@ -579,48 +582,11 @@ const UploadMain = () => {
                     </div>
                     <div className='col-md-6'>
                       <div className='single-input-unit space-y-4'>
-                        <label>Total Skin Rare</label>
-                        {totalSkinRareFields.fields.map((field, index) => (
-                          <div
-                            className='border-1 rounded-xl border-primary-200 px-4'
-                            key={field.id}
-                          >
-                            <label className='py-2'>Jenis</label>
-                            <input
-                              type='text'
-                              placeholder='Jenis'
-                              {...register(
-                                `total_skin_rare.${index}.jenis` as const,
-                                {
-                                  required: 'Jenis harus diisi',
-                                }
-                              )}
-                            />
-                            <label>Total Skin</label>
-                            <input
-                              type='number'
-                              onWheel={(e) =>
-                                e.target instanceof HTMLElement &&
-                                e.target.blur()
-                              }
-                              placeholder='0'
-                              {...register(
-                                `total_skin_rare.${index}.total_skin` as const,
-                                {
-                                  required: 'Total skin harus diisi',
-                                  min: {
-                                    value: 1,
-                                    message: 'Minimum jumlah skin adalah 1',
-                                  },
-                                  valueAsNumber: true,
-                                }
-                              )}
-                            />
-                          </div>
-                        ))}
-                        <div className='flex items-center justify-evenly py-4'>
+                        <div className='flex items-center space-x-4'>
+                          <label>Total Skin Rare</label>
                           <Button
                             variant='success'
+                            className='rounded-full'
                             onClick={() =>
                               totalSkinRareFields.append({
                                 jenis: 'medium',
@@ -628,98 +594,63 @@ const UploadMain = () => {
                               })
                             }
                           >
-                            Tambah
+                            <HiPlus />
                           </Button>
-                          {!!totalSkinRareFields.fields.length && (
-                            <Button
-                              variant='danger'
-                              onClick={() =>
-                                totalSkinRareFields.remove(
-                                  totalSkinRareFields.fields.length - 1
-                                )
-                              }
+                        </div>
+                        <div className='max-h-80 space-y-4 overflow-auto'>
+                          {totalSkinRareFields.fields.map((field, index) => (
+                            <div
+                              className='border-1 rounded-xl border-primary-200 px-4'
+                              key={field.id}
                             >
-                              Hapus
-                            </Button>
-                          )}
+                              <div className='flex justify-between py-2'>
+                                <label className=''>Jenis</label>
+                                <XButton
+                                  onClick={() =>
+                                    totalSkinRareFields.remove(index)
+                                  }
+                                />
+                              </div>
+                              <input
+                                type='text'
+                                placeholder='Jenis'
+                                {...register(
+                                  `total_skin_rare.${index}.jenis` as const,
+                                  {
+                                    required: 'Jenis harus diisi',
+                                  }
+                                )}
+                              />
+                              <label>Total Skin</label>
+                              <input
+                                type='number'
+                                onWheel={(e) =>
+                                  e.target instanceof HTMLElement &&
+                                  e.target.blur()
+                                }
+                                placeholder='0'
+                                {...register(
+                                  `total_skin_rare.${index}.total_skin` as const,
+                                  {
+                                    required: 'Total skin harus diisi',
+                                    min: {
+                                      value: 1,
+                                      message: 'Minimum jumlah skin adalah 1',
+                                    },
+                                    valueAsNumber: true,
+                                  }
+                                )}
+                              />
+                            </div>
+                          ))}
                         </div>
                       </div>
                       <p className='text-red-500'>{errors.title?.message}</p>
                     </div>
-                    <div className='col-md-6'>
+                    <div className='col-md-6 mb-4'>
                       <div className='single-input-unit space-y-4'>
-                        <label>Total Emblem</label>
-                        {totalEmblemFields.fields.map((field, index) => (
-                          <div
-                            className='border-1 rounded-xl border-primary-200 px-4'
-                            key={field.id}
-                          >
-                            <label className='py-2'>Emblem</label>
-                            <Controller
-                              control={control}
-                              defaultValue={
-                                emblemOpts.filter(
-                                  (x) =>
-                                    !getValues('total_emblem')
-                                      .filter(
-                                        (x) =>
-                                          x.id_emblem !==
-                                          getValues(
-                                            `total_emblem.${index}.id_emblem`
-                                          )
-                                      )
-                                      .map((x) => x.id_emblem)
-                                      .includes(x.value)
-                                )[0]?.value
-                              }
-                              name={`total_emblem.${index}.id_emblem`}
-                              render={({ field: { onChange, value } }) => (
-                                <Select
-                                  className={clsxm('py-3 pt-0')}
-                                  options={emblemOpts.filter(
-                                    (x) =>
-                                      !getValues('total_emblem')
-                                        .filter(
-                                          (x) =>
-                                            x.id_emblem !==
-                                            getValues(
-                                              `total_emblem.${index}.id_emblem`
-                                            )
-                                        )
-                                        .map((x) => x.id_emblem)
-                                        .includes(x.value)
-                                  )}
-                                  value={emblemOpts.find(
-                                    (c) => c.value === value
-                                  )}
-                                  onChange={(val) => onChange(val?.value)}
-                                />
-                              )}
-                            />
-                            <label className='py-2'>Level</label>
-                            <input
-                              type='number'
-                              onWheel={(e) =>
-                                e.target instanceof HTMLElement &&
-                                e.target.blur()
-                              }
-                              placeholder='1'
-                              {...register(
-                                `total_emblem.${index}.level` as const,
-                                {
-                                  required: 'Level harus diisi',
-                                  min: {
-                                    value: 1,
-                                    message: 'Minimum level adalah 1',
-                                  },
-                                  valueAsNumber: true,
-                                }
-                              )}
-                            />
-                          </div>
-                        ))}
-
-                        <div className='flex items-center justify-evenly py-4'>
+                        <div className='flex items-center space-x-4'>
+                          <label>Total Emblem</label>
                           {totalEmblemFields.fields.length <
                             emblemOpts.length && (
                             <Button
@@ -736,69 +667,135 @@ const UploadMain = () => {
                                 })
                               }
                             >
-                              Tambah
-                            </Button>
-                          )}
-                          {!!totalEmblemFields.fields.length && (
-                            <Button
-                              variant='danger'
-                              onClick={() =>
-                                totalEmblemFields.remove(
-                                  totalEmblemFields.fields.length - 1
-                                )
-                              }
-                            >
-                              Hapus
+                              <HiPlus />
                             </Button>
                           )}
                         </div>
+                        <div className='max-h-80 space-y-4 overflow-auto'>
+                          {totalEmblemFields.fields.map((field, index) => (
+                            <div
+                              className='border-1 rounded-xl border-primary-200 px-4'
+                              key={field.id}
+                            >
+                              <div className='flex justify-between py-2'>
+                                <label>Emblem</label>
+                                <XButton
+                                  onClick={() =>
+                                    totalEmblemFields.remove(index)
+                                  }
+                                />
+                              </div>
+                              <Controller
+                                control={control}
+                                defaultValue={
+                                  emblemOpts.filter(
+                                    (x) =>
+                                      !getValues('total_emblem')
+                                        .filter(
+                                          (x) =>
+                                            x.id_emblem !==
+                                            getValues(
+                                              `total_emblem.${index}.id_emblem`
+                                            )
+                                        )
+                                        .map((x) => x.id_emblem)
+                                        .includes(x.value)
+                                  )[0]?.value
+                                }
+                                name={`total_emblem.${index}.id_emblem`}
+                                render={({ field: { onChange, value } }) => (
+                                  <Select
+                                    className={clsxm('py-3 pt-0')}
+                                    options={emblemOpts.filter(
+                                      (x) =>
+                                        !getValues('total_emblem')
+                                          .filter(
+                                            (x) =>
+                                              x.id_emblem !==
+                                              getValues(
+                                                `total_emblem.${index}.id_emblem`
+                                              )
+                                          )
+                                          .map((x) => x.id_emblem)
+                                          .includes(x.value)
+                                    )}
+                                    value={emblemOpts.find(
+                                      (c) => c.value === value
+                                    )}
+                                    onChange={(val) => onChange(val?.value)}
+                                  />
+                                )}
+                              />
+                              <label className='py-2'>Level</label>
+                              <input
+                                type='number'
+                                onWheel={(e) =>
+                                  e.target instanceof HTMLElement &&
+                                  e.target.blur()
+                                }
+                                placeholder='1'
+                                {...register(
+                                  `total_emblem.${index}.level` as const,
+                                  {
+                                    required: 'Level harus diisi',
+                                    min: {
+                                      value: 1,
+                                      message: 'Minimum level adalah 1',
+                                    },
+                                    valueAsNumber: true,
+                                  }
+                                )}
+                              />
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                    <div className='col-md-6'>
+                    <div className='col-md-6 mb-4'>
                       <div className='single-input-unit'>
-                        <label>Recall Effect</label>
-                        {[...new Array(recallEffectCnt)].map((_, index) => (
-                          <>
-                            <input
-                              key={index}
-                              type='text'
-                              placeholder='Recall effect'
-                              {...register(`recall_effect.${index}`, {
-                                required: 'Recall effect harus diisi',
-                              })}
-                            />
-                            <p className='text-red-500'>
-                              {errors.recall_effect?.[index]?.message}
-                            </p>
-                          </>
-                        ))}
-                        <div className='mb-2 flex items-center justify-evenly py-4'>
+                        <div className='mb-4 flex items-center space-x-4'>
+                          <label>Recall Effect</label>
                           <Button
                             variant='success'
                             onClick={() => setRecallEffectCnt((v) => v + 1)}
                           >
-                            Tambah
+                            <HiPlus />
                           </Button>
-                          {!!recallEffectCnt && (
-                            <Button
-                              variant='danger'
-                              onClick={() => {
-                                if (recallEffectCnt > 1) {
-                                  unregister(
-                                    `recall_effect.${recallEffectCnt - 1}`
-                                  );
-                                  const arr = getValues('recall_effect');
-                                  arr.pop();
-                                  setValue('recall_effect', arr);
-                                } else {
-                                  setValue('recall_effect', []);
-                                }
-                                setRecallEffectCnt((v) => Math.max(v - 1, 0));
-                              }}
-                            >
-                              Hapus
-                            </Button>
-                          )}
+                        </div>
+                        <div className='max-h-60 overflow-auto'>
+                          {[...new Array(recallEffectCnt)].map((_, index) => (
+                            <>
+                              <div className='relative'>
+                                <input
+                                  key={index}
+                                  type='text'
+                                  placeholder='Recall effect'
+                                  {...register(`recall_effect.${index}`, {
+                                    required: 'Recall effect harus diisi',
+                                  })}
+                                />
+                                <XButton
+                                  className='absolute top-0 right-0'
+                                  onClick={() => {
+                                    if (recallEffectCnt > 1) {
+                                      unregister(`recall_effect.${index}`);
+                                      const arr = getValues('recall_effect');
+                                      arr.splice(index, 1);
+                                      setValue('recall_effect', arr);
+                                    } else {
+                                      setValue('recall_effect', []);
+                                    }
+                                    setRecallEffectCnt((v) =>
+                                      Math.max(v - 1, 0)
+                                    );
+                                  }}
+                                />
+                              </div>
+                              <p className='text-red-500'>
+                                {errors.recall_effect?.[index]?.message}
+                              </p>
+                            </>
+                          ))}
                         </div>
                       </div>
                     </div>
