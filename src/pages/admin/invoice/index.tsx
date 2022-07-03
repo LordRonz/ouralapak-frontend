@@ -122,7 +122,7 @@ const IndexPage = () => {
               : StatusIklanEnum.MENUNGGU_KONFIRMASI
             : inv.status === StatusInvoice.SUDAH_DIBAYAR
             ? StatusIklanEnum.MENUNGGU_PEMBAYARAN_PEMBELI
-            : StatusIklanEnum.SELESAI,
+            : StatusIklanEnum.PROSES_REKBER,
       };
 
       if (isConfirmed) {
