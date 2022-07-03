@@ -12,6 +12,7 @@ import useSWR from 'swr';
 
 import AnimatePage from '@/components/AnimatePage';
 import Button from '@/components/buttons/Button';
+import PaginationComponent from '@/components/Common/Pagination';
 import ButtonLink from '@/components/links/ButtonLink';
 import ReactTable from '@/components/ReactTable';
 import Seo from '@/components/Seo';
@@ -20,7 +21,8 @@ import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
 import DashboardLayout from '@/dashboard/layout';
 import formatDateStrId from '@/lib/formatDateStrId';
-import getStatusIklan from '@/lib/getStatusIklan';
+import getStatusIklan, { StatusIklanEnum } from '@/lib/getStatusIklan';
+import { JenisInvoice, StatusInvoice } from '@/types/invoice';
 import InvoiceAdmin from '@/types/invoiceAdmin';
 import Pagination from '@/types/pagination';
 
@@ -30,6 +32,29 @@ const IndexPage = () => {
   const { theme } = useTheme();
 
   const [delBtnDisabled, setDelBtnDisabled] = React.useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [curPage, setCurPage] = useState(0);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const { data: invoices, mutate } = useSWR<{
+    data: {
+      data: InvoiceAdmin[];
+      pagination: Pagination;
+    };
+    message: string;
+    success: boolean;
+  }>(
+    mounted
+      ? stringifyUrl({
+          url: `${API_URL}/admin/invoice`,
+          query: {
+            page: curPage + 1,
+          },
+        })
+      : null
+  );
 
   const onClickDelete = React.useCallback(
     async (id: number) => {
@@ -52,6 +77,7 @@ const IndexPage = () => {
           success: {
             render: () => {
               setDelBtnDisabled(false);
+              mutate();
               return 'Berhasil hapus invoice!';
             },
           },
@@ -64,36 +90,75 @@ const IndexPage = () => {
         });
       }
     },
-    [theme]
+    [mutate, theme]
   );
 
-  const [mounted, setMounted] = useState(false);
+  const onClickUpdate = React.useCallback(
+    async (inv: InvoiceAdmin) => {
+      const { isConfirmed } = await MySwal.fire({
+        title: `Yakin ingin ubah status invoice ${
+          inv.jenis_invoice === JenisInvoice.PEMBELI ? 'pembeli' : 'penjual'
+        } jadi ${
+          inv.status === StatusInvoice.SUDAH_DIBAYAR
+            ? 'sudah dibayar'
+            : 'menunggu pembayaran'
+        }?`,
+        text: 'Tindakan ini bisa diubah nantinya!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Update',
+        ...mySwalOpts(theme),
+      });
 
-  const [curPage, setCurPage] = useState(0);
+      const payload = {
+        status_invoice:
+          inv.status === StatusInvoice.SUDAH_DIBAYAR
+            ? StatusInvoice.MENUNGGU_PEMBAYARAN
+            : StatusInvoice.SUDAH_DIBAYAR,
+        status_iklan:
+          inv.jenis_invoice === JenisInvoice.PENJUAL
+            ? inv.status === StatusInvoice.SUDAH_DIBAYAR
+              ? StatusIklanEnum.MENUNGGU_PEMBAYARAN
+              : StatusIklanEnum.MENUNGGU_KONFIRMASI
+            : inv.status === StatusInvoice.SUDAH_DIBAYAR
+            ? StatusIklanEnum.MENUNGGU_PEMBAYARAN_PEMBELI
+            : StatusIklanEnum.SELESAI,
+      };
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const { data: invoices } = useSWR<{
-    data: {
-      data: InvoiceAdmin[];
-      pagination: Pagination;
-    };
-    message: string;
-    success: boolean;
-  }>(
-    mounted
-      ? stringifyUrl({
-          url: `${API_URL}/admin/invoice`,
-          query: {
-            page: curPage + 1,
-          },
-        })
-      : null
+      if (isConfirmed) {
+        toast.promise(
+          axios.put(
+            `${API_URL}/admin/invoice-${
+              inv.jenis_invoice === JenisInvoice.PEMBELI ? 'pembeli' : 'penjual'
+            }/${inv.id}`,
+            payload
+          ),
+          {
+            pending: {
+              render: () => {
+                setDelBtnDisabled(true);
+                return 'Loading';
+              },
+            },
+            success: {
+              render: () => {
+                setDelBtnDisabled(false);
+                mutate();
+                return 'Berhasil update invoice!';
+              },
+            },
+            error: {
+              render: () => {
+                setDelBtnDisabled(false);
+                return 'Gagal update invoice!';
+              },
+            },
+          }
+        );
+      }
+    },
+    [mutate, theme]
   );
-
-  console.log(invoices);
 
   const data = React.useMemo(
     () =>
@@ -105,6 +170,7 @@ const IndexPage = () => {
           createdBy: invoice.created_by,
           expiredAt: invoice.expired_at,
           id: invoice.id,
+          invoice: invoice,
           iklanId: invoice.iklan_id,
           jenisInvoice: invoice.jenis_invoice,
           jenisPembayaran: invoice.jenis_pembayaran.rekening_name,
@@ -113,7 +179,7 @@ const IndexPage = () => {
           status: getStatusIklan(invoice.status),
           updatedAt: invoice.updated_at,
           updatedBy: invoice.updated_by,
-          userId: invoice.user_id ?? invoice.user.id,
+          userId: invoice.user_id ?? invoice.user?.id,
           user: invoice.user,
           action: {},
         };
@@ -154,13 +220,14 @@ const IndexPage = () => {
               </ButtonLink>
             </Tooltip>
             <Tooltip interactive={false} content='Edit'>
-              <ButtonLink
+              <Button
                 variant={theme === 'dark' ? 'dark' : 'light'}
-                className='hover:text-ywllow-600 text-yellow-500'
-                href={`/admin/invoice/id`}
+                className='text-red-500 hover:text-red-600'
+                onClick={() => onClickUpdate(row.original.invoice)}
+                disabled={delBtnDisabled}
               >
                 <FiEdit2 />
-              </ButtonLink>
+              </Button>
             </Tooltip>
             <Tooltip interactive={false} content='Hapus'>
               <Button
@@ -176,22 +243,23 @@ const IndexPage = () => {
         ),
       },
     ],
-    [delBtnDisabled, onClickDelete, theme]
+    [delBtnDisabled, onClickDelete, onClickUpdate, theme]
   );
 
   return (
     <>
-      <Seo templateTitle='Admin | Iklan' />
+      <Seo templateTitle='Admin | Invoice' />
       <AnimatePage>
         <DashboardLayout>
           {invoices && (
-            <ReactTable
-              data={data}
-              columns={columns}
-              pageCount={invoices?.data.pagination.lastPage}
+            <ReactTable data={data} columns={columns} withFooter={false} />
+          )}
+          <div className='flex items-center justify-center'>
+            <PaginationComponent
+              pageCount={invoices?.data.pagination.lastPage ?? 1}
               onPageChange={({ selected }) => setCurPage(selected)}
             />
-          )}
+          </div>
         </DashboardLayout>
       </AnimatePage>
     </>

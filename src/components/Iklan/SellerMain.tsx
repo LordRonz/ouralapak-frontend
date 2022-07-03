@@ -320,22 +320,20 @@ const SellerMain = () => {
                             />
                           ))}
                         </div>
-                        {iklans !== undefined && (
-                          <div className='row mt-3'>
-                            <div className='col-12'>
-                              <p>
-                                Menampilkan {iklans.data.data.length} dari{' '}
-                                {iklans.data.pagination.total} iklan
-                              </p>
-                              <Pagination
-                                pageCount={iklans?.data.pagination.lastPage}
-                                onPageChange={({ selected }) =>
-                                  setCurPage(selected)
-                                }
-                              />
-                            </div>
+                        <div className='row mt-3'>
+                          <div className='col-12'>
+                            <p>
+                              Menampilkan {iklans?.data.data.length ?? 0} dari{' '}
+                              {iklans?.data.pagination.total ?? 0} iklan
+                            </p>
+                            <Pagination
+                              pageCount={iklans?.data.pagination.lastPage ?? 1}
+                              onPageChange={({ selected }) =>
+                                setCurPage(selected)
+                              }
+                            />
                           </div>
-                        )}
+                        </div>
                       </div>
                     </div>
                   </div>

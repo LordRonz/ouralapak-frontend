@@ -1,3 +1,13 @@
+export enum JenisInvoice {
+  PENJUAL = 1,
+  PEMBELI,
+}
+
+export enum StatusInvoice {
+  MENUNGGU_PEMBAYARAN,
+  SUDAH_DIBAYAR,
+}
+
 type Invoice = {
   biaya_admin: number;
   biaya_penjualan: number;
@@ -6,7 +16,7 @@ type Invoice = {
   expired_at: string;
   id: number;
   iklan_id: number;
-  jenis_invoice: 1;
+  jenis_invoice: JenisInvoice;
   jenis_pembayaran: {
     created_at: string;
     created_by: string | null;
@@ -38,7 +48,7 @@ export type InvoicePembeli = {
   expired_at: string;
   id: number;
   iklan_id: number;
-  jenis_invoice: number;
+  jenis_invoice: JenisInvoice;
   jenis_pembayaran: number;
   no_invoice: string;
   status: number;
