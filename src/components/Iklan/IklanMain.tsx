@@ -310,6 +310,7 @@ const IklanMain = ({ id }: { id: number }) => {
                                           No. Handphone
                                         </label>
                                         <PhoneInput
+                                          defaultCountry='ID'
                                           placeholder='Masukkan No. Handphone'
                                           value={phone}
                                           onChange={setPhone}

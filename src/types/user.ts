@@ -13,6 +13,7 @@ type User = {
   phone: string;
   profile_picture: string;
   updated_at: string;
+  updated_by: number | null;
   username: string;
 };
 

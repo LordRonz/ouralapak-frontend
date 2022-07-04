@@ -1,4 +1,4 @@
-import { FaAdversal, FaFileInvoiceDollar } from 'react-icons/fa';
+import { FaAdversal, FaFileInvoiceDollar, FaUser } from 'react-icons/fa';
 import { FiUsers } from 'react-icons/fi';
 
 const dataAdmin = [
@@ -14,6 +14,11 @@ const dataAdmin = [
         title: 'Invoice',
         icon: <FaFileInvoiceDollar />,
         link: '/admin/invoice',
+      },
+      {
+        title: 'Akun Penjual',
+        icon: <FaUser />,
+        link: '/admin/user',
       },
     ],
   },
