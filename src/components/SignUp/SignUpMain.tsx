@@ -3,6 +3,10 @@ import Link from 'next/link';
 import { stringifyUrl } from 'query-string';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import PhoneInput, {
+  isPossiblePhoneNumber,
+  isValidPhoneNumber,
+} from 'react-phone-number-input';
 import { toast } from 'react-toastify';
 
 import ButtonGradient from '@/components/buttons/ButtonGradient';
@@ -13,7 +17,6 @@ import { API_URL } from '@/constant/config';
 type IFormInput = {
   email: string;
   name: string;
-  phone: string;
   username: string;
   ig_username: string;
   password: string;
@@ -32,7 +35,14 @@ const SignUpMain = () => {
   const [recaptchaResponse, setRecaptchaResponse] = useState<string | null>(
     null
   );
+
+  const [phone, setPhone] = useState<string>();
+
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    if (!phone || (phone && !isPossiblePhoneNumber(phone))) {
+      return;
+    }
+
     await toast.promise(
       axios.post(
         stringifyUrl({
@@ -41,7 +51,7 @@ const SignUpMain = () => {
             recaptcha_response: recaptchaResponse,
           },
         }),
-        data
+        { ...data, phone: phone?.replace('+', '') }
       ),
       {
         pending: {
@@ -125,22 +135,25 @@ const SignUpMain = () => {
                         </div>
                         <div className='col-md-6'>
                           <div className='single-input-unit'>
-                            <label htmlFor='name'>Nomor Telepon</label>
-                            <input
-                              type='text'
-                              placeholder='Nomor telepon anda'
-                              {...register('phone', {
-                                required: 'Nomor telepon harus diisi',
-                                pattern: {
-                                  value:
-                                    /^(\+62|62)?[\s-]?0?8[1-9]{1}\d{1}[\s-]?\d{4}[\s-]?\d{2,5}$/,
-                                  message: 'Nomor telepon tidak valid!',
-                                },
-                              })}
+                            <label htmlFor='phone'>No. Handphone</label>
+                            <PhoneInput
+                              defaultCountry='ID'
+                              placeholder='Masukkan No. Handphone'
+                              value={phone}
+                              onChange={setPhone}
+                              error={
+                                phone
+                                  ? isValidPhoneNumber(phone)
+                                    ? undefined
+                                    : 'Invalid phone number'
+                                  : 'Phone number required'
+                              }
                             />
                           </div>
                           <p className='text-red-500'>
-                            {errors.phone?.message}
+                            {phone &&
+                              !isPossiblePhoneNumber(phone) &&
+                              'Nomor telepon tidak valid'}
                           </p>
                         </div>
                         <div className='col-md-6'>

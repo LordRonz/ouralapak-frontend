@@ -24,7 +24,6 @@ type IFormInput = {
   jenis_pembayaran: number;
   nama: string;
   email: string;
-  phone: string;
 };
 
 const BeliAkunMain = ({ id }: { id: number }) => {
@@ -95,7 +94,6 @@ const BeliAkunMain = ({ id }: { id: number }) => {
         },
       }
     );
-    console.log(res);
   };
 
   if (!jenisPembayaranOpts?.[0]) {
@@ -161,6 +159,7 @@ const BeliAkunMain = ({ id }: { id: number }) => {
                           <div className='single-input-unit'>
                             <label htmlFor='phone'>No. Handphone</label>
                             <PhoneInput
+                              defaultCountry='ID'
                               placeholder='Masukkan No. Handphone'
                               value={phone}
                               onChange={setPhone}
