@@ -3,6 +3,10 @@ import { useRouter } from 'next/router';
 import { stringifyUrl } from 'query-string';
 import React, { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import PhoneInput, {
+  isPossiblePhoneNumber,
+  isValidPhoneNumber,
+} from 'react-phone-number-input';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
 import useSWR from 'swr';
@@ -20,6 +24,7 @@ type IFormInput = {
   jenis_pembayaran: number;
   nama: string;
   email: string;
+  phone: string;
 };
 
 const BeliAkunMain = ({ id }: { id: number }) => {
@@ -37,6 +42,8 @@ const BeliAkunMain = ({ id }: { id: number }) => {
     null
   );
 
+  const [phone, setPhone] = useState<string>();
+
   const { data: banks } = useSWR<{
     data: { data: Bank[]; pagination: Pagination };
     message: string;
@@ -49,6 +56,10 @@ const BeliAkunMain = ({ id }: { id: number }) => {
   }));
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    if (!phone || (phone && !isPossiblePhoneNumber(phone))) {
+      return;
+    }
+
     if (!recaptchaResponse) {
       toast.warn('Captcha harus diselesaikan');
     }
@@ -60,7 +71,7 @@ const BeliAkunMain = ({ id }: { id: number }) => {
             recaptcha_response: recaptchaResponse,
           },
         }),
-        data
+        { ...data, phone: phone?.replace('+', '') }
       ),
       {
         pending: {
@@ -96,7 +107,7 @@ const BeliAkunMain = ({ id }: { id: number }) => {
       <Breadcrumbs breadcrumbTitle='Beli Akun' breadcrumbSubTitle='Beli Akun' />
 
       <section
-        className='login-area pb-90'
+        className='login-area'
         style={{ background: 'url(assets/img/bg/sign-up-bg.jpg)' }}
       >
         <div className='container'>
@@ -144,6 +155,28 @@ const BeliAkunMain = ({ id }: { id: number }) => {
                           </div>
                           <p className='text-red-500'>
                             {errors.email?.message}
+                          </p>
+                        </div>
+                        <div className='col-md-12'>
+                          <div className='single-input-unit'>
+                            <label htmlFor='phone'>No. Handphone</label>
+                            <PhoneInput
+                              placeholder='Masukkan No. Handphone'
+                              value={phone}
+                              onChange={setPhone}
+                              error={
+                                phone
+                                  ? isValidPhoneNumber(phone)
+                                    ? undefined
+                                    : 'Invalid phone number'
+                                  : 'Phone number required'
+                              }
+                            />
+                          </div>
+                          <p className='text-red-500'>
+                            {phone &&
+                              !isPossiblePhoneNumber(phone) &&
+                              'Nomor telepon tidak valid'}
                           </p>
                         </div>
                         <div className='col-md-12'>
