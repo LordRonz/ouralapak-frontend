@@ -57,7 +57,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
     data: Config;
     message: string;
     success: boolean;
-  }>(() => `${API_URL}/master/configs/4`);
+  }>(() => `${API_URL}/master/config/4`);
 
   const [copyStatus, setCopyStatus] = useState<string>('Click to copy');
 
@@ -160,7 +160,10 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                 </div>
                 <div className='flex flex-col items-center justify-center px-4'>
                   <h3 className='text-base md:text-lg'>Metode Pembayaran</h3>
-                  <p className='text-dark dark:!text-light'>WA Admin</p>
+                  <p className='text-dark dark:!text-light'>
+                    {invoice?.data.jenis_pembayaran.rekening_name} (
+                    {invoice?.data.jenis_pembayaran.rekening_number})
+                  </p>
                 </div>
               </div>
             </div>

@@ -6,7 +6,22 @@ export enum JenisInvoice {
 export enum StatusInvoice {
   MENUNGGU_PEMBAYARAN,
   SUDAH_DIBAYAR,
+  EXPIRED,
 }
+
+export const getStatusInvoice = (s: number | string) => {
+  switch (+s) {
+    case StatusInvoice.MENUNGGU_PEMBAYARAN: {
+      return 'Menunggu Pembayaran';
+    }
+    case StatusInvoice.SUDAH_DIBAYAR: {
+      return 'Sudah Dibayar';
+    }
+    case StatusInvoice.EXPIRED: {
+      return 'Expired';
+    }
+  }
+};
 
 type Invoice = {
   biaya_admin: number;

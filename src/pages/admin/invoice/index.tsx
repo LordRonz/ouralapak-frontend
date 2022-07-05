@@ -21,8 +21,8 @@ import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
 import DashboardLayout from '@/dashboard/layout';
 import formatDateStrId from '@/lib/formatDateStrId';
-import getStatusIklan, { StatusIklanEnum } from '@/lib/getStatusIklan';
-import { JenisInvoice, StatusInvoice } from '@/types/invoice';
+import { StatusIklanEnum } from '@/lib/getStatusIklan';
+import { getStatusInvoice, JenisInvoice, StatusInvoice } from '@/types/invoice';
 import InvoiceAdmin from '@/types/invoiceAdmin';
 import Pagination from '@/types/pagination';
 
@@ -176,7 +176,7 @@ const IndexPage = () => {
           jenisPembayaran: invoice.jenis_pembayaran.rekening_name,
           judulIklan: invoice.iklan.title,
           noInvoice: invoice.no_invoice,
-          status: getStatusIklan(invoice.status),
+          status: getStatusInvoice(invoice.status),
           updatedAt: invoice.updated_at,
           updatedBy: invoice.updated_by,
           userId: invoice.user_id ?? invoice.user?.id,

@@ -1,3 +1,5 @@
+import Roles from './roles';
+
 type User = {
   created_at: string;
   created_by: number;
@@ -15,6 +17,14 @@ type User = {
   updated_at: string;
   updated_by: number | null;
   username: string;
+};
+
+export type UserLogin = {
+  id: number;
+  name: string;
+  email: string;
+  username: string;
+  roles: Roles[];
 };
 
 export default User;

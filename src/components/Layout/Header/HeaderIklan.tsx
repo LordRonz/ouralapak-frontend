@@ -19,7 +19,7 @@ const MySwal = withReactContent(Swal);
 
 const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
   const { theme } = useTheme();
-  const [isActive11, setActive11] = useState(false);
+  const [isActive11, setActive11] = useState(true);
   const [, , removeToken] = useLocalStorage('token');
 
   const handleToggle11 = () => {

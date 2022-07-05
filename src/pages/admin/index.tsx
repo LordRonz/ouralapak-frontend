@@ -116,6 +116,7 @@ const IndexPage = () => {
           success: {
             render: () => {
               setUpdateBtnDisabled(false);
+              setIsModalOpen(false);
               mutate();
               return 'Berhasil update iklan';
             },

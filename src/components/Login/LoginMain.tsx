@@ -1,4 +1,5 @@
-import axios from 'axios';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import axios, { AxiosResponse } from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -9,7 +10,9 @@ import { useEffectOnce, useLocalStorage } from 'react-use';
 import ButtonGradient from '@/components/buttons/ButtonGradient';
 import Breadcrumbs from '@/components/Common/PageTitle';
 import { API_URL } from '@/constant/config';
+import APIResponse from '@/types/response';
 import Roles from '@/types/roles';
+import { UserLogin } from '@/types/user';
 
 type IFormInput = {
   emailOrUsername: string;
@@ -39,36 +42,47 @@ const LoginMain = () => {
   const [loginBtnDisabled, setLoginBtnDisabled] = React.useState(false);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    const res = await toast.promise(axios.post(`${API_URL}/auth/login`, data), {
-      pending: {
-        render: () => {
-          setLoginBtnDisabled(true);
-          return 'Loading';
+    const res: AxiosResponse<
+      APIResponse<{ user: UserLogin; token: string }>,
+      any
+    > = await toast.promise(
+      axios.post<APIResponse<{ user: UserLogin; token: string }>>(
+        `${API_URL}/auth/login`,
+        data
+      ),
+      {
+        pending: {
+          render: () => {
+            setLoginBtnDisabled(true);
+            return 'Loading';
+          },
         },
-      },
-      success: {
-        render: () => {
-          setLoginBtnDisabled(false);
-          if (res.data.data.token) {
-            setToken(res.data.data.token as string);
-            axios.defaults.headers.common['Authorization'] =
-              res.data.data.token;
-          }
-          if ((res.data.data.user.roles as string[]).includes(Roles.ADMIN)) {
-            router.push((router.query.returnTo as string) ?? '/admin');
-          } else {
-            router.push((router.query.returnTo as string) ?? '/');
-          }
-          return 'Berhasil login';
+        success: {
+          render: () => {
+            setLoginBtnDisabled(false);
+            if (res.data.data?.token) {
+              setToken(res.data.data.token as string);
+              axios.defaults.headers.common['Authorization'] =
+                res.data.data.token;
+            }
+            if ((res.data.data?.user.roles as string[]).includes(Roles.ADMIN)) {
+              router.push((router.query.returnTo as string) ?? '/admin');
+            } else {
+              router.push((router.query.returnTo as string) ?? '/seller');
+            }
+            return 'Berhasil login';
+          },
         },
-      },
-      error: {
-        render: () => {
-          setLoginBtnDisabled(false);
-          return 'Gagal login!, Silahkan cek email untuk verifikasi';
+        error: {
+          render: (e) => {
+            setLoginBtnDisabled(false);
+            return (
+              (e?.data?.response?.data.message as string) || 'Gagal login!'
+            );
+          },
         },
-      },
-    });
+      }
+    );
   };
 
   return (

@@ -21,6 +21,8 @@ import MyButton from '@/components/buttons/Button';
 import ButtonGradient from '@/components/buttons/ButtonGradient';
 import Captcha from '@/components/Common/Captcha';
 import Breadcrumbs from '@/components/Common/PageTitle';
+import XButton from '@/components/Common/XButton';
+import UnstyledLink from '@/components/links/UnstyledLink';
 import ConfirmationDialog from '@/components/Upload/Dialog';
 import DragDropSection from '@/components/Upload/DragDropSection';
 import { API_URL } from '@/constant/config';
@@ -37,8 +39,6 @@ import Pagination from '@/types/pagination';
 import Platform from '@/types/platform';
 import Refund from '@/types/refund';
 import User from '@/types/user';
-
-import XButton from '../Common/XButton';
 
 type IFormInput = {
   title: string;
@@ -378,7 +378,7 @@ const UploadMain = () => {
         breadcrumbSubTitle='Posting Iklan'
       />
 
-      <div className='upload-area pt-130 pb-90'>
+      <div className='upload-area pb-90'>
         <div className='container'>
           <div className='upload-wrapper mb-10'>
             <form className='upload-form' onSubmit={handleSubmit(onSubmit)}>
@@ -503,8 +503,12 @@ const UploadMain = () => {
                                 value.includes(c.value)
                               )}
                               onChange={(val) =>
-                                val.length <= 5 &&
-                                onChange(val.map((c) => c.value))
+                                val.length <= 5
+                                  ? onChange(val.map((c) => c.value))
+                                  : toast.error(
+                                      'Maximal jumlah hero adalah 5',
+                                      { toastId: 'max_hero' }
+                                    )
                               }
                               isMulti
                             />
@@ -598,51 +602,63 @@ const UploadMain = () => {
                           </Button>
                         </div>
                         <div className='max-h-80 space-y-4 overflow-auto'>
-                          {totalSkinRareFields.fields.map((field, index) => (
-                            <div
-                              className='border-1 rounded-xl border-primary-200 px-4'
-                              key={field.id}
-                            >
-                              <div className='flex justify-between py-2'>
-                                <label className=''>Jenis</label>
+                          <div className='rounded-xl border-primary-200'>
+                            {!!totalSkinRareFields.fields.length && (
+                              <div className='flex justify-around'>
+                                <label htmlFor='jenis'>Jenis</label>
+                                <label htmlFor='total_skin'>Total Skin</label>
+                              </div>
+                            )}
+                            {totalSkinRareFields.fields.map((field, index) => (
+                              <div
+                                className='relative flex rounded-xl border-primary-200'
+                                key={field.id}
+                              >
                                 <XButton
                                   onClick={() =>
                                     totalSkinRareFields.remove(index)
                                   }
+                                  className='absolute top-0 right-0'
                                 />
+                                <div className='mr-2'>
+                                  <input
+                                    type='text'
+                                    placeholder='Jenis'
+                                    {...register(
+                                      `total_skin_rare.${index}.jenis` as const,
+                                      {
+                                        required: 'Jenis harus diisi',
+                                      }
+                                    )}
+                                    className='mb-3'
+                                  />
+                                </div>
+                                <div>
+                                  <input
+                                    type='number'
+                                    onWheel={(e) =>
+                                      e.target instanceof HTMLElement &&
+                                      e.target.blur()
+                                    }
+                                    placeholder='0'
+                                    {...register(
+                                      `total_skin_rare.${index}.total_skin` as const,
+                                      {
+                                        required: 'Total skin harus diisi',
+                                        min: {
+                                          value: 1,
+                                          message:
+                                            'Minimum jumlah skin adalah 1',
+                                        },
+                                        valueAsNumber: true,
+                                      }
+                                    )}
+                                    className='mb-3'
+                                  />
+                                </div>
                               </div>
-                              <input
-                                type='text'
-                                placeholder='Jenis'
-                                {...register(
-                                  `total_skin_rare.${index}.jenis` as const,
-                                  {
-                                    required: 'Jenis harus diisi',
-                                  }
-                                )}
-                              />
-                              <label>Total Skin</label>
-                              <input
-                                type='number'
-                                onWheel={(e) =>
-                                  e.target instanceof HTMLElement &&
-                                  e.target.blur()
-                                }
-                                placeholder='0'
-                                {...register(
-                                  `total_skin_rare.${index}.total_skin` as const,
-                                  {
-                                    required: 'Total skin harus diisi',
-                                    min: {
-                                      value: 1,
-                                      message: 'Minimum jumlah skin adalah 1',
-                                    },
-                                    valueAsNumber: true,
-                                  }
-                                )}
-                              />
-                            </div>
-                          ))}
+                            ))}
+                          </div>
                         </div>
                       </div>
                       <p className='text-red-500'>{errors.title?.message}</p>
@@ -672,82 +688,93 @@ const UploadMain = () => {
                           )}
                         </div>
                         <div className='max-h-80 space-y-4 overflow-auto'>
-                          {totalEmblemFields.fields.map((field, index) => (
-                            <div
-                              className='border-1 rounded-xl border-primary-200 px-4'
-                              key={field.id}
-                            >
-                              <div className='flex justify-between py-2'>
-                                <label>Emblem</label>
+                          <div className='rounded-xl border-primary-200'>
+                            {!!totalEmblemFields.fields.length && (
+                              <div className='flex justify-around'>
+                                <label htmlFor='jenis'>Emblem</label>
+                                <label htmlFor='total_skin'>Level</label>
+                              </div>
+                            )}
+                            {totalEmblemFields.fields.map((field, index) => (
+                              <div
+                                className='relative flex rounded-xl border-primary-200'
+                                key={field.id}
+                              >
                                 <XButton
                                   onClick={() =>
                                     totalEmblemFields.remove(index)
                                   }
+                                  className='absolute top-0 right-0'
                                 />
-                              </div>
-                              <Controller
-                                control={control}
-                                defaultValue={
-                                  emblemOpts.filter(
-                                    (x) =>
-                                      !getValues('total_emblem')
-                                        .filter(
-                                          (x) =>
-                                            x.id_emblem !==
-                                            getValues(
-                                              `total_emblem.${index}.id_emblem`
+                                <div className='mr-2 w-1/2'>
+                                  <Controller
+                                    control={control}
+                                    defaultValue={
+                                      emblemOpts.filter(
+                                        (x) =>
+                                          !getValues('total_emblem')
+                                            .filter(
+                                              (x) =>
+                                                x.id_emblem !==
+                                                getValues(
+                                                  `total_emblem.${index}.id_emblem`
+                                                )
                                             )
-                                        )
-                                        .map((x) => x.id_emblem)
-                                        .includes(x.value)
-                                  )[0]?.value
-                                }
-                                name={`total_emblem.${index}.id_emblem`}
-                                render={({ field: { onChange, value } }) => (
-                                  <Select
-                                    className={clsxm('py-3 pt-0')}
-                                    options={emblemOpts.filter(
-                                      (x) =>
-                                        !getValues('total_emblem')
-                                          .filter(
-                                            (x) =>
-                                              x.id_emblem !==
-                                              getValues(
-                                                `total_emblem.${index}.id_emblem`
+                                            .map((x) => x.id_emblem)
+                                            .includes(x.value)
+                                      )[0]?.value
+                                    }
+                                    name={`total_emblem.${index}.id_emblem`}
+                                    render={({
+                                      field: { onChange, value },
+                                    }) => (
+                                      <Select
+                                        className={clsxm('overflow-visible')}
+                                        options={emblemOpts.filter(
+                                          (x) =>
+                                            !getValues('total_emblem')
+                                              .filter(
+                                                (x) =>
+                                                  x.id_emblem !==
+                                                  getValues(
+                                                    `total_emblem.${index}.id_emblem`
+                                                  )
                                               )
-                                          )
-                                          .map((x) => x.id_emblem)
-                                          .includes(x.value)
+                                              .map((x) => x.id_emblem)
+                                              .includes(x.value)
+                                        )}
+                                        value={emblemOpts.find(
+                                          (c) => c.value === value
+                                        )}
+                                        onChange={(val) => onChange(val?.value)}
+                                      />
                                     )}
-                                    value={emblemOpts.find(
-                                      (c) => c.value === value
-                                    )}
-                                    onChange={(val) => onChange(val?.value)}
                                   />
-                                )}
-                              />
-                              <label className='py-2'>Level</label>
-                              <input
-                                type='number'
-                                onWheel={(e) =>
-                                  e.target instanceof HTMLElement &&
-                                  e.target.blur()
-                                }
-                                placeholder='1'
-                                {...register(
-                                  `total_emblem.${index}.level` as const,
-                                  {
-                                    required: 'Level harus diisi',
-                                    min: {
-                                      value: 1,
-                                      message: 'Minimum level adalah 1',
-                                    },
-                                    valueAsNumber: true,
-                                  }
-                                )}
-                              />
-                            </div>
-                          ))}
+                                </div>
+                                <div className='w-1/2'>
+                                  <input
+                                    type='number'
+                                    onWheel={(e) =>
+                                      e.target instanceof HTMLElement &&
+                                      e.target.blur()
+                                    }
+                                    placeholder='1'
+                                    {...register(
+                                      `total_emblem.${index}.level` as const,
+                                      {
+                                        required: 'Level harus diisi',
+                                        min: {
+                                          value: 1,
+                                          message: 'Minimum level adalah 1',
+                                        },
+                                        valueAsNumber: true,
+                                      }
+                                    )}
+                                  />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -773,6 +800,7 @@ const UploadMain = () => {
                                   {...register(`recall_effect.${index}`, {
                                     required: 'Recall effect harus diisi',
                                   })}
+                                  className='mb-1'
                                 />
                                 <XButton
                                   className='absolute top-0 right-0'
@@ -818,11 +846,14 @@ const UploadMain = () => {
                           )}
                         />
                         {!user?.data.is_verified && (
-                          <p className='text-sm text-yellow-500'>
+                          <UnstyledLink
+                            href='/profile'
+                            className='text-sm text-yellow-500'
+                          >
                             Akun anda belum diverifikasi, silahkan upload
                             identitas terlebih dahulu agar dapat memilih opsi
                             Refund lainnya
-                          </p>
+                          </UnstyledLink>
                         )}
                       </div>
                     </div>

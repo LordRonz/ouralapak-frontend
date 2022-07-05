@@ -39,7 +39,7 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
     data: Config;
     message: string;
     success: boolean;
-  }>(() => `${API_URL}/master/configs/4`);
+  }>(() => `${API_URL}/master/config/4`);
 
   const [copyStatus, setCopyStatus] = useState<string>('Click to copy');
 

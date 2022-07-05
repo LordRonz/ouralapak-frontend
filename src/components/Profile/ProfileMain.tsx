@@ -52,7 +52,7 @@ const ProfileMain = () => {
     File | File[] | null
   >(null);
 
-  const { data: user } = useSWR<{
+  const { data: user, mutate } = useSWR<{
     data: User;
     message: string;
     success: boolean;
@@ -64,26 +64,43 @@ const ProfileMain = () => {
     if (!headers.Authorization) {
       return;
     }
-    await toast.promise(axios.put(`${API_URL}/profile`, data, { headers }), {
-      pending: {
-        render: () => {
-          setUpdateBtnDisabled(true);
-          return 'Loading';
+    const { password, confirm_password, ...profileData } = data;
+    const passwordData = { password, confirm_password };
+    await toast.promise(
+      Promise.all([
+        ...(data.name ?? data.ig_username ?? data.phone
+          ? [axios.put(`${API_URL}/profile`, profileData, { headers })]
+          : []),
+        ...(data.password && data.confirm_password
+          ? [
+              axios.put(`${API_URL}/profile/password`, passwordData, {
+                headers,
+              }),
+            ]
+          : []),
+      ]),
+      {
+        pending: {
+          render: () => {
+            setUpdateBtnDisabled(true);
+            return 'Loading';
+          },
         },
-      },
-      success: {
-        render: () => {
-          setUpdateBtnDisabled(false);
-          return 'Berhasil update profil';
+        success: {
+          render: () => {
+            setUpdateBtnDisabled(false);
+            mutate();
+            return 'Berhasil update profil';
+          },
         },
-      },
-      error: {
-        render: () => {
-          setUpdateBtnDisabled(false);
-          return 'Gagal update profil!';
+        error: {
+          render: () => {
+            setUpdateBtnDisabled(false);
+            return 'Gagal update profil!';
+          },
         },
-      },
-    });
+      }
+    );
   };
 
   const { theme } = useTheme();
