@@ -1,13 +1,10 @@
 import axios from 'axios';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { FaPencilAlt } from 'react-icons/fa';
 import { FiEye } from 'react-icons/fi';
 import Lightbox from 'react-image-lightbox';
-import { Tooltip } from 'react-tippy';
 import { toast } from 'react-toastify';
 import { useLocalStorage } from 'react-use';
 import Swal from 'sweetalert2';
@@ -18,14 +15,12 @@ import ButtonGradient from '@/components/buttons/ButtonGradient';
 import EditButton from '@/components/Common/EditButton';
 import Breadcrumbs from '@/components/Common/PageTitle';
 import XButton from '@/components/Common/XButton';
+import ProfileCard from '@/components/Profile/ProfileCard';
 import DragDropSection from '@/components/Upload/DragDropSection';
 import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
-import clsxm from '@/lib/clsxm';
 import useAuthHeader from '@/services/authHeader';
 import User from '@/types/user';
-
-import Button from '../buttons/Button';
 
 type IFormInput = {
   name?: string;
@@ -140,87 +135,11 @@ const ProfileMain = () => {
       <section className='creator-info-area pb-90'>
         <div className='container'>
           <div className='row'>
-            <div className='col-lg-3 col-md-8'>
-              <div className='creator-info-details wow fadeInUp mb-40'>
-                <div className='creator-img-name'>
-                  <div className='profile-img pos-rel'>
-                    <img
-                      src={
-                        user?.data.profile_picture
-                          ? `${API_URL}${user.data.profile_picture}`
-                          : `https://robohash.org/${
-                              user?.data.username || 'AMOGUS'
-                            }?set=set4`
-                      }
-                      alt='profile-img'
-                    />
-                  </div>
-                  <Tooltip
-                    trigger='click'
-                    interactive
-                    position='right-end'
-                    html={
-                      <div className='flex flex-col'>
-                        <Button className='px-1 text-xs'>Upload Foto</Button>
-                        <Button className='bg-rose-400 text-xs hover:bg-rose-500'>
-                          Hapus Foto
-                        </Button>
-                      </div>
-                    }
-                  >
-                    <button className='rounded-full p-1 ring-2 ring-primary-200'>
-                      <FaPencilAlt className='text-xl' />
-                    </button>
-                  </Tooltip>
-                  <div className='creator-name-id'>
-                    <h4 className='artist-name pos-rel'>
-                      {user?.data.name}
-                      {user?.data.is_verified && (
-                        <span className='profile-verification verified'>
-                          <i className='fas fa-check'></i>
-                        </span>
-                      )}
-                    </h4>
-                    <div className='artist-id'>@{user?.data.username}</div>
-                  </div>
-                </div>
-                <div className='profile-setting-list'>
-                  <ul>
-                    <li
-                      className={clsxm(
-                        router.pathname === '/profile' && 'active'
-                      )}
-                    >
-                      <Link href='/profile'>
-                        <a>
-                          <i className='flaticon-account'></i>Profil
-                        </a>
-                      </Link>
-                    </li>
-                    <li
-                      className={clsxm(
-                        router.pathname === '/seller' && 'active'
-                      )}
-                    >
-                      <Link href='/seller'>
-                        <a>
-                          <i className='flaticon-newspaper'></i>Iklan
-                        </a>
-                      </Link>
-                    </li>
-                    <li>
-                      <button
-                        onClick={() => handleLogout()}
-                        className='space-x-4 hover:text-primary-500'
-                      >
-                        <i className='flaticon-logout'></i>
-                        <span>Log Out</span>
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+            <ProfileCard
+              user={user?.data}
+              handleLogout={handleLogout}
+              withEdit
+            />
             <div className='col-lg-8'>
               <div className='creator-info-personal wow fadeInUp mb-40'>
                 <form

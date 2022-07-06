@@ -4,4 +4,7 @@ module.exports = {
   webpack: (config) => {
     return config;
   },
+  images: {
+    domains: ['robohash.org'],
+  },
 };

@@ -12,9 +12,9 @@ import useSWR from 'swr';
 import IklanCard from '@/components/Cards/IklanCard';
 import Pagination from '@/components/Common/Pagination';
 import ButtonLink from '@/components/links/ButtonLink';
+import ProfileCard from '@/components/Profile/ProfileCard';
 import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
-import clsxm from '@/lib/clsxm';
 import getAuthHeader from '@/lib/getAuthHeader';
 import { StatusIklanEnum } from '@/lib/getStatusIklan';
 import type Iklan from '@/types/iklan';
@@ -123,70 +123,7 @@ const SellerMain = () => {
       <section className='creator-details-area pb-90 pt-0'>
         <div className='container'>
           <div className='row'>
-            <div className='col-lg-3 col-md-8'>
-              <div className='creator-info-details wow fadeInUp mb-40'>
-                <div className='creator-img-name'>
-                  <div className='profile-img pos-rel'>
-                    <img
-                      src={
-                        user?.data.profile_picture
-                          ? `${API_URL}${user.data.profile_picture}`
-                          : `https://robohash.org/${
-                              user?.data.username || 'AMOGUS'
-                            }?set=set4`
-                      }
-                      alt='profile-img'
-                    />
-                  </div>
-                  <div className='creator-name-id'>
-                    <h4 className='artist-name pos-rel'>
-                      {user?.data.name}
-                      {user?.data.is_verified && (
-                        <span className='profile-verification verified'>
-                          <i className='fas fa-check'></i>
-                        </span>
-                      )}
-                    </h4>
-                    <div className='artist-id'>@{user?.data.username}</div>
-                  </div>
-                </div>
-                <div className='profile-setting-list'>
-                  <ul>
-                    <li
-                      className={clsxm(
-                        router.pathname === '/profile' && 'active'
-                      )}
-                    >
-                      <Link href='/profile'>
-                        <a>
-                          <i className='flaticon-account'></i>Profil
-                        </a>
-                      </Link>
-                    </li>
-                    <li
-                      className={clsxm(
-                        router.pathname === '/seller' && 'active'
-                      )}
-                    >
-                      <Link href='/seller'>
-                        <a>
-                          <i className='flaticon-newspaper'></i>Iklan
-                        </a>
-                      </Link>
-                    </li>
-                    <li>
-                      <button
-                        onClick={() => handleLogout()}
-                        className='space-x-4 hover:text-primary-500'
-                      >
-                        <i className='flaticon-logout'></i>
-                        <span>Log Out</span>
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+            <ProfileCard user={user?.data} handleLogout={handleLogout} />
             <div className='col-xl-9'>
               <div className='creator-info-bar mb-30 wow fadeInUp'>
                 <div className='artist-meta-info creator-details-meta-info'>

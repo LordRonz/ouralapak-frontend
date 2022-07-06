@@ -95,13 +95,16 @@ const IndexPage = () => {
 
   const onClickUpdate = React.useCallback(
     async (inv: InvoiceAdmin) => {
+      if (inv.status === StatusInvoice.EXPIRED) {
+        return;
+      }
       const { isConfirmed } = await MySwal.fire({
         title: `Yakin ingin ubah status invoice ${
           inv.jenis_invoice === JenisInvoice.PEMBELI ? 'pembeli' : 'penjual'
         } jadi ${
           inv.status === StatusInvoice.SUDAH_DIBAYAR
-            ? 'sudah dibayar'
-            : 'menunggu pembayaran'
+            ? 'menunggu pembayaran'
+            : 'sudah dibayar'
         }?`,
         text: 'Tindakan ini bisa diubah nantinya!',
         icon: 'warning',
@@ -177,6 +180,7 @@ const IndexPage = () => {
           judulIklan: invoice.iklan.title,
           noInvoice: invoice.no_invoice,
           status: getStatusInvoice(invoice.status),
+          statusCode: invoice.status,
           updatedAt: invoice.updated_at,
           updatedBy: invoice.updated_by,
           userId: invoice.user_id ?? invoice.user?.id,
@@ -224,7 +228,10 @@ const IndexPage = () => {
                 variant={theme === 'dark' ? 'dark' : 'light'}
                 className='text-red-500 hover:text-red-600'
                 onClick={() => onClickUpdate(row.original.invoice)}
-                disabled={delBtnDisabled}
+                disabled={
+                  delBtnDisabled ||
+                  row.original.statusCode === StatusInvoice.EXPIRED
+                }
               >
                 <FiEdit2 />
               </Button>

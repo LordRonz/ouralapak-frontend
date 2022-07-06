@@ -29,6 +29,9 @@ type Invoice = {
   created_at: string;
   created_by: string;
   expired_at: string;
+  email: string;
+  name: string;
+  phone: string;
   id: number;
   iklan_id: number;
   jenis_invoice: JenisInvoice;

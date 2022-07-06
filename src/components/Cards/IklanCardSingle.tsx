@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 
+import { API_URL } from '@/constant/config';
 import toIDRCurrency from '@/lib/toIDRCurrency';
 import { IklanHome } from '@/types/iklan';
 
@@ -13,10 +14,18 @@ const IklanCardSingle = ({ iklan }: { iklan: IklanHome }) => {
       <div className='art-item-single mb-30'>
         <div className='art-item-wraper'>
           <div className='art-item-inner'>
-            <div className='art-item-img pos-rel'>
+            <div className='art-item-img pos-rel flex h-60 items-center justify-center'>
               <Link href={`/iklan/${iklan.id}`}>
                 <a>
-                  <img src='assets/img/art/sadhasdocasdc.jpg' alt='art-img' />
+                  <img
+                    src={
+                      iklan.image_profile
+                        ? `${API_URL}/${iklan.image_profile}`
+                        : ``
+                    }
+                    alt='art-img'
+                    className='h-60 w-60 object-cover'
+                  />
                 </a>
               </Link>
             </div>

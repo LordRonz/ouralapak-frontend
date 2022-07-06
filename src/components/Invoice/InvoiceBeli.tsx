@@ -12,11 +12,9 @@ import toIDRCurrency from '@/lib/toIDRCurrency';
 import { Config } from '@/types/config';
 import Iklan from '@/types/iklan';
 import Invoice from '@/types/invoice';
-import User from '@/types/user';
 
 const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
   const router = useRouter();
-
   const { data: invoice } = useSWR<{
     data: Invoice;
     message: string;
@@ -29,11 +27,7 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
     success: boolean;
   }>(() => `${API_URL}/iklan/` + invoice!.data.iklan_id);
 
-  const { data: user } = useSWR<{
-    data: User;
-    message: string;
-    success: boolean;
-  }>(() => `${API_URL}/profile`);
+  console.log(iklan);
 
   const { data: config } = useSWR<{
     data: Config;
@@ -49,8 +43,8 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
       query: {
         text: `Halo admin,\n\nSaya melakukan order dengan nomor invoice ${
           invoice?.data.no_invoice
-        } (${typeof window !== 'undefined' ? window.location.origin : ''}/${
-          router.pathname
+        } (${typeof window !== 'undefined' ? window.location.origin : ''}${
+          router.asPath
         }))`,
       },
     });
@@ -105,15 +99,15 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
               <div className='flex flex-col items-start'>
                 <p className='text-xs text-dark dark:!text-light md:text-lg'>
                   <span className='font-extrabold'>Nama: </span>
-                  {user?.data.name}
+                  {invoice?.data.name}
                 </p>
                 <p className='text-xs text-dark dark:!text-light md:text-lg'>
                   <span className='font-extrabold'>No. Handphone: </span>
-                  {user?.data.phone}
+                  {invoice?.data.phone}
                 </p>
                 <p className='text-xs text-dark dark:!text-light md:text-lg'>
                   <span className='font-extrabold'>Email: </span>
-                  {user?.data.email}
+                  {invoice?.data.email}
                 </p>
               </div>
             </div>

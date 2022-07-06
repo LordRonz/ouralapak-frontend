@@ -1,7 +1,6 @@
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import queryString from 'query-string';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Tooltip as TooltipTippy } from 'react-tippy';
 import useSWR from 'swr';
@@ -9,31 +8,13 @@ import useSWR from 'swr';
 import ButtonLinkGradient from '@/components/links/ButtonLinkGradient';
 import { API_URL } from '@/constant/config';
 import formatDateStrId from '@/lib/formatDateStrId';
-import getAuthHeader from '@/lib/getAuthHeader';
 import toIDRCurrency from '@/lib/toIDRCurrency';
 import { Config } from '@/types/config';
 import Iklan from '@/types/iklan';
 import Invoice from '@/types/invoice';
-import User from '@/types/user';
 
 const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
   const router = useRouter();
-  useEffect(() => {
-    (async () => {
-      axios
-        .get(`${API_URL}/profile`, {
-          headers: { Authorization: getAuthHeader() ?? '' },
-        })
-        .catch(() =>
-          router.push(
-            `/login?${queryString.stringify({
-              state: 'unauthorized',
-              returnTo: router.pathname,
-            })}`
-          )
-        );
-    })();
-  }, [router]);
 
   const { data: invoice } = useSWR<{
     data: Invoice;
@@ -46,12 +27,6 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
     message: string;
     success: boolean;
   }>(() => `${API_URL}/user/iklan/` + invoice!.data.iklan_id);
-
-  const { data: user } = useSWR<{
-    data: User;
-    message: string;
-    success: boolean;
-  }>(() => `${API_URL}/profile`);
 
   const { data: config } = useSWR<{
     data: Config;
@@ -68,7 +43,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
         text: `Halo admin,\n\nSaya melakukan order dengan nomor invoice ${
           invoice?.data.no_invoice
         } (${typeof window !== 'undefined' ? window.location.origin : ''}/${
-          router.pathname
+          router.asPath
         }))`,
       },
     });
@@ -123,15 +98,15 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
               <div className='flex flex-col items-start'>
                 <p className='text-xs text-dark dark:!text-light md:text-lg'>
                   <span className='font-extrabold'>Nama: </span>
-                  {user?.data.name}
+                  {invoice?.data.name}
                 </p>
                 <p className='text-xs text-dark dark:!text-light md:text-lg'>
                   <span className='font-extrabold'>No. Handphone: </span>
-                  {user?.data.phone}
+                  {invoice?.data.phone}
                 </p>
                 <p className='text-xs text-dark dark:!text-light md:text-lg'>
                   <span className='font-extrabold'>Email: </span>
-                  {user?.data.email}
+                  {invoice?.data.email}
                 </p>
               </div>
             </div>

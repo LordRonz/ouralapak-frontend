@@ -3,12 +3,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { stringifyUrl } from 'query-string';
-import React, { useState } from 'react';
+import React, { ReactChild, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import PhoneInput, {
   isPossiblePhoneNumber,
   isValidPhoneNumber,
 } from 'react-phone-number-input';
+import { Carousel } from 'react-responsive-carousel';
 import Modal from 'react-responsive-modal';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
@@ -155,14 +156,63 @@ const IklanMain = ({ id }: { id: number }) => {
           <div className='art-details-wrapper'>
             <div className='row'>
               <div className='col-xl-6 col-lg-3'>
-                <div className='art-item-img pos-rel art-details-img wow fadeInUp !h-96'>
-                  <span>
+                <Carousel infiniteLoop dynamicHeight={false}>
+                  <div>
                     <img
-                      src='/assets/img/art/sadhasdocasdc.jpg'
-                      alt='art-img'
+                      src={
+                        iklan.data.image_profile
+                          ? `${API_URL}/${iklan.data.image_profile}`
+                          : ``
+                      }
+                      alt='profile-img'
                     />
-                  </span>
-                </div>
+                    <p className='legend'>Profile Image</p>
+                  </div>
+                  <div>
+                    <img
+                      src={
+                        iklan.data.image_win_rate
+                          ? `${API_URL}/${iklan.data.image_win_rate}`
+                          : ``
+                      }
+                      alt='profile-img'
+                    />
+                    <p className='legend'>Win Rate</p>
+                  </div>
+                  <div>
+                    <img
+                      src={
+                        iklan.data.image_win_rate_hero
+                          ? `${API_URL}/${iklan.data.image_win_rate_hero}`
+                          : ``
+                      }
+                      alt='profile-img'
+                    />
+                    <p className='legend'>Win Rate Hero</p>
+                  </div>
+                  <div>
+                    <img
+                      src={
+                        iklan.data.image_emblem
+                          ? `${API_URL}/${iklan.data.image_emblem}`
+                          : ``
+                      }
+                      alt='profile-img'
+                    />
+                    <p className='legend'>Emblem</p>
+                  </div>
+                  {
+                    iklan.data.image_skin.map((skinImg, i) => (
+                      <div key={`skinImg_${i}`}>
+                        <img
+                          src={skinImg ? `${API_URL}/${skinImg}` : ``}
+                          alt='profile-img'
+                        />
+                        <p className='legend'>Skin {i}</p>
+                      </div>
+                    )) as unknown as ReactChild
+                  }
+                </Carousel>
               </div>
               <div className='col-xl-6 col-lg-7'>
                 <div className='art-details-content wow fadeInUp'>
@@ -172,7 +222,13 @@ const IklanMain = ({ id }: { id: number }) => {
                       <Link href='/creators'>
                         <a>
                           <img
-                            src='/assets/img/profile/profile1.jpg'
+                            src={
+                              iklan.data.user?.profile_picture
+                                ? `${API_URL}${iklan.data.user?.profile_picture}`
+                                : `https://robohash.org/${
+                                    iklan.data.user?.username || 'AMOGUS'
+                                  }?set=set4`
+                            }
                             alt='profile-img'
                           />
                         </a>
@@ -388,7 +444,13 @@ const IklanMain = ({ id }: { id: number }) => {
                 <div className='flex flex-col items-start justify-center'>
                   <div className='h-24 w-24 overflow-hidden rounded-lg md:h-48 md:w-48'>
                     <Image
-                      src='/assets/img/profile/profile1.jpg'
+                      src={
+                        iklan.data.user?.profile_picture
+                          ? `${API_URL}${iklan.data.user?.profile_picture}`
+                          : `https://robohash.org/${
+                              iklan.data.user?.username || 'AMOGUS'
+                            }?set=set4`
+                      }
                       alt='Picture of the author'
                       width={500}
                       height={500}
