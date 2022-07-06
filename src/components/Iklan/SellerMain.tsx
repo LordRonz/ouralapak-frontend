@@ -1,24 +1,29 @@
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useTheme } from 'next-themes';
 import queryString, { stringifyUrl } from 'query-string';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useLocalStorage } from 'react-use';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import useSWR from 'swr';
 
 import IklanCard from '@/components/Cards/IklanCard';
 import Pagination from '@/components/Common/Pagination';
 import ButtonLink from '@/components/links/ButtonLink';
 import { API_URL } from '@/constant/config';
-import formatDateStrId from '@/lib/formatDateStrId';
+import { mySwalOpts } from '@/constant/swal';
+import clsxm from '@/lib/clsxm';
 import getAuthHeader from '@/lib/getAuthHeader';
 import { StatusIklanEnum } from '@/lib/getStatusIklan';
-import { RootState } from '@/redux/store';
 import type Iklan from '@/types/iklan';
 import PaginationType from '@/types/pagination';
 import User from '@/types/user';
 
 // const navs = [...new Array(100)].map((_, i) => (i + 1).toString());
+
+const MySwal = withReactContent(Swal);
 
 const SellerMain = () => {
   const router = useRouter();
@@ -71,9 +76,22 @@ const SellerMain = () => {
     success: boolean;
   }>(mounted ? `${API_URL}/profile` : null);
 
-  const creatorItem = useSelector(
-    (state: RootState) => state.creators.specificItem
-  );
+  const { theme } = useTheme();
+  const [, , removeToken] = useLocalStorage('token');
+
+  const handleLogout = async () => {
+    const { isConfirmed } = await MySwal.fire({
+      title: 'Yakin ingin logout?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Logout',
+      ...mySwalOpts(theme),
+    });
+    if (isConfirmed) {
+      removeToken();
+      router.push('/login');
+    }
+  };
   return (
     <main>
       <section className='page-title-area'>
@@ -105,27 +123,68 @@ const SellerMain = () => {
       <section className='creator-details-area pb-90 pt-0'>
         <div className='container'>
           <div className='row'>
-            <div className='col-xl-3 col-lg-6 col-md-8'>
-              <div className='creator-about wow fadeInUp mb-40 overflow-hidden'>
-                <div className='profile-img pos-rel'>
-                  <img src={creatorItem.profileImage} alt='img' />
+            <div className='col-lg-3 col-md-8'>
+              <div className='creator-info-details wow fadeInUp mb-40'>
+                <div className='creator-img-name'>
+                  <div className='profile-img pos-rel'>
+                    <img
+                      src={
+                        user?.data.profile_picture
+                          ? `${API_URL}${user.data.profile_picture}`
+                          : `https://robohash.org/${
+                              user?.data.username || 'AMOGUS'
+                            }?set=set4`
+                      }
+                      alt='profile-img'
+                    />
+                  </div>
+                  <div className='creator-name-id'>
+                    <h4 className='artist-name pos-rel'>
+                      {user?.data.name}
+                      {user?.data.is_verified && (
+                        <span className='profile-verification verified'>
+                          <i className='fas fa-check'></i>
+                        </span>
+                      )}
+                    </h4>
+                    <div className='artist-id'>@{user?.data.username}</div>
+                  </div>
                 </div>
-                <h4 className='artist-name pos-rel'>
-                  {user?.data.name}
-                  {!!user?.data.is_verified && (
-                    <span className='profile-verification verified'>
-                      <i className='fas fa-check'></i>
-                    </span>
-                  )}
-                </h4>
-                <div className='artist-id'>@{user?.data.username}</div>
-                <ul>
-                  <li>
-                    <i className='flaticon-calendar'></i>Bergabung{' '}
-                    {user &&
-                      `${formatDateStrId(user?.data.created_at, 'MMMM yyyy')}`}
-                  </li>
-                </ul>
+                <div className='profile-setting-list'>
+                  <ul>
+                    <li
+                      className={clsxm(
+                        router.pathname === '/profile' && 'active'
+                      )}
+                    >
+                      <Link href='/profile'>
+                        <a>
+                          <i className='flaticon-account'></i>Profil
+                        </a>
+                      </Link>
+                    </li>
+                    <li
+                      className={clsxm(
+                        router.pathname === '/seller' && 'active'
+                      )}
+                    >
+                      <Link href='/seller'>
+                        <a>
+                          <i className='flaticon-newspaper'></i>Iklan
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <button
+                        onClick={() => handleLogout()}
+                        className='space-x-4 hover:text-primary-500'
+                      >
+                        <i className='flaticon-logout'></i>
+                        <span>Log Out</span>
+                      </button>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
             <div className='col-xl-9'>

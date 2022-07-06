@@ -5,9 +5,9 @@ import '@/styles/fontAwesome5Pro.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 import 'react-image-lightbox/style.css'; // This only needs to be imported once in your app
 import 'react-responsive-modal/styles.css';
-import 'react-tippy/dist/tippy.css';
 import 'react-phone-number-input/style.css';
 import './index.scss';
+import 'react-tippy/dist/tippy.css';
 
 import axios from 'axios';
 import { AnimatePresence } from 'framer-motion';

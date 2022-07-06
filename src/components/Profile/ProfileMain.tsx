@@ -4,8 +4,10 @@ import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { FaPencilAlt } from 'react-icons/fa';
 import { FiEye } from 'react-icons/fi';
 import Lightbox from 'react-image-lightbox';
+import { Tooltip } from 'react-tippy';
 import { toast } from 'react-toastify';
 import { useLocalStorage } from 'react-use';
 import Swal from 'sweetalert2';
@@ -19,8 +21,11 @@ import XButton from '@/components/Common/XButton';
 import DragDropSection from '@/components/Upload/DragDropSection';
 import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
+import clsxm from '@/lib/clsxm';
 import useAuthHeader from '@/services/authHeader';
 import User from '@/types/user';
+
+import Button from '../buttons/Button';
 
 type IFormInput = {
   name?: string;
@@ -51,6 +56,9 @@ const ProfileMain = () => {
   const [identityCardValidation, setIdentityCardValidation] = useState<
     File | File[] | null
   >(null);
+
+  // const [openDialog, setOpenDialog] = useState(false);
+  // const [profilePic, setProfilePic] = useState<File | File[] | null>(null);
 
   const { data: user, mutate } = useSWR<{
     data: User;
@@ -134,41 +142,69 @@ const ProfileMain = () => {
           <div className='row'>
             <div className='col-lg-3 col-md-8'>
               <div className='creator-info-details wow fadeInUp mb-40'>
-                <div className='creator-cover-img pos-rel'>
-                  <div className='change-photo'>
-                    <i className='flaticon-photo-camera'></i>
-                  </div>
-                  <img
-                    src='assets/img/profile/profile-cover/profile-cover4.jpg'
-                    alt='cover-img'
-                  />
-                </div>
                 <div className='creator-img-name'>
                   <div className='profile-img pos-rel'>
-                    <div className='change-photo'>
-                      <i className='flaticon-photo-camera'></i>
-                    </div>
                     <img
-                      src='assets/img/profile/profile1.jpg'
+                      src={
+                        user?.data.profile_picture
+                          ? `${API_URL}${user.data.profile_picture}`
+                          : `https://robohash.org/${
+                              user?.data.username || 'AMOGUS'
+                            }?set=set4`
+                      }
                       alt='profile-img'
                     />
                   </div>
+                  <Tooltip
+                    trigger='click'
+                    interactive
+                    position='right-end'
+                    html={
+                      <div className='flex flex-col'>
+                        <Button className='px-1 text-xs'>Upload Foto</Button>
+                        <Button className='bg-rose-400 text-xs hover:bg-rose-500'>
+                          Hapus Foto
+                        </Button>
+                      </div>
+                    }
+                  >
+                    <button className='rounded-full p-1 ring-2 ring-primary-200'>
+                      <FaPencilAlt className='text-xl' />
+                    </button>
+                  </Tooltip>
                   <div className='creator-name-id'>
                     <h4 className='artist-name pos-rel'>
                       {user?.data.name}
-                      <span className='profile-verification verified'>
-                        <i className='fas fa-check'></i>
-                      </span>
+                      {user?.data.is_verified && (
+                        <span className='profile-verification verified'>
+                          <i className='fas fa-check'></i>
+                        </span>
+                      )}
                     </h4>
                     <div className='artist-id'>@{user?.data.username}</div>
                   </div>
                 </div>
                 <div className='profile-setting-list'>
                   <ul>
-                    <li className='active'>
+                    <li
+                      className={clsxm(
+                        router.pathname === '/profile' && 'active'
+                      )}
+                    >
                       <Link href='/profile'>
                         <a>
-                          <i className='flaticon-account'></i>Personal Info
+                          <i className='flaticon-account'></i>Profil
+                        </a>
+                      </Link>
+                    </li>
+                    <li
+                      className={clsxm(
+                        router.pathname === '/seller' && 'active'
+                      )}
+                    >
+                      <Link href='/seller'>
+                        <a>
+                          <i className='flaticon-newspaper'></i>Iklan
                         </a>
                       </Link>
                     </li>

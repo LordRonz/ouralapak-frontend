@@ -15,7 +15,7 @@ const MySwal = withReactContent(Swal);
 const TopNavigation = () => {
   const { theme } = useTheme();
   const { toggle } = useToggle();
-  const [isActive11, setActive11] = useState(false);
+  const [isActive11, setActive11] = useState(true);
   const [, , removeToken] = useLocalStorage('token');
   const router = useRouter();
   const handleToggle11 = () => {

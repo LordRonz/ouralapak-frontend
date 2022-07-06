@@ -15,6 +15,7 @@ import { HiPlus } from 'react-icons/hi';
 import Lightbox from 'react-image-lightbox';
 import Select from 'react-select';
 import { Theme, toast } from 'react-toastify';
+import { useLifecycles, useSessionStorage } from 'react-use';
 import useSWR from 'swr';
 
 import MyButton from '@/components/buttons/Button';
@@ -63,16 +64,17 @@ type IFormInput = {
   harga_akun: number;
   jenis_pembayaran: number;
   package_id: number;
-  image_profile: string;
-  image_win_rate: string;
-  image_win_rate_hero: string;
-  image_emblem: string;
-  image_skin: string[];
 };
 
 // const SUPPORTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
 
 const UploadMain = () => {
+  const [saveData, setSaveData] = useSessionStorage<IFormInput | undefined>(
+    'saveData'
+  );
+  const [openDialog, setOpenDialog] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+
   const {
     control,
     register,
@@ -81,6 +83,7 @@ const UploadMain = () => {
     formState: { errors },
     setValue,
     getValues,
+    reset,
   } = useForm<IFormInput>({
     defaultValues: {
       recall_effect: [],
@@ -105,9 +108,6 @@ const UploadMain = () => {
     })();
   }, [router]);
 
-  const [openDialog, setOpenDialog] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-
   const totalSkinRareFields = useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormContext)
     name: 'total_skin_rare', // unique name for your Field Array
@@ -128,6 +128,13 @@ const UploadMain = () => {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useLifecycles(() => {
+    if (saveData) {
+      reset(saveData);
+      setSaveData(undefined);
+    }
+  });
 
   const { data: user } = useSWR<{
     data: User;
@@ -849,6 +856,7 @@ const UploadMain = () => {
                           <UnstyledLink
                             href='/profile'
                             className='text-sm text-yellow-500'
+                            onClick={() => setSaveData(getValues())}
                           >
                             Akun anda belum diverifikasi, silahkan upload
                             identitas terlebih dahulu agar dapat memilih opsi

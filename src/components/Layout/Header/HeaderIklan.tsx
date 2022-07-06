@@ -5,11 +5,14 @@ import React, { useState } from 'react';
 import { useLocalStorage } from 'react-use';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import useSWR from 'swr';
 
 import ColorModeToggle from '@/components/ColorModeToggle';
 import MobileMenu from '@/components/Layout/Header/MobileMenu';
+import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
 import useSticky from '@/hooks/useSticky';
+import User from '@/types/user';
 
 type HeaderProps = {
   HeaderStatic?: string;
@@ -21,6 +24,14 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
   const { theme } = useTheme();
   const [isActive11, setActive11] = useState(true);
   const [, , removeToken] = useLocalStorage('token');
+
+  const { data: user } = useSWR<{
+    data: User;
+    message: string;
+    success: boolean;
+  }>(`${API_URL}/profile`);
+
+  console.log(user);
 
   const handleToggle11 = () => {
     setActive11(!isActive11);
@@ -128,7 +139,13 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
                         </ul>
                       </div>
                       <img
-                        src='/assets/img/profile/profile4.jpg'
+                        src={
+                          user?.data.profile_picture
+                            ? `${API_URL}${user.data.profile_picture}`
+                            : `https://robohash.org/${
+                                user?.data.username || 'AMOGUS'
+                              }?set=set4`
+                        }
                         alt='profile-img'
                       />
                       <div className='profile-verification verified'>
