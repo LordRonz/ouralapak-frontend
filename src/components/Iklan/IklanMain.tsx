@@ -156,7 +156,7 @@ const IklanMain = ({ id }: { id: number }) => {
           <div className='art-details-wrapper'>
             <div className='row'>
               <div className='col-xl-6 col-lg-3'>
-                <Carousel infiniteLoop dynamicHeight={false}>
+                <Carousel infiniteLoop dynamicHeight={true}>
                   <div>
                     <img
                       src={

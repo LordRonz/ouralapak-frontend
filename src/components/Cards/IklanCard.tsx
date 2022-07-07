@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 
+import { API_URL } from '@/constant/config';
 import toIDRCurrency from '@/lib/toIDRCurrency';
 import Iklan from '@/types/iklan';
 
@@ -10,7 +11,13 @@ const IklanCard = ({ iklan }: { iklan: Iklan }) => {
       <div className='flex flex-col items-start justify-center'>
         <div className='h-24 w-24 overflow-hidden rounded-lg md:h-48 md:w-48'>
           <Image
-            src='/assets/img/profile/profile1.jpg'
+            src={
+              iklan.user.profile_picture
+                ? `${API_URL}${iklan.user.profile_picture}`
+                : `https://robohash.org/${
+                    iklan.user.username || 'AMOGUS'
+                  }?set=set4`
+            }
             alt='Picture of the author'
             width={500}
             height={500}

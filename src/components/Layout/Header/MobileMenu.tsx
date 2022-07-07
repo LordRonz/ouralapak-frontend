@@ -1,5 +1,9 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
+import useSWR from 'swr';
+
+import { API_URL } from '@/constant/config';
+import User from '@/types/user';
 
 type MobileMenuProps = {
   setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -11,6 +15,12 @@ const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
   const handleToggle14 = () => {
     setActive14((a) => !a);
   };
+
+  const { data: user } = useSWR<{
+    data: User;
+    message: string;
+    success: boolean;
+  }>(`${API_URL}/profile`);
 
   return (
     <>
@@ -52,40 +62,50 @@ const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
             </div>
             <div className='offset-profile-action d-md-none'>
               <div className='offset-widget mb-40'>
-                <div className='profile-item profile-item-header into-sidebar d-md-none'>
-                  <div
-                    className={`profile-img pos-rel ${
-                      isActive14 ? '' : 'show-element'
-                    }`}
-                    onClick={handleToggle14}
-                  >
-                    <div className='profile-action'>
-                      <ul>
-                        <li>
-                          <Link href='/creator-profile-info-personal'>
-                            <a>
-                              <i className='fal fa-user'></i>Profile
-                            </a>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href='/login'>
-                            <a>
-                              <i className='fal fa-sign-out'></i>Logout
-                            </a>
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                    <img
-                      src='assets/img/profile/profile4.jpg'
-                      alt='profile-img'
-                    />
-                    <div className='profile-verification verified'>
-                      <i className='fas fa-check'></i>
+                {user && (
+                  <div className='profile-item profile-item-header into-sidebar d-md-none'>
+                    <div
+                      className={`profile-img pos-rel ${
+                        isActive14 ? '' : 'show-element'
+                      }`}
+                      onClick={handleToggle14}
+                    >
+                      <div className='profile-action'>
+                        <ul>
+                          <li>
+                            <Link href='/creator-profile-info-personal'>
+                              <a>
+                                <i className='fal fa-user'></i>Profile
+                              </a>
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href='/login'>
+                              <a>
+                                <i className='fal fa-sign-out'></i>Logout
+                              </a>
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
+                      <img
+                        src={
+                          user?.data.profile_picture
+                            ? `${API_URL}${user.data.profile_picture}`
+                            : `https://robohash.org/${
+                                user?.data.username || 'AMOGUS'
+                              }?set=set4`
+                        }
+                        alt='profile-img'
+                      />
+                      {!!user?.data.is_verified && (
+                        <div className='profile-verification verified'>
+                          <i className='fas fa-check'></i>
+                        </div>
+                      )}
                     </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
             <div className='offset-widget offset_searchbar mb-30'>
@@ -95,11 +115,6 @@ const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
                   <i className='fal fa-search'></i>
                 </button>
               </form>
-            </div>
-            <div className='offset-widget mb-40'>
-              <Link href='/upload-category'>
-                <a className='fill-btn'>Upload Items</a>
-              </Link>
             </div>
             <div className='offset-widget d-none d-lg-block mb-40'>
               <div className='info-widget'>

@@ -31,8 +31,6 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
     success: boolean;
   }>(`${API_URL}/profile`);
 
-  console.log(user);
-
   const handleToggle11 = () => {
     setActive11(!isActive11);
   };
@@ -148,9 +146,11 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
                         }
                         alt='profile-img'
                       />
-                      <div className='profile-verification verified'>
-                        <i className='fas fa-check'></i>
-                      </div>
+                      {!!user?.data.is_verified && (
+                        <div className='profile-verification verified'>
+                          <i className='fas fa-check'></i>
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className='menu-bar d-xl-none ml-20'>

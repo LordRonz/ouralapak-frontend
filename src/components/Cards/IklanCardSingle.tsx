@@ -5,9 +5,15 @@ import { API_URL } from '@/constant/config';
 import toIDRCurrency from '@/lib/toIDRCurrency';
 import { IklanHome } from '@/types/iklan';
 
-const IklanCardSingle = ({ iklan }: { iklan: IklanHome }) => {
+const IklanCardSingle = ({
+  iklan,
+  refund = '',
+}: {
+  iklan: IklanHome;
+  refund?: string;
+}) => {
   // distructure items
-  const { title, user, harga_akun, jenis_refund } = iklan;
+  const { title, user, harga_akun } = iklan;
 
   return (
     <div className='col-xl-3 col-lg-4 col-md-6 col-sm-6'>
@@ -35,7 +41,7 @@ const IklanCardSingle = ({ iklan }: { iklan: IklanHome }) => {
                   <Link href='/creator-profile'>
                     <a>
                       <img
-                        src='assets/img/profile/profile1.jpg'
+                        src={`https://robohash.org/${'AMOGUS'}?set=set4`}
                         alt='profile-img'
                       />
                     </a>
@@ -56,9 +62,7 @@ const IklanCardSingle = ({ iklan }: { iklan: IklanHome }) => {
                   <div className='art-price'>{toIDRCurrency(harga_akun)}</div>
                 </div>
                 <div className='art-activity-btn'>
-                  <Link href='/activity'>
-                    <a className='art-activity'>{jenis_refund}</a>
-                  </Link>
+                  <p className='art-activity inline'>{refund}</p>
                 </div>
               </div>
             </div>

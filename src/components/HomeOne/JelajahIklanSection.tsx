@@ -2,11 +2,11 @@ import { stringifyUrl } from 'query-string';
 import React, { useState } from 'react';
 import useSWR from 'swr';
 
+import IklanCardSingle from '@/components/Cards/IklanCardSingle';
 import { API_URL } from '@/constant/config';
 import { IklanHome } from '@/types/iklan';
 import Pagination from '@/types/pagination';
-
-import IklanCardSingle from '../Cards/IklanCardSingle';
+import Refund from '@/types/refund';
 
 const JelajahIklanSection = () => {
   const [sortBy, setSortBy] = useState('0');
@@ -25,6 +25,25 @@ const JelajahIklanSection = () => {
       },
     })
   );
+
+  const { data: refund } = useSWR<{
+    data: { data: Refund[]; pagination: Pagination };
+    message: string;
+    success: boolean;
+  }>(
+    stringifyUrl({
+      url: `${API_URL}/master/refund`,
+      query: {
+        perPage: 200,
+      },
+    })
+  );
+
+  const getRefundById = (id: string | number) => {
+    if (!refund) return '';
+    const res = refund.data.data.find((x) => +x.id === +id);
+    return res?.name ?? '';
+  };
 
   if (!iklans) {
     return <></>;
@@ -72,7 +91,11 @@ const JelajahIklanSection = () => {
         </div>
         <div className='row wow fadeInUp'>
           {iklans.data.data.map((iklan, index) => (
-            <IklanCardSingle iklan={iklan} key={`${iklan.id}${index}`} />
+            <IklanCardSingle
+              iklan={iklan}
+              key={`${iklan.id}${index}`}
+              refund={getRefundById(iklan.jenis_refund)}
+            />
           ))}
         </div>
       </div>
