@@ -3,8 +3,6 @@ import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { FiEye } from 'react-icons/fi';
-import Lightbox from 'react-image-lightbox';
 import { toast } from 'react-toastify';
 import { useLocalStorage } from 'react-use';
 import Swal from 'sweetalert2';
@@ -16,7 +14,6 @@ import EditButton from '@/components/Common/EditButton';
 import Breadcrumbs from '@/components/Common/PageTitle';
 import XButton from '@/components/Common/XButton';
 import ProfileCard from '@/components/Profile/ProfileCard';
-import DragDropSection from '@/components/Upload/DragDropSection';
 import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
 import useAuthHeader from '@/services/authHeader';
@@ -44,13 +41,12 @@ const ProfileMain = () => {
   const [toggleEditPassword, setToggleEditPassword] = useState(false);
   const [updateBtnDisabled, setUpdateBtnDisabled] = useState(false);
 
-  const [previewIdCard, setPreviewIdCard] = useState(false);
-  const [previewIdCardValidation, setPreviewIdCardValidation] = useState(false);
+  // const [previewIdCard, setPreviewIdCard] = useState(false);
+  // const [previewIdCardValidation, setPreviewIdCardValidation] = useState(false);
 
-  const [identityCard, setIdentityCard] = useState<File | File[] | null>(null);
-  const [identityCardValidation, setIdentityCardValidation] = useState<
-    File | File[] | null
-  >(null);
+  const [identityCard, setIdentityCard] = useState<File | null>(null);
+  const [identityCardValidation, setIdentityCardValidation] =
+    useState<File | null>(null);
 
   // const [openDialog, setOpenDialog] = useState(false);
   // const [profilePic, setProfilePic] = useState<File | File[] | null>(null);
@@ -63,9 +59,53 @@ const ProfileMain = () => {
 
   const headers = useAuthHeader();
 
+  const setProfilePicture = (f: FileList) => {
+    const profilePic = f[0];
+    if (!profilePic || !headers.Authorization) {
+      return;
+    }
+    const form = new FormData();
+    if (Array.isArray(profilePic)) {
+      profilePic.forEach((v) => form.append('profile_picture', v));
+    } else {
+      form.append('profile_picture', profilePic);
+    }
+    (async () => {
+      await toast.promise(axios.put(`${API_URL}/profile`, form, { headers }), {
+        pending: {
+          render: () => {
+            setUpdateBtnDisabled(true);
+            return 'Loading';
+          },
+        },
+        success: {
+          render: () => {
+            setUpdateBtnDisabled(false);
+            mutate();
+            return 'Berhasil update gambar profile';
+          },
+        },
+        error: {
+          render: () => {
+            setUpdateBtnDisabled(false);
+            return 'Gagal update gambar profile!';
+          },
+        },
+      });
+    })();
+  };
+
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     if (!headers.Authorization) {
       return;
+    }
+
+    const identityForm = new FormData();
+    if (identityCard) {
+      identityForm.append('identity_card', identityCard);
+    }
+    if (identityCardValidation) {
+      identityForm.append('identity_card_validation', identityCardValidation);
     }
     const { password, confirm_password, ...profileData } = data;
     const passwordData = { password, confirm_password };
@@ -77,6 +117,13 @@ const ProfileMain = () => {
         ...(data.password && data.confirm_password
           ? [
               axios.put(`${API_URL}/profile/password`, passwordData, {
+                headers,
+              }),
+            ]
+          : []),
+        ...(identityCard && identityCardValidation
+          ? [
+              axios.put(`${API_URL}/profile/identity`, identityForm, {
                 headers,
               }),
             ]
@@ -139,6 +186,7 @@ const ProfileMain = () => {
               user={user?.data}
               handleLogout={handleLogout}
               withEdit
+              setFile={setProfilePicture}
             />
             <div className='col-lg-8'>
               <div className='creator-info-personal wow fadeInUp mb-40'>
@@ -255,52 +303,35 @@ const ProfileMain = () => {
                       )}
                     </div>
                     <div className='col-md-6'>
-                      <DragDropSection
-                        file={identityCard}
-                        setFile={setIdentityCard}
-                        title='Gambar kartu identitas'
-                        note='Format gambar | Max 20 MB'
+                      <label className='font-bold text-black'>
+                        Kartu Identitas
+                      </label>
+                      <img
+                        src={`${API_URL}/${user?.data.identity_card}`}
+                        alt=''
                       />
-                      <ButtonGradient
-                        className='flex items-center justify-center gap-x-2 px-4 text-white'
-                        disabled={updateBtnDisabled}
-                        onClick={() => setPreviewIdCardValidation(true)}
-                        variant='secondary'
-                      >
-                        <FiEye /> Lihat gambar
-                      </ButtonGradient>
-                      {previewIdCard && (
-                        <Lightbox
-                          mainSrc={URL.createObjectURL(identityCard as File)}
-                          onCloseRequest={() => setPreviewIdCard(false)}
-                        />
-                      )}
+                      <input
+                        type='file'
+                        onChange={(e) =>
+                          e.target.files && setIdentityCard(e.target.files[0])
+                        }
+                      />
                     </div>
                     <div className='col-md-6'>
-                      <DragDropSection
-                        file={identityCardValidation}
-                        setFile={setIdentityCardValidation}
-                        title='Gambar kartu identitas + selfie'
-                        note='Format gambar | Max 20 MB'
+                      <label className='font-bold text-black'>
+                        Kartu Identitas + Selfie
+                      </label>
+                      <img
+                        src={`${API_URL}/${user?.data.identity_card_validation}`}
+                        alt=''
                       />
-                      <ButtonGradient
-                        className='flex items-center justify-center gap-x-2 px-4 text-white'
-                        disabled={updateBtnDisabled}
-                        onClick={() => setPreviewIdCardValidation(true)}
-                        variant='secondary'
-                      >
-                        <FiEye /> Lihat gambar
-                      </ButtonGradient>
-                      {previewIdCardValidation && (
-                        <Lightbox
-                          mainSrc={URL.createObjectURL(
-                            identityCardValidation as File
-                          )}
-                          onCloseRequest={() =>
-                            setPreviewIdCardValidation(false)
-                          }
-                        />
-                      )}
+                      <input
+                        type='file'
+                        onChange={(e) =>
+                          e.target.files &&
+                          setIdentityCardValidation(e.target.files[0])
+                        }
+                      />
                     </div>
                   </div>
                   <div className='personal-info-btn mt-4'>

@@ -358,7 +358,6 @@ const UploadMain = () => {
         },
       }
     );
-
     const no_invoice = res.data.data.no_invoice as string;
 
     router.push(`/invoice/${no_invoice}`);
@@ -601,7 +600,7 @@ const UploadMain = () => {
                             onClick={() =>
                               totalSkinRareFields.append({
                                 jenis: 'medium',
-                                total_skin: 0,
+                                total_skin: 1,
                               })
                             }
                           >

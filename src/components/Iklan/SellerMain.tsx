@@ -29,6 +29,7 @@ const SellerMain = () => {
   const router = useRouter();
   useEffect(() => {
     (async () => {
+      console.log(`${API_URL}/profile`);
       axios
         .get(`${API_URL}/profile`, {
           headers: { Authorization: getAuthHeader() ?? '' },

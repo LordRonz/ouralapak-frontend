@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useRef } from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
 import { Tooltip } from 'react-tippy';
 
@@ -12,14 +13,27 @@ export type ProfileCardProp = {
   user?: User;
   handleLogout: () => Promise<void>;
   withEdit?: boolean;
+  setFile: (f: FileList) => void;
 };
 
 const ProfileCard = ({
   user,
   handleLogout,
   withEdit = false,
+  setFile,
 }: ProfileCardProp) => {
   const router = useRouter();
+
+  const inputFileRef = useRef<HTMLInputElement>(null);
+
+  const onBtnClick = () => {
+    /*Collecting node-element and performing click*/
+    inputFileRef.current?.click();
+  };
+
+  const onFileChangeCapture = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) setFile(e.target.files);
+  };
 
   return (
     <div className='col-lg-3 col-md-8'>
@@ -44,7 +58,15 @@ const ProfileCard = ({
               position='right-end'
               html={
                 <div className='flex flex-col'>
-                  <Button className='px-1 text-xs'>Upload Foto</Button>
+                  <input
+                    className='hidden'
+                    type='file'
+                    ref={inputFileRef}
+                    onChangeCapture={onFileChangeCapture}
+                  />
+                  <Button className='px-1 text-xs' onClick={() => onBtnClick()}>
+                    Upload Foto
+                  </Button>
                   <Button className='bg-rose-400 text-xs hover:bg-rose-500'>
                     Hapus Foto
                   </Button>
