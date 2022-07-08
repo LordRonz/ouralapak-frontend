@@ -13,7 +13,7 @@ export type ProfileCardProp = {
   user?: User;
   handleLogout: () => Promise<void>;
   withEdit?: boolean;
-  setFile: (f: FileList) => void;
+  setFile?: (f: FileList) => void;
 };
 
 const ProfileCard = ({
@@ -32,7 +32,7 @@ const ProfileCard = ({
   };
 
   const onFileChangeCapture = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) setFile(e.target.files);
+    if (e.target.files && setFile) setFile(e.target.files);
   };
 
   return (
@@ -51,7 +51,7 @@ const ProfileCard = ({
               alt='profile-img'
             />
           </div>
-          {withEdit && (
+          {withEdit && setFile && (
             <Tooltip
               trigger='click'
               interactive
