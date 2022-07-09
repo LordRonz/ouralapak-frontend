@@ -442,13 +442,12 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@hcaptcha/react-hcaptcha@^1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@hcaptcha/react-hcaptcha/-/react-hcaptcha-1.4.3.tgz#7dc9df288e0a9ff54d20902260a92b18bb6fb2d6"
-  integrity sha512-kBXP9xEH1REIsuoZWowNcSQeL9cnBkRmeJkj2Rvzy8NstkQr/qahgNXUV7YaUxqntYf2mCwFOGTZbacqfqwaQw==
+"@hcaptcha/react-hcaptcha@^1.4.4":
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/@hcaptcha/react-hcaptcha/-/react-hcaptcha-1.4.4.tgz#529c55369160995115735b5fe5453daef4670f04"
+  integrity sha512-Aen217LDnf5ywbPSwBG5CsoqBLIHIAS9lhj3zQjXJuO13doQ6/ubkCWNuY8jmwYLefoFt3V3MrZmCdKDaFoTuQ==
   dependencies:
     "@babel/runtime" "^7.17.9"
-    "@types/react" "^18.0.0"
 
 "@headlessui/react@^1.6.6":
   version "1.6.6"
@@ -823,7 +822,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@18.0.15", "@types/react@>=16.9.11", "@types/react@^18.0.0":
+"@types/react@*", "@types/react@18.0.15", "@types/react@>=16.9.11":
   version "18.0.15"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.15.tgz#d355644c26832dc27f3e6cbf0c4f4603fc4ab7fe"
   integrity sha512-iz3BtLuIYH1uWdsv6wXYdhozhqj20oD4/Hk2DNXIn1kFsmp9x8d9QB6FnPhfkbhd2PgEONt9Q1x/ebkwjfFLow==
