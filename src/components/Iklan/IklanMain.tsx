@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { stringifyUrl } from 'query-string';
 import React, { ReactChild, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import Lightbox from 'react-image-lightbox';
 import PhoneInput, {
   isPossiblePhoneNumber,
   isValidPhoneNumber,
@@ -34,6 +35,16 @@ type IFormInput = {
   phone: string;
 };
 
+type CarouselNode = {
+  key: null;
+  type: string;
+  props: {
+    children?: CarouselNode[];
+    alt?: string;
+    src?: string;
+  };
+};
+
 const IklanMain = ({ id }: { id: number }) => {
   const { data: iklan } = useSWR<{
     data: IklanDetail;
@@ -42,6 +53,8 @@ const IklanMain = ({ id }: { id: number }) => {
   }>(`${API_URL}/iklan/${id}`);
 
   const [open, setOpen] = useState(false);
+  const [previewCarousel, setPreviewCarousel] = useState<boolean>(false);
+  const [carouselImg, setCarouselImg] = useState<string>();
 
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
@@ -156,7 +169,16 @@ const IklanMain = ({ id }: { id: number }) => {
           <div className='art-details-wrapper'>
             <div className='row'>
               <div className='col-xl-6 col-lg-3'>
-                <Carousel infiniteLoop dynamicHeight={true}>
+                <Carousel
+                  infiniteLoop
+                  dynamicHeight={true}
+                  onClickItem={(i, item) => {
+                    const it = item as CarouselNode;
+                    setCarouselImg(it.props.children?.[0].props.src);
+                    setPreviewCarousel(true);
+                  }}
+                  className='hover:cursor-zoom-in'
+                >
                   <div>
                     <img
                       src={
@@ -213,6 +235,12 @@ const IklanMain = ({ id }: { id: number }) => {
                     )) as unknown as ReactChild
                   }
                 </Carousel>
+                {previewCarousel && carouselImg && (
+                  <Lightbox
+                    mainSrc={carouselImg}
+                    onCloseRequest={() => setPreviewCarousel(false)}
+                  />
+                )}
               </div>
               <div className='col-xl-6 col-lg-7'>
                 <div className='art-details-content wow fadeInUp'>
