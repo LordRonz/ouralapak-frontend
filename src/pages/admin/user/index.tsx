@@ -16,6 +16,7 @@ import PaginationComponent from '@/components/Common/Pagination';
 import ButtonLink from '@/components/links/ButtonLink';
 import ReactTable from '@/components/ReactTable';
 import Seo from '@/components/Seo';
+import TableSearch from '@/components/TableSearch';
 import Tooltip from '@/components/Tooltip';
 import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
@@ -31,6 +32,7 @@ const IndexPage = () => {
   const [updBtnDisabled, setUpdBtnDisabled] = React.useState(false);
   const [mounted, setMounted] = useState(false);
   const [curPage, setCurPage] = useState(0);
+  const [filter, setFilter] = useState<string>();
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -48,6 +50,7 @@ const IndexPage = () => {
           url: `${API_URL}/admin/user`,
           query: {
             page: curPage + 1,
+            ...(filter && { search: filter }),
           },
         })
       : null
@@ -171,6 +174,7 @@ const IndexPage = () => {
       <Seo templateTitle='Admin | Invoice' />
       <AnimatePage>
         <DashboardLayout>
+          <TableSearch setFilter={setFilter} />
           {users && (
             <ReactTable data={data} columns={columns} withFooter={false} />
           )}

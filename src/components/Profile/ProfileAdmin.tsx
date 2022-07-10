@@ -1,12 +1,9 @@
-import axios from 'axios';
+import Image from 'next/image';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { FiEye } from 'react-icons/fi';
 import Lightbox from 'react-image-lightbox';
-import { toast } from 'react-toastify';
 import useSWR from 'swr';
 
-import ButtonGradient from '@/components/buttons/ButtonGradient';
 import EditButton from '@/components/Common/EditButton';
 import XButton from '@/components/Common/XButton';
 import { API_URL } from '@/constant/config';
@@ -31,13 +28,12 @@ const ProfileAdmin = ({ id }: { id: number }) => {
   } = useForm<IFormInput>();
 
   const [toggleEditPassword, setToggleEditPassword] = useState(false);
-  const [updateBtnDisabled, setUpdateBtnDisabled] = useState(false);
 
   const [previewIdCard, setPreviewIdCard] = useState(false);
   const [previewIdCardValidation, setPreviewIdCardValidation] = useState(false);
 
-  const [identityCard] = useState<File | File[] | null>(null);
-  const [identityCardValidation] = useState<File | File[] | null>(null);
+  // const [identityCard] = useState<File | File[] | null>(null);
+  // const [identityCardValidation] = useState<File | File[] | null>(null);
 
   const { data: user } = useSWR<{
     data: User;
@@ -47,44 +43,56 @@ const ProfileAdmin = ({ id }: { id: number }) => {
 
   const headers = useAuthHeader();
 
-  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+  const onSubmit: SubmitHandler<IFormInput> = async () => {
     if (!headers.Authorization) {
       return;
     }
-    await toast.promise(axios.put(`${API_URL}/profile`, data, { headers }), {
-      pending: {
-        render: () => {
-          setUpdateBtnDisabled(true);
-          return 'Loading';
-        },
-      },
-      success: {
-        render: () => {
-          setUpdateBtnDisabled(false);
-          return 'Berhasil update profil';
-        },
-      },
-      error: {
-        render: () => {
-          setUpdateBtnDisabled(false);
-          return 'Gagal update profil!';
-        },
-      },
-    });
+    // await toast.promise(axios.put(`${API_URL}/profile`, data, { headers }), {
+    //   pending: {
+    //     render: () => {
+    //       setUpdateBtnDisabled(true);
+    //       return 'Loading';
+    //     },
+    //   },
+    //   success: {
+    //     render: () => {
+    //       setUpdateBtnDisabled(false);
+    //       return 'Berhasil update profil';
+    //     },
+    //   },
+    //   error: {
+    //     render: () => {
+    //       setUpdateBtnDisabled(false);
+    //       return 'Gagal update profil!';
+    //     },
+    //   },
+    // });
   };
 
   return (
     <main>
-      <section className='creator-info-area pb-90'>
+      <section className='creator-info-area pb-90 pt-20'>
         <div className='container'>
           <div className='row'>
             <div className='col-lg-3 col-md-8'>
               <div className='creator-info-details wow fadeInUp mb-40'>
                 <div className='creator-img-name'>
+                  <div className='profile-img pos-rel'>
+                    <img
+                      src={
+                        user?.data.profile_picture
+                          ? `${API_URL}${user?.data.profile_picture}`
+                          : `https://robohash.org/${
+                              user?.data.username || 'AMOGUS'
+                            }?set=set4`
+                      }
+                      alt='profile-img'
+                    />
+                  </div>
                   <div className='creator-name-id'>
                     <h4 className='artist-name pos-rel'>
                       {user?.data.name}
-                      {user?.data.is_verified && (
+                      {!!user?.data.is_verified && (
                         <span className='profile-verification verified'>
                           <i className='fas fa-check'></i>
                         </span>
@@ -204,35 +212,53 @@ const ProfileAdmin = ({ id }: { id: number }) => {
                       )}
                     </div>
                     <div className='col-md-6'>
-                      <ButtonGradient
-                        className='flex items-center justify-center gap-x-2 px-4 text-white'
-                        disabled={updateBtnDisabled}
-                        onClick={() => setPreviewIdCardValidation(true)}
-                        variant='secondary'
-                      >
-                        <FiEye /> Lihat gambar
-                      </ButtonGradient>
+                      <h5>Kartu Identitas</h5>
+                      {user?.data.identity_card ? (
+                        <button
+                          className='hover:cursor-zoom-in'
+                          onClick={() => setPreviewIdCard(true)}
+                        >
+                          <Image
+                            src='https://cdn.myanimelist.net/r/360x360/images/characters/9/310307.jpg?s=56335bffa6f5da78c3824ba0dae14a26'
+                            alt='luffy'
+                            width={360}
+                            height={360}
+                          />
+                        </button>
+                      ) : (
+                        <p>Belum upload kartu identitas</p>
+                      )}
                       {previewIdCard && (
                         <Lightbox
-                          mainSrc={URL.createObjectURL(identityCard as File)}
+                          mainSrc={
+                            'https://cdn.myanimelist.net/r/360x360/images/characters/9/310307.jpg?s=56335bffa6f5da78c3824ba0dae14a26'
+                          }
                           onCloseRequest={() => setPreviewIdCard(false)}
                         />
                       )}
                     </div>
                     <div className='col-md-6'>
-                      <ButtonGradient
-                        className='flex items-center justify-center gap-x-2 px-4 text-white'
-                        disabled={updateBtnDisabled}
-                        onClick={() => setPreviewIdCardValidation(true)}
-                        variant='secondary'
-                      >
-                        <FiEye /> Lihat gambar
-                      </ButtonGradient>
+                      <h5>Kartu Identitas + Selfie</h5>
+                      {user?.data.identity_card ? (
+                        <button
+                          className='relative w-full hover:cursor-zoom-in'
+                          onClick={() => setPreviewIdCardValidation(true)}
+                        >
+                          <Image
+                            src='https://cdn.myanimelist.net/r/360x360/images/characters/9/310307.jpg?s=56335bffa6f5da78c3824ba0dae14a26'
+                            alt='luffy'
+                            width={360}
+                            height={360}
+                          />
+                        </button>
+                      ) : (
+                        <p>Belum upload kartu identitas + selfie</p>
+                      )}
                       {previewIdCardValidation && (
                         <Lightbox
-                          mainSrc={URL.createObjectURL(
-                            identityCardValidation as File
-                          )}
+                          mainSrc={
+                            'https://cdn.myanimelist.net/r/360x360/images/characters/9/310307.jpg?s=56335bffa6f5da78c3824ba0dae14a26'
+                          }
                           onCloseRequest={() =>
                             setPreviewIdCardValidation(false)
                           }

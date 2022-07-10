@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import * as React from 'react';
 import { GoTriangleDown, GoTriangleUp } from 'react-icons/go';
-import { HiSearch } from 'react-icons/hi';
 import {
   Column,
   PluginHook,
@@ -19,6 +18,7 @@ type Props<T extends object = {}> = {
   plugins?: PluginHook<T>[];
   className?: string;
   withFooter?: boolean;
+  setFilter?: (s: string) => void;
 };
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -46,26 +46,6 @@ export default function ReactTable<T extends object>({
 
   return (
     <div className={clsx('flex w-full flex-col', className)}>
-      <div>
-        <label className='sr-only text-gray-500'>Filter</label>
-        <div className='relative'>
-          <input
-            placeholder='Find...'
-            className={clsx(
-              'w-full rounded-md dark:!bg-dark sm:max-w-xs',
-              'px-4 py-2 pl-9',
-              'placeholder-gray-400',
-              'text-sm md:text-base',
-              'border border-gray-300 dark:!border-gray-600',
-              'dark:!focus:border-primary-300 focus:border-primary-300 focus:outline-none'
-            )}
-          />
-          <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2'>
-            <HiSearch className='text-xl text-gray-400' />
-          </div>
-        </div>
-      </div>
-
       <div className='-my-2 mt-2 overflow-x-auto'>
         <div className='inline-block min-w-full py-2 align-middle'>
           <div className='overflow-hidden border-b border-gray-200 shadow-sm dark:!border-gray-800 sm:rounded-lg'>
