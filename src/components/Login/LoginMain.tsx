@@ -65,8 +65,14 @@ const LoginMain = () => {
               axios.defaults.headers.common['Authorization'] =
                 res.data.data.token;
             }
-            if ((res.data.data?.user.roles as string[]).includes(Roles.ADMIN)) {
-              router.push((router.query.returnTo as string) ?? '/admin');
+            if (
+              (res.data.data?.user.roles as string[]).includes(Roles.SUPERUSER)
+            ) {
+              router.push('/superadmin');
+            } else if (
+              (res.data.data?.user.roles as string[]).includes(Roles.ADMIN)
+            ) {
+              router.push('/admin');
             } else {
               router.push((router.query.returnTo as string) ?? '/seller');
             }

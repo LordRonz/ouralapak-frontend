@@ -3,10 +3,6 @@ import Link from 'next/link';
 import { stringifyUrl } from 'query-string';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import PhoneInput, {
-  isPossiblePhoneNumber,
-  isValidPhoneNumber,
-} from 'react-phone-number-input';
 import { toast } from 'react-toastify';
 
 import ButtonGradient from '@/components/buttons/ButtonGradient';
@@ -18,12 +14,11 @@ type IFormInput = {
   email: string;
   name: string;
   username: string;
-  ig_username: string;
   password: string;
   confirm_password: string;
 };
 
-const SignUpMain = () => {
+const SignUpAdmin = () => {
   const {
     register,
     handleSubmit,
@@ -36,22 +31,16 @@ const SignUpMain = () => {
     null
   );
 
-  const [phone, setPhone] = useState<string>();
-
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    if (!phone || (phone && !isPossiblePhoneNumber(phone))) {
-      return;
-    }
-
     await toast.promise(
       axios.post(
         stringifyUrl({
-          url: `${API_URL}/auth/user/register`,
+          url: `${API_URL}/auth/admin/register`,
           query: {
             recaptcha_response: recaptchaResponse,
           },
         }),
-        { ...data, phone: phone?.replace('+', '') }
+        data
       ),
       {
         pending: {
@@ -85,7 +74,7 @@ const SignUpMain = () => {
 
       <section
         className='sign-up-area pt-130 pb-90'
-        style={{ background: 'url(assets/img/bg/sign-up-bg.jpg)' }}
+        style={{ background: 'url(/assets/img/bg/sign-up-bg.jpg)' }}
       >
         <div className='container'>
           <div className='row justify-content-center'>
@@ -93,7 +82,7 @@ const SignUpMain = () => {
               <div className='sign-up-wrapper pos-rel wow fadeInUp mb-40'>
                 <div className='sign-up-inner'>
                   <div className='sign-up-content'>
-                    <h4>Buat Akun</h4>
+                    <h4>Buat Akun Admin</h4>
                     <form
                       className='sign-up-form'
                       onSubmit={handleSubmit(onSubmit)}
@@ -135,29 +124,6 @@ const SignUpMain = () => {
                         </div>
                         <div className='col-md-6'>
                           <div className='single-input-unit'>
-                            <label htmlFor='phone'>No. Handphone</label>
-                            <PhoneInput
-                              defaultCountry='ID'
-                              placeholder='Masukkan No. Handphone'
-                              value={phone}
-                              onChange={setPhone}
-                              error={
-                                phone
-                                  ? isValidPhoneNumber(phone)
-                                    ? undefined
-                                    : 'Invalid phone number'
-                                  : 'Phone number required'
-                              }
-                            />
-                          </div>
-                          <p className='text-red-500'>
-                            {phone &&
-                              !isPossiblePhoneNumber(phone) &&
-                              'Nomor telepon tidak valid'}
-                          </p>
-                        </div>
-                        <div className='col-md-6'>
-                          <div className='single-input-unit'>
                             <label htmlFor='username'>Username</label>
                             <input
                               type='text'
@@ -169,21 +135,6 @@ const SignUpMain = () => {
                           </div>
                           <p className='text-red-500'>
                             {errors.username?.message}
-                          </p>
-                        </div>
-                        <div className='col-md-6'>
-                          <div className='single-input-unit'>
-                            <label htmlFor='ig_username'>IG Username</label>
-                            <input
-                              type='text'
-                              placeholder='Username IG anda'
-                              {...register('ig_username', {
-                                required: 'Username instagram harus diisi',
-                              })}
-                            />
-                          </div>
-                          <p className='text-red-500'>
-                            {errors.ig_username?.message}
                           </p>
                         </div>
                         <div className='col-md-6'>
@@ -259,4 +210,4 @@ const SignUpMain = () => {
   );
 };
 
-export default SignUpMain;
+export default SignUpAdmin;

@@ -3,7 +3,7 @@ import { FiUsers } from 'react-icons/fi';
 
 const dataAdmin = [
   {
-    section: 'Applications',
+    section: '',
     content: [
       {
         title: 'Iklan',
