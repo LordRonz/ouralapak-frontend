@@ -189,6 +189,18 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                 </div>
               </div>
             </div>
+            <div className='rounded-xl border-2 border-primary-500 p-2'>
+              <p className='my-0 text-black'>
+                <span className='font-black'>Transfer ke</span> rekening{' '}
+                {invoice?.data.jenis_pembayaran.name}
+              </p>
+              <p className='my-0 text-black'>
+                a/n {invoice?.data.jenis_pembayaran.rekening_name}
+              </p>
+              <p className='my-0 text-black'>
+                {invoice?.data.jenis_pembayaran.rekening_number}
+              </p>
+            </div>
             <div>
               <h4 className='inline rounded-md  text-red-500'>
                 HARAP DIBAYAR SESUAI DENGAN {'"'}Total Yang Harus Dibayar{'"'}{' '}
@@ -197,7 +209,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
             </div>
             <div className='text-center'>
               <ButtonLinkGradient href={getWaLink()} className='text-black'>
-                Bayar
+                Konfirmasi Pembayaran
               </ButtonLinkGradient>
             </div>
           </div>

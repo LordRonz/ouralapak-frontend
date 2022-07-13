@@ -10,7 +10,6 @@ import { API_URL } from '@/constant/config';
 import formatDateStrId from '@/lib/formatDateStrId';
 import toIDRCurrency from '@/lib/toIDRCurrency';
 import { Config } from '@/types/config';
-import Iklan from '@/types/iklan';
 import Invoice from '@/types/invoice';
 
 const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
@@ -21,14 +20,6 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
     success: boolean;
   }>(`${API_URL}/check-invoice/${no_invoice}`);
 
-  const { data: iklan } = useSWR<{
-    data: Iklan;
-    message: string;
-    success: boolean;
-  }>(() => `${API_URL}/iklan/` + invoice!.data.iklan_id);
-
-  console.log(iklan);
-
   const { data: config } = useSWR<{
     data: Config;
     message: string;
@@ -36,7 +27,7 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
   }>(() => `${API_URL}/master/config/4`);
 
   const [copyStatus, setCopyStatus] = useState<string>('Click to copy');
-
+  console.log(invoice?.data.jenis_pembayaran);
   const getWaLink = () =>
     queryString.stringifyUrl({
       url: `https://wa.me/${config?.data?.value}`,
@@ -119,19 +110,19 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
                 <div className='flex flex-col items-center justify-center px-4'>
                   <h3 className='text-base md:text-lg'>Judul Iklan</h3>
                   <p className='text-dark dark:!text-light'>
-                    {iklan?.data.title}
+                    {invoice?.data.title}
                   </p>
                 </div>
                 <div className='flex flex-col items-center justify-center px-4'>
                   <h3 className='text-base md:text-lg'>Harga Akun</h3>
                   <p className='text-dark dark:!text-light'>
-                    {toIDRCurrency(iklan?.data.harga_akun)}
+                    {toIDRCurrency(invoice?.data.harga_akun)}
                   </p>
                 </div>
                 <div className='flex flex-col items-center justify-center px-4'>
                   <h3 className='text-base md:text-lg'>Jenis Refund Iklan</h3>
                   <p className='text-dark dark:!text-light'>
-                    {iklan?.data.jenis_refund}
+                    {invoice?.data.jenis_refund}
                   </p>
                 </div>
                 <div className='flex flex-col items-center justify-center px-4'>
@@ -191,6 +182,18 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
                 </div>
               </div>
             </div>
+            <div className='rounded-xl border-2 border-primary-500 p-2'>
+              <p className='my-0 text-black'>
+                <span className='font-black'>Transfer ke</span> rekening{' '}
+                {invoice?.data.jenis_pembayaran.name}
+              </p>
+              <p className='my-0 text-black'>
+                a/n {invoice?.data.jenis_pembayaran.rekening_name}
+              </p>
+              <p className='my-0 text-black'>
+                {invoice?.data.jenis_pembayaran.rekening_number}
+              </p>
+            </div>
             <div>
               <h4 className='inline rounded-md  text-red-500'>
                 HARAP DIBAYAR SESUAI DENGAN {'"'}Total Yang Harus Dibayar{'"'}{' '}
@@ -199,7 +202,7 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
             </div>
             <div className='text-center'>
               <ButtonLinkGradient href={getWaLink()} className='text-black'>
-                Bayar
+                Konfirmasi Pembayaran
               </ButtonLinkGradient>
             </div>
           </div>

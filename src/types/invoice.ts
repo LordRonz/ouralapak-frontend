@@ -30,6 +30,9 @@ type Invoice = {
   created_by: string;
   expired_at: string;
   email: string;
+  harga_akun: string;
+  title: string;
+  jenis_refund: string;
   name: string;
   phone: string;
   id: number;

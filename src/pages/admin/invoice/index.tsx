@@ -3,7 +3,7 @@ import { useTheme } from 'next-themes';
 import { stringifyUrl } from 'query-string';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { FiEdit2, FiSearch, FiTrash2 } from 'react-icons/fi';
+import { FiSearch, FiTrash2 } from 'react-icons/fi';
 import { Column } from 'react-table';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
@@ -226,19 +226,21 @@ const IndexPage = () => {
                 <FiSearch />
               </ButtonLink>
             </Tooltip>
-            <Tooltip interactive={false} content='Edit'>
-              <Button
-                variant={theme === 'dark' ? 'dark' : 'light'}
-                className='text-red-500 hover:text-red-600'
-                onClick={() => onClickUpdate(row.original.invoice)}
-                disabled={
-                  delBtnDisabled ||
-                  row.original.statusCode === StatusInvoice.EXPIRED
-                }
-              >
-                <FiEdit2 />
-              </Button>
-            </Tooltip>
+            <Button
+              variant={theme === 'dark' ? 'dark' : 'light'}
+              className='h-8 text-yellow-500 hover:text-yellow-600'
+              onClick={() => onClickUpdate(row.original.invoice)}
+              disabled={
+                delBtnDisabled ||
+                row.original.statusCode === StatusInvoice.EXPIRED
+              }
+            >
+              {row.original.statusCode === StatusInvoice.MENUNGGU_PEMBAYARAN
+                ? 'Sudah Dibayar'
+                : row.original.statusCode === StatusInvoice.SUDAH_DIBAYAR
+                ? 'Menunggu Pembayaran'
+                : 'Expired'}
+            </Button>
             <Tooltip interactive={false} content='Hapus'>
               <Button
                 variant={theme === 'dark' ? 'dark' : 'light'}

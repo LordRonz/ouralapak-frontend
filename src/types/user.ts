@@ -14,6 +14,7 @@ type User = {
   name: string;
   phone: string;
   profile_picture: string;
+  role: Roles[];
   updated_at: string;
   updated_by: number | null;
   username: string;

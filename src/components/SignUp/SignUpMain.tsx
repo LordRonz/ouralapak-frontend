@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { stringifyUrl } from 'query-string';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -38,6 +39,8 @@ const SignUpMain = () => {
 
   const [phone, setPhone] = useState<string>();
 
+  const router = useRouter();
+
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     if (!phone || (phone && !isPossiblePhoneNumber(phone))) {
       return;
@@ -63,6 +66,7 @@ const SignUpMain = () => {
         success: {
           render: () => {
             setSignUpBtnDisabled(false);
+            router.push('/login');
             return 'Kamu sudah terdaftar, konfirmasi email untuk aktivasi akun';
           },
         },

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { stringifyUrl } from 'query-string';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -31,6 +32,8 @@ const SignUpAdmin = () => {
     null
   );
 
+  const router = useRouter();
+
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     await toast.promise(
       axios.post(
@@ -52,7 +55,8 @@ const SignUpAdmin = () => {
         success: {
           render: () => {
             setSignUpBtnDisabled(false);
-            return 'Kamu sudah terdaftar, konfirmasi email untuk aktivasi akun';
+            router.push('/login');
+            return 'Kamu sudah terdaftar, hubungi admin untuk aktivasi akun';
           },
         },
         error: {
