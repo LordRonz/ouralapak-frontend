@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { stringifyUrl } from 'query-string';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
 import ButtonGradient from '@/components/buttons/ButtonGradient';
@@ -31,6 +32,7 @@ const SignUpAdmin = () => {
   const [recaptchaResponse, setRecaptchaResponse] = useState<string | null>(
     null
   );
+  const [passMode, setPassMode] = useState(true);
 
   const router = useRouter();
 
@@ -144,18 +146,26 @@ const SignUpAdmin = () => {
                         <div className='col-md-6'>
                           <div className='single-input-unit'>
                             <label htmlFor='password'>Password</label>
-                            <input
-                              type='password'
-                              placeholder='Password anda'
-                              {...register('password', {
-                                required: 'Password harus diisi',
-                                minLength: {
-                                  value: 8,
-                                  message:
-                                    'Password harus berisi setidaknya 8 karakter',
-                                },
-                              })}
-                            />
+                            <div className='flex'>
+                              <input
+                                type={passMode ? 'password' : 'text'}
+                                placeholder='Password anda'
+                                {...register('password', {
+                                  required: 'Password harus diisi',
+                                  minLength: {
+                                    value: 8,
+                                    message:
+                                      'Password harus berisi setidaknya 8 karakter',
+                                  },
+                                })}
+                              />
+                              <span
+                                className='mb-[30px] flex cursor-pointer items-center justify-center border-2 px-1 hover:border-primary-200'
+                                onClick={() => setPassMode(!passMode)}
+                              >
+                                {passMode ? <FiEye /> : <FiEyeOff />}
+                              </span>
+                            </div>
                           </div>
                           <p className='text-red-500'>
                             {errors.password?.message}

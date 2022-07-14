@@ -5,6 +5,6 @@ module.exports = {
     return config;
   },
   images: {
-    domains: ['robohash.org', 'cdn.myanimelist.net'],
+    domains: ['robohash.org', 'cdn.myanimelist.net', '101.50.0.50'],
   },
 };

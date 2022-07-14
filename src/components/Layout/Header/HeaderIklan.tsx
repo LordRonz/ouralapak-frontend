@@ -139,7 +139,7 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
                       <img
                         src={
                           user?.data.profile_picture
-                            ? `${API_URL}${user.data.profile_picture}`
+                            ? `${API_URL}/${user.data.profile_picture}`
                             : `https://robohash.org/${
                                 user?.data.username || 'AMOGUS'
                               }?set=set4`

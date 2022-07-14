@@ -43,7 +43,7 @@ const ProfileCard = ({
             <img
               src={
                 user?.profile_picture
-                  ? `${API_URL}${user?.profile_picture}`
+                  ? `${API_URL}/${user?.profile_picture}`
                   : `https://robohash.org/${
                       user?.username || 'AMOGUS'
                     }?set=set4`

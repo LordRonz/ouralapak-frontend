@@ -946,14 +946,18 @@ const UploadMain = () => {
                     }}
                   >
                     <div className='space-y-4'>
-                      <h1 className='text-black'>Konfirmasi form</h1>
+                      <h1 className='text-black dark:text-white'>
+                        Konfirmasi form
+                      </h1>
                       <div>
                         <label className='font-bold'>Judul</label>
-                        <p className='text-black'>{getValues('title')}</p>
+                        <p className='text-black dark:text-white'>
+                          {getValues('title')}
+                        </p>
                       </div>
                       <div>
                         <label className='font-bold'>Platform</label>
-                        <p className='text-black'>
+                        <p className='text-black dark:text-white'>
                           {
                             platformId.find(
                               (p) => p.value === getValues('platform_id')
@@ -963,7 +967,7 @@ const UploadMain = () => {
                       </div>
                       <div>
                         <label className='font-bold'>Change Name Status</label>
-                        <p className='text-black'>
+                        <p className='text-black dark:text-white'>
                           {
                             changeNameOpts.find(
                               (p) => p.value === getValues('change_name_status')
@@ -973,11 +977,13 @@ const UploadMain = () => {
                       </div>
                       <div>
                         <label className='font-bold'>Binding account</label>
-                        <p className='text-black'>{getValues('title')}</p>
+                        <p className='text-black dark:text-white'>
+                          {getValues('title')}
+                        </p>
                       </div>
                       <div>
                         <label className='font-bold'>Favorite Heroes</label>
-                        <p className='text-black'>
+                        <p className='text-black dark:text-white'>
                           {getValues('favorite_heroes')
                             ?.map(
                               (v) =>
@@ -988,18 +994,24 @@ const UploadMain = () => {
                       </div>
                       <div>
                         <label className='font-bold'>Win Rate</label>
-                        <p className='text-black'>{getValues('win_rate')} %</p>
+                        <p className='text-black dark:text-white'>
+                          {getValues('win_rate')} %
+                        </p>
                       </div>
                       <div>
                         <label className='font-bold'>Total Hero</label>
-                        <p className='text-black'>{getValues('total_hero')}</p>
+                        <p className='text-black dark:text-white'>
+                          {getValues('total_hero')}
+                        </p>
                       </div>
                       <div>
                         <label className='font-bold'>Total Skin</label>
-                        <p className='text-black'>{getValues('total_skin')}</p>
+                        <p className='text-black dark:text-white'>
+                          {getValues('total_skin')}
+                        </p>
                       </div>
                       <div>
-                        <label className='font-bold'>Total Skin Rare</label>
+                        <label className='font-bold '>Total Skin Rare</label>
                         <ul>
                           {getValues('total_skin_rare')?.map(
                             ({ jenis, total_skin }, index) => (
@@ -1029,13 +1041,13 @@ const UploadMain = () => {
                       </div>
                       <div>
                         <label className='font-bold'>Recall Effect</label>
-                        <p className='text-black'>
+                        <p className='text-black dark:text-white'>
                           {getValues('recall_effect').join(', ')}
                         </p>
                       </div>
                       <div>
                         <label className='font-bold'>Jenis Refund</label>
-                        <p className='text-black'>
+                        <p className='text-black dark:text-white'>
                           {
                             jenisRefundOpts.find(
                               (p) => p.value === getValues('jenis_refund')
@@ -1045,7 +1057,7 @@ const UploadMain = () => {
                       </div>
                       <div>
                         <label className='font-bold'>Harga Akun (IDR)</label>
-                        <p className='text-black'>
+                        <p className='text-black dark:text-white'>
                           {new Intl.NumberFormat('id-ID', {
                             style: 'currency',
                             currency: 'IDR',
@@ -1054,7 +1066,7 @@ const UploadMain = () => {
                       </div>
                       <div>
                         <label className='font-bold'>Jenis Pembayaran</label>
-                        <p className='text-black'>
+                        <p className='text-black dark:text-white'>
                           {
                             jenisPembayaranOpts.find(
                               (p) => p.value === getValues('jenis_pembayaran')
@@ -1066,7 +1078,7 @@ const UploadMain = () => {
                         <label className='font-bold'>
                           Paket Penjualan Akun
                         </label>
-                        <p className='text-black'>
+                        <p className='text-black dark:text-white'>
                           {
                             packageId.find(
                               (p) => p.value === getValues('package_id')

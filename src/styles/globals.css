@@ -136,3 +136,8 @@
 .tippy-tooltip {
   padding: 0 0.8rem;
 }
+
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}

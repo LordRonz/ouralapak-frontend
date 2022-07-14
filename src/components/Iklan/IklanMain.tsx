@@ -252,7 +252,7 @@ const IklanMain = ({ id }: { id: number }) => {
                           <img
                             src={
                               iklan.data.user?.profile_picture
-                                ? `${API_URL}${iklan.data.user?.profile_picture}`
+                                ? `${API_URL}/${iklan.data.user?.profile_picture}`
                                 : `https://robohash.org/${
                                     iklan.data.user?.username || 'AMOGUS'
                                   }?set=set4`
@@ -474,7 +474,7 @@ const IklanMain = ({ id }: { id: number }) => {
                     <Image
                       src={
                         iklan.data.user?.profile_picture
-                          ? `${API_URL}${iklan.data.user?.profile_picture}`
+                          ? `${API_URL}/${iklan.data.user?.profile_picture}`
                           : `https://robohash.org/${
                               iklan.data.user?.username || 'AMOGUS'
                             }?set=set4`

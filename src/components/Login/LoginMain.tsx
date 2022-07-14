@@ -2,8 +2,9 @@
 import axios, { AxiosResponse } from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import { useEffectOnce, useLocalStorage } from 'react-use';
 
@@ -40,6 +41,7 @@ const LoginMain = () => {
   const [, setToken] = useLocalStorage<string>('token');
 
   const [loginBtnDisabled, setLoginBtnDisabled] = React.useState(false);
+  const [passMode, setPassMode] = useState(true);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     const res: AxiosResponse<
@@ -130,14 +132,21 @@ const LoginMain = () => {
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
                             <label htmlFor='password'>Password</label>
-                            <input
-                              type='password'
-                              id='password'
-                              placeholder='********'
-                              {...register('password', {
-                                required: 'Password harus diisi',
-                              })}
-                            />
+                            <div className='flex'>
+                              <input
+                                type={passMode ? 'password' : 'text'}
+                                placeholder='Password anda'
+                                {...register('password', {
+                                  required: 'Password harus diisi',
+                                })}
+                              />
+                              <span
+                                className='mb-[30px] flex cursor-pointer items-center justify-center border-2 px-1 hover:border-primary-200'
+                                onClick={() => setPassMode(!passMode)}
+                              >
+                                {passMode ? <FiEye /> : <FiEyeOff />}
+                              </span>
+                            </div>
                           </div>
                           <p className='text-red-500'>
                             {errors.password?.message}
