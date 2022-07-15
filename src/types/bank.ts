@@ -2,7 +2,7 @@ export type Bank = {
   created_at: string;
   created_by: number | null;
   id: number;
-  is_active: boolean;
+  is_active: number;
   name: string;
   rekening_name: string;
   rekening_number: string;
