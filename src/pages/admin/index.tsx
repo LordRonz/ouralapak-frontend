@@ -156,6 +156,7 @@ const IndexPage = () => {
           },
           success: {
             render: () => {
+              mutate();
               setDelBtnDisabled(false);
               return 'Berhasil hapus iklan!';
             },
@@ -169,7 +170,7 @@ const IndexPage = () => {
         });
       }
     },
-    [theme]
+    [mutate, theme]
   );
 
   if (error) {

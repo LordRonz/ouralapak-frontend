@@ -38,17 +38,10 @@ const IklanCardSingle = ({
             <div className='art-item-content pos-rel'>
               <div className='artist'>
                 <div className='profile-img pos-rel'>
-                  <Link href='/creator-profile'>
-                    <a>
-                      <img
-                        src={`https://robohash.org/${'AMOGUS'}?set=set4`}
-                        alt='profile-img'
-                      />
-                    </a>
-                  </Link>
-                  <div className='profile-verification verified'>
-                    <i className='fas fa-check'></i>
-                  </div>
+                  <img
+                    src={`https://robohash.org/${'AMOGUS'}?set=set4`}
+                    alt='profile-img'
+                  />
                 </div>
                 <div className='artist-id'>{user.name}</div>
               </div>

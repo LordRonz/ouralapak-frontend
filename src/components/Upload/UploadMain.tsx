@@ -216,10 +216,12 @@ const UploadMain = () => {
         }))
         .slice(0, 1);
 
-  const jenisPembayaranOpts = banks?.data.data.map((b) => ({
-    value: b.id,
-    label: b.rekening_name,
-  }));
+  const jenisPembayaranOpts = banks?.data.data
+    .filter((b) => !!b.is_active)
+    .map((b) => ({
+      value: b.id,
+      label: b.name,
+    }));
 
   const platformId = platform?.data.data.map((p) => ({
     value: p.id,
@@ -600,7 +602,7 @@ const UploadMain = () => {
                             onClick={() =>
                               totalSkinRareFields.append({
                                 jenis: 'medium',
-                                total_skin: 1,
+                                total_skin: undefined,
                               })
                             }
                           >

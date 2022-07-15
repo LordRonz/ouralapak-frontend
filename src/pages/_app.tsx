@@ -36,9 +36,8 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   const { theme } = useTheme();
   const { Authorization } = useAuthHeader();
 
-  if (Authorization) {
-    axios.defaults.headers.common['Authorization'] = Authorization;
-  }
+  axios.defaults.headers.common['Authorization'] =
+    getAuthHeader() ?? Authorization ?? '';
 
   return (
     <Provider store={store}>

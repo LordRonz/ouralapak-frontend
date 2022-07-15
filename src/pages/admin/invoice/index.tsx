@@ -3,7 +3,7 @@ import { useTheme } from 'next-themes';
 import { stringifyUrl } from 'query-string';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { FiSearch, FiTrash2 } from 'react-icons/fi';
+import { FiSearch } from 'react-icons/fi';
 import { Column } from 'react-table';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
@@ -59,43 +59,6 @@ const IndexPage = () => {
       : null
   );
 
-  const onClickDelete = React.useCallback(
-    async (id: number) => {
-      const { isConfirmed } = await MySwal.fire({
-        title: 'Yakin ingin hapus iklan ini?',
-        text: 'Tindakan ini tidak bisa dibatalkan!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Hapus',
-        ...mySwalOpts(theme),
-      });
-      if (isConfirmed) {
-        toast.promise(axios.delete(`${API_URL}/admin/iklan/${id}`), {
-          pending: {
-            render: () => {
-              setDelBtnDisabled(true);
-              return 'Loading';
-            },
-          },
-          success: {
-            render: () => {
-              setDelBtnDisabled(false);
-              mutate();
-              return 'Berhasil hapus invoice!';
-            },
-          },
-          error: {
-            render: () => {
-              setDelBtnDisabled(false);
-              return 'Gagal menghapus invoice!';
-            },
-          },
-        });
-      }
-    },
-    [mutate, theme]
-  );
-
   const onClickUpdate = React.useCallback(
     async (inv: InvoiceAdmin) => {
       if (inv.status === StatusInvoice.EXPIRED) {
@@ -132,7 +95,7 @@ const IndexPage = () => {
       };
 
       if (isConfirmed) {
-        toast.promise(
+        const res = await toast.promise(
           axios.put(
             `${API_URL}/admin/invoice-${
               inv.jenis_invoice === JenisInvoice.PEMBELI ? 'pembeli' : 'penjual'
@@ -161,6 +124,7 @@ const IndexPage = () => {
             },
           }
         );
+        console.log(res);
       }
     },
     [mutate, theme]
@@ -241,21 +205,11 @@ const IndexPage = () => {
                 ? 'Menunggu Pembayaran'
                 : 'Expired'}
             </Button>
-            <Tooltip interactive={false} content='Hapus'>
-              <Button
-                variant={theme === 'dark' ? 'dark' : 'light'}
-                className='text-red-500 hover:text-red-600'
-                onClick={() => onClickDelete(row.original.iklanId)}
-                disabled={delBtnDisabled}
-              >
-                <FiTrash2 />
-              </Button>
-            </Tooltip>
           </>
         ),
       },
     ],
-    [delBtnDisabled, onClickDelete, onClickUpdate, theme]
+    [delBtnDisabled, onClickUpdate, theme]
   );
 
   return (

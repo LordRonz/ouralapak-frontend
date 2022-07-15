@@ -42,7 +42,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
       query: {
         text: `Halo admin,\n\nSaya melakukan order dengan nomor invoice ${
           invoice?.data.no_invoice
-        } (${typeof window !== 'undefined' ? window.location.origin : ''}/${
+        } (${typeof window !== 'undefined' ? window.location.origin : ''}${
           router.asPath
         }))`,
       },

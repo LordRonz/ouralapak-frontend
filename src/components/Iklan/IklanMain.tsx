@@ -338,7 +338,9 @@ const IklanMain = ({ id }: { id: number }) => {
                     >
                       Hubungi Penjual
                     </ButtonLink>
-                    <Button onClick={onOpenModal}>Beli</Button>
+                    {iklan.data.jenis_refund.toLowerCase() !== 'no refund' && (
+                      <Button onClick={onOpenModal}>Beli</Button>
+                    )}
                     <Modal open={open} onClose={onCloseModal} center>
                       <div className='row justify-content-center'>
                         <div className='col-xxl-6 col-xl-7 col-lg-8'>
