@@ -1,4 +1,4 @@
-type Emblem = {
+export type Emblem = {
   created_at: string;
   emblem_id: number;
   id: number;
@@ -17,4 +17,4 @@ export type Config = {
   value: string;
 };
 
-export default Emblem;
+export default Config;

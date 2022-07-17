@@ -26,15 +26,13 @@ import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
 import DashboardLayout from '@/dashboard/layout';
 import clsxm from '@/lib/clsxm';
-import Bank from '@/types/bank';
+import HeroMaster from '@/types/heroMaster';
 import Pagination from '@/types/pagination';
 
 const MySwal = withReactContent(Swal);
 
 type IFormInput = {
   name: string;
-  rekening_name: string;
-  rekening_number: string;
   is_active: boolean;
 };
 
@@ -78,7 +76,7 @@ const IndexPage = () => {
     mutate,
   } = useSWR<{
     data: {
-      data: Bank[];
+      data: HeroMaster[];
       pagination: Pagination;
     };
     message: string;
@@ -108,7 +106,7 @@ const IndexPage = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     await toast.promise(
-      axios.post<{ data: Bank; message: string; success: boolean }>(
+      axios.post<{ data: HeroMaster; message: string; success: boolean }>(
         stringifyUrl({
           url: `${API_URL}/master/hero`,
         }),
@@ -138,7 +136,7 @@ const IndexPage = () => {
 
   const onSubmit2: SubmitHandler<IFormInput> = async (data) => {
     await toast.promise(
-      axios.put<{ data: Bank; message: string; success: boolean }>(
+      axios.put<{ data: HeroMaster; message: string; success: boolean }>(
         stringifyUrl({
           url: `${API_URL}/master/hero/${activeId}`,
         }),
@@ -206,13 +204,11 @@ const IndexPage = () => {
       heroes?.data.data.map((hero) => {
         return {
           id: hero.id,
-          rekening_name: hero.rekening_name,
-          rekening_number: hero.rekening_number,
           status: hero.is_active ? 'Aktif' : 'Nonaktif',
           is_active: hero.is_active,
           name: hero.name,
           action: {},
-          bank: hero,
+          hero,
         };
       }) ?? [],
     [heroes?.data.data]
@@ -223,14 +219,6 @@ const IndexPage = () => {
       {
         Header: 'Nama',
         accessor: 'name',
-      },
-      {
-        Header: 'Nama Rek.',
-        accessor: 'rekening_name',
-      },
-      {
-        Header: 'Nomor Rek.',
-        accessor: 'rekening_number',
       },
       {
         Header: 'Status',
@@ -247,12 +235,9 @@ const IndexPage = () => {
                 className='text-red-500 hover:text-red-600'
                 onClick={() => {
                   setOpen2(true);
-                  const { is_active, name, rekening_name, rekening_number } =
-                    row.original.bank;
+                  const { is_active, name } = row.original.hero;
                   setValue('is_active', !!is_active);
                   setValue('name', name);
-                  setValue('rekening_name', rekening_name);
-                  setValue('rekening_number', rekening_number);
                   setActiveId(row.original.id);
                 }}
                 disabled={updBtnDisabled}
@@ -283,7 +268,7 @@ const IndexPage = () => {
 
   return (
     <>
-      <Seo templateTitle='Admin | Invoice' />
+      <Seo templateTitle='SuperAdmin | Hero' />
       <AnimatePage>
         <DashboardLayout superAdmin>
           <div className='flex justify-between'>
@@ -312,7 +297,7 @@ const IndexPage = () => {
                 <div className='login-wrapper pos-rel wow fadeInUp mb-40'>
                   <div className=' login-inner'>
                     <div className='login-content'>
-                      <h4>Tambah Bank</h4>
+                      <h4>Tambah Hero</h4>
                       <form
                         className='login-form'
                         onSubmit={handleSubmit(onSubmit)}
@@ -320,13 +305,13 @@ const IndexPage = () => {
                         <div className='row'>
                           <div className='col-md-12'>
                             <div className='single-input-unit'>
-                              <label htmlFor='email'>Nama</label>
+                              <label htmlFor='name'>Nama</label>
                               <input
                                 type='text'
-                                placeholder='Masukkan Nama Bank'
+                                placeholder='Masukkan Nama Hero'
                                 autoFocus
                                 {...register('name', {
-                                  required: 'Nama bank harus diisi',
+                                  required: 'Nama Hero harus diisi',
                                 })}
                               />
                             </div>
@@ -336,41 +321,7 @@ const IndexPage = () => {
                           </div>
                           <div className='col-md-12'>
                             <div className='single-input-unit'>
-                              <label htmlFor='email'>Nama Rekening</label>
-                              <input
-                                type='text'
-                                placeholder='Masukkan Nama Rekening'
-                                autoFocus
-                                {...register('rekening_name', {
-                                  required: 'Nama rekening harus diisi',
-                                })}
-                              />
-                            </div>
-                            <p className='text-red-500'>
-                              {errors.rekening_name?.message}
-                            </p>
-                          </div>
-                          <div className='col-md-12'>
-                            <div className='single-input-unit'>
-                              <label htmlFor='email'>Nomor Rekening</label>
-                              <input
-                                type='text'
-                                placeholder='Masukkan Nomor Rekening'
-                                autoFocus
-                                {...register('rekening_number', {
-                                  required: 'Nomor rekening harus diisi',
-                                })}
-                              />
-                            </div>
-                            <p className='text-red-500'>
-                              {errors.rekening_number?.message}
-                            </p>
-                          </div>
-                          <div className='col-md-12'>
-                            <div className='single-input-unit'>
-                              <label htmlFor='jenis_pembayaran'>
-                                Jenis Pembayaran
-                              </label>
+                              <label htmlFor='is_active'>Status</label>
                               <Controller
                                 control={control}
                                 defaultValue={isActiveOpts[0].value}
@@ -407,7 +358,7 @@ const IndexPage = () => {
                 <div className='login-wrapper pos-rel wow fadeInUp mb-40'>
                   <div className=' login-inner'>
                     <div className='login-content'>
-                      <h4>Update Bank</h4>
+                      <h4>Update Hero</h4>
                       <form
                         className='login-form'
                         onSubmit={handleSubmit(onSubmit2)}
@@ -418,7 +369,7 @@ const IndexPage = () => {
                               <label htmlFor='email'>Nama</label>
                               <input
                                 type='text'
-                                placeholder='Masukkan Nama Bank'
+                                placeholder='Masukkan Nama Hero'
                                 autoFocus
                                 {...register('name')}
                               />
@@ -429,37 +380,7 @@ const IndexPage = () => {
                           </div>
                           <div className='col-md-12'>
                             <div className='single-input-unit'>
-                              <label htmlFor='email'>Nama Rekening</label>
-                              <input
-                                type='text'
-                                placeholder='Masukkan Nama Rekening'
-                                autoFocus
-                                {...register('rekening_name')}
-                              />
-                            </div>
-                            <p className='text-red-500'>
-                              {errors.rekening_name?.message}
-                            </p>
-                          </div>
-                          <div className='col-md-12'>
-                            <div className='single-input-unit'>
-                              <label htmlFor='email'>Nomor Rekening</label>
-                              <input
-                                type='text'
-                                placeholder='Masukkan Nomor Rekening'
-                                autoFocus
-                                {...register('rekening_number')}
-                              />
-                            </div>
-                            <p className='text-red-500'>
-                              {errors.rekening_number?.message}
-                            </p>
-                          </div>
-                          <div className='col-md-12'>
-                            <div className='single-input-unit'>
-                              <label htmlFor='jenis_pembayaran'>
-                                Jenis Pembayaran
-                              </label>
+                              <label htmlFor='is_active'>Status</label>
                               <Controller
                                 control={control}
                                 defaultValue={isActiveOpts[0].value}

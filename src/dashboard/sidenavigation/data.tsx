@@ -1,5 +1,12 @@
 import { FaAdversal, FaFileInvoiceDollar, FaUser } from 'react-icons/fa';
-import { FiUsers } from 'react-icons/fi';
+import {
+  FiAward,
+  FiDollarSign,
+  FiLink,
+  FiTool,
+  FiUsers,
+  FiZap,
+} from 'react-icons/fi';
 
 const dataAdmin = [
   {
@@ -62,6 +69,36 @@ export const dataSuperAdmin = [
         title: 'Admin',
         icon: <FiUsers />,
         link: '/superadmin',
+      },
+    ],
+  },
+  {
+    section: 'Master',
+    content: [
+      {
+        title: 'Bank',
+        icon: <FiDollarSign />,
+        link: '/superadmin/bank',
+      },
+      {
+        title: 'Binding Account',
+        icon: <FiLink />,
+        link: '/superadmin/binding-account',
+      },
+      {
+        title: 'Config',
+        icon: <FiTool />,
+        link: '/superadmin/config',
+      },
+      {
+        title: 'Emblem',
+        icon: <FiAward />,
+        link: '/superadmin/emblem',
+      },
+      {
+        title: 'Hero',
+        icon: <FiZap />,
+        link: '/superadmin/hero',
       },
     ],
   },
