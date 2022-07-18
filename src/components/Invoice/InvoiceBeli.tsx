@@ -5,6 +5,8 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Tooltip as TooltipTippy } from 'react-tippy';
 import useSWR from 'swr';
 
+import Spinner from '@/components/Common/Spinner';
+import ErrorPageMain from '@/components/ErrorPage/ErrorPageMain';
 import ButtonLinkGradient from '@/components/links/ButtonLinkGradient';
 import { API_URL } from '@/constant/config';
 import formatDateStrId from '@/lib/formatDateStrId';
@@ -14,7 +16,7 @@ import Invoice from '@/types/invoice';
 
 const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
   const router = useRouter();
-  const { data: invoice } = useSWR<{
+  const { data: invoice, error } = useSWR<{
     data: Invoice;
     message: string;
     success: boolean;
@@ -39,6 +41,14 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
         }))`,
       },
     });
+
+  if (error) {
+    return <ErrorPageMain />;
+  }
+
+  if (!invoice) {
+    return <Spinner />;
+  }
 
   return (
     <main>

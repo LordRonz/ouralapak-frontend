@@ -14,6 +14,7 @@ import useSWR from 'swr';
 import ButtonGradient from '@/components/buttons/ButtonGradient';
 import Captcha from '@/components/Common/Captcha';
 import Breadcrumbs from '@/components/Common/PageTitle';
+import Spinner from '@/components/Common/Spinner';
 import { API_URL } from '@/constant/config';
 import clsxm from '@/lib/clsxm';
 import Bank from '@/types/bank';
@@ -97,7 +98,7 @@ const BeliAkunMain = ({ id }: { id: number }) => {
   };
 
   if (!jenisPembayaranOpts?.[0]) {
-    return <></>;
+    return <Spinner />;
   }
 
   return (

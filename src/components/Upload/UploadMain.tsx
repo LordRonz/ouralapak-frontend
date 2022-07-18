@@ -22,6 +22,7 @@ import MyButton from '@/components/buttons/Button';
 import ButtonGradient from '@/components/buttons/ButtonGradient';
 import Captcha from '@/components/Common/Captcha';
 import Breadcrumbs from '@/components/Common/PageTitle';
+import Spinner from '@/components/Common/Spinner';
 import XButton from '@/components/Common/XButton';
 import UnstyledLink from '@/components/links/UnstyledLink';
 import ConfirmationDialog from '@/components/Upload/Dialog';
@@ -376,7 +377,7 @@ const UploadMain = () => {
     !platformId ||
     !packageId
   ) {
-    return <></>;
+    return <Spinner />;
   }
 
   return (

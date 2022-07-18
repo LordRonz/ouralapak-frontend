@@ -5,6 +5,7 @@ import Lightbox from 'react-image-lightbox';
 import { Carousel } from 'react-responsive-carousel';
 import useSWR from 'swr';
 
+import Spinner from '@/components/Common/Spinner';
 import { API_URL } from '@/constant/config';
 import toIDRCurrency from '@/lib/toIDRCurrency';
 import { IklanDetail } from '@/types/iklan';
@@ -30,7 +31,7 @@ const IklanAdmin = ({ id }: { id: number }) => {
   }>(`${API_URL}/admin/iklan/${id}`);
 
   if (!iklan) {
-    return <></>;
+    return <Spinner />;
   }
 
   return (

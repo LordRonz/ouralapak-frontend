@@ -1,7 +1,7 @@
 import { FileIcon, FolderIcon, JsIcon } from '@/components/docs/icons';
 import Snippet from '@/components/docs/snippet';
 
-export default function Docs() {
+const Docs = () => {
   return (
     <div className='max-w-full py-8 text-gray-700'>
       <h2 className='mb-10 text-3xl font-medium text-white'>Documentation</h2>
@@ -325,4 +325,6 @@ export default function Docs() {
       </section>
     </div>
   );
-}
+};
+
+export default Docs;

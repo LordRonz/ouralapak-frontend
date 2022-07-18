@@ -3994,6 +3994,11 @@ react-select@^5.4.0:
     prop-types "^15.6.0"
     react-transition-group "^4.3.0"
 
+react-spinner-material@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-spinner-material/-/react-spinner-material-1.4.0.tgz#f12fe62b315214d87116df4408fbfaa2a43353f2"
+  integrity sha512-4EAL+QgU/b5ubCjX3Yxmy4i0OGncix2wzfFlo25d4PXdDKFPGc1y6I57YmJ7QZykLkUIk32YSGeYP59FAq6sRA==
+
 react-spinners@^0.13.3:
   version "0.13.3"
   resolved "https://registry.yarnpkg.com/react-spinners/-/react-spinners-0.13.3.tgz#9d00d10fb2a0869b21efdc13fb0fddbcecd05731"

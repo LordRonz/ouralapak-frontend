@@ -11,6 +11,7 @@ import useSWR from 'swr';
 
 import IklanCard from '@/components/Cards/IklanCard';
 import Pagination from '@/components/Common/Pagination';
+import Spinner from '@/components/Common/Spinner';
 import ButtonLink from '@/components/links/ButtonLink';
 import ProfileCard from '@/components/Profile/ProfileCard';
 import { API_URL } from '@/constant/config';
@@ -93,6 +94,11 @@ const SellerMain = () => {
       router.push('/login');
     }
   };
+
+  if (!iklans || !user) {
+    return <Spinner />;
+  }
+
   return (
     <main>
       <section className='page-title-area'>

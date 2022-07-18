@@ -22,14 +22,14 @@ type Props<T extends object = {}> = {
 };
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export default function ReactTable<T extends object>({
+const ReactTable = <T extends object>({
   data,
   columns,
   options,
   plugins = [],
   className,
   withFooter = true,
-}: Props<T>) {
+}: Props<T>) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -153,4 +153,6 @@ export default function ReactTable<T extends object>({
       </div>
     </div>
   );
-}
+};
+
+export default ReactTable;

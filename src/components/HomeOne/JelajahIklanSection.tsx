@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import useSWR from 'swr';
 
 import IklanCardSingle from '@/components/Cards/IklanCardSingle';
+import Spinner from '@/components/Common/Spinner';
 import { API_URL } from '@/constant/config';
 import { IklanHome } from '@/types/iklan';
 import Pagination from '@/types/pagination';
@@ -46,7 +47,7 @@ const JelajahIklanSection = () => {
   };
 
   if (!iklans) {
-    return <></>;
+    return <Spinner />;
   }
 
   return (

@@ -1,9 +1,13 @@
 import Link from 'next/link';
+import queryString from 'query-string';
 import React, { useState } from 'react';
+import useSWR from 'swr';
 
 import ColorModeToggle from '@/components/ColorModeToggle';
 import MobileMenu from '@/components/Layout/Header/MobileMenu';
+import { API_URL } from '@/constant/config';
 import useSticky from '@/hooks/useSticky';
+import Config from '@/types/config';
 
 type HeaderProps = {
   HeaderStatic?: string;
@@ -14,6 +18,20 @@ const Header = ({ HeaderStatic }: HeaderProps) => {
   const { sticky } = useSticky();
 
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const { data: config } = useSWR<{
+    data: Config;
+    message: string;
+    success: boolean;
+  }>(() => `${API_URL}/master/config/4`);
+
+  const getWaLink = () =>
+    queryString.stringifyUrl({
+      url: `https://wa.me/${config?.data?.value}`,
+      query: {
+        text: `Halo admin Oura Lapak,\n\nSaya ingin menggunakan jasa rekber Oura Lapak untuk pembelian akun di luar Oura Lapak. Boleh tanya-tanya dulu?`,
+      },
+    });
 
   return (
     <>
@@ -65,9 +83,13 @@ const Header = ({ HeaderStatic }: HeaderProps) => {
                     <nav id='mobile-menu'>
                       <ul>
                         <li>
-                          <Link href='/rekber'>
-                            <a>Jasa Rekber</a>
-                          </Link>
+                          <a
+                            href={getWaLink()}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                          >
+                            Jasa Rekber
+                          </a>
                         </li>
                         <li>
                           <Link href='/seller'>

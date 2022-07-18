@@ -17,7 +17,7 @@ const ErrorPageMain = () => {
                   <div className='error-404-content text-center'>
                     <div className='error-404-img mb-30'>
                       <img
-                        src='assets/img/shape/error-404.png'
+                        src='/assets/img/shape/error-404.png'
                         alt='error-img'
                       />
                     </div>

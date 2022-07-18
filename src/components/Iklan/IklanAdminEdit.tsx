@@ -5,13 +5,13 @@ import Select from 'react-select';
 import { toast } from 'react-toastify';
 import useSWR from 'swr';
 
+import ButtonGradient from '@/components/buttons/ButtonGradient';
+import Spinner from '@/components/Common/Spinner';
 import { API_URL } from '@/constant/config';
 import clsxm from '@/lib/clsxm';
 import { getStatusIklanByString, statusIklanArray } from '@/lib/getStatusIklan';
 import useAuthHeader from '@/services/authHeader';
 import { IklanDetail } from '@/types/iklan';
-
-import ButtonGradient from '../buttons/ButtonGradient';
 
 type IFormInput = {
   status?: number;
@@ -66,7 +66,7 @@ const IklanAdminEdit = ({ id }: { id: number }) => {
   };
 
   if (!iklan) {
-    return <></>;
+    return <Spinner />;
   }
 
   return (

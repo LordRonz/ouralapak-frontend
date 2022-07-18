@@ -19,6 +19,7 @@ import useSWR from 'swr';
 import Button from '@/components/buttons/Button';
 import ButtonGradient from '@/components/buttons/ButtonGradient';
 import Captcha from '@/components/Common/Captcha';
+import Spinner from '@/components/Common/Spinner';
 import ButtonLink from '@/components/links/ButtonLink';
 import { API_URL } from '@/constant/config';
 import clsxm from '@/lib/clsxm';
@@ -128,12 +129,8 @@ const IklanMain = ({ id }: { id: number }) => {
     console.log(res);
   };
 
-  if (!jenisPembayaranOpts?.[0]) {
-    return <></>;
-  }
-
-  if (!iklan) {
-    return <></>;
+  if (!jenisPembayaranOpts?.[0] || !iklan) {
+    return <Spinner />;
   }
 
   return (
