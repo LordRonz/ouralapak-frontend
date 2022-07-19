@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 
 import ButtonGradient from '@/components/buttons/ButtonGradient';
 import Breadcrumbs from '@/components/Common/PageTitle';
+import ParticleComponent from '@/components/Common/ParticleComponent';
 import { API_URL } from '@/constant/config';
 
 type IFormInput = {
@@ -61,11 +62,12 @@ const ResetPasswordMain = () => {
         breadcrumbSubTitle='Reset Password'
       />
 
-      <section className='login-area pb-90'>
+      <section className='login-area pb-90 relative'>
+        <ParticleComponent />
         <div className='container'>
           <div className='row justify-content-center'>
             <div className='col-xxl-6 col-xl-7 col-lg-8'>
-              <div className='login-wrapper pos-rel wow fadeInUp mb-40'>
+              <div className='login-wrapper pos-rel wow fadeInUp mb-40 !bg-neutral-200 dark:!bg-neutral-800'>
                 <div className=' login-inner'>
                   <div className='login-content'>
                     <h4>Reset Password</h4>

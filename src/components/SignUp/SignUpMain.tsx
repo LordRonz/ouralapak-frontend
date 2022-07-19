@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 import ButtonGradient from '@/components/buttons/ButtonGradient';
 import Captcha from '@/components/Common/Captcha';
 import Breadcrumbs from '@/components/Common/PageTitle';
+import ParticleComponent from '@/components/Common/ParticleComponent';
 import { API_URL } from '@/constant/config';
 
 type IFormInput = {
@@ -89,14 +90,12 @@ const SignUpMain = () => {
         breadcrumbSubTitle='Create Account'
       />
 
-      <section
-        className='sign-up-area pt-130 pb-90'
-        style={{ background: 'url(assets/img/bg/sign-up-bg.jpg)' }}
-      >
+      <section className='sign-up-area pb-90 relative'>
+        <ParticleComponent />
         <div className='container'>
           <div className='row justify-content-center'>
             <div className='col-xxl-6 col-xl-7 col-lg-8'>
-              <div className='sign-up-wrapper pos-rel wow fadeInUp mb-40'>
+              <div className='sign-up-wrapper pos-rel wow fadeInUp mb-40 !bg-neutral-200 dark:!bg-neutral-800'>
                 <div className='sign-up-inner'>
                   <div className='sign-up-content'>
                     <h4>Buat Akun</h4>

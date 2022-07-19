@@ -240,8 +240,14 @@ const IklanMain = ({ id }: { id: number }) => {
                 )}
               </div>
               <div className='col-xl-6 col-lg-7'>
+                <div className='mb-6 space-x-4'>
+                  <h1 className='inline'>{iklan.data.title}</h1>
+                  <p className='inline rounded-lg bg-neutral-300 py-1 px-2'>
+                    {iklan.data.platform}
+                  </p>
+                </div>
                 <div className='art-details-content wow fadeInUp'>
-                  <div className='created-by'>Created by</div>
+                  <div className='created-by mb-2'>Created by</div>
                   <div className='creator mb-30'>
                     <div className='profile-img pos-rel'>
                       <Link href='/creators'>
@@ -274,7 +280,6 @@ const IklanMain = ({ id }: { id: number }) => {
                     </div>
                   </div>
                   <div className='art-name-details'>
-                    <h4 className='art-name mb-25'>{iklan.data.title}</h4>
                     <div className='space-x-4'>
                       <h5 className='inline'>First Hand Status:</h5>
                       <p className='inline'>
