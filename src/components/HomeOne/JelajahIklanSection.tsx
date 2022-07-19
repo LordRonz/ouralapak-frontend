@@ -21,8 +21,8 @@ const JelajahIklanSection = () => {
     stringifyUrl({
       url: `${API_URL}/iklan`,
       query: {
-        orderBy: sortBy === '0' ? undefined : sortBy,
-        orderDir: sortDir === '0' ? undefined : sortDir,
+        ...(sortBy !== '0' && { orderBy: sortBy }),
+        ...(sortDir !== '0' && { orderDir: sortDir }),
       },
     })
   );

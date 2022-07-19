@@ -59,7 +59,11 @@ export type IklanDetail = {
     name: string;
     id: number;
   }[];
-  emblem: Emblem[];
+  emblem: ({
+    id: number;
+    level: number;
+    name: string;
+  } & Emblem)[];
   first_hand_status: number;
   id: number;
   user_id: number;
