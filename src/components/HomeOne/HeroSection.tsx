@@ -1,8 +1,26 @@
+import queryString from 'query-string';
 import React from 'react';
+import useSWR from 'swr';
 
 import ButtonLinkGradient from '@/components/links/ButtonLinkGradient';
+import { API_URL } from '@/constant/config';
+import Config from '@/types/config';
 
 const HeroSection = () => {
+  const { data: config } = useSWR<{
+    data: Config;
+    message: string;
+    success: boolean;
+  }>(() => `${API_URL}/master/config/4`);
+
+  const getWaLink = () =>
+    queryString.stringifyUrl({
+      url: `https://wa.me/${config?.data?.value}`,
+      query: {
+        text: `Halo admin Oura Lapak,\n\nSaya ingin menggunakan jasa rekber Oura Lapak untuk pembelian akun di luar Oura Lapak. Boleh tanya-tanya dulu?`,
+      },
+    });
+
   return (
     <React.Fragment>
       <div className='banner-area banner-area1 pos-rel fix'>
@@ -48,7 +66,7 @@ const HeroSection = () => {
                             Jual Akun
                           </ButtonLinkGradient>
                           <ButtonLinkGradient
-                            href='/jasa-rekber'
+                            href={getWaLink()}
                             variant='outline'
                           >
                             Jasa Rekber

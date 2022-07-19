@@ -1,9 +1,27 @@
 import Link from 'next/link';
+import queryString from 'query-string';
 import React from 'react';
+import useSWR from 'swr';
 
 import CustomLink from '@/components/links/CustomLink';
+import { API_URL } from '@/constant/config';
+import Config from '@/types/config';
 
 const Footer = () => {
+  const { data: config } = useSWR<{
+    data: Config;
+    message: string;
+    success: boolean;
+  }>(() => `${API_URL}/master/config/4`);
+
+  const getWaLink = () =>
+    queryString.stringifyUrl({
+      url: `https://wa.me/${config?.data?.value}`,
+      query: {
+        text: `Halo admin Oura Lapak,\n\nSaya ingin menggunakan jasa rekber Oura Lapak untuk pembelian akun di luar Oura Lapak. Boleh tanya-tanya dulu?`,
+      },
+    });
+
   return (
     <footer className='footer1-bg'>
       <section className='footer-area footer-area1 footer-area1-bg pt-100 pb-50'>
@@ -52,7 +70,7 @@ const Footer = () => {
                     </CustomLink>
                   </li>
                   <li>
-                    <CustomLink className='border-none' href='/rekber'>
+                    <CustomLink className='border-none' href={getWaLink()}>
                       Jasa Rekber
                     </CustomLink>
                   </li>
