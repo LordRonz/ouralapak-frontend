@@ -52,11 +52,34 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
 
   return (
     <main>
-      <section className='login-area pt-8 pb-12'>
-        <div className='container flex items-center justify-center'>
-          <div className='border-1 max-w-2xl space-y-10 rounded-xl border-primary-400 bg-neutral-100 p-8'>
-            <div className='flex justify-between'>
-              <h1 className='text-lg md:text-4xl'>Invoice Pembelian Akun</h1>
+      <section className='pt-8 pb-12'>
+        <div className='items-center justify-center'>
+          <div className='space-y-10 overflow-auto rounded-xl border border-primary-400 bg-neutral-100 p-8 dark:bg-neutral-800'>
+            <div className='flex flex-wrap justify-between'>
+              <div>
+                <div className='mb-6 space-x-4'>
+                  <h1 className='inline'>INVOICE</h1>
+                  <p className='inline rounded-lg bg-neutral-300 py-0 px-2'>
+                    Pembelian Akun
+                  </p>
+                </div>
+                <div className='flex gap-x-4'>
+                  <div>
+                    <p className='mb-0'>Created</p>
+                    <h3>
+                      {invoice?.data.created_at &&
+                        formatDateStrId(invoice?.data.created_at)}
+                    </h3>
+                  </div>
+                  <div>
+                    <p className='mb-0'>Expired</p>
+                    <h3>
+                      {invoice?.data.expired_at &&
+                        formatDateStrId(invoice?.data.expired_at)}
+                    </h3>
+                  </div>
+                </div>
+              </div>
               <div className='flex flex-col items-end'>
                 <TooltipTippy
                   trigger='mouseenter'
@@ -75,84 +98,83 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
                       setTimeout(() => setCopyStatus('Click to copy'), 1469);
                     }}
                   >
-                    <p className='cursor-pointer rounded-lg border-2 border-gray-700 p-1 text-xs text-dark dark:!border-gray-200 dark:!text-light md:text-lg'>
-                      <span className='font-extrabold'>No. Invoice: </span>
+                    <h1 className='cursor-pointer rounded-lg border-gray-700 p-1 text-dark outline dark:!text-light'>
                       {invoice?.data.no_invoice ?? ''}
-                    </p>
+                    </h1>
                   </CopyToClipboard>
                 </TooltipTippy>
-                <p className='text-xs text-dark dark:!text-light md:text-lg'>
-                  <span className='font-extrabold'>Tanggal Dibuat: </span>
-                  {invoice?.data.created_at &&
-                    formatDateStrId(invoice?.data.created_at)}
-                </p>
-                <p className='text-xs text-dark dark:!text-light md:text-lg'>
-                  <span className='font-extrabold'>Tanggal Kadaluarsa: </span>
-                  {invoice?.data.expired_at &&
-                    formatDateStrId(invoice?.data.expired_at)}
-                </p>
               </div>
             </div>
-            <div className='border-3 space-y-5 rounded-xl border-gray-400 bg-light p-4 dark:!bg-neutral-800'>
-              <div>
-                <h2 className='text-lg md:text-4xl'>Data Pembeli</h2>
-              </div>
-              <div className='flex flex-col items-start'>
-                <p className='text-xs text-dark dark:!text-light md:text-lg'>
-                  <span className='font-extrabold'>Nama: </span>
-                  {invoice?.data.name}
-                </p>
-                <p className='text-xs text-dark dark:!text-light md:text-lg'>
-                  <span className='font-extrabold'>No. Handphone: </span>
-                  {invoice?.data.phone}
-                </p>
-                <p className='text-xs text-dark dark:!text-light md:text-lg'>
-                  <span className='font-extrabold'>Email: </span>
-                  {invoice?.data.email}
-                </p>
-              </div>
-            </div>
-            <div className='space-y-8'>
-              <div>
-                <h2 className='text-lg md:text-4xl'>Rincian Pesanan</h2>
-              </div>
-              <div className='divide-0 grid grid-cols-2 divide-neutral-400 md:grid-cols-4 md:divide-x'>
-                <div className='flex flex-col items-center justify-center px-4'>
-                  <h3 className='text-base md:text-lg'>Judul Iklan</h3>
-                  <p className='text-dark dark:!text-light'>
-                    {invoice?.data.title}
-                  </p>
+            <hr className='border-2 border-neutral-900 dark:border-neutral-200' />
+            <div className='grid gap-x-12 gap-y-10 md:grid-cols-2'>
+              <div className='space-y-8'>
+                <div>
+                  <h2 className='text-lg md:text-3xl'>Detail Pesanan</h2>
                 </div>
-                <div className='flex flex-col items-center justify-center px-4'>
-                  <h3 className='text-base md:text-lg'>Harga Akun</h3>
-                  <p className='text-dark dark:!text-light'>
+                <div className='divide-0 grid grid-cols-1 divide-y divide-neutral-400 md:grid-cols-3 md:divide-x md:divide-y-0'>
+                  <div className='flex flex-col justify-center px-4'>
+                    <h4 className='text-base md:text-lg'>Judul</h4>
+                    <h3 className='text-dark dark:!text-light'>
+                      {invoice?.data.title}
+                    </h3>
+                  </div>
+                  <div className='flex flex-col justify-center px-4'>
+                    <h4 className='text-base md:text-lg'>Win Rate</h4>
+                    <h3 className='text-dark dark:!text-light'>
+                      {invoice?.data.win_rate} %
+                    </h3>
+                  </div>
+                  <div className='flex flex-col justify-center px-4'>
+                    <h4 className='text-base md:text-lg'>Jenis Refund</h4>
+                    <h3 className='text-dark dark:!text-light'>
+                      {invoice?.data.jenis_refund}
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <div className='space-y-8'>
+                <div>
+                  <h2 className='text-lg md:text-3xl'>Detail Pembeli</h2>
+                </div>
+                <div className='flex flex-wrap justify-between'>
+                  <div className='flex flex-col justify-center px-4'>
+                    <h4 className='text-base md:text-lg'>Nama</h4>
+                    <h3 className='text-dark dark:!text-light'>
+                      {invoice?.data.name}
+                    </h3>
+                  </div>
+                  <div className='flex flex-col justify-center px-4'>
+                    <h4 className='text-base md:text-lg'>Email</h4>
+                    <h3 className='text-dark dark:!text-light'>
+                      {invoice?.data.email}
+                    </h3>
+                  </div>
+                  <div className='flex flex-col justify-center px-4'>
+                    <h4 className='text-base md:text-lg'>Telp.</h4>
+                    <h3 className='text-dark dark:!text-light'>
+                      +{invoice?.data.phone}
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <div className='grid grid-cols-1 divide-y divide-neutral-400'>
+                <div>
+                  <h2 className='text-lg md:text-3xl'>Rincian Pembayaran</h2>
+                </div>
+                <div className='grid grid-cols-2 pt-3'>
+                  <p className='text-lg font-extrabold text-dark dark:!text-light'>
+                    Harga Akun
+                  </p>
+                  <p className='text-right text-dark dark:!text-light'>
                     {toIDRCurrency(invoice?.data.harga_akun)}
                   </p>
                 </div>
-                <div className='flex flex-col items-center justify-center px-4'>
-                  <h3 className='text-base md:text-lg'>Jenis Refund Iklan</h3>
-                  <p className='text-dark dark:!text-light'>
-                    {invoice?.data.jenis_refund}
-                  </p>
-                </div>
-                <div className='flex flex-col items-center justify-center px-4'>
-                  <h3 className='text-base md:text-lg'>Metode Pembayaran</h3>
-                  <p className='text-dark dark:!text-light'>
-                    {invoice?.data.jenis_pembayaran.rekening_name} (
-                    {invoice?.data.jenis_pembayaran.rekening_number})
-                  </p>
-                  <p className='text-dark dark:!text-light'></p>
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className='grid grid-cols-1 divide-y divide-neutral-400'>
                 <div className='grid grid-cols-2 pt-3'>
                   <p className='text-lg font-extrabold text-dark dark:!text-light'>
-                    Biaya Penjualan Akun
+                    Biaya Rekber
                   </p>
                   <p className='text-right text-dark dark:!text-light'>
-                    {toIDRCurrency(invoice?.data.biaya_penjualan)}
+                    {toIDRCurrency(invoice?.data.biaya_rekber)}
                   </p>
                 </div>
                 <div className='grid grid-cols-2 pt-3'>
@@ -160,49 +182,57 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
                     Biaya Admin
                   </p>
                   <p className='text-right text-dark dark:!text-light'>
-                    {toIDRCurrency(invoice?.data.biaya_admin)}
+                    {toIDRCurrency(invoice.data.biaya_admin)}
                   </p>
                 </div>
                 <div className='grid grid-cols-2 pt-3'>
-                  <p className='text-lg font-extrabold text-dark dark:!text-light'>
-                    Fee Bank
+                  <p className='text-2xl font-extrabold text-dark dark:!text-light'>
+                    TOTAL
                   </p>
-                  <p className='text-right text-dark dark:!text-light'>
-                    1% &times; {toIDRCurrency(invoice?.data.biaya_penjualan)} ={' '}
+                  <p className='text-right text-2xl font-extrabold text-dark dark:!text-light'>
                     {toIDRCurrency(
-                      invoice?.data.biaya_penjualan &&
-                        Math.round(+invoice?.data.biaya_penjualan / 100)
+                      +invoice.data.harga_akun +
+                        +invoice?.data.biaya_admin +
+                        +invoice?.data.biaya_rekber
                     )}
                   </p>
                 </div>
-                <div className='grid grid-cols-2 pt-3'>
-                  <p className='text-lg font-black text-dark dark:!text-light'>
-                    Total Yang Harus Dibayar
-                  </p>
-                  <p className='text-right text-dark dark:!text-light'>
-                    {invoice?.data.biaya_penjualan !== undefined &&
-                      invoice?.data.biaya_admin !== undefined &&
-                      invoice?.data.biaya_penjualan !== undefined &&
-                      toIDRCurrency(
-                        +invoice.data.biaya_penjualan +
-                          +invoice?.data.biaya_admin +
-                          Math.round(+invoice?.data.biaya_penjualan / 100)
-                      )}
-                  </p>
+              </div>
+              <div className='space-y-4'>
+                <div>
+                  <h2 className='text-lg md:text-3xl'>Metode Pembayaran</h2>
+                </div>
+                <div>
+                  <h3 className='font-medium md:text-4xl'>
+                    {invoice.data.jenis_pembayaran.name}
+                  </h3>
+                </div>
+                <div className='rounded-xl bg-neutral-300 px-4 py-3'>
+                  <div className='grid grid-cols-2'>
+                    {invoice.data.va ? (
+                      <div>
+                        <h4 className='font-medium'>No. Virtual Account</h4>
+                        <p>{invoice.data.va}</p>
+                      </div>
+                    ) : (
+                      <>
+                        <div>
+                          <h5 className='font-medium'>Nama</h5>
+                          <p className='m-0 text-2xl font-bold text-black'>
+                            {invoice.data.jenis_pembayaran.rekening_name}
+                          </p>
+                        </div>
+                        <div>
+                          <h5 className='font-medium'>No. Rekening</h5>
+                          <p className='m-0 text-2xl font-bold text-black'>
+                            {invoice.data.jenis_pembayaran.rekening_number}
+                          </p>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className='rounded-xl border-2 border-primary-500 p-2'>
-              <p className='my-0 text-black'>
-                <span className='font-black'>Transfer ke</span> rekening{' '}
-                {invoice?.data.jenis_pembayaran.name}
-              </p>
-              <p className='my-0 text-black'>
-                a/n {invoice?.data.jenis_pembayaran.rekening_name}
-              </p>
-              <p className='my-0 text-black'>
-                {invoice?.data.jenis_pembayaran.rekening_number}
-              </p>
             </div>
             <div>
               <h4 className='inline rounded-md  text-red-500'>

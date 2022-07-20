@@ -26,6 +26,7 @@ export const getStatusInvoice = (s: number | string) => {
 type Invoice = {
   biaya_admin: number;
   biaya_penjualan: number;
+  biaya_rekber: number;
   created_at: string;
   created_by: string;
   expired_at: string;
@@ -54,6 +55,8 @@ type Invoice = {
   updated_at: string;
   updated_by: number;
   user_id: number;
+  win_rate: number;
+  va: null | string;
 };
 
 export type InvoicePembeli = {
@@ -65,6 +68,7 @@ export type InvoicePembeli = {
   };
   biaya_admin: number;
   biaya_penjualan: number;
+  biaya_rekber: number;
   created_at: string;
   expired_at: string;
   id: number;
@@ -75,6 +79,8 @@ export type InvoicePembeli = {
   status: number;
   updated_at: string;
   user_id: number;
+  win_rate: number;
+  va: null | string;
 };
 
 export default Invoice;
