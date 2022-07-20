@@ -453,32 +453,6 @@ const IklanMain = ({ id }: { id: number }) => {
                       </Modal>
                     </div>
                   </div>
-                  <div className='art-name-details'>
-                    <div className='space-x-4'>
-                      <h5 className='inline'>First Hand Status:</h5>
-                      <p className='inline'>
-                        {+iklan.data.first_hand_status === 0
-                          ? 'First hand'
-                          : 'Second hand'}
-                      </p>
-                    </div>
-                    <div className='space-x-4'>
-                      <h5 className='inline'>Account Bind:</h5>
-                      <p className='inline'>
-                        {iklan.data.account_bind
-                          .map((a) => a.name)
-                          .join(', ') || '-'}
-                      </p>
-                    </div>
-                    <div className='space-x-4'>
-                      <h5 className='inline'>Change Name Status:</h5>
-                      <p className='inline'>
-                        {+iklan.data.change_name_status === 0
-                          ? 'Change name non-aktif'
-                          : 'Change name aktif'}
-                      </p>
-                    </div>
-                  </div>
                   <div className='artist-meta-info art-details-meta-info'>
                     <div className='art-meta-item artist-meta-item-border'>
                       <div className='art-meta-type'>Harga</div>
