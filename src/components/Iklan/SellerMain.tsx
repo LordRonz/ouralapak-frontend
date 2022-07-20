@@ -101,7 +101,7 @@ const SellerMain = () => {
 
   return (
     <main>
-      <section className='page-title-area'>
+      <section className='page-title-area pt-3 pb-14'>
         <div className='container'>
           <div className='row wow fadeInUp'>
             <div className='col-lg-12'>

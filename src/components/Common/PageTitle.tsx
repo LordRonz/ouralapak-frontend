@@ -11,7 +11,7 @@ const Breadcrumbs = ({
   breadcrumbSubTitle,
 }: BreadcrumbsProp) => {
   return (
-    <section className='page-title-area py-3'>
+    <section className='page-title-area pt-3 pb-14'>
       <div className='container'>
         <div className='row wow fadeInUp'>
           <div className='col-lg-12'>
