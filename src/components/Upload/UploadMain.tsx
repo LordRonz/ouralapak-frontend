@@ -11,7 +11,7 @@ import {
   useFieldArray,
   useForm,
 } from 'react-hook-form';
-import { HiPlus } from 'react-icons/hi';
+import { HiEye, HiPlus } from 'react-icons/hi';
 import Lightbox from 'react-image-lightbox';
 import Select from 'react-select';
 import { Theme, toast } from 'react-toastify';
@@ -26,7 +26,6 @@ import Spinner from '@/components/Common/Spinner';
 import XButton from '@/components/Common/XButton';
 import UnstyledLink from '@/components/links/UnstyledLink';
 import ConfirmationDialog from '@/components/Upload/Dialog';
-import DragDropSection from '@/components/Upload/DragDropSection';
 import { API_URL } from '@/constant/config';
 import clsxm from '@/lib/clsxm';
 import getAuthHeader from '@/lib/getAuthHeader';
@@ -392,9 +391,9 @@ const UploadMain = () => {
           <div className='upload-wrapper mb-10'>
             <form className='upload-form' onSubmit={handleSubmit(onSubmit)}>
               <div className='row'>
-                <div className='col-lg-8'>
+                <div className=''>
                   <div className='row wow fadeInUp'>
-                    <div className='col-md-6'>
+                    <div className='col-md-8'>
                       <div className='single-input-unit'>
                         <label>Judul</label>
                         <input
@@ -407,30 +406,40 @@ const UploadMain = () => {
                       </div>
                       <p className='text-red-500'>{errors.title?.message}</p>
                     </div>
-                    <div className='col-md-6'>
+                    <div className='col-md-4'>
                       <div className='single-input-unit'>
-                        <label htmlFor='platform_id'>Platform</label>
+                        <label htmlFor='jenis_refund'>Jenis Refund</label>
                         <Controller
                           control={control}
-                          defaultValue={platformId[0].value}
-                          name='platform_id'
+                          defaultValue={jenisRefundOpts[0].value}
+                          name='jenis_refund'
                           render={({ field: { onChange, value } }) => (
                             <Select
                               className={clsxm('py-3 pt-0')}
-                              options={platformId}
-                              value={platformId.find((c) => c.value === value)}
+                              options={jenisRefundOpts}
+                              value={jenisRefundOpts.find(
+                                (c) => c.value === value
+                              )}
                               onChange={(val) => onChange(val?.value)}
                             />
                           )}
                         />
+                        {!user?.data.is_verified && (
+                          <UnstyledLink
+                            href='/profile'
+                            className='text-sm text-yellow-500'
+                            onClick={() => setSaveData(getValues())}
+                          >
+                            Akun anda belum diverifikasi, silahkan upload
+                            identitas terlebih dahulu agar dapat memilih opsi
+                            Refund lainnya
+                          </UnstyledLink>
+                        )}
                       </div>
-                      <p className='text-red-500'>
-                        {errors.platform_id?.message}
-                      </p>
                     </div>
-                    <div className='col-md-6'>
+                    <div className='col-md-4'>
                       <div className='single-input-unit'>
-                        <label htmlFor='platform_id'>First Hand Status</label>
+                        <label htmlFor='platform_id'>Status Akun</label>
                         <Controller
                           control={control}
                           defaultValue={firstHandStatusOpts[0].value}
@@ -451,9 +460,115 @@ const UploadMain = () => {
                         {errors.first_hand_status?.message}
                       </p>
                     </div>
-                    <div className='col-md-6'>
+                    <div className='col-md-4'>
                       <div className='single-input-unit'>
-                        <label>Change Name Status</label>
+                        <label>Win Rate</label>
+                        <input
+                          type='number'
+                          onWheel={(e) =>
+                            e.target instanceof HTMLElement && e.target.blur()
+                          }
+                          placeholder='0'
+                          {...register('win_rate', {
+                            required: 'Win rate harus diisi',
+                            pattern: {
+                              value: /^(\d{0,2}(\.\d{1,2})?|100(\.00?)?)$/,
+                              message:
+                                'Win rate haruslah di antara 0 - 100 dan maksimum 2 desimal di belakang koma',
+                            },
+                            valueAsNumber: true,
+                          })}
+                        />
+                      </div>
+                      <p className='text-red-500'>{errors.win_rate?.message}</p>
+                    </div>
+                    <div className='col-md-4'>
+                      <div className='single-input-unit'>
+                        <label htmlFor='package_id'>Paket Posting Iklan</label>
+                        <Controller
+                          control={control}
+                          defaultValue={packageId[0].value}
+                          name='package_id'
+                          render={({ field: { onChange, value } }) => (
+                            <Select
+                              className={clsxm('py-3 pt-0')}
+                              options={packageId}
+                              value={packageId.find((c) => c.value === value)}
+                              onChange={(val) => onChange(val?.value)}
+                            />
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <div className='col-md-4'>
+                      <div className='single-input-unit'>
+                        <label htmlFor='platform_id'>Platform</label>
+                        <Controller
+                          control={control}
+                          defaultValue={platformId[0].value}
+                          name='platform_id'
+                          render={({ field: { onChange, value } }) => (
+                            <Select
+                              className={clsxm('py-3 pt-0')}
+                              options={platformId}
+                              value={platformId.find((c) => c.value === value)}
+                              onChange={(val) => onChange(val?.value)}
+                            />
+                          )}
+                        />
+                      </div>
+                      <p className='text-red-500'>
+                        {errors.platform_id?.message}
+                      </p>
+                    </div>
+                    <div className='col-md-4'>
+                      <div className='single-input-unit'>
+                        <label>Jumlah Skin</label>
+                        <input
+                          type='number'
+                          onWheel={(e) =>
+                            e.target instanceof HTMLElement && e.target.blur()
+                          }
+                          placeholder='0'
+                          {...register('total_skin', {
+                            required: 'Total skin harus diisi',
+                            min: {
+                              value: 0,
+                              message: 'Minimum jumlah skin adalah 0',
+                            },
+                            valueAsNumber: true,
+                          })}
+                        />
+                      </div>
+                      <p className='text-red-500'>
+                        {errors.total_skin?.message}
+                      </p>
+                    </div>
+                    <div className='col-md-4'>
+                      <div className='single-input-unit'>
+                        <label htmlFor='jenis_pembayaran'>
+                          Jenis Pembayaran
+                        </label>
+                        <Controller
+                          control={control}
+                          defaultValue={jenisPembayaranOpts[0].value}
+                          name='jenis_pembayaran'
+                          render={({ field: { onChange, value } }) => (
+                            <Select
+                              className={clsxm('py-3 pt-0')}
+                              options={jenisPembayaranOpts}
+                              value={jenisPembayaranOpts.find(
+                                (c) => c.value === value
+                              )}
+                              onChange={(val) => onChange(val?.value)}
+                            />
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <div className='col-md-4'>
+                      <div className='single-input-unit'>
+                        <label>Status Ganti Nama Akun</label>
                         <Controller
                           control={control}
                           defaultValue={changeNameOpts[0].value}
@@ -472,6 +587,52 @@ const UploadMain = () => {
                       </div>
                       <p className='text-red-500'>
                         {errors.change_name_status?.message}
+                      </p>
+                    </div>
+                    <div className='col-md-4'>
+                      <div className='single-input-unit'>
+                        <label>Jumlah Hero</label>
+                        <input
+                          type='number'
+                          onWheel={(e) =>
+                            e.target instanceof HTMLElement && e.target.blur()
+                          }
+                          placeholder='0'
+                          {...register('total_hero', {
+                            required: 'Total hero harus diisi',
+                            min: {
+                              value: 1,
+                              message: 'Minimum jumlah hero adalah 1',
+                            },
+                            valueAsNumber: true,
+                          })}
+                        />
+                      </div>
+                      <p className='text-red-500'>
+                        {errors.total_hero?.message}
+                      </p>
+                    </div>
+                    <div className='col-md-4'>
+                      <div className='single-input-unit'>
+                        <label>Harga Akun (IDR)</label>
+                        <input
+                          type='number'
+                          onWheel={(e) =>
+                            e.target instanceof HTMLElement && e.target.blur()
+                          }
+                          placeholder='10000'
+                          {...register('harga_akun', {
+                            required: 'Harga akun harus diisi',
+                            min: {
+                              value: 1,
+                              message: 'Minimum harga adalah 1',
+                            },
+                            valueAsNumber: true,
+                          })}
+                        />
+                      </div>
+                      <p className='text-red-500'>
+                        {errors.harga_akun?.message}
                       </p>
                     </div>
                     <div className='col-md-6'>
@@ -499,7 +660,7 @@ const UploadMain = () => {
                     </div>
                     <div className='col-md-6'>
                       <div className='single-input-unit'>
-                        <label htmlFor='favorite_heroes'>Favorite Heroes</label>
+                        <label htmlFor='favorite_heroes'>Hero Favorit</label>
                         <Controller
                           control={control}
                           defaultValue={[]}
@@ -525,161 +686,65 @@ const UploadMain = () => {
                         />
                       </div>
                     </div>
-                    <div className='col-md-6'>
+                    <div className='col-md-6 mb-4'>
                       <div className='single-input-unit'>
-                        <label>Win Rate</label>
-                        <input
-                          type='number'
-                          onWheel={(e) =>
-                            e.target instanceof HTMLElement && e.target.blur()
-                          }
-                          placeholder='0'
-                          {...register('win_rate', {
-                            required: 'Win rate harus diisi',
-                            pattern: {
-                              value: /^(\d{0,2}(\.\d{1,2})?|100(\.00?)?)$/,
-                              message:
-                                'Win rate haruslah di antara 0 - 100 dan maksimum 2 desimal di belakang koma',
-                            },
-                            valueAsNumber: true,
-                          })}
-                        />
-                      </div>
-                      <p className='text-red-500'>{errors.win_rate?.message}</p>
-                    </div>
-                    <div className='col-md-6'>
-                      <div className='single-input-unit'>
-                        <label>Total Hero</label>
-                        <input
-                          type='number'
-                          onWheel={(e) =>
-                            e.target instanceof HTMLElement && e.target.blur()
-                          }
-                          placeholder='0'
-                          {...register('total_hero', {
-                            required: 'Total hero harus diisi',
-                            min: {
-                              value: 1,
-                              message: 'Minimum jumlah hero adalah 1',
-                            },
-                            valueAsNumber: true,
-                          })}
-                        />
-                      </div>
-                      <p className='text-red-500'>
-                        {errors.total_hero?.message}
-                      </p>
-                    </div>
-                    <div className='col-md-6'>
-                      <div className='single-input-unit'>
-                        <label>Total Skin</label>
-                        <input
-                          type='number'
-                          onWheel={(e) =>
-                            e.target instanceof HTMLElement && e.target.blur()
-                          }
-                          placeholder='0'
-                          {...register('total_skin', {
-                            required: 'Total skin harus diisi',
-                            min: {
-                              value: 0,
-                              message: 'Minimum jumlah skin adalah 0',
-                            },
-                            valueAsNumber: true,
-                          })}
-                        />
-                      </div>
-                      <p className='text-red-500'>
-                        {errors.total_skin?.message}
-                      </p>
-                    </div>
-                    <div className='col-md-6'>
-                      <div className='single-input-unit space-y-4'>
-                        <div className='flex items-center space-x-4'>
-                          <label>Total Skin Rare</label>
+                        <div className='mb-4 flex items-center space-x-4'>
+                          <label>Recall Effect</label>
                           <Button
                             variant='success'
-                            className='rounded-full'
-                            onClick={() =>
-                              totalSkinRareFields.append({
-                                jenis: 'medium',
-                                total_skin: undefined,
-                              })
-                            }
+                            onClick={() => setRecallEffectCnt((v) => v + 1)}
+                            className='!rounded-full !p-1'
                           >
                             <HiPlus />
                           </Button>
                         </div>
-                        <div className='max-h-80 space-y-4 overflow-auto'>
-                          <div className='rounded-xl border-primary-200'>
-                            {!!totalSkinRareFields.fields.length && (
-                              <div className='flex justify-around'>
-                                <label htmlFor='jenis'>Jenis</label>
-                                <label htmlFor='total_skin'>Total Skin</label>
-                              </div>
-                            )}
-                            {totalSkinRareFields.fields.map((field, index) => (
-                              <div
-                                className='relative flex rounded-xl border-primary-200'
-                                key={field.id}
-                              >
-                                <XButton
-                                  onClick={() =>
-                                    totalSkinRareFields.remove(index)
-                                  }
-                                  className='absolute top-0 right-0'
+                        <div className='max-h-60 overflow-auto'>
+                          {[...new Array(recallEffectCnt)].map((_, index) => (
+                            <>
+                              <div className='flex gap-x-2'>
+                                <input
+                                  key={index}
+                                  type='text'
+                                  placeholder='Recall effect'
+                                  {...register(`recall_effect.${index}`, {
+                                    required: 'Recall effect harus diisi',
+                                  })}
+                                  className='mb-0'
                                 />
-                                <div className='mr-2'>
-                                  <input
-                                    type='text'
-                                    placeholder='Jenis'
-                                    {...register(
-                                      `total_skin_rare.${index}.jenis` as const,
-                                      {
-                                        required: 'Jenis harus diisi',
-                                      }
-                                    )}
-                                    className='mb-3'
-                                  />
-                                </div>
-                                <div>
-                                  <input
-                                    type='number'
-                                    onWheel={(e) =>
-                                      e.target instanceof HTMLElement &&
-                                      e.target.blur()
+                                <XButton
+                                  className='self-center bg-rose-300'
+                                  onClick={() => {
+                                    if (recallEffectCnt > 1) {
+                                      unregister(`recall_effect.${index}`);
+                                      const arr = getValues('recall_effect');
+                                      arr.splice(index, 1);
+                                      setValue('recall_effect', arr);
+                                    } else {
+                                      setValue('recall_effect', []);
                                     }
-                                    placeholder='0'
-                                    {...register(
-                                      `total_skin_rare.${index}.total_skin` as const,
-                                      {
-                                        required: 'Total skin harus diisi',
-                                        min: {
-                                          value: 1,
-                                          message:
-                                            'Minimum jumlah skin adalah 1',
-                                        },
-                                        valueAsNumber: true,
-                                      }
-                                    )}
-                                    className='mb-3'
-                                  />
-                                </div>
+                                    setRecallEffectCnt((v) =>
+                                      Math.max(v - 1, 0)
+                                    );
+                                  }}
+                                />
                               </div>
-                            ))}
-                          </div>
+                              <p className='text-red-500'>
+                                {errors.recall_effect?.[index]?.message}
+                              </p>
+                            </>
+                          ))}
                         </div>
                       </div>
-                      <p className='text-red-500'>{errors.title?.message}</p>
                     </div>
                     <div className='col-md-6 mb-4'>
                       <div className='single-input-unit space-y-4'>
                         <div className='flex items-center space-x-4'>
-                          <label>Total Emblem</label>
+                          <label>Emblem</label>
                           {totalEmblemFields.fields.length <
                             emblemOpts.length && (
                             <Button
                               variant='success'
+                              className='!rounded-full !p-1'
                               onClick={() =>
                                 totalEmblemFields.append({
                                   id_emblem: emblemOpts.filter(
@@ -705,16 +770,7 @@ const UploadMain = () => {
                               </div>
                             )}
                             {totalEmblemFields.fields.map((field, index) => (
-                              <div
-                                className='relative flex rounded-xl border-primary-200'
-                                key={field.id}
-                              >
-                                <XButton
-                                  onClick={() =>
-                                    totalEmblemFields.remove(index)
-                                  }
-                                  className='absolute top-0 right-0'
-                                />
+                              <div className='flex gap-x-2' key={field.id}>
                                 <div className='mr-2 w-1/2'>
                                   <Controller
                                     control={control}
@@ -779,166 +835,306 @@ const UploadMain = () => {
                                         valueAsNumber: true,
                                       }
                                     )}
+                                    className='mb-0'
                                   />
                                 </div>
+                                <XButton
+                                  onClick={() =>
+                                    totalEmblemFields.remove(index)
+                                  }
+                                  className='self-center bg-rose-300'
+                                />
                               </div>
                             ))}
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className='col-md-6 mb-4'>
-                      <div className='single-input-unit'>
-                        <div className='mb-4 flex items-center space-x-4'>
-                          <label>Recall Effect</label>
+                    <div className='col-md-6'>
+                      <div className='single-input-unit space-y-4'>
+                        <div className='flex items-center space-x-4'>
+                          <label>Skin Rare</label>
                           <Button
                             variant='success'
-                            onClick={() => setRecallEffectCnt((v) => v + 1)}
+                            className='!rounded-full !p-1'
+                            onClick={() =>
+                              totalSkinRareFields.append({
+                                jenis: 'medium',
+                                total_skin: undefined,
+                              })
+                            }
                           >
                             <HiPlus />
                           </Button>
                         </div>
-                        <div className='max-h-60 overflow-auto'>
-                          {[...new Array(recallEffectCnt)].map((_, index) => (
-                            <>
-                              <div className='relative'>
-                                <input
-                                  key={index}
-                                  type='text'
-                                  placeholder='Recall effect'
-                                  {...register(`recall_effect.${index}`, {
-                                    required: 'Recall effect harus diisi',
-                                  })}
-                                  className='mb-1'
-                                />
-                                <XButton
-                                  className='absolute top-0 right-0'
-                                  onClick={() => {
-                                    if (recallEffectCnt > 1) {
-                                      unregister(`recall_effect.${index}`);
-                                      const arr = getValues('recall_effect');
-                                      arr.splice(index, 1);
-                                      setValue('recall_effect', arr);
-                                    } else {
-                                      setValue('recall_effect', []);
-                                    }
-                                    setRecallEffectCnt((v) =>
-                                      Math.max(v - 1, 0)
-                                    );
-                                  }}
-                                />
+                        <div className='max-h-80 space-y-4 overflow-auto'>
+                          <div className='rounded-xl border-primary-200'>
+                            {!!totalSkinRareFields.fields.length && (
+                              <div className='flex justify-around'>
+                                <label htmlFor='jenis'>Jenis</label>
+                                <label htmlFor='total_skin'>Total Skin</label>
                               </div>
-                              <p className='text-red-500'>
-                                {errors.recall_effect?.[index]?.message}
-                              </p>
-                            </>
-                          ))}
+                            )}
+                            <div className='flex flex-col gap-y-3'>
+                              {totalSkinRareFields.fields.map(
+                                (field, index) => (
+                                  <div className='flex gap-x-2' key={field.id}>
+                                    <div className='mr-2'>
+                                      <input
+                                        type='text'
+                                        placeholder='Jenis'
+                                        {...register(
+                                          `total_skin_rare.${index}.jenis` as const,
+                                          {
+                                            required: 'Jenis harus diisi',
+                                          }
+                                        )}
+                                        className='mb-0'
+                                      />
+                                    </div>
+                                    <div>
+                                      <input
+                                        type='number'
+                                        onWheel={(e) =>
+                                          e.target instanceof HTMLElement &&
+                                          e.target.blur()
+                                        }
+                                        placeholder='0'
+                                        {...register(
+                                          `total_skin_rare.${index}.total_skin` as const,
+                                          {
+                                            required: 'Total skin harus diisi',
+                                            min: {
+                                              value: 1,
+                                              message:
+                                                'Minimum jumlah skin adalah 1',
+                                            },
+                                            valueAsNumber: true,
+                                          }
+                                        )}
+                                        className='mb-0'
+                                      />
+                                    </div>
+                                    <XButton
+                                      onClick={() =>
+                                        totalSkinRareFields.remove(index)
+                                      }
+                                      className='self-center bg-rose-300'
+                                    />
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          </div>
                         </div>
                       </div>
+                      <p className='text-red-500'>{errors.title?.message}</p>
                     </div>
-                    <div className='col-md-6'>
-                      <div className='single-input-unit'>
-                        <label htmlFor='jenis_refund'>Jenis Refund</label>
-                        <Controller
-                          control={control}
-                          defaultValue={jenisRefundOpts[0].value}
-                          name='jenis_refund'
-                          render={({ field: { onChange, value } }) => (
-                            <Select
-                              className={clsxm('py-3 pt-0')}
-                              options={jenisRefundOpts}
-                              value={jenisRefundOpts.find(
-                                (c) => c.value === value
-                              )}
-                              onChange={(val) => onChange(val?.value)}
+                    <div className='col-md-6 grid grid-cols-2 gap-y-4 gap-x-4'>
+                      <div>
+                        <div className=''>
+                          <label className='mb-2 text-base font-bold text-[#171717]'>
+                            Win Rate Hero
+                          </label>
+                          <div className='flex items-center gap-x-2'>
+                            <input
+                              type='file'
+                              onChange={(e) =>
+                                setImageWinRateHero(
+                                  e.target.files ? e.target.files[0] : null
+                                )
+                              }
                             />
-                          )}
-                        />
-                        {!user?.data.is_verified && (
-                          <UnstyledLink
-                            href='/profile'
-                            className='text-sm text-yellow-500'
-                            onClick={() => setSaveData(getValues())}
-                          >
-                            Akun anda belum diverifikasi, silahkan upload
-                            identitas terlebih dahulu agar dapat memilih opsi
-                            Refund lainnya
-                          </UnstyledLink>
+                            {imageWinRateHero && (
+                              <Button
+                                variant='success'
+                                className='self-end !rounded-full !p-1'
+                                onClick={() => setPreviewWinRateHero(true)}
+                              >
+                                <HiEye />
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                        {previewWinRateHero && imageWinRateHero && (
+                          <Lightbox
+                            mainSrc={URL.createObjectURL(
+                              imageWinRateHero as File
+                            )}
+                            onCloseRequest={() => setPreviewWinRateHero(false)}
+                          />
                         )}
                       </div>
-                    </div>
-                    <div className='col-md-6'>
-                      <div className='single-input-unit'>
-                        <label>Harga Akun (IDR)</label>
-                        <input
-                          type='number'
-                          onWheel={(e) =>
-                            e.target instanceof HTMLElement && e.target.blur()
-                          }
-                          placeholder='10000'
-                          {...register('harga_akun', {
-                            required: 'Harga akun harus diisi',
-                            min: {
-                              value: 1,
-                              message: 'Minimum harga adalah 1',
-                            },
-                            valueAsNumber: true,
-                          })}
-                        />
-                      </div>
-                      <p className='text-red-500'>
-                        {errors.harga_akun?.message}
-                      </p>
-                    </div>
-                    <div className='col-md-6'>
-                      <div className='single-input-unit'>
-                        <label htmlFor='jenis_pembayaran'>
-                          Jenis Pembayaran
-                        </label>
-                        <Controller
-                          control={control}
-                          defaultValue={jenisPembayaranOpts[0].value}
-                          name='jenis_pembayaran'
-                          render={({ field: { onChange, value } }) => (
-                            <Select
-                              className={clsxm('py-3 pt-0')}
-                              options={jenisPembayaranOpts}
-                              value={jenisPembayaranOpts.find(
-                                (c) => c.value === value
-                              )}
-                              onChange={(val) => onChange(val?.value)}
+                      <div>
+                        <div className=''>
+                          <label className='mb-2 text-base font-bold text-[#171717]'>
+                            Win Rate
+                          </label>
+                          <div className='flex items-center gap-x-2'>
+                            <input
+                              type='file'
+                              onChange={(e) =>
+                                setImageWinRate(
+                                  e.target.files ? e.target.files[0] : null
+                                )
+                              }
                             />
-                          )}
-                        />
+                            {imageWinRate && (
+                              <Button
+                                variant='success'
+                                className='self-end !rounded-full !p-1'
+                                onClick={() => setPreviewWinRate(true)}
+                              >
+                                <HiEye />
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                        {previewWinRate && imageWinRate && (
+                          <Lightbox
+                            mainSrc={URL.createObjectURL(imageWinRate as File)}
+                            onCloseRequest={() => setPreviewWinRate(false)}
+                          />
+                        )}
                       </div>
-                    </div>
-                    <div className='col-md-6'>
-                      <div className='single-input-unit'>
-                        <label htmlFor='package_id'>Paket Penjualan Akun</label>
-                        <Controller
-                          control={control}
-                          defaultValue={packageId[0].value}
-                          name='package_id'
-                          render={({ field: { onChange, value } }) => (
-                            <Select
-                              className={clsxm('py-3 pt-0')}
-                              options={packageId}
-                              value={packageId.find((c) => c.value === value)}
-                              onChange={(val) => onChange(val?.value)}
+                      <div>
+                        <div className=''>
+                          <label className='mb-2 text-base font-bold text-[#171717]'>
+                            Profile
+                          </label>
+                          <div className='flex items-center gap-x-2'>
+                            <input
+                              type='file'
+                              onChange={(e) =>
+                                setImageProfile(
+                                  e.target.files ? e.target.files[0] : null
+                                )
+                              }
                             />
-                          )}
-                        />
+                            {imageProfile && (
+                              <Button
+                                variant='success'
+                                className='self-end !rounded-full !p-1'
+                                onClick={() => setPreviewImgProfile(true)}
+                              >
+                                <HiEye />
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                        {previewImgProfile && imageProfile && (
+                          <Lightbox
+                            mainSrc={URL.createObjectURL(imageProfile as File)}
+                            onCloseRequest={() => setPreviewImgProfile(false)}
+                          />
+                        )}
+                      </div>
+                      <div>
+                        <div className=''>
+                          <label className='mb-2 text-base font-bold text-[#171717]'>
+                            Emblem
+                          </label>
+                          <div className='flex items-center gap-x-2'>
+                            <input
+                              type='file'
+                              onChange={(e) =>
+                                setImageEmblem(
+                                  e.target.files ? e.target.files[0] : null
+                                )
+                              }
+                            />
+                            {imageEmblem && (
+                              <Button
+                                variant='success'
+                                className='self-end !rounded-full !p-1'
+                                onClick={() => setPreviewEmblem(true)}
+                              >
+                                <HiEye />
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                        {previewEmblem && imageEmblem && (
+                          <Lightbox
+                            mainSrc={URL.createObjectURL(imageEmblem as File)}
+                            onCloseRequest={() => setPreviewEmblem(false)}
+                          />
+                        )}
+                      </div>
+                      <div>
+                        <div className=''>
+                          <label className='mb-2 text-base font-bold text-[#171717]'>
+                            Skin
+                          </label>
+                          <div className='flex items-center gap-x-2'>
+                            <input
+                              type='file'
+                              onChange={(e) =>
+                                setImageSkin(
+                                  e.target.files
+                                    ? [
+                                        ...(Array.isArray(imageSkin)
+                                          ? imageSkin
+                                          : []),
+                                        ...Array.from(e.target.files),
+                                      ]
+                                    : null
+                                )
+                              }
+                            />
+                            {imageSkin && (
+                              <Button
+                                variant='success'
+                                className='self-end !rounded-full !p-1'
+                                onClick={() => setPreviewSkin(true)}
+                              >
+                                <HiEye />
+                              </Button>
+                            )}
+                          </div>
+                          <p>* dapat memilih lebih dari satu</p>
+                        </div>
+                        {previewSkin && imageSkin && (
+                          <Lightbox
+                            mainSrc={URL.createObjectURL(
+                              (imageSkin as File[])[skinIndex] as File
+                            )}
+                            nextSrc={URL.createObjectURL(
+                              (imageSkin as File[])[
+                                (skinIndex + 1) % (imageSkin as File[]).length
+                              ] as File
+                            )}
+                            prevSrc={URL.createObjectURL(
+                              (imageSkin as File[])[
+                                (skinIndex + (imageSkin as File[]).length - 1) %
+                                  (imageSkin as File[]).length
+                              ] as File
+                            )}
+                            onCloseRequest={() => setPreviewSkin(false)}
+                            onMovePrevRequest={() =>
+                              setSkinIndex(
+                                (skinIndex + (imageSkin as File[]).length - 1) %
+                                  (imageSkin as File[]).length
+                              )
+                            }
+                            onMoveNextRequest={() =>
+                              setSkinIndex(
+                                (skinIndex + 1) % (imageSkin as File[]).length
+                              )
+                            }
+                          />
+                        )}
                       </div>
                     </div>
                   </div>
                   <div className='upload-btn wow fadeInUp mt-4 !hidden md:!block'>
                     <ButtonGradient
                       disabled={submitBtnDisabled}
-                      className='text-black'
+                      className='w-full text-black'
                       type='submit'
                       onClick={() => setIsChecked(false)}
                     >
-                      Submit Iklan
+                      Preview
                     </ButtonGradient>
                   </div>
                   <ConfirmationDialog
@@ -1223,41 +1419,6 @@ const UploadMain = () => {
                   </ConfirmationDialog>
                 </div>
                 <div className='col-lg-4'>
-                  <div className='row'>
-                    <div className='col-lg-12 col-md-12'>
-                      <DragDropSection
-                        file={imageProfile}
-                        setFile={setImageProfile}
-                        title='Screenshot profile'
-                        note='Format gambar | Max 20 MB'
-                      />
-                      <DragDropSection
-                        file={imageWinRate}
-                        setFile={setImageWinRate}
-                        title='Screenshot win rate'
-                        note='Format gambar | Max 20 MB'
-                      />
-                      <DragDropSection
-                        file={imageWinRateHero}
-                        setFile={setImageWinRateHero}
-                        title='Screenshot win rate hero'
-                        note='Format gambar | Max 20 MB'
-                      />
-                      <DragDropSection
-                        file={imageEmblem}
-                        setFile={setImageEmblem}
-                        title='Screenshot emblem'
-                        note='Format gambar | Max 20 MB'
-                      />
-                      <DragDropSection
-                        file={imageSkin}
-                        setFile={setImageSkin}
-                        title='Screenshot skin'
-                        note='Format gambar | Max 20 MB'
-                        multiple
-                      />
-                    </div>
-                  </div>
                   <div className='upload-btn wow fadeInUp mt-4 md:!hidden'>
                     <ButtonGradient
                       disabled={submitBtnDisabled}
