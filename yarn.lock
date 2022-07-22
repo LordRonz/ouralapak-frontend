@@ -4726,10 +4726,10 @@ swr@^1.3.0:
   resolved "https://registry.yarnpkg.com/swr/-/swr-1.3.0.tgz#c6531866a35b4db37b38b72c45a63171faf9f4e8"
   integrity sha512-dkghQrOl2ORX9HYrMDtPa7LTVHJjCTeZoB1dqTbnnEDlSvN8JEKpYIYurDfvbQFUUS8Cg8PceFVZNkW0KNNYPw==
 
-tailwind-merge@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/tailwind-merge/-/tailwind-merge-1.5.0.tgz#0ce21a0ef229bc7671995ed1ec84990bee37b3fa"
-  integrity sha512-bh+3+rbGTqlxSbwBqowoQ/SOymUL+V5EDxABLmA49WvacryJDwmO8F0H0vflyE7pGf6xh344VdK11WRIjlLvUw==
+tailwind-merge@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/tailwind-merge/-/tailwind-merge-1.5.1.tgz#fb7d6b724aef702b11fd01fddf1be1d8aeab3d7a"
+  integrity sha512-lqmJS6+3vsNQY77TMMRBVFbWyMcIAAD/09Vs+IXCt3cza58/O7X5DBbOu+7p6LPhw0efK45LL8kAJ7IORccMag==
 
 tailwindcss@^3.1.6:
   version "3.1.6"
