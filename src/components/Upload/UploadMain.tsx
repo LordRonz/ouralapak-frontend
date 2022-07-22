@@ -84,11 +84,14 @@ const UploadMain = () => {
     setValue,
     getValues,
     reset,
+    watch,
   } = useForm<IFormInput>({
     defaultValues: {
       recall_effect: [],
     },
   });
+
+  const bankId = watch('jenis_pembayaran');
 
   const router = useRouter();
   useEffect(() => {
@@ -147,6 +150,28 @@ const UploadMain = () => {
     message: string;
     success: boolean;
   }>(`${API_URL}/master/bank`);
+
+  const { data: feeBank } = useSWR<{
+    data: { data: Bank[]; pagination: Pagination };
+    message: string;
+    success: boolean;
+  }>(
+    stringifyUrl({
+      url: `${API_URL}/master/fee-payment`,
+      query: {
+        id_bank: 12,
+      },
+    })
+  );
+  console.log(
+    stringifyUrl({
+      url: `${API_URL}/master/fee-payment`,
+      query: {
+        id_bank: bankId,
+      },
+    })
+  );
+  console.log(feeBank);
 
   const { data: platform } = useSWR<{
     data: { data: Platform[]; pagination: Pagination };
