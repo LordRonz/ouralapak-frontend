@@ -185,8 +185,8 @@ const UploadMain = () => {
   }>(`${API_URL}/master/refund?perPage=200`);
 
   const changeNameOpts = [
-    { value: 0, label: 'Change name non-aktif' },
-    { value: 1, label: 'Change name aktif' },
+    { value: 0, label: 'Non-aktif' },
+    { value: 1, label: 'Aktif' },
   ];
 
   const accountBindOpts = bindingAcc?.data.data.map((acc) => ({
@@ -765,13 +765,23 @@ const UploadMain = () => {
                           <div className='rounded-xl border-primary-200'>
                             {!!totalEmblemFields.fields.length && (
                               <div className='flex justify-around'>
-                                <label htmlFor='jenis'>Emblem</label>
-                                <label htmlFor='total_skin'>Level</label>
+                                <label
+                                  className='mr-2 basis-3/4'
+                                  htmlFor='jenis'
+                                >
+                                  Nama
+                                </label>
+                                <label
+                                  className='mr-2 basis-1/4'
+                                  htmlFor='total_skin'
+                                >
+                                  Level
+                                </label>
                               </div>
                             )}
                             {totalEmblemFields.fields.map((field, index) => (
                               <div className='flex gap-x-2' key={field.id}>
-                                <div className='mr-2 w-1/2'>
+                                <div className='mr-2 basis-3/4'>
                                   <Controller
                                     control={control}
                                     defaultValue={
@@ -816,7 +826,7 @@ const UploadMain = () => {
                                     )}
                                   />
                                 </div>
-                                <div className='w-1/2'>
+                                <div className='mr-2 basis-1/4'>
                                   <input
                                     type='number'
                                     onWheel={(e) =>
@@ -871,15 +881,28 @@ const UploadMain = () => {
                           <div className='rounded-xl border-primary-200'>
                             {!!totalSkinRareFields.fields.length && (
                               <div className='flex justify-around'>
-                                <label htmlFor='jenis'>Jenis</label>
-                                <label htmlFor='total_skin'>Total Skin</label>
+                                <label
+                                  className='mr-2 basis-3/4'
+                                  htmlFor='jenis'
+                                >
+                                  Jenis
+                                </label>
+                                <label
+                                  className='mr-2 basis-1/4'
+                                  htmlFor='total_skin'
+                                >
+                                  Total Skin
+                                </label>
                               </div>
                             )}
                             <div className='flex flex-col gap-y-3'>
                               {totalSkinRareFields.fields.map(
                                 (field, index) => (
-                                  <div className='flex gap-x-2' key={field.id}>
-                                    <div className='mr-2'>
+                                  <div
+                                    className='flex justify-around'
+                                    key={field.id}
+                                  >
+                                    <div className='mr-2 basis-3/4'>
                                       <input
                                         type='text'
                                         placeholder='Jenis'
@@ -892,7 +915,7 @@ const UploadMain = () => {
                                         className='mb-0'
                                       />
                                     </div>
-                                    <div>
+                                    <div className='mr-2 basis-1/4'>
                                       <input
                                         type='number'
                                         onWheel={(e) =>
@@ -1145,266 +1168,399 @@ const UploadMain = () => {
                     }}
                   >
                     <div className='space-y-4'>
-                      <h1 className='text-black dark:text-white'>
-                        Konfirmasi form
-                      </h1>
-                      <div>
-                        <label className='font-bold'>Judul</label>
-                        <p className='text-black dark:text-white'>
-                          {getValues('title')}
-                        </p>
+                      <div className='mb-8 flex items-center justify-center'>
+                        <h1 className='!text-black dark:!text-white'>
+                          Preview Iklan
+                        </h1>
                       </div>
-                      <div>
-                        <label className='font-bold'>Platform</label>
-                        <p className='text-black dark:text-white'>
-                          {
-                            platformId.find(
-                              (p) => p.value === getValues('platform_id')
-                            )?.label
-                          }
-                        </p>
-                      </div>
-                      <div>
-                        <label className='font-bold'>Change Name Status</label>
-                        <p className='text-black dark:text-white'>
-                          {
-                            changeNameOpts.find(
-                              (p) => p.value === getValues('change_name_status')
-                            )?.label
-                          }
-                        </p>
-                      </div>
-                      <div>
-                        <label className='font-bold'>Binding account</label>
-                        <p className='text-black dark:text-white'>
-                          {getValues('title')}
-                        </p>
-                      </div>
-                      <div>
-                        <label className='font-bold'>Favorite Heroes</label>
-                        <p className='text-black dark:text-white'>
-                          {getValues('favorite_heroes')
-                            ?.map(
-                              (v) =>
-                                favHeroesOpts.find((p) => p.value === v)?.label
-                            )
-                            .join(', ')}
-                        </p>
-                      </div>
-                      <div>
-                        <label className='font-bold'>Win Rate</label>
-                        <p className='text-black dark:text-white'>
-                          {getValues('win_rate')} %
-                        </p>
-                      </div>
-                      <div>
-                        <label className='font-bold'>Total Hero</label>
-                        <p className='text-black dark:text-white'>
-                          {getValues('total_hero')}
-                        </p>
-                      </div>
-                      <div>
-                        <label className='font-bold'>Total Skin</label>
-                        <p className='text-black dark:text-white'>
-                          {getValues('total_skin')}
-                        </p>
-                      </div>
-                      <div>
-                        <label className='font-bold '>Total Skin Rare</label>
-                        <ul>
-                          {getValues('total_skin_rare')?.map(
-                            ({ jenis, total_skin }, index) => (
-                              <li key={`${jenis}${index}`}>
-                                Jenis: {jenis}, total: {total_skin}
-                              </li>
-                            )
-                          )}
-                        </ul>
-                      </div>
-                      <div>
-                        <label className='font-bold'>Total Emblem</label>
-                        <ul>
-                          {getValues('total_emblem')?.map(
-                            ({ id_emblem, level }, index) => (
-                              <li key={`${id_emblem}${index}`}>
-                                Emblem:{' '}
-                                {
-                                  emblemOpts.find((v) => v.value == id_emblem)
-                                    ?.label
+                      <div className='grid grid-cols-3 gap-x-12 gap-y-4'>
+                        <div className='space-y-4'>
+                          <div>
+                            <label>Judul Iklan</label>
+                            <p className='text-2xl font-bold text-black dark:!text-white'>
+                              {getValues('title')}
+                            </p>
+                          </div>
+                          <div>
+                            <label>Status Akun</label>
+                            <p className='text-2xl font-bold text-black dark:!text-white'>
+                              {getValues('first_hand_status') === 0
+                                ? 'Pribadi'
+                                : 'Beli'}
+                            </p>
+                          </div>
+                          <div>
+                            <label>Platform</label>
+                            <p className='text-2xl font-bold text-black dark:!text-white'>
+                              {
+                                platformId.find(
+                                  (p) => p.value === getValues('platform_id')
+                                )?.label
+                              }
+                            </p>
+                          </div>
+                          <div>
+                            <label>Status Ganti Nama Akun</label>
+                            <p className='text-2xl font-bold text-black dark:!text-white'>
+                              {
+                                changeNameOpts.find(
+                                  (p) =>
+                                    p.value === getValues('change_name_status')
+                                )?.label
+                              }
+                            </p>
+                          </div>
+                          <div>
+                            <label>Win Rate</label>
+                            <p className='text-2xl font-bold text-black dark:!text-white'>
+                              {getValues('win_rate')} %
+                            </p>
+                          </div>
+                          <div>
+                            <label>Jumlah Hero</label>
+                            <p className='text-2xl font-bold text-black dark:!text-white'>
+                              {getValues('total_hero')}
+                            </p>
+                          </div>
+                          <div>
+                            <label>Jumlah Skin</label>
+                            <p className='text-2xl font-bold text-black dark:!text-white'>
+                              {getValues('total_skin')}
+                            </p>
+                          </div>
+                          <div>
+                            <label>Jenis Refund</label>
+                            <p className='text-2xl font-bold text-black dark:!text-white'>
+                              {
+                                jenisRefundOpts.find(
+                                  (p) => p.value === getValues('jenis_refund')
+                                )?.label
+                              }
+                            </p>
+                          </div>
+                          <div>
+                            <label>Harga Akun (IDR)</label>
+                            <p className='text-2xl font-bold text-black dark:!text-white'>
+                              {new Intl.NumberFormat('id-ID', {
+                                style: 'currency',
+                                currency: 'IDR',
+                              }).format(getValues('harga_akun'))}
+                            </p>
+                          </div>
+                        </div>
+                        <div className='space-y-4'>
+                          <div>
+                            <label>Screenshot profile</label>
+                            <MyButton
+                              className={clsxm(
+                                'block',
+                                'bg-green-300 text-black',
+                                'border border-green-500',
+                                'hover:bg-green-500 hover:text-green-50',
+                                'active:bg-green-600',
+                                'disabled:bg-green-300 disabled:hover:bg-green-300 disabled:hover:text-black',
+                                'py-1'
+                              )}
+                              onClick={() => setPreviewImgProfile(true)}
+                            >
+                              Preview
+                            </MyButton>
+                            {previewImgProfile && (
+                              <Lightbox
+                                mainSrc={URL.createObjectURL(
+                                  imageProfile as File
+                                )}
+                                onCloseRequest={() =>
+                                  setPreviewImgProfile(false)
                                 }
-                                , level: {level}
-                              </li>
-                            )
-                          )}
-                        </ul>
-                      </div>
-                      <div>
-                        <label className='font-bold'>Recall Effect</label>
-                        <p className='text-black dark:text-white'>
-                          {getValues('recall_effect').join(', ')}
-                        </p>
-                      </div>
-                      <div>
-                        <label className='font-bold'>Jenis Refund</label>
-                        <p className='text-black dark:text-white'>
-                          {
-                            jenisRefundOpts.find(
-                              (p) => p.value === getValues('jenis_refund')
-                            )?.label
-                          }
-                        </p>
-                      </div>
-                      <div>
-                        <label className='font-bold'>Harga Akun (IDR)</label>
-                        <p className='text-black dark:text-white'>
-                          {new Intl.NumberFormat('id-ID', {
-                            style: 'currency',
-                            currency: 'IDR',
-                          }).format(getValues('harga_akun'))}
-                        </p>
-                      </div>
-                      <div>
-                        <label className='font-bold'>Jenis Pembayaran</label>
-                        <p className='text-black dark:text-white'>
-                          {
-                            jenisPembayaranOpts.find(
-                              (p) => p.value === getValues('jenis_pembayaran')
-                            )?.label
-                          }
-                        </p>
-                      </div>
-                      <div>
-                        <label className='font-bold'>
-                          Paket Penjualan Akun
-                        </label>
-                        <p className='text-black dark:text-white'>
-                          {
-                            packageId.find(
-                              (p) => p.value === getValues('package_id')
-                            )?.label
-                          }
-                        </p>
-                      </div>
-                      <div>
-                        <label className='font-bold'>Screenshot profile</label>
-                        <MyButton
-                          className='block'
-                          onClick={() => setPreviewImgProfile(true)}
-                        >
-                          Preview
-                        </MyButton>
-                        {previewImgProfile && (
-                          <Lightbox
-                            mainSrc={URL.createObjectURL(imageProfile as File)}
-                            onCloseRequest={() => setPreviewImgProfile(false)}
-                          />
-                        )}
-                      </div>
-                      <div>
-                        <label className='font-bold'>Screenshot win rate</label>
-                        <MyButton
-                          className='block'
-                          onClick={() => setPreviewWinRate(true)}
-                        >
-                          Preview
-                        </MyButton>
-                        {previewWinRate && (
-                          <Lightbox
-                            mainSrc={URL.createObjectURL(imageWinRate as File)}
-                            onCloseRequest={() => setPreviewWinRate(false)}
-                          />
-                        )}
-                      </div>
-                      <div>
-                        <label className='font-bold'>
-                          Screenshot win rate hero
-                        </label>
-                        <MyButton
-                          className='block'
-                          onClick={() => setPreviewWinRateHero(true)}
-                        >
-                          Preview
-                        </MyButton>
-                        {previewWinRateHero && (
-                          <Lightbox
-                            mainSrc={URL.createObjectURL(
-                              imageWinRateHero as File
+                              />
                             )}
-                            onCloseRequest={() => setPreviewWinRateHero(false)}
-                          />
-                        )}
-                      </div>
-                      <div>
-                        <label className='font-bold'>Screenshot emblem</label>
-                        <MyButton
-                          className='block'
-                          onClick={() => setPreviewEmblem(true)}
-                        >
-                          Preview
-                        </MyButton>
-                        {previewEmblem && (
-                          <Lightbox
-                            mainSrc={URL.createObjectURL(imageEmblem as File)}
-                            onCloseRequest={() => setPreviewEmblem(false)}
-                          />
-                        )}
-                      </div>
-                      <div>
-                        <label className='font-bold'>Screenshot skin</label>
-                        <MyButton
-                          className='block'
-                          onClick={() => setPreviewSkin(true)}
-                        >
-                          Preview
-                        </MyButton>
-                        {previewSkin && (
-                          <Lightbox
-                            mainSrc={URL.createObjectURL(
-                              (imageSkin as File[])[skinIndex] as File
+                          </div>
+                          <div>
+                            <label>Screenshot win rate</label>
+                            <MyButton
+                              className={clsxm(
+                                'block',
+                                'bg-green-300 text-black',
+                                'border border-green-500',
+                                'hover:bg-green-500 hover:text-green-50',
+                                'active:bg-green-600',
+                                'disabled:bg-green-300 disabled:hover:bg-green-300 disabled:hover:text-black',
+                                'py-1'
+                              )}
+                              onClick={() => setPreviewWinRate(true)}
+                            >
+                              Preview
+                            </MyButton>
+                            {previewWinRate && (
+                              <Lightbox
+                                mainSrc={URL.createObjectURL(
+                                  imageWinRate as File
+                                )}
+                                onCloseRequest={() => setPreviewWinRate(false)}
+                              />
                             )}
-                            nextSrc={URL.createObjectURL(
-                              (imageSkin as File[])[
-                                (skinIndex + 1) % (imageSkin as File[]).length
-                              ] as File
+                          </div>
+                          <div>
+                            <label>Screenshot win rate hero</label>
+                            <MyButton
+                              className={clsxm(
+                                'block',
+                                'bg-green-300 text-black',
+                                'border border-green-500',
+                                'hover:bg-green-500 hover:text-green-50',
+                                'active:bg-green-600',
+                                'disabled:bg-green-300 disabled:hover:bg-green-300 disabled:hover:text-black',
+                                'py-1'
+                              )}
+                              onClick={() => setPreviewWinRateHero(true)}
+                            >
+                              Preview
+                            </MyButton>
+                            {previewWinRateHero && (
+                              <Lightbox
+                                mainSrc={URL.createObjectURL(
+                                  imageWinRateHero as File
+                                )}
+                                onCloseRequest={() =>
+                                  setPreviewWinRateHero(false)
+                                }
+                              />
                             )}
-                            prevSrc={URL.createObjectURL(
-                              (imageSkin as File[])[
-                                (skinIndex + (imageSkin as File[]).length - 1) %
-                                  (imageSkin as File[]).length
-                              ] as File
+                          </div>
+                          <div>
+                            <label>Screenshot emblem</label>
+                            <MyButton
+                              className={clsxm(
+                                'block',
+                                'bg-green-300 text-black',
+                                'border border-green-500',
+                                'hover:bg-green-500 hover:text-green-50',
+                                'active:bg-green-600',
+                                'disabled:bg-green-300 disabled:hover:bg-green-300 disabled:hover:text-black',
+                                'py-1'
+                              )}
+                              onClick={() => setPreviewEmblem(true)}
+                            >
+                              Preview
+                            </MyButton>
+                            {previewEmblem && (
+                              <Lightbox
+                                mainSrc={URL.createObjectURL(
+                                  imageEmblem as File
+                                )}
+                                onCloseRequest={() => setPreviewEmblem(false)}
+                              />
                             )}
-                            onCloseRequest={() => setPreviewSkin(false)}
-                            onMovePrevRequest={() =>
-                              setSkinIndex(
-                                (skinIndex + (imageSkin as File[]).length - 1) %
-                                  (imageSkin as File[]).length
-                              )
-                            }
-                            onMoveNextRequest={() =>
-                              setSkinIndex(
-                                (skinIndex + 1) % (imageSkin as File[]).length
-                              )
-                            }
-                          />
-                        )}
+                          </div>
+                          <div>
+                            <label>Screenshot skin</label>
+                            <MyButton
+                              className={clsxm(
+                                'block',
+                                'bg-green-300 text-black',
+                                'border border-green-500',
+                                'hover:bg-green-500 hover:text-green-50',
+                                'active:bg-green-600',
+                                'disabled:bg-green-300 disabled:hover:bg-green-300 disabled:hover:text-black',
+                                'py-1'
+                              )}
+                              onClick={() => setPreviewSkin(true)}
+                            >
+                              Preview
+                            </MyButton>
+                            {previewSkin && (
+                              <Lightbox
+                                mainSrc={URL.createObjectURL(
+                                  (imageSkin as File[])[skinIndex] as File
+                                )}
+                                nextSrc={URL.createObjectURL(
+                                  (imageSkin as File[])[
+                                    (skinIndex + 1) %
+                                      (imageSkin as File[]).length
+                                  ] as File
+                                )}
+                                prevSrc={URL.createObjectURL(
+                                  (imageSkin as File[])[
+                                    (skinIndex +
+                                      (imageSkin as File[]).length -
+                                      1) %
+                                      (imageSkin as File[]).length
+                                  ] as File
+                                )}
+                                onCloseRequest={() => setPreviewSkin(false)}
+                                onMovePrevRequest={() =>
+                                  setSkinIndex(
+                                    (skinIndex +
+                                      (imageSkin as File[]).length -
+                                      1) %
+                                      (imageSkin as File[]).length
+                                  )
+                                }
+                                onMoveNextRequest={() =>
+                                  setSkinIndex(
+                                    (skinIndex + 1) %
+                                      (imageSkin as File[]).length
+                                  )
+                                }
+                              />
+                            )}
+                          </div>
+                          <div>
+                            <label>Paket Posting Akun</label>
+                            <p className='text-2xl font-bold text-black dark:!text-white'>
+                              {
+                                packageId.find(
+                                  (p) => p.value === getValues('package_id')
+                                )?.label
+                              }
+                            </p>
+                          </div>
+                          <div>
+                            <label className='font-bold'>
+                              Jenis Pembayaran
+                            </label>
+                            <p className='text-2xl font-bold text-black dark:!text-white'>
+                              {
+                                jenisPembayaranOpts.find(
+                                  (p) =>
+                                    p.value === getValues('jenis_pembayaran')
+                                )?.label
+                              }
+                            </p>
+                          </div>
+                        </div>
+                        <div className='space-y-4'>
+                          <div>
+                            <label>Binding Account</label>
+                            <div className='flex max-h-36 flex-wrap gap-x-1 gap-y-1 overflow-auto'>
+                              {getValues('account_bind')
+                                ?.map(
+                                  (v) =>
+                                    accountBindOpts.find((p) => p.value === v)
+                                      ?.label
+                                )
+                                .map((v, i) => (
+                                  <div
+                                    className='rounded-xl bg-neutral-600 px-2 py-1 dark:bg-neutral-200'
+                                    key={i}
+                                  >
+                                    <p className='m-0 text-white dark:!text-black'>
+                                      {v}
+                                    </p>
+                                  </div>
+                                ))}
+                            </div>
+                          </div>
+                          <div>
+                            <label>Favorite Heroes</label>
+                            <div className='flex max-h-36 flex-wrap gap-x-1 gap-y-1 overflow-auto rounded-xl border-2 p-1'>
+                              {getValues('favorite_heroes')
+                                ?.map(
+                                  (v) =>
+                                    favHeroesOpts.find((p) => p.value === v)
+                                      ?.label
+                                )
+                                .map((v, i) => (
+                                  <div
+                                    className='rounded-xl bg-neutral-600 px-2 py-1 dark:bg-neutral-200'
+                                    key={i}
+                                  >
+                                    <p className='m-0 text-white dark:!text-black'>
+                                      {v}
+                                    </p>
+                                  </div>
+                                ))}
+                            </div>
+                          </div>
+                          <div>
+                            <label>Emblem</label>
+                            <div className='flex max-h-36 flex-wrap gap-x-2 gap-y-1 overflow-auto rounded-xl border-2 p-1'>
+                              {getValues('total_emblem')?.map(
+                                ({ id_emblem, level }, i) => (
+                                  <div
+                                    key={`${id_emblem}${i}`}
+                                    className='flex gap-x-1'
+                                  >
+                                    <div className='self-end rounded-xl bg-neutral-600 px-2 py-1 dark:bg-neutral-200'>
+                                      <p className='m-0 text-white dark:!text-black'>
+                                        {
+                                          emblemOpts.find(
+                                            (v) => v.value == id_emblem
+                                          )?.label
+                                        }
+                                      </p>
+                                    </div>
+                                    <div className='self-end rounded-xl bg-neutral-600 px-2 py-1 dark:bg-neutral-200'>
+                                      <p className='m-0 text-white dark:!text-black'>
+                                        {level}
+                                      </p>
+                                    </div>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          </div>
+                          <div>
+                            <label>Skin Rare</label>
+                            <div className='flex max-h-36 flex-wrap gap-x-2 gap-y-1 overflow-auto rounded-xl border-2 p-1'>
+                              {getValues('total_skin_rare')?.map(
+                                ({ jenis, total_skin }, i) => (
+                                  <div
+                                    key={`${jenis}${i}`}
+                                    className='flex gap-x-1'
+                                  >
+                                    <div className='self-end rounded-xl bg-neutral-600 px-2 py-1 dark:bg-neutral-200'>
+                                      <p className='m-0 text-white dark:!text-black'>
+                                        {jenis}
+                                      </p>
+                                    </div>
+                                    <div className='self-end rounded-xl bg-neutral-600 px-2 py-1 dark:bg-neutral-200'>
+                                      <p className='m-0 text-white dark:!text-black'>
+                                        {total_skin}
+                                      </p>
+                                    </div>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          </div>
+                          <div>
+                            <label>Recall Effect</label>
+                            <div className='flex max-h-36 flex-wrap gap-x-1 gap-y-1 overflow-auto rounded-xl border-2 p-1'>
+                              {getValues('recall_effect').map((v, i) => (
+                                <div
+                                  className='rounded-xl bg-neutral-600 px-2 py-1 dark:bg-neutral-200'
+                                  key={i}
+                                >
+                                  <p className='m-0 text-white dark:!text-black'>
+                                    {v}
+                                  </p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <Captcha
-                        show={openDialog}
-                        ref={recaptchaRef}
-                        onChange={(token) => setResponseCapthca(token)}
-                      />
-                      <div>
-                        <input
-                          type='checkbox'
-                          value='agreed'
-                          checked={isChecked}
-                          onChange={() => setIsChecked((v) => !v)}
-                          className='mr-4'
+                      <div className='flex flex-col items-center justify-center'>
+                        <Captcha
+                          show={openDialog}
+                          ref={recaptchaRef}
+                          onChange={(token) => setResponseCapthca(token)}
                         />
-                        <p className='inline rounded-md bg-rose-100 text-red-500'>
-                          Data yang diisi sudah benar dan tidak dapat diubah
-                          jika sudah di submit
-                        </p>
+                        <div>
+                          <input
+                            type='checkbox'
+                            value='agreed'
+                            checked={isChecked}
+                            onChange={() => setIsChecked((v) => !v)}
+                            className='mr-4'
+                          />
+                          <p className='inline rounded-md bg-rose-100 text-red-500'>
+                            Data yang diisi sudah benar dan tidak dapat diubah
+                            jika sudah di submit
+                          </p>
+                        </div>
                       </div>
                       <div className='flex items-center justify-center'>
                         <ButtonGradient
