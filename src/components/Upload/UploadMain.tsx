@@ -149,7 +149,15 @@ const UploadMain = () => {
     data: { data: Bank[]; pagination: Pagination };
     message: string;
     success: boolean;
-  }>(`${API_URL}/master/bank`);
+  }>(
+    stringifyUrl({
+      url: `${API_URL}/master/bank`,
+      query: {
+        perPage: 696969,
+        transaction: 1,
+      },
+    })
+  );
 
   const { data: feeBank } = useSWR<{
     data: { data: Bank[]; pagination: Pagination };
@@ -159,18 +167,11 @@ const UploadMain = () => {
     stringifyUrl({
       url: `${API_URL}/master/fee-payment`,
       query: {
-        id_bank: 12,
-      },
-    })
-  );
-  console.log(
-    stringifyUrl({
-      url: `${API_URL}/master/fee-payment`,
-      query: {
         id_bank: bankId,
       },
     })
   );
+
   console.log(feeBank);
 
   const { data: platform } = useSWR<{

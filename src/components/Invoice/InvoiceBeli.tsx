@@ -54,8 +54,8 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
     <main>
       <section className='pt-8 pb-12'>
         <div className='items-center justify-center'>
-          <div className='space-y-10 overflow-auto rounded-xl border border-primary-400 bg-neutral-100 p-8 dark:bg-neutral-800'>
-            <div className='flex flex-wrap justify-between'>
+          <div className='space-y-10 overflow-auto rounded-xl border border-primary-400 bg-neutral-100 p-8 dark:bg-neutral-800 md:px-16'>
+            <div className='flex flex-wrap justify-between gap-y-4'>
               <div>
                 <div className='mb-6 space-x-4'>
                   <h1 className='inline'>INVOICE</h1>
@@ -111,20 +111,20 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
                 <div>
                   <h2 className='text-lg md:text-3xl'>Detail Pesanan</h2>
                 </div>
-                <div className='divide-0 grid grid-cols-1 divide-y divide-neutral-400 md:grid-cols-3 md:divide-x md:divide-y-0'>
+                <div className='divide-0 grid grid-cols-1 gap-y-2 divide-y divide-neutral-400 md:grid-cols-3 md:divide-x md:divide-y-0'>
                   <div className='flex flex-col justify-center px-4'>
                     <h4 className='text-base md:text-lg'>Judul</h4>
                     <h3 className='text-dark dark:!text-light'>
                       {invoice?.data.title}
                     </h3>
                   </div>
-                  <div className='flex flex-col justify-center px-4'>
+                  <div className='flex flex-col justify-center px-4 pt-2'>
                     <h4 className='text-base md:text-lg'>Win Rate</h4>
                     <h3 className='text-dark dark:!text-light'>
                       {invoice?.data.win_rate} %
                     </h3>
                   </div>
-                  <div className='flex flex-col justify-center px-4'>
+                  <div className='flex flex-col justify-center px-4 pt-2'>
                     <h4 className='text-base md:text-lg'>Jenis Refund</h4>
                     <h3 className='text-dark dark:!text-light'>
                       {invoice?.data.jenis_refund}
@@ -136,7 +136,7 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
                 <div>
                   <h2 className='text-lg md:text-3xl'>Detail Pembeli</h2>
                 </div>
-                <div className='flex flex-wrap justify-between'>
+                <div className='flex flex-wrap justify-between gap-y-4'>
                   <div className='flex flex-col justify-center px-4'>
                     <h4 className='text-base md:text-lg'>Nama</h4>
                     <h3 className='text-dark dark:!text-light'>
@@ -234,10 +234,10 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
                 </div>
               </div>
             </div>
-            <div>
+            <div className='text-center'>
               <h4 className='inline rounded-md  text-red-500'>
-                HARAP DIBAYAR SESUAI DENGAN {'"'}Total Yang Harus Dibayar{'"'}{' '}
-                SEBELUM INVOICE KADALUARSA
+                Harap dibayar sesuai dengan nominal yang tertera pada {'"'}TOTAL
+                {'"'} sebelum invoice kadaluarsa.
               </h4>
             </div>
             <div className='text-center'>
