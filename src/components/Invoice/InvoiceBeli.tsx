@@ -29,7 +29,6 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
   }>(() => `${API_URL}/master/config/4`);
 
   const [copyStatus, setCopyStatus] = useState<string>('Click to copy');
-  console.log(invoice?.data.jenis_pembayaran);
   const getWaLink = () =>
     queryString.stringifyUrl({
       url: `https://wa.me/${config?.data?.value}`,

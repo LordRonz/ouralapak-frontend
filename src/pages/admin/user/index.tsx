@@ -51,6 +51,8 @@ const IndexPage = () => {
           query: {
             page: curPage + 1,
             ...(filter && { search: filter }),
+            orderBy: 'created_at',
+            orderDir: 'DESC',
           },
         })
       : null

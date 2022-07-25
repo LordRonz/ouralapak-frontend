@@ -19,7 +19,9 @@ import Button from '@/components/buttons/Button';
 import ButtonGradient from '@/components/buttons/ButtonGradient';
 import IklanCardSingle from '@/components/Cards/IklanCardSingle';
 import Captcha from '@/components/Common/Captcha';
+import Breadcrumbs from '@/components/Common/PageTitle';
 import Spinner from '@/components/Common/Spinner';
+import XButton from '@/components/Common/XButton';
 import ButtonLink from '@/components/links/ButtonLink';
 import { API_URL } from '@/constant/config';
 import clsxm from '@/lib/clsxm';
@@ -165,33 +167,9 @@ const IklanMain = ({ id }: { id: number }) => {
 
   return (
     <main>
-      <section className='page-title-area'>
-        <div className='container'>
-          <div className='row wow fadeInUp'>
-            <div className='col-lg-12'>
-              <div className='page-title'>
-                <h2 className='breadcrumb-title mb-10'>{iklan.data.title}</h2>
-                <div className='breadcrumb-menu'>
-                  <nav className='breadcrumb-trail breadcrumbs'>
-                    <ul className='trail-items'>
-                      <li className='trail-item trail-begin'>
-                        <Link href='/'>
-                          <a>Home</a>
-                        </Link>
-                      </li>
-                      <li className='trail-item trail-end'>
-                        <span>{iklan.data.title}</span>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Breadcrumbs breadcrumbSubTitle={iklan.data.title} />
 
-      <section className='art-details-area'>
+      <section className='art-details-area pt-8'>
         <div className='container'>
           <div className='art-details-wrapper'>
             <div className='row'>
@@ -323,129 +301,130 @@ const IklanMain = ({ id }: { id: number }) => {
                       >
                         Hubungi Penjual
                       </ButtonLink>
-                      {iklan.data.jenis_refund.toLowerCase() !==
-                        'no refund' && (
-                        <Button onClick={onOpenModal}>Beli</Button>
-                      )}
-                      <Modal open={open} onClose={onCloseModal} center>
+                      <Button onClick={onOpenModal}>Beli</Button>
+                      <Modal
+                        open={open}
+                        onClose={onCloseModal}
+                        center
+                        classNames={{ modal: 'rounded-xl p-0' }}
+                        closeIcon={<XButton />}
+                      >
                         <div className='row justify-content-center'>
-                          <div className='col-xxl-6 col-xl-7 col-lg-8'>
-                            <div className='login-wrapper pos-rel wow fadeInUp mb-40'>
-                              <div className=' login-inner'>
-                                <div className='login-content'>
-                                  <h4>Beli Akun</h4>
-                                  <form
-                                    className='login-form'
-                                    onSubmit={handleSubmit(onSubmit)}
-                                  >
-                                    <div className='row'>
-                                      <div className='col-md-12'>
-                                        <div className='single-input-unit'>
-                                          <label htmlFor='email'>Nama</label>
-                                          <input
-                                            type='text'
-                                            placeholder='Masukkan Nama Anda'
-                                            autoFocus
-                                            {...register('nama', {
-                                              required: 'Nama harus diisi',
-                                            })}
-                                          />
-                                        </div>
-                                        <p className='text-red-500'>
-                                          {errors.nama?.message}
-                                        </p>
+                          <div className='login-wrapper pos-rel wow fadeInUp'>
+                            <div className=' login-inner'>
+                              <div className='login-content'>
+                                <h4>Beli Akun</h4>
+                                <form
+                                  className='login-form'
+                                  onSubmit={handleSubmit(onSubmit)}
+                                >
+                                  <div className='row'>
+                                    <div className='col-md-12'>
+                                      <div className='single-input-unit'>
+                                        <label htmlFor='email'>Nama</label>
+                                        <input
+                                          type='text'
+                                          placeholder='Masukkan Nama Anda'
+                                          autoFocus
+                                          {...register('nama', {
+                                            required: 'Nama harus diisi',
+                                          })}
+                                        />
                                       </div>
-                                      <div className='col-md-12'>
-                                        <div className='single-input-unit'>
-                                          <label htmlFor='email'>Email</label>
-                                          <input
-                                            type='email'
-                                            id='email'
-                                            placeholder='Masukkan email anda'
-                                            {...register('email', {
-                                              required: 'Email harus diisi',
-                                              pattern: {
-                                                value:
-                                                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                                                message: 'Email tidak valid!',
-                                              },
-                                            })}
-                                          />
-                                        </div>
-                                        <p className='text-red-500'>
-                                          {errors.email?.message}
-                                        </p>
+                                      <p className='text-red-500'>
+                                        {errors.nama?.message}
+                                      </p>
+                                    </div>
+                                    <div className='col-md-12'>
+                                      <div className='single-input-unit'>
+                                        <label htmlFor='email'>Email</label>
+                                        <input
+                                          type='email'
+                                          id='email'
+                                          placeholder='Masukkan email anda'
+                                          {...register('email', {
+                                            required: 'Email harus diisi',
+                                            pattern: {
+                                              value:
+                                                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                              message: 'Email tidak valid!',
+                                            },
+                                          })}
+                                        />
                                       </div>
-                                      <div className='col-md-12'>
-                                        <div className='single-input-unit'>
-                                          <label htmlFor='phone'>
-                                            No. Handphone
-                                          </label>
-                                          <PhoneInput
-                                            defaultCountry='ID'
-                                            placeholder='Masukkan No. Handphone'
-                                            value={phone}
-                                            onChange={setPhone}
-                                            error={
-                                              phone
-                                                ? isValidPhoneNumber(phone)
-                                                  ? undefined
-                                                  : 'Invalid phone number'
-                                                : 'Phone number required'
-                                            }
-                                          />
-                                        </div>
-                                        <p className='text-red-500'>
-                                          {phone &&
-                                            !isPossiblePhoneNumber(phone) &&
-                                            'Nomor telepon tidak valid'}
-                                        </p>
+                                      <p className='text-red-500'>
+                                        {errors.email?.message}
+                                      </p>
+                                    </div>
+                                    <div className='col-md-12'>
+                                      <div className='single-input-unit'>
+                                        <label htmlFor='phone'>
+                                          No. Handphone
+                                        </label>
+                                        <PhoneInput
+                                          defaultCountry='ID'
+                                          placeholder='Masukkan No. Handphone'
+                                          value={phone}
+                                          onChange={setPhone}
+                                          error={
+                                            phone
+                                              ? isValidPhoneNumber(phone)
+                                                ? undefined
+                                                : 'Invalid phone number'
+                                              : 'Phone number required'
+                                          }
+                                        />
                                       </div>
-                                      <div className='col-md-12'>
-                                        <div className='single-input-unit'>
-                                          <label htmlFor='jenis_pembayaran'>
-                                            Jenis Pembayaran
-                                          </label>
-                                          <Controller
-                                            control={control}
-                                            defaultValue={
-                                              jenisPembayaranOpts[0].value
-                                            }
-                                            name='jenis_pembayaran'
-                                            render={({
-                                              field: { onChange, value },
-                                            }) => (
-                                              <Select
-                                                className={clsxm('py-3 pt-0')}
-                                                options={jenisPembayaranOpts}
-                                                value={jenisPembayaranOpts.find(
-                                                  (c) => c.value === value
-                                                )}
-                                                onChange={(val) =>
-                                                  onChange(val?.value)
-                                                }
-                                              />
-                                            )}
-                                          />
-                                        </div>
+                                      <p className='text-red-500'>
+                                        {phone &&
+                                          !isPossiblePhoneNumber(phone) &&
+                                          'Nomor telepon tidak valid'}
+                                      </p>
+                                    </div>
+                                    <div className='col-md-12'>
+                                      <div className='single-input-unit'>
+                                        <label htmlFor='jenis_pembayaran'>
+                                          Jenis Pembayaran
+                                        </label>
+                                        <Controller
+                                          control={control}
+                                          defaultValue={
+                                            jenisPembayaranOpts[0].value
+                                          }
+                                          name='jenis_pembayaran'
+                                          render={({
+                                            field: { onChange, value },
+                                          }) => (
+                                            <Select
+                                              className={clsxm('py-3 pt-0')}
+                                              options={jenisPembayaranOpts}
+                                              value={jenisPembayaranOpts.find(
+                                                (c) => c.value === value
+                                              )}
+                                              onChange={(val) =>
+                                                onChange(val?.value)
+                                              }
+                                            />
+                                          )}
+                                        />
                                       </div>
                                     </div>
-                                    <Captcha
-                                      onChange={(token) =>
-                                        setRecaptchaResponse(token)
-                                      }
-                                    />
-                                    <div className='login-btn mt-4'>
-                                      <ButtonGradient
-                                        className='text-white'
-                                        type='submit'
-                                        disabled={beliBtnDisabled}
-                                      >
-                                        Beli akun
-                                      </ButtonGradient>
-                                    </div>
-                                  </form>
-                                </div>
+                                  </div>
+                                  <Captcha
+                                    onChange={(token) =>
+                                      setRecaptchaResponse(token)
+                                    }
+                                  />
+                                  <div className='login-btn mt-4'>
+                                    <ButtonGradient
+                                      className='text-white'
+                                      type='submit'
+                                      disabled={beliBtnDisabled}
+                                    >
+                                      Beli akun
+                                    </ButtonGradient>
+                                  </div>
+                                </form>
                               </div>
                             </div>
                           </div>

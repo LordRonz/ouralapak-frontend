@@ -179,7 +179,7 @@ const ProfileMain = () => {
         breadcrumbSubTitle='Informasi Profil'
       />
 
-      <section className='creator-info-area pb-90'>
+      <section className='creator-info-area pb-90 pt-60'>
         <div className='container'>
           <div className='row'>
             <ProfileCard

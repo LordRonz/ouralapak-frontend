@@ -13,7 +13,6 @@ const style = {
 
 const SidenavItems = ({ superAdmin = false }: { superAdmin?: boolean }) => {
   const { asPath } = useRouter();
-  console.log(asPath);
   return (
     <ul className='md:!pl-6'>
       <li>

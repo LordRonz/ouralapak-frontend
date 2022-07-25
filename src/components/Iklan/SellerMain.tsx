@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
 import queryString, { stringifyUrl } from 'query-string';
@@ -10,6 +9,7 @@ import withReactContent from 'sweetalert2-react-content';
 import useSWR from 'swr';
 
 import IklanCard from '@/components/Cards/IklanCard';
+import Breadcrumbs from '@/components/Common/PageTitle';
 import Pagination from '@/components/Common/Pagination';
 import Spinner from '@/components/Common/Spinner';
 import ButtonLink from '@/components/links/ButtonLink';
@@ -30,7 +30,6 @@ const SellerMain = () => {
   const router = useRouter();
   useEffect(() => {
     (async () => {
-      console.log(`${API_URL}/profile`);
       axios
         .get(`${API_URL}/profile`, {
           headers: { Authorization: getAuthHeader() ?? '' },
@@ -101,33 +100,9 @@ const SellerMain = () => {
 
   return (
     <main>
-      <section className='page-title-area pt-3 pb-14'>
-        <div className='container'>
-          <div className='row wow fadeInUp'>
-            <div className='col-lg-12'>
-              <div className='page-title'>
-                <h2 className='breadcrumb-title mb-10'>{user?.data.name}</h2>
-                <div className='breadcrumb-menu'>
-                  <nav className='breadcrumb-trail breadcrumbs'>
-                    <ul className='trail-items'>
-                      <li className='trail-item trail-begin'>
-                        <Link href='/'>
-                          <a>Home</a>
-                        </Link>
-                      </li>
-                      <li className='trail-item trail-end'>
-                        <span>{user?.data.name}</span>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Breadcrumbs breadcrumbSubTitle={user.data.name} />
 
-      <section className='creator-details-area pb-90 pt-0'>
+      <section className='creator-details-area pb-90 pt-60'>
         <div className='container'>
           <div className='row'>
             <ProfileCard user={user?.data} handleLogout={handleLogout} />

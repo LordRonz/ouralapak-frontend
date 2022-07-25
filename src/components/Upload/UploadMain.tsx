@@ -26,6 +26,7 @@ import Spinner from '@/components/Common/Spinner';
 import XButton from '@/components/Common/XButton';
 import UnstyledLink from '@/components/links/UnstyledLink';
 import ConfirmationDialog from '@/components/Upload/Dialog';
+import { selectDarkTheme } from '@/constant/colors';
 import { API_URL } from '@/constant/config';
 import clsxm from '@/lib/clsxm';
 import getAuthHeader from '@/lib/getAuthHeader';
@@ -34,6 +35,7 @@ import useAuthHeader from '@/services/authHeader';
 import Bank from '@/types/bank';
 import BindingAcc from '@/types/bindingAccount';
 import EmblemMaster from '@/types/emblemMaster';
+import FeePayment from '@/types/feePayment';
 import HeroMaster from '@/types/heroMaster';
 import Packages from '@/types/packages';
 import Pagination from '@/types/pagination';
@@ -75,6 +77,8 @@ const UploadMain = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
+  const [selectedBank, setSelectedBank] = useState<number>();
+
   const {
     control,
     register,
@@ -84,14 +88,11 @@ const UploadMain = () => {
     setValue,
     getValues,
     reset,
-    watch,
   } = useForm<IFormInput>({
     defaultValues: {
       recall_effect: [],
     },
   });
-
-  const bankId = watch('jenis_pembayaran');
 
   const router = useRouter();
   useEffect(() => {
@@ -159,21 +160,6 @@ const UploadMain = () => {
     })
   );
 
-  const { data: feeBank } = useSWR<{
-    data: { data: Bank[]; pagination: Pagination };
-    message: string;
-    success: boolean;
-  }>(
-    stringifyUrl({
-      url: `${API_URL}/master/fee-payment`,
-      query: {
-        id_bank: bankId,
-      },
-    })
-  );
-
-  console.log(feeBank);
-
   const { data: platform } = useSWR<{
     data: { data: Platform[]; pagination: Pagination };
     message: string;
@@ -209,6 +195,16 @@ const UploadMain = () => {
     message: string;
     success: boolean;
   }>(`${API_URL}/master/refund?perPage=200`);
+
+  const { data: feePayment } = useSWR<{
+    data: { data: FeePayment[]; pagination: Pagination };
+    message: string;
+    success: boolean;
+  }>(
+    selectedBank
+      ? `${API_URL}/master/fee-payment?id_bank=${selectedBank}`
+      : null
+  );
 
   const changeNameOpts = [
     { value: 0, label: 'Non-aktif' },
@@ -378,10 +374,13 @@ const UploadMain = () => {
           },
         },
         error: {
-          render: () => {
+          render: (e) => {
             setSubmitBtnDisabled(false);
             setOpenDialog(false);
-            return 'Gagal Submit Iklan!';
+            return (
+              (e?.data?.response?.data.message as string) ||
+              'Gagal Submit Iklan!'
+            );
           },
         },
       }
@@ -412,7 +411,7 @@ const UploadMain = () => {
         breadcrumbSubTitle='Posting Iklan'
       />
 
-      <div className='upload-area pb-90'>
+      <div className='upload-area pb-90 pt-12'>
         <div className='container'>
           <div className='upload-wrapper mb-10'>
             <form className='upload-form' onSubmit={handleSubmit(onSubmit)}>
@@ -447,6 +446,11 @@ const UploadMain = () => {
                                 (c) => c.value === value
                               )}
                               onChange={(val) => onChange(val?.value)}
+                              theme={
+                                mounted && theme === 'dark'
+                                  ? selectDarkTheme
+                                  : undefined
+                              }
                             />
                           )}
                         />
@@ -478,6 +482,11 @@ const UploadMain = () => {
                                 (c) => c.value === value
                               )}
                               onChange={(val) => onChange(val?.value)}
+                              theme={
+                                mounted && theme === 'dark'
+                                  ? selectDarkTheme
+                                  : undefined
+                              }
                             />
                           )}
                         />
@@ -521,6 +530,11 @@ const UploadMain = () => {
                               options={packageId}
                               value={packageId.find((c) => c.value === value)}
                               onChange={(val) => onChange(val?.value)}
+                              theme={
+                                mounted && theme === 'dark'
+                                  ? selectDarkTheme
+                                  : undefined
+                              }
                             />
                           )}
                         />
@@ -539,6 +553,11 @@ const UploadMain = () => {
                               options={platformId}
                               value={platformId.find((c) => c.value === value)}
                               onChange={(val) => onChange(val?.value)}
+                              theme={
+                                mounted && theme === 'dark'
+                                  ? selectDarkTheme
+                                  : undefined
+                              }
                             />
                           )}
                         />
@@ -586,7 +605,15 @@ const UploadMain = () => {
                               value={jenisPembayaranOpts.find(
                                 (c) => c.value === value
                               )}
-                              onChange={(val) => onChange(val?.value)}
+                              onChange={(val) => {
+                                onChange(val?.value);
+                                setSelectedBank(val?.value);
+                              }}
+                              theme={
+                                mounted && theme === 'dark'
+                                  ? selectDarkTheme
+                                  : undefined
+                              }
                             />
                           )}
                         />
@@ -607,6 +634,11 @@ const UploadMain = () => {
                                 (c) => c.value === value
                               )}
                               onChange={(val) => onChange(val?.value)}
+                              theme={
+                                mounted && theme === 'dark'
+                                  ? selectDarkTheme
+                                  : undefined
+                              }
                             />
                           )}
                         />
@@ -679,6 +711,11 @@ const UploadMain = () => {
                                 onChange(val.map((c) => c.value))
                               }
                               isMulti
+                              theme={
+                                mounted && theme === 'dark'
+                                  ? selectDarkTheme
+                                  : undefined
+                              }
                             />
                           )}
                         />
@@ -707,6 +744,11 @@ const UploadMain = () => {
                                     )
                               }
                               isMulti
+                              theme={
+                                mounted && theme === 'dark'
+                                  ? selectDarkTheme
+                                  : undefined
+                              }
                             />
                           )}
                         />
@@ -848,6 +890,11 @@ const UploadMain = () => {
                                           (c) => c.value === value
                                         )}
                                         onChange={(val) => onChange(val?.value)}
+                                        theme={
+                                          mounted && theme === 'dark'
+                                            ? selectDarkTheme
+                                            : undefined
+                                        }
                                       />
                                     )}
                                   />
@@ -1199,7 +1246,7 @@ const UploadMain = () => {
                           Preview Iklan
                         </h1>
                       </div>
-                      <div className='grid grid-cols-3 gap-x-12 gap-y-4'>
+                      <div className='grid gap-x-12 gap-y-4 md:grid-cols-3'>
                         <div className='space-y-4'>
                           <div>
                             <label>Judul Iklan</label>
@@ -1568,7 +1615,67 @@ const UploadMain = () => {
                           </div>
                         </div>
                       </div>
-                      <div className='flex flex-col items-center justify-center'>
+                      <div className='flex flex-col items-center justify-center gap-y-4'>
+                        <div className='space-y-4'>
+                          <div className='text-center'>
+                            <h3>Rincian Pembayaran</h3>
+                          </div>
+                          <div className='grid grid-cols-2'>
+                            <div>
+                              <p className='text-black dark:!text-white'>
+                                Biaya Posting -{' '}
+                                {
+                                  packages?.data.data.find(
+                                    (v) => v.id === getValues('package_id')
+                                  )?.name
+                                }
+                              </p>
+                              <hr />
+                              <p className='text-black dark:!text-white'>
+                                Biaya Admin -{' '}
+                                {
+                                  banks?.data.data.find(
+                                    (v) =>
+                                      v.id === getValues('jenis_pembayaran')
+                                  )?.name
+                                }
+                              </p>
+                              <p className='mt-12 text-xl font-bold text-black dark:!text-white'>
+                                TOTAL
+                              </p>
+                            </div>
+                            <div className='text-right'>
+                              <p className='text-black dark:!text-white'>
+                                {toIDRCurrency(
+                                  packages?.data.data.find(
+                                    (v) => v.id === getValues('package_id')
+                                  )?.price
+                                )}
+                              </p>
+                              <hr />
+                              <p className='text-black dark:!text-white'>
+                                {toIDRCurrency(
+                                  feePayment?.data.data &&
+                                    feePayment?.data.data.length > 0
+                                    ? feePayment?.data.data[0].fee_flat
+                                    : 0
+                                )}
+                              </p>
+                              <p className='mt-12 text-xl font-bold text-black dark:!text-white'>
+                                {toIDRCurrency(
+                                  packages?.data.data.find(
+                                    (v) => v.id === getValues('package_id')
+                                  )?.price ??
+                                    0 +
+                                      (feePayment?.data.data &&
+                                      feePayment?.data.data.length > 0
+                                        ? feePayment?.data.data[0].fee_flat
+                                        : 0)
+                                )}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
                         <Captcha
                           show={openDialog}
                           ref={recaptchaRef}
@@ -1584,7 +1691,7 @@ const UploadMain = () => {
                           />
                           <p className='inline rounded-md bg-rose-100 text-red-500'>
                             Data yang diisi sudah benar dan tidak dapat diubah
-                            jika sudah di submit
+                            jika sudah disubmit
                           </p>
                         </div>
                       </div>

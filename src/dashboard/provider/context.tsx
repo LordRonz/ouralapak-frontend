@@ -27,7 +27,6 @@ const DashboardProvider = ({ children }: { children: React.ReactNode }) => {
 
   // close side navigation on mobile when route changes. it's triggered when viewport is less than 1024px
   React.useEffect(() => {
-    console.log(open);
     if (open && window.innerWidth < 1024) {
       router.events.on('routeChangeStart', () => setOpen(false));
     }

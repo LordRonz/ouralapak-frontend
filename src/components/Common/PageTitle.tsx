@@ -2,21 +2,17 @@ import Link from 'next/link';
 import React from 'react';
 
 type BreadcrumbsProp = {
-  breadcrumbTitle: string;
+  breadcrumbTitle?: string;
   breadcrumbSubTitle: string;
 };
 
-const Breadcrumbs = ({
-  breadcrumbTitle,
-  breadcrumbSubTitle,
-}: BreadcrumbsProp) => {
+const Breadcrumbs = ({ breadcrumbSubTitle }: BreadcrumbsProp) => {
   return (
-    <section className='page-title-area pt-3 pb-14'>
+    <section className='page-title-area pt-3 pb-3'>
       <div className='container'>
         <div className='row wow fadeInUp'>
           <div className='col-lg-12'>
             <div className='page-title'>
-              <h2 className='breadcrumb-title mb-10'>{breadcrumbTitle}</h2>
               <div className='breadcrumb-menu'>
                 <nav className='breadcrumb-trail breadcrumbs'>
                   <ul className='trail-items'>

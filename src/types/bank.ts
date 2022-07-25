@@ -8,6 +8,9 @@ export type Bank = {
   rekening_number: string;
   updated_at: string;
   updated_by: number | null;
+  code: string;
+  method: string;
+  provider: string | null;
 };
 
 export default Bank;
