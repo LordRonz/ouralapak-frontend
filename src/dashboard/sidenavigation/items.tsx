@@ -35,7 +35,8 @@ const SidenavItems = ({ superAdmin = false }: { superAdmin?: boolean }) => {
                       <div
                         className={clsxm(
                           'flex',
-                          item.link === asPath && style.active
+                          item.link === asPath &&
+                            'rounded  bg-primary-300 px-2 py-1'
                         )}
                       >
                         <span>{item.icon}</span>
@@ -57,8 +58,16 @@ const SidenavItems = ({ superAdmin = false }: { superAdmin?: boolean }) => {
                         item.link === asPath && style.active
                       )}
                     >
-                      <span>{item.icon}</span>
-                      <span className={style.title}>{item.title}</span>
+                      <div
+                        className={clsxm(
+                          'flex',
+                          item.link === asPath &&
+                            'rounded  bg-primary-300 px-2 py-1'
+                        )}
+                      >
+                        <span>{item.icon}</span>
+                        <span className={style.title}>{item.title}</span>
+                      </div>
                     </a>
                   </Link>
                 ))}

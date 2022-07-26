@@ -121,7 +121,7 @@ const ProfileMain = () => {
               }),
             ]
           : []),
-        ...(identityCard && identityCardValidation
+        ...(identityCard || identityCardValidation
           ? [
               axios.put(`${API_URL}/profile/identity`, identityForm, {
                 headers,
