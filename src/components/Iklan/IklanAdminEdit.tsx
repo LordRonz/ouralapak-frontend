@@ -56,9 +56,12 @@ const IklanAdminEdit = ({ id }: { id: number }) => {
           },
         },
         error: {
-          render: () => {
+          render: (e) => {
             setUpdateBtnDisabled(false);
-            return 'Gagal update iklan!';
+            return (
+              (e?.data?.response?.data.message as string) ||
+              'Gagal update iklan!'
+            );
           },
         },
       }

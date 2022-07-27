@@ -126,8 +126,11 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: () => {
-            return 'Gagal tambah emblem!';
+          render: (e) => {
+            return (
+              (e?.data?.response?.data.message as string) ||
+              'Gagal tambah emblem!'
+            );
           },
         },
       }
@@ -156,8 +159,11 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: () => {
-            return 'Gagal update emblem!';
+          render: (e) => {
+            return (
+              (e?.data?.response?.data.message as string) ||
+              'Gagal update emblem!'
+            );
           },
         },
       }
@@ -189,8 +195,11 @@ const IndexPage = () => {
             },
           },
           error: {
-            render: () => {
-              return 'Gagal hapus emblem!';
+            render: (e) => {
+              return (
+                (e?.data?.response?.data.message as string) ||
+                'Gagal hapus emblem!'
+              );
             },
           },
         });

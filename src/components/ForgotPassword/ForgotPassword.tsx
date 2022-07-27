@@ -53,7 +53,10 @@ const ForgotPassword = () => {
         error: {
           render: () => {
             setSubmitBtnDisabled(false);
-            return 'Gagal melakukan lupa password!';
+            return (
+              (e?.data?.response?.data.message as string) ||
+              'Gagal melakukan lupa password!'
+            );
           },
         },
       }

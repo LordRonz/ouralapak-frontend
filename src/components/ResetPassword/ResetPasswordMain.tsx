@@ -46,9 +46,12 @@ const ResetPasswordMain = () => {
           },
         },
         error: {
-          render: () => {
+          render: (e) => {
             setResetBtnDisabled(false);
-            return 'Gagal reset password!, Silahkan coba lagi';
+            return (
+              (e?.data?.response?.data.message as string) ||
+              'Gagal reset password!, Silahkan coba lagi'
+            );
           },
         },
       }

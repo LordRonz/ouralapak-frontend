@@ -63,9 +63,11 @@ const SignUpAdmin = () => {
           },
         },
         error: {
-          render: () => {
+          render: (e) => {
             setSignUpBtnDisabled(false);
-            return 'Gagal register!';
+            return (
+              (e?.data?.response?.data.message as string) || 'Gagal register!'
+            );
           },
         },
       }

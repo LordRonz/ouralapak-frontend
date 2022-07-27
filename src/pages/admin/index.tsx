@@ -127,9 +127,12 @@ const IndexPage = () => {
             },
           },
           error: {
-            render: () => {
+            render: (e) => {
               setUpdateBtnDisabled(false);
-              return 'Gagal update iklan!';
+              return (
+                (e?.data?.response?.data.message as string) ||
+                'Gagal update iklan!'
+              );
             },
           },
         }
@@ -164,9 +167,12 @@ const IndexPage = () => {
             },
           },
           error: {
-            render: () => {
+            render: (e) => {
               setDelBtnDisabled(false);
-              return 'Gagal menghapus iklan!';
+              return (
+                (e?.data?.response?.data.message as string) ||
+                'Gagal menghapus iklan!'
+              );
             },
           },
         });

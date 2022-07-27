@@ -86,9 +86,12 @@ const ProfileMain = () => {
           },
         },
         error: {
-          render: () => {
+          render: (e) => {
             setUpdateBtnDisabled(false);
-            return 'Gagal update gambar profile!';
+            return (
+              (e?.data?.response?.data.message as string) ||
+              'Gagal update gambar profile!'
+            );
           },
         },
       });
@@ -144,9 +147,12 @@ const ProfileMain = () => {
           },
         },
         error: {
-          render: () => {
+          render: (e) => {
             setUpdateBtnDisabled(false);
-            return 'Gagal update profil!';
+            return (
+              (e?.data?.response?.data.message as string) ||
+              'Gagal update profil!'
+            );
           },
         },
       }

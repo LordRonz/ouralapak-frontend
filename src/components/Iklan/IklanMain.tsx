@@ -145,9 +145,11 @@ const IklanMain = ({ id }: { id: number }) => {
           },
         },
         error: {
-          render: () => {
+          render: (e) => {
             setBeliBtnDisabled(false);
-            return 'Gagal beli akun!';
+            return (
+              (e?.data?.response?.data.message as string) || 'Gagal beli akun!'
+            );
           },
         },
       }
@@ -256,211 +258,205 @@ const IklanMain = ({ id }: { id: number }) => {
                 </div>
                 <div className='art-details-content wow fadeInUp'>
                   <div className='flex items-center space-x-8'>
-                    <div>
-                      <div className='created-by mb-2'>Created by</div>
-                      <div className='creator mb-30'>
-                        <div className='profile-img pos-rel'>
-                          <Link href='/creators'>
-                            <a>
-                              <img
-                                src={
-                                  iklan.data.user?.profile_picture
-                                    ? `${API_URL}/${iklan.data.user?.profile_picture}`
-                                    : `https://robohash.org/${
-                                        iklan.data.user?.username || 'AMOGUS'
-                                      }?set=set4`
-                                }
-                                alt='profile-img'
-                              />
-                            </a>
-                          </Link>
-                          <div className='profile-verification verified'>
-                            <i className='fas fa-check'></i>
-                          </div>
-                        </div>
-                        <div className='creator-name-id'>
-                          <h4 className='artist-name'>
+                    <div className='flex w-full justify-between'>
+                      <div>
+                        <div className='created-by mb-2'>Created by</div>
+                        <div className='creator mb-30'>
+                          <div className='profile-img pos-rel'>
                             <Link href='/creators'>
-                              <a>{iklan.data.user.name}</a>
+                              <a>
+                                <img
+                                  src={
+                                    iklan.data.user?.profile_picture
+                                      ? `${API_URL}/${iklan.data.user?.profile_picture}`
+                                      : `https://robohash.org/${
+                                          iklan.data.user?.username || 'AMOGUS'
+                                        }?set=set4`
+                                  }
+                                  alt='profile-img'
+                                />
+                              </a>
                             </Link>
-                          </h4>
-                          <div className='artist-id'>
-                            {iklan.data.user.username}
+                            <div className='profile-verification verified'>
+                              <i className='fas fa-check'></i>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className='mt-50 mb-30 flex items-center justify-around'>
-                      <ButtonLink
-                        href={`https://wa.me/${iklan.data.user.phone
-                          .replace(/\+/g, '')
-                          .replace(/-/g, '')
-                          .replace(/\(/g, '')
-                          .replace(/\)/g, '')
-                          .trim()}`}
-                      >
-                        Hubungi Penjual
-                      </ButtonLink>
-                      <Button onClick={onOpenModal}>Beli</Button>
-                      <Modal
-                        open={open}
-                        onClose={onCloseModal}
-                        center
-                        classNames={{ modal: 'rounded-xl p-0' }}
-                        closeIcon={<XButton />}
-                      >
-                        <div className='row justify-content-center'>
-                          <div className='login-wrapper pos-rel wow fadeInUp'>
-                            <div className=' login-inner'>
-                              <div className='login-content'>
-                                <h4>Beli Akun</h4>
-                                <form
-                                  className='login-form'
-                                  onSubmit={handleSubmit(onSubmit)}
-                                >
-                                  <div className='row'>
-                                    <div className='col-md-12'>
-                                      <div className='single-input-unit'>
-                                        <label htmlFor='email'>Nama</label>
-                                        <input
-                                          type='text'
-                                          placeholder='Masukkan Nama Anda'
-                                          autoFocus
-                                          {...register('nama', {
-                                            required: 'Nama harus diisi',
-                                          })}
-                                        />
-                                      </div>
-                                      <p className='text-red-500'>
-                                        {errors.nama?.message}
-                                      </p>
-                                    </div>
-                                    <div className='col-md-12'>
-                                      <div className='single-input-unit'>
-                                        <label htmlFor='email'>Email</label>
-                                        <input
-                                          type='email'
-                                          id='email'
-                                          placeholder='Masukkan email anda'
-                                          {...register('email', {
-                                            required: 'Email harus diisi',
-                                            pattern: {
-                                              value:
-                                                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                                              message: 'Email tidak valid!',
-                                            },
-                                          })}
-                                        />
-                                      </div>
-                                      <p className='text-red-500'>
-                                        {errors.email?.message}
-                                      </p>
-                                    </div>
-                                    <div className='col-md-12'>
-                                      <div className='single-input-unit'>
-                                        <label htmlFor='phone'>
-                                          No. Handphone
-                                        </label>
-                                        <PhoneInput
-                                          defaultCountry='ID'
-                                          placeholder='Masukkan No. Handphone'
-                                          value={phone}
-                                          onChange={setPhone}
-                                          error={
-                                            phone
-                                              ? isValidPhoneNumber(phone)
-                                                ? undefined
-                                                : 'Invalid phone number'
-                                              : 'Phone number required'
-                                          }
-                                        />
-                                      </div>
-                                      <p className='text-red-500'>
-                                        {phone &&
-                                          !isPossiblePhoneNumber(phone) &&
-                                          'Nomor telepon tidak valid'}
-                                      </p>
-                                    </div>
-                                    <div className='col-md-12'>
-                                      <div className='single-input-unit'>
-                                        <label htmlFor='jenis_pembayaran'>
-                                          Jenis Pembayaran
-                                        </label>
-                                        <Controller
-                                          control={control}
-                                          defaultValue={
-                                            jenisPembayaranOpts[0].value
-                                          }
-                                          name='jenis_pembayaran'
-                                          render={({
-                                            field: { onChange, value },
-                                          }) => (
-                                            <Select
-                                              className={clsxm('py-3 pt-0')}
-                                              options={jenisPembayaranOpts}
-                                              value={jenisPembayaranOpts.find(
-                                                (c) => c.value === value
-                                              )}
-                                              onChange={(val) =>
-                                                onChange(val?.value)
-                                              }
-                                            />
-                                          )}
-                                        />
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <Captcha
-                                    onChange={(token) =>
-                                      setRecaptchaResponse(token)
-                                    }
-                                  />
-                                  <div className='login-btn mt-4'>
-                                    <ButtonGradient
-                                      className='text-white'
-                                      type='submit'
-                                      disabled={beliBtnDisabled}
-                                    >
-                                      Beli akun
-                                    </ButtonGradient>
-                                  </div>
-                                </form>
-                              </div>
+                          <div className='creator-name-id'>
+                            <h4 className='artist-name'>
+                              <Link href='/creators'>
+                                <a>{iklan.data.user.name}</a>
+                              </Link>
+                            </h4>
+                            <div className='artist-id'>
+                              {iklan.data.user.username}
                             </div>
                           </div>
                         </div>
-                      </Modal>
+                      </div>
+                      <div className='mt-50 mb-30 flex items-center gap-x-2'>
+                        <ButtonLink
+                          href={`https://wa.me/${iklan.data.user.phone
+                            .replace(/\+/g, '')
+                            .replace(/-/g, '')
+                            .replace(/\(/g, '')
+                            .replace(/\)/g, '')
+                            .trim()}`}
+                        >
+                          Hubungi Penjual
+                        </ButtonLink>
+                        <Button onClick={onOpenModal}>Beli</Button>
+                        <Modal
+                          open={open}
+                          onClose={onCloseModal}
+                          center
+                          classNames={{ modal: 'rounded-xl p-0' }}
+                          closeIcon={<XButton />}
+                        >
+                          <div className='row justify-content-center'>
+                            <div className='login-wrapper pos-rel wow fadeInUp'>
+                              <div className=' login-inner'>
+                                <div className='login-content'>
+                                  <h4>Beli Akun</h4>
+                                  <form
+                                    className='login-form'
+                                    onSubmit={handleSubmit(onSubmit)}
+                                  >
+                                    <div className='row'>
+                                      <div className='col-md-12'>
+                                        <div className='single-input-unit'>
+                                          <label htmlFor='email'>Nama</label>
+                                          <input
+                                            type='text'
+                                            placeholder='Masukkan Nama Anda'
+                                            autoFocus
+                                            {...register('nama', {
+                                              required: 'Nama harus diisi',
+                                            })}
+                                          />
+                                        </div>
+                                        <p className='text-red-500'>
+                                          {errors.nama?.message}
+                                        </p>
+                                      </div>
+                                      <div className='col-md-12'>
+                                        <div className='single-input-unit'>
+                                          <label htmlFor='email'>Email</label>
+                                          <input
+                                            type='email'
+                                            id='email'
+                                            placeholder='Masukkan email anda'
+                                            {...register('email', {
+                                              required: 'Email harus diisi',
+                                              pattern: {
+                                                value:
+                                                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                                message: 'Email tidak valid!',
+                                              },
+                                            })}
+                                          />
+                                        </div>
+                                        <p className='text-red-500'>
+                                          {errors.email?.message}
+                                        </p>
+                                      </div>
+                                      <div className='col-md-12'>
+                                        <div className='single-input-unit'>
+                                          <label htmlFor='phone'>
+                                            No. Handphone
+                                          </label>
+                                          <PhoneInput
+                                            defaultCountry='ID'
+                                            placeholder='Masukkan No. Handphone'
+                                            value={phone}
+                                            onChange={setPhone}
+                                            error={
+                                              phone
+                                                ? isValidPhoneNumber(phone)
+                                                  ? undefined
+                                                  : 'Invalid phone number'
+                                                : 'Phone number required'
+                                            }
+                                          />
+                                        </div>
+                                        <p className='text-red-500'>
+                                          {phone &&
+                                            !isPossiblePhoneNumber(phone) &&
+                                            'Nomor telepon tidak valid'}
+                                        </p>
+                                      </div>
+                                      <div className='col-md-12'>
+                                        <div className='single-input-unit'>
+                                          <label htmlFor='jenis_pembayaran'>
+                                            Jenis Pembayaran
+                                          </label>
+                                          <Controller
+                                            control={control}
+                                            defaultValue={
+                                              jenisPembayaranOpts[0].value
+                                            }
+                                            name='jenis_pembayaran'
+                                            render={({
+                                              field: { onChange, value },
+                                            }) => (
+                                              <Select
+                                                className={clsxm('py-3 pt-0')}
+                                                options={jenisPembayaranOpts}
+                                                value={jenisPembayaranOpts.find(
+                                                  (c) => c.value === value
+                                                )}
+                                                onChange={(val) =>
+                                                  onChange(val?.value)
+                                                }
+                                              />
+                                            )}
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <Captcha
+                                      onChange={(token) =>
+                                        setRecaptchaResponse(token)
+                                      }
+                                    />
+                                    <div className='login-btn mt-4'>
+                                      <ButtonGradient
+                                        className='text-white'
+                                        type='submit'
+                                        disabled={beliBtnDisabled}
+                                      >
+                                        Beli akun
+                                      </ButtonGradient>
+                                    </div>
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </Modal>
+                      </div>
                     </div>
                   </div>
-                  <div className='artist-meta-info art-details-meta-info'>
-                    <div className='art-meta-item artist-meta-item-border'>
+                  <div className='art-details-meta-info my-8 grid grid-cols-3 divide-x-2'>
+                    <div className='art-meta-item'>
                       <div className='art-meta-type'>Harga</div>
-                      <div className='art-price'>
+                      <div className='art-sale'>
                         {toIDRCurrency(iklan.data.harga_akun)}
                       </div>
                     </div>
-                    <div className='art-meta-item artist-meta-item-border'>
+                    <div className='art-meta-item pl-3'>
                       <div className='art-meta-type'>Win Rate</div>
-                      <div className='art-sale'>
-                        <span className='art-sold'>
-                          {iklan.data.win_rate} %
-                        </span>
-                      </div>
+                      <div className='art-sale'>{iklan.data.win_rate} %</div>
                     </div>
-                    <div className='art-meta-item'>
+                    <div className='art-meta-item pl-3'>
                       <div className='art-meta-type'>Jenis Refund</div>
-                      <div className='art-sale'>
-                        <span className='art-sold'>
-                          {iklan.data.jenis_refund}
-                        </span>
-                      </div>
+                      <div className='art-sale'>{iklan.data.jenis_refund}</div>
                     </div>
                   </div>
                   <div className='art-details-information'>
                     <div className='art-information-tab-nav mb-20'>
                       <nav>
                         <div
-                          className='nav nav-tabs'
+                          className='nav nav-tabs flex justify-between'
                           id='nav-tab'
                           role='tablist'
                         >

@@ -88,9 +88,11 @@ const BeliAkunMain = ({ id }: { id: number }) => {
           },
         },
         error: {
-          render: () => {
+          render: (e) => {
             setBeliBtnDisabled(false);
-            return 'Gagal beli akun!';
+            return (
+              (e?.data?.response?.data.message as string) || 'Gagal beli akun!'
+            );
           },
         },
       }

@@ -112,8 +112,11 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: () => {
-            return 'Gagal tambah config!';
+          render: (e) => {
+            return (
+              (e?.data?.response?.data.message as string) ||
+              'Gagal tambah config!'
+            );
           },
         },
       }
@@ -142,8 +145,11 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: () => {
-            return 'Gagal update config!';
+          render: (e) => {
+            return (
+              (e?.data?.response?.data.message as string) ||
+              'Gagal update config!'
+            );
           },
         },
       }
@@ -175,8 +181,11 @@ const IndexPage = () => {
             },
           },
           error: {
-            render: () => {
-              return 'Gagal hapus config!';
+            render: (e) => {
+              return (
+                (e?.data?.response?.data.message as string) ||
+                'Gagal hapus config!'
+              );
             },
           },
         });

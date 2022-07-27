@@ -91,9 +91,12 @@ const IndexPage = () => {
             },
           },
           error: {
-            render: () => {
+            render: (e) => {
               setUpdBtnDisabled(false);
-              return 'Gagal update user!';
+              return (
+                (e?.data?.response?.data.message as string) ||
+                'Gagal update user!'
+              );
             },
           },
         });

@@ -51,10 +51,10 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
 
   return (
     <main>
-      <section className='pt-8 pb-12'>
+      <section className='pb-12'>
         <div className='items-center justify-center'>
-          <div className='space-y-10 overflow-auto rounded-xl border border-primary-400 bg-neutral-100 p-8 dark:bg-neutral-800 md:px-16'>
-            <div className='flex flex-wrap justify-between gap-y-4'>
+          <div className='space-y-10 overflow-auto rounded-xl border border-primary-400 bg-neutral-100 pb-8 dark:bg-neutral-800'>
+            <div className='flex flex-wrap justify-between gap-y-4 p-8 md:px-16'>
               <div>
                 <div className='mb-6 space-x-4'>
                   <h1 className='inline'>INVOICE</h1>
@@ -104,8 +104,8 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
                 </TooltipTippy>
               </div>
             </div>
-            <hr className='border-2 border-neutral-900 dark:border-neutral-200' />
-            <div className='grid gap-x-12 gap-y-10 md:grid-cols-2'>
+            <hr className='w-full border-2 border-neutral-900 dark:border-neutral-200' />
+            <div className='grid gap-x-12 gap-y-10 p-8 md:grid-cols-2 md:px-16'>
               <div className='space-y-8'>
                 <div>
                   <h2 className='text-lg md:text-3xl'>Detail Pesanan</h2>

@@ -119,9 +119,12 @@ const IndexPage = () => {
               },
             },
             error: {
-              render: () => {
+              render: (e) => {
                 setDelBtnDisabled(false);
-                return 'Gagal update invoice!';
+                return (
+                  (e?.data?.response?.data.message as string) ||
+                  'Gagal update invoice!'
+                );
               },
             },
           }

@@ -104,9 +104,12 @@ const IndexPage = () => {
               },
             },
             error: {
-              render: () => {
+              render: (e) => {
                 setUpdBtnDisabled(false);
-                return 'Gagal update admin!';
+                return (
+                  (e?.data?.response?.data.message as string) ||
+                  'Gagal update admin!'
+                );
               },
             },
           }
@@ -141,8 +144,11 @@ const IndexPage = () => {
             },
           },
           error: {
-            render: () => {
-              return 'Gagal hapus admin!';
+            render: (e) => {
+              return (
+                (e?.data?.response?.data.message as string) ||
+                'Gagal hapus admin!'
+              );
             },
           },
         });
@@ -188,8 +194,11 @@ const IndexPage = () => {
               },
             },
             error: {
-              render: () => {
-                return 'Gagal update admin!';
+              render: (e) => {
+                return (
+                  (e?.data?.response?.data.message as string) ||
+                  'Gagal update admin!'
+                );
               },
             },
           }

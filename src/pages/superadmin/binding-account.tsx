@@ -126,8 +126,11 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: () => {
-            return 'Gagal tambah binding account!';
+          render: (e) => {
+            return (
+              (e?.data?.response?.data.message as string) ||
+              'Gagal tambah binding account!'
+            );
           },
         },
       }
@@ -156,8 +159,11 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: () => {
-            return 'Gagal update binding account!';
+          render: (e) => {
+            return (
+              (e?.data?.response?.data.message as string) ||
+              'Gagal update binding account!'
+            );
           },
         },
       }
@@ -189,8 +195,11 @@ const IndexPage = () => {
             },
           },
           error: {
-            render: () => {
-              return 'Gagal hapus binding account!';
+            render: (e) => {
+              return (
+                (e?.data?.response?.data.message as string) ||
+                'Gagal hapus binding account!'
+              );
             },
           },
         });

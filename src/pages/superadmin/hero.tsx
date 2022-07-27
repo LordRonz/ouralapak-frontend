@@ -126,8 +126,11 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: () => {
-            return 'Gagal tambah hero!';
+          render: (e) => {
+            return (
+              (e?.data?.response?.data.message as string) ||
+              'Gagal tambah hero!'
+            );
           },
         },
       }
@@ -156,8 +159,11 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: () => {
-            return 'Gagal update hero!';
+          render: (e) => {
+            return (
+              (e?.data?.response?.data.message as string) ||
+              'Gagal update hero!'
+            );
           },
         },
       }
@@ -189,8 +195,11 @@ const IndexPage = () => {
             },
           },
           error: {
-            render: () => {
-              return 'Gagal hapus hero!';
+            render: (e) => {
+              return (
+                (e?.data?.response?.data.message as string) ||
+                'Gagal hapus hero!'
+              );
             },
           },
         });

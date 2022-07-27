@@ -128,8 +128,11 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: () => {
-            return 'Gagal tambah bank!';
+          render: (e) => {
+            return (
+              (e?.data?.response?.data.message as string) ||
+              'Gagal tambah bank!'
+            );
           },
         },
       }
@@ -158,8 +161,11 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: () => {
-            return 'Gagal update bank!';
+          render: (e) => {
+            return (
+              (e?.data?.response?.data.message as string) ||
+              'Gagal update bank!'
+            );
           },
         },
       }
@@ -191,8 +197,11 @@ const IndexPage = () => {
             },
           },
           error: {
-            render: () => {
-              return 'Gagal hapus bank!';
+            render: (e) => {
+              return (
+                (e?.data?.response?.data.message as string) ||
+                'Gagal hapus bank!'
+              );
             },
           },
         });
