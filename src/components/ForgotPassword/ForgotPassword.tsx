@@ -51,7 +51,7 @@ const ForgotPassword = () => {
           },
         },
         error: {
-          render: () => {
+          render: (e) => {
             setSubmitBtnDisabled(false);
             return (
               (e?.data?.response?.data.message as string) ||

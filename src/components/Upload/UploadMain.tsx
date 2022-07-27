@@ -13,7 +13,7 @@ import {
 } from 'react-hook-form';
 import { HiEye, HiPlus } from 'react-icons/hi';
 import Lightbox from 'react-image-lightbox';
-import Select from 'react-select';
+import Select, { SingleValue } from 'react-select';
 import { Theme, toast } from 'react-toastify';
 import { useLifecycles, useSessionStorage } from 'react-use';
 import useSWR from 'swr';
@@ -28,6 +28,7 @@ import UnstyledLink from '@/components/links/UnstyledLink';
 import ConfirmationDialog from '@/components/Upload/Dialog';
 import { selectDarkTheme } from '@/constant/colors';
 import { API_URL } from '@/constant/config';
+import { customSelectStyles, customSelectStylesMulti } from '@/constant/select';
 import clsxm from '@/lib/clsxm';
 import getAuthHeader from '@/lib/getAuthHeader';
 import toIDRCurrency from '@/lib/toIDRCurrency';
@@ -451,6 +452,7 @@ const UploadMain = () => {
                                   ? selectDarkTheme
                                   : undefined
                               }
+                              styles={customSelectStyles}
                             />
                           )}
                         />
@@ -487,6 +489,7 @@ const UploadMain = () => {
                                   ? selectDarkTheme
                                   : undefined
                               }
+                              styles={customSelectStyles}
                             />
                           )}
                         />
@@ -526,6 +529,7 @@ const UploadMain = () => {
                           name='package_id'
                           render={({ field: { onChange, value } }) => (
                             <Select
+                              styles={customSelectStyles}
                               className={clsxm('py-3 pt-0')}
                               options={packageId}
                               value={packageId.find((c) => c.value === value)}
@@ -549,6 +553,7 @@ const UploadMain = () => {
                           name='platform_id'
                           render={({ field: { onChange, value } }) => (
                             <Select
+                              styles={customSelectStyles}
                               className={clsxm('py-3 pt-0')}
                               options={platformId}
                               value={platformId.find((c) => c.value === value)}
@@ -600,6 +605,7 @@ const UploadMain = () => {
                           name='jenis_pembayaran'
                           render={({ field: { onChange, value } }) => (
                             <Select
+                              styles={customSelectStyles}
                               className={clsxm('py-3 pt-0')}
                               options={jenisPembayaranOpts}
                               value={jenisPembayaranOpts.find(
@@ -633,7 +639,12 @@ const UploadMain = () => {
                               value={changeNameOpts.find(
                                 (c) => c.value === value
                               )}
-                              onChange={(val) => onChange(val?.value)}
+                              onChange={(
+                                val: SingleValue<{
+                                  value: number;
+                                  label: string;
+                                }>
+                              ) => onChange(val?.value)}
                               theme={
                                 mounted && theme === 'dark'
                                   ? selectDarkTheme
@@ -702,6 +713,7 @@ const UploadMain = () => {
                           name='account_bind'
                           render={({ field: { onChange, value } }) => (
                             <Select
+                              styles={customSelectStylesMulti}
                               className={clsxm('py-3 pt-0')}
                               options={accountBindOpts}
                               value={accountBindOpts.filter((c) =>
@@ -730,6 +742,7 @@ const UploadMain = () => {
                           name='favorite_heroes'
                           render={({ field: { onChange, value } }) => (
                             <Select
+                              styles={customSelectStylesMulti}
                               className={clsxm('py-3 pt-0')}
                               options={favHeroesOpts}
                               value={favHeroesOpts.filter((c) =>
@@ -872,6 +885,7 @@ const UploadMain = () => {
                                       field: { onChange, value },
                                     }) => (
                                       <Select
+                                        styles={customSelectStyles}
                                         className={clsxm('overflow-visible')}
                                         options={emblemOpts.filter(
                                           (x) =>
