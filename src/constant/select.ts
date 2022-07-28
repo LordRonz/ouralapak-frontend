@@ -32,6 +32,13 @@ export const customSelectStyles: StylesConfig<SelectOption, false> = {
     ...provided,
     border: 0,
   }),
+  menu: (provided) => ({
+    ...provided,
+    paddingTop: 0,
+    paddingBottom: 0,
+    marginTop: 0,
+    marginBottom: 0,
+  }),
 };
 
 export const customSelectStylesMulti: StylesConfig<SelectOption, true> = {

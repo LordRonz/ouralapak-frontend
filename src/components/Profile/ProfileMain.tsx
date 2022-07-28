@@ -1,8 +1,12 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import PhoneInput, {
+  isPossiblePhoneNumber,
+  isValidPhoneNumber,
+} from 'react-phone-number-input';
 import { toast } from 'react-toastify';
 import { useLocalStorage } from 'react-use';
 import Swal from 'sweetalert2';
@@ -21,7 +25,6 @@ import User from '@/types/user';
 
 type IFormInput = {
   name?: string;
-  phone?: string;
   ig_username?: string;
   password?: string;
   confirm_password?: string;
@@ -40,6 +43,7 @@ const ProfileMain = () => {
 
   const [toggleEditPassword, setToggleEditPassword] = useState(false);
   const [updateBtnDisabled, setUpdateBtnDisabled] = useState(false);
+  const [phone, setPhone] = useState<string>();
 
   // const [previewIdCard, setPreviewIdCard] = useState(false);
   // const [previewIdCardValidation, setPreviewIdCardValidation] = useState(false);
@@ -56,6 +60,10 @@ const ProfileMain = () => {
     message: string;
     success: boolean;
   }>(() => `${API_URL}/profile`);
+
+  useEffect(() => {
+    setPhone(user?.data.phone);
+  }, [user]);
 
   const headers = useAuthHeader();
 
@@ -114,8 +122,14 @@ const ProfileMain = () => {
     const passwordData = { password, confirm_password };
     await toast.promise(
       Promise.all([
-        ...(data.name ?? data.ig_username ?? data.phone
-          ? [axios.put(`${API_URL}/profile`, profileData, { headers })]
+        ...(data.name ?? data.ig_username ?? phone
+          ? [
+              axios.put(
+                `${API_URL}/profile`,
+                { profileData, ...(phone && { phone }) },
+                { headers }
+              ),
+            ]
           : []),
         ...(data.password && data.confirm_password
           ? [
@@ -215,22 +229,26 @@ const ProfileMain = () => {
                     </div>
                     <div className='col-md-6'>
                       <div className='single-input-unit'>
-                        <label>Nomor Telepon</label>
-                        {user && (
-                          <input
-                            type='text'
-                            defaultValue={user?.data.phone}
-                            {...register('phone', {
-                              // pattern: {
-                              //   value:
-                              //     /^(\+62|62)?[\s-]?0?8[1-9]{1}\d{1}[\s-]?\d{4}[\s-]?\d{2,5}$/,
-                              //   message: 'Nomor telepon tidak valid!',
-                              // },
-                            })}
-                          />
-                        )}
-                        <p className='text-red-500'>{errors.phone?.message}</p>
+                        <label htmlFor='phone'>No. Handphone</label>
+                        <PhoneInput
+                          defaultCountry='ID'
+                          placeholder='Masukkan No. Handphone'
+                          value={phone}
+                          onChange={setPhone}
+                          error={
+                            phone
+                              ? isValidPhoneNumber(phone)
+                                ? undefined
+                                : 'Invalid phone number'
+                              : 'Phone number required'
+                          }
+                        />
                       </div>
+                      <p className='text-red-500'>
+                        {phone &&
+                          !isPossiblePhoneNumber(phone) &&
+                          'Nomor telepon tidak valid'}
+                      </p>
                     </div>
                     <div className='col-md-6'>
                       <div className='single-input-unit'>
