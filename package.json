@@ -44,7 +44,7 @@
     "react-drag-drop-files": "^2.3.7",
     "react-dropzone": "^14.2.2",
     "react-google-recaptcha": "^2.1.0",
-    "react-hook-form": "^7.33.1",
+    "react-hook-form": "^7.34.0",
     "react-hot-toast": "^2.3.0",
     "react-icons": "^4.4.0",
     "react-image-file-resizer": "^0.4.8",
