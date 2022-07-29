@@ -83,7 +83,7 @@ const ForgotPassword = () => {
                       className='login-form'
                       onSubmit={handleSubmit(onSubmit)}
                     >
-                      <div className='row'>
+                      <div className='row gap-y-6'>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
                             <label htmlFor='email'>Email</label>

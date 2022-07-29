@@ -61,6 +61,8 @@ const ProfileMain = () => {
     success: boolean;
   }>(() => `${API_URL}/profile`);
 
+  console.log(user);
+
   useEffect(() => {
     setPhone(user?.data.phone);
   }, [user]);
@@ -214,7 +216,7 @@ const ProfileMain = () => {
                   className='personal-info-form'
                   onSubmit={handleSubmit(onSubmit)}
                 >
-                  <div className='row'>
+                  <div className='row gap-y-6'>
                     <div className='col-md-6'>
                       <div className='single-input-unit'>
                         <label>Nama</label>
@@ -326,7 +328,7 @@ const ProfileMain = () => {
                         </>
                       )}
                     </div>
-                    <div className='col-md-6'>
+                    <div className='col-md-6 space-y-4'>
                       <label className='font-bold text-black'>
                         Kartu Identitas
                       </label>
@@ -341,7 +343,7 @@ const ProfileMain = () => {
                         }
                       />
                     </div>
-                    <div className='col-md-6'>
+                    <div className='col-md-6 space-y-4'>
                       <label className='font-bold text-black'>
                         Kartu Identitas + Selfie
                       </label>

@@ -59,7 +59,7 @@ type IFormInput = {
   total_skin: number;
   total_skin_rare: {
     jenis: string;
-    total_skin: number;
+    total_skin?: number;
   }[];
   total_emblem: {
     id_emblem: number;
@@ -98,6 +98,8 @@ const UploadMain = () => {
     },
   });
 
+  const [authorized, setAuthorized] = useState(false);
+
   const router = useRouter();
   useEffect(() => {
     (async () => {
@@ -105,6 +107,7 @@ const UploadMain = () => {
         .get(`${API_URL}/profile`, {
           headers: { Authorization: getAuthHeader() ?? '' },
         })
+        .then(() => setAuthorized(true))
         .catch(() =>
           router.push(
             `/login?${queryString.stringify({
@@ -397,6 +400,7 @@ const UploadMain = () => {
   const recaptchaRef = React.createRef<ReCAPTCHA>();
 
   if (
+    !authorized ||
     !accountBindOpts ||
     !favHeroesOpts ||
     !emblemOpts ||
@@ -421,7 +425,7 @@ const UploadMain = () => {
             <form className='upload-form' onSubmit={handleSubmit(onSubmit)}>
               <div className='row'>
                 <div className=''>
-                  <div className='row wow fadeInUp'>
+                  <div className='row wow fadeInUp gap-y-3'>
                     <div className='col-md-8'>
                       <div className='single-input-unit'>
                         <label>Judul</label>

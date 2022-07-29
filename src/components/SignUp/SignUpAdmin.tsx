@@ -94,7 +94,7 @@ const SignUpAdmin = () => {
                       className='sign-up-form'
                       onSubmit={handleSubmit(onSubmit)}
                     >
-                      <div className='row'>
+                      <div className='row gap-y-6'>
                         <div className='col-md-6'>
                           <div className='single-input-unit'>
                             <label htmlFor='email'>Email</label>
@@ -147,7 +147,7 @@ const SignUpAdmin = () => {
                         <div className='col-md-6'>
                           <div className='single-input-unit'>
                             <label htmlFor='password'>Password</label>
-                            <div className='flex'>
+                            <div className='flex items-stretch justify-center'>
                               <input
                                 type={passMode ? 'password' : 'text'}
                                 placeholder='Password anda'
@@ -160,12 +160,12 @@ const SignUpAdmin = () => {
                                   },
                                 })}
                               />
-                              <span
-                                className='mb-[30px] flex cursor-pointer items-center justify-center border-2 px-1 hover:border-primary-200'
+                              <div
+                                className='flex min-h-full cursor-pointer items-center justify-center rounded border-2 px-1 hover:border-primary-200 dark:border-transparent hover:dark:border-primary-600'
                                 onClick={() => setPassMode(!passMode)}
                               >
                                 {passMode ? <FiEye /> : <FiEyeOff />}
-                              </span>
+                              </div>
                             </div>
                           </div>
                           <p className='text-red-500'>

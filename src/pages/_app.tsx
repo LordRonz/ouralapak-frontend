@@ -48,14 +48,15 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       >
         <SWRConfig
           value={{
-            fetcher: (url) =>
-              axios
-                .get(url, {
-                  headers: {
-                    Authorization: getAuthHeader() ?? Authorization ?? '',
-                  },
-                })
-                .then((res) => res.data),
+            fetcher: async (url) => {
+              const headers = {
+                Authorization: getAuthHeader() ?? Authorization ?? '',
+              };
+              const res = await axios.get(url, {
+                headers,
+              });
+              return res.data;
+            },
           }}
         >
           <AnimatePresence

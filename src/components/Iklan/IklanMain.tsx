@@ -312,7 +312,7 @@ const IklanMain = ({ id }: { id: number }) => {
                           classNames={{ modal: 'rounded-xl p-0' }}
                           closeIcon={<XButton />}
                         >
-                          <div className='row justify-content-center'>
+                          <div className='row justify-content-center gap-y-6'>
                             <div className='login-wrapper pos-rel wow fadeInUp'>
                               <div className=' login-inner'>
                                 <div className='login-content'>

@@ -28,12 +28,22 @@ const MySwal = withReactContent(Swal);
 
 const SellerMain = () => {
   const router = useRouter();
+
+  const [mounted, setMounted] = useState(false);
+
+  const [curPage, setCurPage] = useState(0);
+
+  const [curStatus, setCurStatus] = useState(-1);
+
+  const [authorized, setAuthorized] = useState(false);
+
   useEffect(() => {
     (async () => {
       axios
         .get(`${API_URL}/profile`, {
           headers: { Authorization: getAuthHeader() ?? '' },
         })
+        .then(() => setAuthorized(true))
         .catch(() =>
           router.push(
             `/login?${queryString.stringify({
@@ -44,12 +54,6 @@ const SellerMain = () => {
         );
     })();
   }, [router]);
-
-  const [mounted, setMounted] = useState(false);
-
-  const [curPage, setCurPage] = useState(0);
-
-  const [curStatus, setCurStatus] = useState(-1);
 
   useEffect(() => {
     setMounted(true);
@@ -94,7 +98,7 @@ const SellerMain = () => {
     }
   };
 
-  if (!iklans || !user) {
+  if (!authorized || !iklans || !user) {
     return <Spinner />;
   }
 
