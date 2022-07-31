@@ -54,7 +54,7 @@
   }
 
   input {
-    height: 60px;
+    height: 50px;
     width: 100%;
     border: 1px solid var(--clr-bg-white);
     border-radius: 5px;
@@ -71,6 +71,17 @@
       box-shadow: 0px 30px 50px rgba(28, 52, 94, 0.1);
       outline: none;
     }
+  }
+
+  .extension {
+    border: 1px solid var(--clr-bg-white);
+    border-radius: 5px;
+    background: var(--clr-bg-white);
+    color: var(--clr-common-heading);
+    font-size: 16px;
+    padding: 0 14px;
+    outline: none;
+    box-shadow: none;
   }
 }
 

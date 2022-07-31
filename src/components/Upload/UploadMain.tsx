@@ -128,7 +128,7 @@ const UploadMain = () => {
     control, // control props comes from useForm (optional: if you are using FormContext)
     name: 'total_emblem', // unique name for your Field Array
   });
-  const [recallEffectCnt, setRecallEffectCnt] = useState<number>(0);
+  const [recallEffectCnt, setRecallEffectCnt] = useState<number>(1);
 
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
 
@@ -143,6 +143,7 @@ const UploadMain = () => {
   useLifecycles(() => {
     if (saveData) {
       reset(saveData);
+      setRecallEffectCnt(saveData.recall_effect.length);
       setSaveData(undefined);
     }
   });
@@ -399,6 +400,36 @@ const UploadMain = () => {
 
   const recaptchaRef = React.createRef<ReCAPTCHA>();
 
+  const [emblemOptsSet, setEmblemOptsSet] = useState(false);
+
+  useEffect(() => {
+    if (
+      emblemOpts &&
+      emblemOpts.length > 0 &&
+      totalEmblemFields.fields.length < 1 &&
+      !emblemOptsSet &&
+      !saveData
+    ) {
+      setEmblemOptsSet(true);
+      totalEmblemFields.append({
+        id_emblem: emblemOpts.filter(
+          (x) =>
+            !getValues('total_emblem')
+              .map((x) => x.id_emblem)
+              .includes(x.value)
+        )[0]?.value,
+        level: 1,
+      });
+    }
+  }, [emblemOpts, emblemOptsSet, getValues, saveData, totalEmblemFields]);
+
+  if (totalSkinRareFields.fields.length < 1) {
+    totalSkinRareFields.append({
+      jenis: 'medium',
+      total_skin: undefined,
+    });
+  }
+
   if (
     !authorized ||
     !accountBindOpts ||
@@ -508,22 +539,27 @@ const UploadMain = () => {
                     <div className='col-md-4'>
                       <div className='single-input-unit'>
                         <label>Win Rate</label>
-                        <input
-                          type='number'
-                          onWheel={(e) =>
-                            e.target instanceof HTMLElement && e.target.blur()
-                          }
-                          placeholder='0'
-                          {...register('win_rate', {
-                            required: 'Win rate harus diisi',
-                            pattern: {
-                              value: /^(\d{0,2}(\.\d{1,2})?|100(\.00?)?)$/,
-                              message:
-                                'Win rate haruslah di antara 0 - 100 dan maksimum 2 desimal di belakang koma',
-                            },
-                            valueAsNumber: true,
-                          })}
-                        />
+                        <div className='flex gap-x-1'>
+                          <input
+                            type='number'
+                            onWheel={(e) =>
+                              e.target instanceof HTMLElement && e.target.blur()
+                            }
+                            placeholder='0'
+                            {...register('win_rate', {
+                              required: 'Win rate harus diisi',
+                              pattern: {
+                                value: /^(\d{0,2}(\.\d{1,2})?|100(\.00?)?)$/,
+                                message:
+                                  'Win rate haruslah di antara 0 - 100 dan maksimum 2 desimal di belakang koma',
+                              },
+                              valueAsNumber: true,
+                            })}
+                          />
+                          <div className='extension flex items-center justify-center'>
+                            %
+                          </div>
+                        </div>
                       </div>
                       <p className='text-red-500'>{errors.win_rate?.message}</p>
                     </div>
@@ -692,21 +728,26 @@ const UploadMain = () => {
                     <div className='col-md-4'>
                       <div className='single-input-unit'>
                         <label>Harga Akun (IDR)</label>
-                        <input
-                          type='number'
-                          onWheel={(e) =>
-                            e.target instanceof HTMLElement && e.target.blur()
-                          }
-                          placeholder='10000'
-                          {...register('harga_akun', {
-                            required: 'Harga akun harus diisi',
-                            min: {
-                              value: 1,
-                              message: 'Minimum harga adalah 1',
-                            },
-                            valueAsNumber: true,
-                          })}
-                        />
+                        <div className='flex gap-x-1'>
+                          <div className='extension flex items-center justify-center'>
+                            Rp.
+                          </div>
+                          <input
+                            type='number'
+                            onWheel={(e) =>
+                              e.target instanceof HTMLElement && e.target.blur()
+                            }
+                            placeholder='10000'
+                            {...register('harga_akun', {
+                              required: 'Harga akun harus diisi',
+                              min: {
+                                value: 1,
+                                message: 'Minimum harga adalah 1',
+                              },
+                              valueAsNumber: true,
+                            })}
+                          />
+                        </div>
                       </div>
                       <p className='text-red-500'>
                         {errors.harga_akun?.message}
@@ -794,28 +835,30 @@ const UploadMain = () => {
                                 <input
                                   key={index}
                                   type='text'
-                                  placeholder='Recall effect'
+                                  placeholder={`Recall effect #${index + 1}`}
                                   {...register(`recall_effect.${index}`, {
                                     required: 'Recall effect harus diisi',
                                   })}
                                   className='mb-0'
                                 />
-                                <XButton
-                                  className='self-center bg-rose-300'
-                                  onClick={() => {
-                                    if (recallEffectCnt > 1) {
-                                      unregister(`recall_effect.${index}`);
-                                      const arr = getValues('recall_effect');
-                                      arr.splice(index, 1);
-                                      setValue('recall_effect', arr);
-                                    } else {
-                                      setValue('recall_effect', []);
-                                    }
-                                    setRecallEffectCnt((v) =>
-                                      Math.max(v - 1, 0)
-                                    );
-                                  }}
-                                />
+                                {recallEffectCnt > 1 && (
+                                  <XButton
+                                    className='self-center bg-rose-300'
+                                    onClick={() => {
+                                      if (recallEffectCnt > 1) {
+                                        unregister(`recall_effect.${index}`);
+                                        const arr = getValues('recall_effect');
+                                        arr.splice(index, 1);
+                                        setValue('recall_effect', arr);
+                                      } else {
+                                        setValue('recall_effect', []);
+                                      }
+                                      setRecallEffectCnt((v) =>
+                                        Math.max(v - 1, 0)
+                                      );
+                                    }}
+                                  />
+                                )}
                               </div>
                               <p className='text-red-500'>
                                 {errors.recall_effect?.[index]?.message}
@@ -850,7 +893,7 @@ const UploadMain = () => {
                             </Button>
                           )}
                         </div>
-                        <div className='max-h-80 space-y-4 overflow-auto'>
+                        <div className='overflow max-h-80 space-y-4'>
                           <div className='rounded-xl border-primary-200'>
                             {!!totalEmblemFields.fields.length && (
                               <div className='flex justify-around'>
@@ -868,34 +911,14 @@ const UploadMain = () => {
                                 </label>
                               </div>
                             )}
-                            {totalEmblemFields.fields.map((field, index) => (
-                              <div className='flex gap-x-2' key={field.id}>
-                                <div className='mr-2 basis-3/4'>
-                                  <Controller
-                                    control={control}
-                                    defaultValue={
-                                      emblemOpts.filter(
-                                        (x) =>
-                                          !getValues('total_emblem')
-                                            .filter(
-                                              (x) =>
-                                                x.id_emblem !==
-                                                getValues(
-                                                  `total_emblem.${index}.id_emblem`
-                                                )
-                                            )
-                                            .map((x) => x.id_emblem)
-                                            .includes(x.value)
-                                      )[0]?.value
-                                    }
-                                    name={`total_emblem.${index}.id_emblem`}
-                                    render={({
-                                      field: { onChange, value },
-                                    }) => (
-                                      <Select
-                                        styles={customSelectStyles}
-                                        className={clsxm('overflow-visible')}
-                                        options={emblemOpts.filter(
+                            <div className='space-y-2'>
+                              {totalEmblemFields.fields.map((field, index) => (
+                                <div className='flex gap-x-1' key={field.id}>
+                                  <div className='mr-2 basis-3/4'>
+                                    <Controller
+                                      control={control}
+                                      defaultValue={
+                                        emblemOpts.filter(
                                           (x) =>
                                             !getValues('total_emblem')
                                               .filter(
@@ -907,50 +930,76 @@ const UploadMain = () => {
                                               )
                                               .map((x) => x.id_emblem)
                                               .includes(x.value)
-                                        )}
-                                        value={emblemOpts.find(
-                                          (c) => c.value === value
-                                        )}
-                                        onChange={(val) => onChange(val?.value)}
-                                        theme={
-                                          mounted && theme === 'dark'
-                                            ? selectDarkTheme
-                                            : undefined
-                                        }
-                                      />
-                                    )}
-                                  />
-                                </div>
-                                <div className='mr-2 basis-1/4'>
-                                  <input
-                                    type='number'
-                                    onWheel={(e) =>
-                                      e.target instanceof HTMLElement &&
-                                      e.target.blur()
-                                    }
-                                    placeholder='1'
-                                    {...register(
-                                      `total_emblem.${index}.level` as const,
-                                      {
-                                        required: 'Level harus diisi',
-                                        min: {
-                                          value: 1,
-                                          message: 'Minimum level adalah 1',
-                                        },
-                                        valueAsNumber: true,
+                                        )[0]?.value
                                       }
-                                    )}
-                                    className='mb-0'
-                                  />
+                                      name={`total_emblem.${index}.id_emblem`}
+                                      render={({
+                                        field: { onChange, value },
+                                      }) => (
+                                        <Select
+                                          styles={customSelectStyles}
+                                          className={clsxm('py-2 pt-0')}
+                                          options={emblemOpts.filter(
+                                            (x) =>
+                                              !getValues('total_emblem')
+                                                .filter(
+                                                  (x) =>
+                                                    x.id_emblem !==
+                                                    getValues(
+                                                      `total_emblem.${index}.id_emblem`
+                                                    )
+                                                )
+                                                .map((x) => x.id_emblem)
+                                                .includes(x.value)
+                                          )}
+                                          value={emblemOpts.find(
+                                            (c) => c.value === value
+                                          )}
+                                          onChange={(val) =>
+                                            onChange(val?.value)
+                                          }
+                                          theme={
+                                            mounted && theme === 'dark'
+                                              ? selectDarkTheme
+                                              : undefined
+                                          }
+                                        />
+                                      )}
+                                    />
+                                  </div>
+                                  <div className='mr-2 basis-1/4'>
+                                    <input
+                                      type='number'
+                                      onWheel={(e) =>
+                                        e.target instanceof HTMLElement &&
+                                        e.target.blur()
+                                      }
+                                      placeholder='1'
+                                      {...register(
+                                        `total_emblem.${index}.level` as const,
+                                        {
+                                          required: 'Level harus diisi',
+                                          min: {
+                                            value: 1,
+                                            message: 'Minimum level adalah 1',
+                                          },
+                                          valueAsNumber: true,
+                                        }
+                                      )}
+                                      className='mb-0'
+                                    />
+                                  </div>
+                                  {totalEmblemFields.fields.length > 1 && (
+                                    <XButton
+                                      onClick={() =>
+                                        totalEmblemFields.remove(index)
+                                      }
+                                      className='self-center bg-rose-300'
+                                    />
+                                  )}
                                 </div>
-                                <XButton
-                                  onClick={() =>
-                                    totalEmblemFields.remove(index)
-                                  }
-                                  className='self-center bg-rose-300'
-                                />
-                              </div>
-                            ))}
+                              ))}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1033,12 +1082,14 @@ const UploadMain = () => {
                                         className='mb-0'
                                       />
                                     </div>
-                                    <XButton
-                                      onClick={() =>
-                                        totalSkinRareFields.remove(index)
-                                      }
-                                      className='self-center bg-rose-300'
-                                    />
+                                    {totalSkinRareFields.fields.length > 1 && (
+                                      <XButton
+                                        onClick={() =>
+                                          totalSkinRareFields.remove(index)
+                                        }
+                                        className='self-center bg-rose-300'
+                                      />
+                                    )}
                                   </div>
                                 )
                               )}
@@ -1051,7 +1102,7 @@ const UploadMain = () => {
                     <div className='col-md-6 grid grid-cols-2 gap-y-4 gap-x-4'>
                       <div>
                         <div className=''>
-                          <label className='mb-2 text-base font-bold text-[#171717]'>
+                          <label className='mb-2 text-base font-bold text-[#171717] dark:text-white'>
                             Win Rate Hero
                           </label>
                           <div className='flex items-center gap-x-2'>
@@ -1103,7 +1154,7 @@ const UploadMain = () => {
                       </div>
                       <div>
                         <div className=''>
-                          <label className='mb-2 text-base font-bold text-[#171717]'>
+                          <label className='mb-2 text-base font-bold text-[#171717] dark:text-white'>
                             Win Rate
                           </label>
                           <div className='flex items-center gap-x-2'>
@@ -1153,7 +1204,7 @@ const UploadMain = () => {
                       </div>
                       <div>
                         <div className=''>
-                          <label className='mb-2 text-base font-bold text-[#171717]'>
+                          <label className='mb-2 text-base font-bold text-[#171717] dark:text-white'>
                             Profile
                           </label>
                           <div className='flex items-center gap-x-2'>
@@ -1203,7 +1254,7 @@ const UploadMain = () => {
                       </div>
                       <div>
                         <div className=''>
-                          <label className='mb-2 text-base font-bold text-[#171717]'>
+                          <label className='mb-2 text-base font-bold text-[#171717] dark:text-white'>
                             Emblem
                           </label>
                           <div className='flex items-center gap-x-2'>
@@ -1253,7 +1304,7 @@ const UploadMain = () => {
                       </div>
                       <div>
                         <div className=''>
-                          <label className='mb-2 text-base font-bold text-[#171717]'>
+                          <label className='mb-2 text-base font-bold text-[#171717] dark:text-white'>
                             Skin
                           </label>
                           <div className='flex items-center gap-x-2'>
