@@ -5,12 +5,14 @@ import { ReactPaginateProps } from 'react-paginate';
 type PaginationProps = {
   pageCount: number;
   pageRangeDisplayed?: number;
+  currentPage?: number;
   onPageChange?: (selectedItem: { selected: number }) => void;
 } & ReactPaginateProps;
 
 const Pagination = ({
   pageCount,
   onPageChange,
+  currentPage,
   pageRangeDisplayed = 5,
 }: PaginationProps) => {
   return (
@@ -21,6 +23,7 @@ const Pagination = ({
         onPageChange={onPageChange}
         pageRangeDisplayed={pageRangeDisplayed}
         pageCount={pageCount}
+        forcePage={currentPage}
         previousLabel={<i className='fal fa-angle-left'></i>}
         renderOnZeroPageCount={() => null}
         pageLinkClassName='page-numbers'

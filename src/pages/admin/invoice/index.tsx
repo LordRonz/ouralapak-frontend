@@ -148,7 +148,7 @@ const IndexPage = () => {
           invoice: invoice,
           iklanId: invoice.iklan_id,
           jenisInvoice: invoice.jenis_invoice,
-          jenisPembayaran: invoice.jenis_pembayaran.rekening_name,
+          jenisPembayaran: invoice.jenis_pembayaran.name,
           judulIklan: invoice.iklan.title,
           noInvoice: invoice.no_invoice,
           status: getStatusInvoice(invoice.status),
@@ -233,6 +233,7 @@ const IndexPage = () => {
           )}
           <div className='flex items-center justify-center'>
             <PaginationComponent
+              forcePage={curPage}
               pageCount={invoices?.data.pagination.lastPage ?? 1}
               onPageChange={({ selected }) => setCurPage(selected)}
             />

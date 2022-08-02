@@ -52,7 +52,7 @@ const BeliAkunMain = ({ id }: { id: number }) => {
 
   const jenisPembayaranOpts = banks?.data.data.map((b) => ({
     value: b.id,
-    label: b.rekening_name,
+    label: b.name,
   }));
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {

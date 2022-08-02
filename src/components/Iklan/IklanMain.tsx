@@ -106,7 +106,15 @@ const IklanMain = ({ id }: { id: number }) => {
     data: { data: Bank[]; pagination: Pagination };
     message: string;
     success: boolean;
-  }>(`${API_URL}/master/bank`);
+  }>(
+    stringifyUrl({
+      url: `${API_URL}/master/bank`,
+      query: {
+        perPage: 696969,
+        transaction: 1,
+      },
+    })
+  );
 
   const jenisPembayaranOpts = banks?.data.data.map((b) => ({
     value: b.id,
