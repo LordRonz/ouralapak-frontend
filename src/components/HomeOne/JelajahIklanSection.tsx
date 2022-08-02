@@ -1,5 +1,7 @@
+import axios from 'axios';
 import { stringifyUrl } from 'query-string';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroller';
 import useSWR from 'swr';
 
 import IklanCardSingle from '@/components/Cards/IklanCardSingle';
@@ -13,19 +15,55 @@ const JelajahIklanSection = () => {
   const [sortBy, setSortBy] = useState('0');
   const [sortDir, setSortDir] = useState('0');
 
-  const { data: iklans } = useSWR<{
-    data: { data: IklanHome[]; pagination: Pagination };
-    message: string;
-    success: boolean;
-  }>(
-    stringifyUrl({
-      url: `${API_URL}/iklan`,
-      query: {
-        ...(sortBy !== '0' && { orderBy: sortBy }),
-        ...(sortDir !== '0' && { orderDir: sortDir }),
-      },
-    })
-  );
+  // const { data: iklans } = useSWR<{
+  //   data: { data: IklanHome[]; pagination: Pagination };
+  //   message: string;
+  //   success: boolean;
+  // }>(
+  //   stringifyUrl({
+  //     url: `${API_URL}/iklan`,
+  //     query: {
+  //       ...(sortBy !== '0' && { orderBy: sortBy }),
+  //       ...(sortDir !== '0' && { orderDir: sortDir }),
+  //     },
+  //   })
+  // );
+
+  const [pagination, setPagination] = useState<Pagination>();
+  const [fetching, setFetching] = useState(false);
+
+  const [iklans, setIklans] = useState<IklanHome[]>([]);
+
+  const fetchIklans = useCallback(async () => {
+    if (fetching) {
+      return;
+    }
+    setFetching(true);
+
+    try {
+      const {
+        data: { data },
+      } = await axios.get<{
+        data: { data: IklanHome[]; pagination: Pagination };
+        message: string;
+        success: boolean;
+      }>(
+        stringifyUrl({
+          url: `${API_URL}/iklan`,
+          query: {
+            ...(sortBy !== '0' && { orderBy: sortBy }),
+            ...(sortDir !== '0' && { orderDir: sortDir }),
+            ...(pagination && { page: +pagination.currentPage + 1 }),
+            perPage: 8,
+          },
+        })
+      );
+      setIklans([...iklans, ...data.data]);
+      setPagination(data.pagination);
+    } finally {
+      setFetching(false);
+    }
+  }, [fetching, iklans, pagination, sortBy, sortDir]);
 
   const { data: refund } = useSWR<{
     data: { data: Refund[]; pagination: Pagination };
@@ -40,6 +78,9 @@ const JelajahIklanSection = () => {
     })
   );
 
+  const hasMoreItems =
+    !pagination || (pagination && pagination.currentPage < pagination.lastPage);
+
   const getRefundById = (id: string | number) => {
     if (!refund) return '';
     const res = refund.data.data.find((x) => +x.id === +id);
@@ -51,7 +92,7 @@ const JelajahIklanSection = () => {
   }
 
   return (
-    <section className='artworks-area artworks-area-bg pt-110 pb-100 z-index-1'>
+    <section className='artworks-area artworks-area-bg pt-110 z-index-1 pb-40'>
       <div className='container'>
         <div className='row wow fadeInUp'>
           <div className='col-lg-4'>
@@ -67,7 +108,11 @@ const JelajahIklanSection = () => {
                   id='s-t-select'
                   className='sale-type-select'
                   value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
+                  onChange={(e) => {
+                    setIklans([]);
+                    setPagination(undefined);
+                    setSortBy(e.target.value);
+                  }}
                 >
                   <option value='0'>Urutkan Dengan</option>
                   <option value='harga_akun'>Harga Akun</option>
@@ -80,7 +125,11 @@ const JelajahIklanSection = () => {
                   id='cat-select'
                   className='category-select'
                   value={sortDir}
-                  onChange={(e) => setSortDir(e.target.value)}
+                  onChange={(e) => {
+                    setIklans([]);
+                    setPagination(undefined);
+                    setSortDir(e.target.value);
+                  }}
                 >
                   <option value='0'>Urutan</option>
                   <option value='ASC'>Rendah ke tinggi</option>
@@ -90,15 +139,18 @@ const JelajahIklanSection = () => {
             </form>
           </div>
         </div>
-        <div className='row wow fadeInUp'>
-          {iklans.data.data.map((iklan, index) => (
-            <IklanCardSingle
-              iklan={iklan}
-              key={`${iklan.id}${index}`}
-              refund={getRefundById(iklan.jenis_refund)}
-            />
-          ))}
-        </div>
+
+        <InfiniteScroll loadMore={fetchIklans} hasMore={hasMoreItems}>
+          <div className='row wow fadeInUp'>
+            {iklans.map((iklan, index) => (
+              <IklanCardSingle
+                iklan={iklan}
+                key={`${iklan.id}${index}`}
+                refund={getRefundById(iklan.jenis_refund)}
+              />
+            ))}
+          </div>
+        </InfiniteScroll>
       </div>
     </section>
   );

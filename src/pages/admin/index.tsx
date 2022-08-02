@@ -280,7 +280,12 @@ const IndexPage = () => {
       <Seo templateTitle='Admin | Iklan' />
       <AnimatePage>
         <DashboardLayout>
-          <TableSearch setFilter={setFilter} />
+          <TableSearch
+            setFilter={(s: string) => {
+              setCurPage(0);
+              setFilter(s);
+            }}
+          />
           {iklans && (
             <>
               <ReactTable

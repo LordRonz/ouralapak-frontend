@@ -310,7 +310,12 @@ const IndexPage = () => {
       <Seo templateTitle='Admin | Invoice' />
       <AnimatePage>
         <DashboardLayout superAdmin>
-          <TableSearch setFilter={setFilter} />
+          <TableSearch
+            setFilter={(s: string) => {
+              setCurPage(0);
+              setFilter(s);
+            }}
+          />
           {admins && (
             <ReactTable data={data} columns={columns} withFooter={false} />
           )}

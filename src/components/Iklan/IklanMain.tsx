@@ -24,6 +24,7 @@ import Spinner from '@/components/Common/Spinner';
 import XButton from '@/components/Common/XButton';
 import ButtonLink from '@/components/links/ButtonLink';
 import { API_URL } from '@/constant/config';
+import { customSelectStyles } from '@/constant/select';
 import clsxm from '@/lib/clsxm';
 import toIDRCurrency from '@/lib/toIDRCurrency';
 import Bank from '@/types/bank';
@@ -109,7 +110,7 @@ const IklanMain = ({ id }: { id: number }) => {
 
   const jenisPembayaranOpts = banks?.data.data.map((b) => ({
     value: b.id,
-    label: b.rekening_name,
+    label: b.name,
   }));
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
@@ -309,7 +310,11 @@ const IklanMain = ({ id }: { id: number }) => {
                           open={open}
                           onClose={onCloseModal}
                           center
-                          classNames={{ modal: 'rounded-xl p-0' }}
+                          classNames={{
+                            modal: 'rounded-xl p-0 overflow-y-auto',
+                            root: 'overflow-y-auto',
+                            modalContainer: 'overflow-y-auto',
+                          }}
                           closeIcon={<XButton />}
                         >
                           <div className='row justify-content-center gap-y-6'>
@@ -407,6 +412,7 @@ const IklanMain = ({ id }: { id: number }) => {
                                                 onChange={(val) =>
                                                   onChange(val?.value)
                                                 }
+                                                styles={customSelectStyles}
                                               />
                                             )}
                                           />

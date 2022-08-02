@@ -281,7 +281,12 @@ const IndexPage = () => {
       <AnimatePage>
         <DashboardLayout superAdmin>
           <div className='flex justify-between'>
-            <TableSearch setFilter={setFilter} />
+            <TableSearch
+              setFilter={(s: string) => {
+                setCurPage(0);
+                setFilter(s);
+              }}
+            />
             <Button
               variant={theme === 'dark' ? 'dark' : 'light'}
               className='text-green-500 hover:text-green-600'
