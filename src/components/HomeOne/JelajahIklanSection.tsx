@@ -4,6 +4,7 @@ import React, { useCallback, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import useSWR from 'swr';
 
+import Button from '@/components/buttons/Button';
 import IklanCardSingle from '@/components/Cards/IklanCardSingle';
 import Spinner from '@/components/Common/Spinner';
 import { API_URL } from '@/constant/config';
@@ -31,6 +32,7 @@ const JelajahIklanSection = () => {
 
   const [pagination, setPagination] = useState<Pagination>();
   const [fetching, setFetching] = useState(false);
+  const [paginationLock, setPaginationLock] = useState(true);
 
   const [iklans, setIklans] = useState<IklanHome[]>([]);
 
@@ -38,6 +40,11 @@ const JelajahIklanSection = () => {
     if (fetching) {
       return;
     }
+
+    if (pagination && +pagination.currentPage % 3 === 0 && paginationLock) {
+      return;
+    }
+
     setFetching(true);
 
     try {
@@ -62,8 +69,9 @@ const JelajahIklanSection = () => {
       setPagination(data.pagination);
     } finally {
       setFetching(false);
+      if (!paginationLock) setPaginationLock(true);
     }
-  }, [fetching, iklans, pagination, sortBy, sortDir]);
+  }, [fetching, iklans, pagination, paginationLock, sortBy, sortDir]);
 
   const { data: refund } = useSWR<{
     data: { data: Refund[]; pagination: Pagination };
@@ -151,6 +159,16 @@ const JelajahIklanSection = () => {
             ))}
           </div>
         </InfiniteScroll>
+        {pagination &&
+          +pagination.currentPage % 3 === 0 &&
+          paginationLock &&
+          pagination.currentPage < pagination.lastPage && (
+            <div className='flex items-center justify-center'>
+              <Button onClick={() => setPaginationLock(false)}>
+                Muat lebih banyak
+              </Button>
+            </div>
+          )}
       </div>
     </section>
   );
