@@ -1110,7 +1110,20 @@ const UploadMain = () => {
                                   return;
                                 }
                                 const img = await resizeFile(
-                                  e.target.files[0],
+                                  await dataURLtoFile(
+                                    (await resizeFile(
+                                      e.target.files[0],
+                                      1360,
+                                      760,
+                                      'PNG',
+                                      100,
+                                      0,
+                                      undefined,
+                                      1360,
+                                      760
+                                    )) as string,
+                                    e.target.files[0].name
+                                  ),
                                   1360,
                                   760,
                                   'PNG',
