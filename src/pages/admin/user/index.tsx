@@ -21,6 +21,7 @@ import Tooltip from '@/components/Tooltip';
 import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
 import DashboardLayout from '@/dashboard/layout';
+import toastPromiseError from '@/lib/toastPromiseError';
 import Pagination from '@/types/pagination';
 import User from '@/types/user';
 
@@ -91,13 +92,9 @@ const IndexPage = () => {
             },
           },
           error: {
-            render: (e) => {
+            render: toastPromiseError(() => {
               setUpdBtnDisabled(false);
-              return (
-                (e?.data?.response?.data.message as string) ||
-                'Gagal update user!'
-              );
-            },
+            }, 'Gagal update user!'),
           },
         });
       }

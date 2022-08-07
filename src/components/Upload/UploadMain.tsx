@@ -34,6 +34,7 @@ import clsxm from '@/lib/clsxm';
 import dataURLtoFile from '@/lib/dataURLtoFile';
 import getAuthHeader from '@/lib/getAuthHeader';
 import resizeFile from '@/lib/resizeFile';
+import toastPromiseError from '@/lib/toastPromiseError';
 import toIDRCurrency from '@/lib/toIDRCurrency';
 import useAuthHeader from '@/services/authHeader';
 import Bank from '@/types/bank';
@@ -382,14 +383,10 @@ const UploadMain = () => {
           },
         },
         error: {
-          render: (e) => {
+          render: toastPromiseError(() => {
             setSubmitBtnDisabled(false);
             setOpenDialog(false);
-            return (
-              (e?.data?.response?.data.message as string) ||
-              'Gagal Submit Iklan!'
-            );
-          },
+          }, 'Gagal Submit Iklan!'),
         },
       }
     );

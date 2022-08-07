@@ -26,6 +26,7 @@ import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
 import DashboardLayout from '@/dashboard/layout';
 import clsxm from '@/lib/clsxm';
+import toastPromiseError from '@/lib/toastPromiseError';
 import BindingAcc from '@/types/bindingAccount';
 import Pagination from '@/types/pagination';
 
@@ -126,12 +127,7 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: (e) => {
-            return (
-              (e?.data?.response?.data.message as string) ||
-              'Gagal tambah binding account!'
-            );
-          },
+          render: toastPromiseError(undefined, 'Gagal tambah binding account!'),
         },
       }
     );
@@ -159,12 +155,7 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: (e) => {
-            return (
-              (e?.data?.response?.data.message as string) ||
-              'Gagal update binding account!'
-            );
-          },
+          render: toastPromiseError(undefined, 'Gagal update binding account!'),
         },
       }
     );
@@ -195,12 +186,10 @@ const IndexPage = () => {
             },
           },
           error: {
-            render: (e) => {
-              return (
-                (e?.data?.response?.data.message as string) ||
-                'Gagal hapus binding account!'
-              );
-            },
+            render: toastPromiseError(
+              undefined,
+              'Gagal hapus binding account!'
+            ),
           },
         });
       }

@@ -26,6 +26,7 @@ import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
 import DashboardLayout from '@/dashboard/layout';
 import clsxm from '@/lib/clsxm';
+import toastPromiseError from '@/lib/toastPromiseError';
 import EmblemMaster from '@/types/emblemMaster';
 import Pagination from '@/types/pagination';
 
@@ -126,12 +127,7 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: (e) => {
-            return (
-              (e?.data?.response?.data.message as string) ||
-              'Gagal tambah emblem!'
-            );
-          },
+          render: toastPromiseError(undefined, 'Gagal tambah emblem!'),
         },
       }
     );
@@ -159,12 +155,7 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: (e) => {
-            return (
-              (e?.data?.response?.data.message as string) ||
-              'Gagal update emblem!'
-            );
-          },
+          render: toastPromiseError(undefined, 'Gagal update config!'),
         },
       }
     );
@@ -195,12 +186,7 @@ const IndexPage = () => {
             },
           },
           error: {
-            render: (e) => {
-              return (
-                (e?.data?.response?.data.message as string) ||
-                'Gagal hapus emblem!'
-              );
-            },
+            render: toastPromiseError(undefined, 'Gagal hapus config!'),
           },
         });
       }

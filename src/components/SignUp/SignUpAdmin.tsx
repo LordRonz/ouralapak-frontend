@@ -12,6 +12,7 @@ import Captcha from '@/components/Common/Captcha';
 import Breadcrumbs from '@/components/Common/PageTitle';
 import ParticleComponent from '@/components/Common/ParticleComponent';
 import { API_URL } from '@/constant/config';
+import toastPromiseError from '@/lib/toastPromiseError';
 
 type IFormInput = {
   email: string;
@@ -63,12 +64,9 @@ const SignUpAdmin = () => {
           },
         },
         error: {
-          render: (e) => {
+          render: toastPromiseError(() => {
             setSignUpBtnDisabled(false);
-            return (
-              (e?.data?.response?.data.message as string) || 'Gagal register!'
-            );
-          },
+          }, 'Gagal register!'),
         },
       }
     );

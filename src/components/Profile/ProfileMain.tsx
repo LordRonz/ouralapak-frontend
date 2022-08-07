@@ -20,6 +20,7 @@ import XButton from '@/components/Common/XButton';
 import ProfileCard from '@/components/Profile/ProfileCard';
 import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
+import toastPromiseError from '@/lib/toastPromiseError';
 import useAuthHeader from '@/services/authHeader';
 import User from '@/types/user';
 
@@ -96,13 +97,9 @@ const ProfileMain = () => {
           },
         },
         error: {
-          render: (e) => {
+          render: toastPromiseError(() => {
             setUpdateBtnDisabled(false);
-            return (
-              (e?.data?.response?.data.message as string) ||
-              'Gagal update gambar profile!'
-            );
-          },
+          }, 'Gagal update gambar profile!'),
         },
       });
     })();
@@ -163,13 +160,9 @@ const ProfileMain = () => {
           },
         },
         error: {
-          render: (e) => {
+          render: toastPromiseError(() => {
             setUpdateBtnDisabled(false);
-            return (
-              (e?.data?.response?.data.message as string) ||
-              'Gagal update profil!'
-            );
-          },
+          }, 'Gagal update profil!'),
         },
       }
     );

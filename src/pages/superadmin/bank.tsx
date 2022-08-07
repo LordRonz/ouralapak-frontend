@@ -26,6 +26,7 @@ import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
 import DashboardLayout from '@/dashboard/layout';
 import clsxm from '@/lib/clsxm';
+import toastPromiseError from '@/lib/toastPromiseError';
 import Bank from '@/types/bank';
 import Pagination from '@/types/pagination';
 
@@ -128,12 +129,7 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: (e) => {
-            return (
-              (e?.data?.response?.data.message as string) ||
-              'Gagal tambah bank!'
-            );
-          },
+          render: toastPromiseError(undefined, 'Gagal tambah bank!'),
         },
       }
     );
@@ -161,12 +157,7 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: (e) => {
-            return (
-              (e?.data?.response?.data.message as string) ||
-              'Gagal update bank!'
-            );
-          },
+          render: toastPromiseError(undefined, 'Gagal update bank!'),
         },
       }
     );
@@ -197,12 +188,7 @@ const IndexPage = () => {
             },
           },
           error: {
-            render: (e) => {
-              return (
-                (e?.data?.response?.data.message as string) ||
-                'Gagal hapus bank!'
-              );
-            },
+            render: toastPromiseError(undefined, 'Gagal hapus bank!'),
           },
         });
       }

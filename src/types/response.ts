@@ -1,6 +1,6 @@
 export type APIResponse<T = string> = {
   success: boolean;
-  message: string;
+  message: string[];
   data?: T;
 };
 

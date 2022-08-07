@@ -26,6 +26,7 @@ import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
 import DashboardLayout from '@/dashboard/layout';
 import clsxm from '@/lib/clsxm';
+import toastPromiseError from '@/lib/toastPromiseError';
 import HeroMaster from '@/types/heroMaster';
 import Pagination from '@/types/pagination';
 
@@ -126,12 +127,7 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: (e) => {
-            return (
-              (e?.data?.response?.data.message as string) ||
-              'Gagal tambah hero!'
-            );
-          },
+          render: toastPromiseError(undefined, 'Gagal tambah hero!'),
         },
       }
     );
@@ -159,12 +155,7 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: (e) => {
-            return (
-              (e?.data?.response?.data.message as string) ||
-              'Gagal update hero!'
-            );
-          },
+          render: toastPromiseError(undefined, 'Gagal update hero!'),
         },
       }
     );
@@ -195,12 +186,7 @@ const IndexPage = () => {
             },
           },
           error: {
-            render: (e) => {
-              return (
-                (e?.data?.response?.data.message as string) ||
-                'Gagal hapus hero!'
-              );
-            },
+            render: toastPromiseError(undefined, 'Gagal hapus hero!'),
           },
         });
       }

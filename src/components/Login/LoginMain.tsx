@@ -12,6 +12,7 @@ import ButtonGradient from '@/components/buttons/ButtonGradient';
 import Breadcrumbs from '@/components/Common/PageTitle';
 import ParticleComponent from '@/components/Common/ParticleComponent';
 import { API_URL } from '@/constant/config';
+import toastPromiseError from '@/lib/toastPromiseError';
 import APIResponse from '@/types/response';
 import Roles from '@/types/roles';
 import { UserLogin } from '@/types/user';
@@ -83,12 +84,9 @@ const LoginMain = () => {
           },
         },
         error: {
-          render: (e) => {
+          render: toastPromiseError(() => {
             setLoginBtnDisabled(false);
-            return (
-              (e?.data?.response?.data.message as string) || 'Gagal login!'
-            );
-          },
+          }, 'Gagal login!'),
         },
       }
     );

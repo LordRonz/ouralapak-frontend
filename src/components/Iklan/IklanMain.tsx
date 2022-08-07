@@ -26,6 +26,7 @@ import ButtonLink from '@/components/links/ButtonLink';
 import { API_URL } from '@/constant/config';
 import { customSelectStyles } from '@/constant/select';
 import clsxm from '@/lib/clsxm';
+import toastPromiseError from '@/lib/toastPromiseError';
 import toIDRCurrency from '@/lib/toIDRCurrency';
 import Bank from '@/types/bank';
 import { IklanDetail, IklanHome } from '@/types/iklan';
@@ -154,12 +155,9 @@ const IklanMain = ({ id }: { id: number }) => {
           },
         },
         error: {
-          render: (e) => {
+          render: toastPromiseError(() => {
             setBeliBtnDisabled(false);
-            return (
-              (e?.data?.response?.data.message as string) || 'Gagal beli akun!'
-            );
-          },
+          }, 'Gagal beli akun!'),
         },
       }
     );

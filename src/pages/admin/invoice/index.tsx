@@ -23,6 +23,7 @@ import { mySwalOpts } from '@/constant/swal';
 import DashboardLayout from '@/dashboard/layout';
 import formatDateStrId from '@/lib/formatDateStrId';
 import { StatusIklanEnum } from '@/lib/getStatusIklan';
+import toastPromiseError from '@/lib/toastPromiseError';
 import { getStatusInvoice, JenisInvoice, StatusInvoice } from '@/types/invoice';
 import InvoiceAdmin from '@/types/invoiceAdmin';
 import Pagination from '@/types/pagination';
@@ -119,13 +120,9 @@ const IndexPage = () => {
               },
             },
             error: {
-              render: (e) => {
+              render: toastPromiseError(() => {
                 setDelBtnDisabled(false);
-                return (
-                  (e?.data?.response?.data.message as string) ||
-                  'Gagal update invoice!'
-                );
-              },
+              }, 'Gagal update invoice!'),
             },
           }
         );

@@ -9,6 +9,7 @@ import ButtonGradient from '@/components/buttons/ButtonGradient';
 import Breadcrumbs from '@/components/Common/PageTitle';
 import ParticleComponent from '@/components/Common/ParticleComponent';
 import { API_URL } from '@/constant/config';
+import toastPromiseError from '@/lib/toastPromiseError';
 
 type IFormInput = {
   password: string;
@@ -46,13 +47,9 @@ const ResetPasswordMain = () => {
           },
         },
         error: {
-          render: (e) => {
+          render: toastPromiseError(() => {
             setResetBtnDisabled(false);
-            return (
-              (e?.data?.response?.data.message as string) ||
-              'Gagal reset password!, Silahkan coba lagi'
-            );
-          },
+          }, 'Gagal reset password!, Silahkan coba lagi'),
         },
       }
     );

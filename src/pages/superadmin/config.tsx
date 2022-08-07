@@ -24,6 +24,7 @@ import Tooltip from '@/components/Tooltip';
 import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
 import DashboardLayout from '@/dashboard/layout';
+import toastPromiseError from '@/lib/toastPromiseError';
 import Config from '@/types/config';
 import Pagination from '@/types/pagination';
 
@@ -112,12 +113,7 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: (e) => {
-            return (
-              (e?.data?.response?.data.message as string) ||
-              'Gagal tambah config!'
-            );
-          },
+          render: toastPromiseError(undefined, 'Gagal tambah config!'),
         },
       }
     );
@@ -145,12 +141,7 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: (e) => {
-            return (
-              (e?.data?.response?.data.message as string) ||
-              'Gagal update config!'
-            );
-          },
+          render: toastPromiseError(undefined, 'Gagal update config!'),
         },
       }
     );
@@ -181,12 +172,7 @@ const IndexPage = () => {
             },
           },
           error: {
-            render: (e) => {
-              return (
-                (e?.data?.response?.data.message as string) ||
-                'Gagal hapus config!'
-              );
-            },
+            render: toastPromiseError(undefined, 'Gagal hapus config!'),
           },
         });
       }

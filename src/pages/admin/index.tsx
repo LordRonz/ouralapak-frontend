@@ -30,6 +30,7 @@ import DashboardLayout from '@/dashboard/layout';
 import { clsxm } from '@/lib/clsxm';
 import formatDateStrId from '@/lib/formatDateStrId';
 import getStatusIklan, { statusIklanArray } from '@/lib/getStatusIklan';
+import toastPromiseError from '@/lib/toastPromiseError';
 import useAuthHeader from '@/services/authHeader';
 import type InvoiceAdmin from '@/types/invoiceAdmin';
 import type Pagination from '@/types/pagination';
@@ -127,13 +128,9 @@ const IndexPage = () => {
             },
           },
           error: {
-            render: (e) => {
+            render: toastPromiseError(() => {
               setUpdateBtnDisabled(false);
-              return (
-                (e?.data?.response?.data.message as string) ||
-                'Gagal update iklan!'
-              );
-            },
+            }, 'Gagal update iklan!'),
           },
         }
       );
@@ -167,13 +164,9 @@ const IndexPage = () => {
             },
           },
           error: {
-            render: (e) => {
+            render: toastPromiseError(() => {
               setDelBtnDisabled(false);
-              return (
-                (e?.data?.response?.data.message as string) ||
-                'Gagal menghapus iklan!'
-              );
-            },
+            }, 'Gagal menghapus iklan!'),
           },
         });
       }

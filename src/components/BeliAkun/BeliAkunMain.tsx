@@ -17,6 +17,7 @@ import Breadcrumbs from '@/components/Common/PageTitle';
 import Spinner from '@/components/Common/Spinner';
 import { API_URL } from '@/constant/config';
 import clsxm from '@/lib/clsxm';
+import toastPromiseError from '@/lib/toastPromiseError';
 import Bank from '@/types/bank';
 import { InvoicePembeli } from '@/types/invoice';
 import Pagination from '@/types/pagination';
@@ -88,12 +89,9 @@ const BeliAkunMain = ({ id }: { id: number }) => {
           },
         },
         error: {
-          render: (e) => {
+          render: toastPromiseError(() => {
             setBeliBtnDisabled(false);
-            return (
-              (e?.data?.response?.data.message as string) || 'Gagal beli akun!'
-            );
-          },
+          }, 'Gagal beli akun!'),
         },
       }
     );
