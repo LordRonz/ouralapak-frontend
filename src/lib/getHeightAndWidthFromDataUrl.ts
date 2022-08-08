@@ -1,4 +1,7 @@
-export const getHeightAndWidthFromDataUrl = (dataURL: string) =>
+export const getHeightAndWidthFromDataUrl = (
+  dataURL: string,
+  revoke?: boolean
+) =>
   new Promise<{ height: number; width: number }>((resolve) => {
     const img = new Image();
     img.onload = () => {
@@ -6,7 +9,7 @@ export const getHeightAndWidthFromDataUrl = (dataURL: string) =>
         height: img.height,
         width: img.width,
       });
-      URL.revokeObjectURL(dataURL);
+      revoke && URL.revokeObjectURL(dataURL);
     };
     img.src = dataURL;
   });

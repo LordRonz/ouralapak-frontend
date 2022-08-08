@@ -33,6 +33,7 @@ import { customSelectStyles, customSelectStylesMulti } from '@/constant/select';
 import clsxm from '@/lib/clsxm';
 import dataURLtoFile from '@/lib/dataURLtoFile';
 import getAuthHeader from '@/lib/getAuthHeader';
+import getHeightAndWidthFromDataUrl from '@/lib/getHeightAndWidthFromDataUrl';
 import resizeFile from '@/lib/resizeFile';
 import toastPromiseError from '@/lib/toastPromiseError';
 import toIDRCurrency from '@/lib/toIDRCurrency';
@@ -419,6 +420,47 @@ const UploadMain = () => {
       });
     }
   }, [emblemOpts, emblemOptsSet, getValues, saveData, totalEmblemFields]);
+
+  const twibbonize = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setImage?: (value: React.SetStateAction<File | File[] | null>) => void
+  ) => {
+    if (!e.target.files?.[0]) {
+      return;
+    }
+    const img = await resizeFile(
+      await dataURLtoFile(
+        (await resizeFile(
+          e.target.files[0],
+          1360,
+          760,
+          'PNG',
+          100,
+          0,
+          undefined,
+          1360,
+          760
+        )) as string,
+        e.target.files[0].name
+      ),
+      1360,
+      760,
+      'PNG',
+      100,
+      0
+    );
+    const { height, width } = await getHeightAndWidthFromDataUrl(img as string);
+    const twibbonizedImg = await mergeImages([
+      {
+        src: img as string,
+        x: 68 + 680 - Math.round(width / 2),
+        y: 288 + 380 - Math.round(height / 2),
+      },
+      '/images/twibbon.png',
+    ]);
+    setImage &&
+      setImage(await dataURLtoFile(twibbonizedImg, e.target.files[0].name));
+  };
 
   if (totalSkinRareFields.fields.length < 1) {
     totalSkinRareFields.append({
@@ -1105,41 +1147,8 @@ const UploadMain = () => {
                           <div className='flex items-center gap-x-2'>
                             <input
                               type='file'
-                              onChange={async (e) => {
-                                if (!e.target.files?.[0]) {
-                                  return;
-                                }
-                                const img = await resizeFile(
-                                  await dataURLtoFile(
-                                    (await resizeFile(
-                                      e.target.files[0],
-                                      1360,
-                                      760,
-                                      'PNG',
-                                      100,
-                                      0,
-                                      undefined,
-                                      1360,
-                                      760
-                                    )) as string,
-                                    e.target.files[0].name
-                                  ),
-                                  1360,
-                                  760,
-                                  'PNG',
-                                  100,
-                                  0
-                                );
-                                const twibbonizedImg = await mergeImages([
-                                  { src: img as string, x: 68, y: 288 },
-                                  '/images/twibbon.png',
-                                ]);
-                                setImageWinRateHero(
-                                  await dataURLtoFile(
-                                    twibbonizedImg,
-                                    e.target.files[0].name
-                                  )
-                                );
+                              onChange={(e) => {
+                                twibbonize(e, setImageWinRateHero);
                               }}
                             />
                             {imageWinRateHero && (
@@ -1170,28 +1179,8 @@ const UploadMain = () => {
                           <div className='flex items-center gap-x-2'>
                             <input
                               type='file'
-                              onChange={async (e) => {
-                                if (!e.target.files?.[0]) {
-                                  return;
-                                }
-                                const img = await resizeFile(
-                                  e.target.files[0],
-                                  1360,
-                                  760,
-                                  'PNG',
-                                  100,
-                                  0
-                                );
-                                const twibbonizedImg = await mergeImages([
-                                  { src: img as string, x: 68, y: 288 },
-                                  '/images/twibbon.png',
-                                ]);
-                                setImageWinRate(
-                                  await dataURLtoFile(
-                                    twibbonizedImg,
-                                    e.target.files[0].name
-                                  )
-                                );
+                              onChange={(e) => {
+                                twibbonize(e, setImageWinRate);
                               }}
                             />
                             {imageWinRate && (
@@ -1220,28 +1209,8 @@ const UploadMain = () => {
                           <div className='flex items-center gap-x-2'>
                             <input
                               type='file'
-                              onChange={async (e) => {
-                                if (!e.target.files?.[0]) {
-                                  return;
-                                }
-                                const img = await resizeFile(
-                                  e.target.files[0],
-                                  1360,
-                                  760,
-                                  'PNG',
-                                  100,
-                                  0
-                                );
-                                const twibbonizedImg = await mergeImages([
-                                  { src: img as string, x: 68, y: 288 },
-                                  '/images/twibbon.png',
-                                ]);
-                                setImageProfile(
-                                  await dataURLtoFile(
-                                    twibbonizedImg,
-                                    e.target.files[0].name
-                                  )
-                                );
+                              onChange={(e) => {
+                                twibbonize(e, setImageProfile);
                               }}
                             />
                             {imageProfile && (
@@ -1270,28 +1239,8 @@ const UploadMain = () => {
                           <div className='flex items-center gap-x-2'>
                             <input
                               type='file'
-                              onChange={async (e) => {
-                                if (!e.target.files?.[0]) {
-                                  return;
-                                }
-                                const img = await resizeFile(
-                                  e.target.files[0],
-                                  1360,
-                                  760,
-                                  'PNG',
-                                  100,
-                                  0
-                                );
-                                const twibbonizedImg = await mergeImages([
-                                  { src: img as string, x: 68, y: 288 },
-                                  '/images/twibbon.png',
-                                ]);
-                                setImageEmblem(
-                                  await dataURLtoFile(
-                                    twibbonizedImg,
-                                    e.target.files[0].name
-                                  )
-                                );
+                              onChange={(e) => {
+                                twibbonize(e, setImageEmblem);
                               }}
                             />
                             {imageEmblem && (
@@ -1335,16 +1284,38 @@ const UploadMain = () => {
                                   if (!e.target.files?.[i]) {
                                     break;
                                   }
+
                                   const img = await resizeFile(
-                                    e.target.files[i],
+                                    await dataURLtoFile(
+                                      (await resizeFile(
+                                        e.target.files[i],
+                                        1360,
+                                        760,
+                                        'PNG',
+                                        100,
+                                        0,
+                                        undefined,
+                                        1360,
+                                        760
+                                      )) as string,
+                                      e.target.files[i].name
+                                    ),
                                     1360,
                                     760,
                                     'PNG',
                                     100,
                                     0
                                   );
+                                  const { height, width } =
+                                    await getHeightAndWidthFromDataUrl(
+                                      img as string
+                                    );
                                   const twibbonizedImg = await mergeImages([
-                                    { src: img as string, x: 68, y: 288 },
+                                    {
+                                      src: img as string,
+                                      x: 68 + 680 - Math.round(width / 2),
+                                      y: 288 + 380 - Math.round(height / 2),
+                                    },
                                     '/images/twibbon.png',
                                   ]);
 
