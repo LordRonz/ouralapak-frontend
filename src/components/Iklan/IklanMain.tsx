@@ -455,7 +455,9 @@ const IklanMain = ({ id }: { id: number }) => {
                         {toIDRCurrency(iklan.data.harga_akun)}
                       </div>
                     </div>
-                    <div className='art-meta-item pl-3'>
+                  </div>
+                  <div className='art-details-meta-info my-8 grid grid-cols-2 divide-x-2'>
+                    <div className='art-meta-item'>
                       <div className='art-meta-type'>Win Rate</div>
                       <div className='art-sale'>{iklan.data.win_rate} %</div>
                     </div>
