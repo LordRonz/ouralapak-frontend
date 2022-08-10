@@ -58,6 +58,8 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
     return <Spinner />;
   }
 
+  console.log(invoice);
+
   return (
     <main>
       <section className='pb-12'>
@@ -160,7 +162,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                   <div className='flex flex-col justify-center px-4'>
                     <h4 className='text-base md:text-lg'>Telp.</h4>
                     <h3 className='text-dark dark:!text-light'>
-                      +{iklan?.data.user.phone}
+                      {iklan?.data.user.phone}
                     </h3>
                   </div>
                 </div>
@@ -171,10 +173,10 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                 </div>
                 <div className='grid grid-cols-2 pt-3'>
                   <p className='text-lg font-extrabold text-dark dark:!text-light'>
-                    Harga Akun
+                    Biaya Penjualan
                   </p>
                   <p className='text-right text-dark dark:!text-light'>
-                    {toIDRCurrency(invoice?.data.harga_akun)}
+                    {toIDRCurrency(invoice?.data.biaya_penjualan)}
                   </p>
                 </div>
                 <div className='grid grid-cols-2 pt-3'>
@@ -182,15 +184,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                     Biaya Rekber
                   </p>
                   <p className='text-right text-dark dark:!text-light'>
-                    {toIDRCurrency(invoice?.data.biaya_rekber)}
-                  </p>
-                </div>
-                <div className='grid grid-cols-2 pt-3'>
-                  <p className='text-lg font-extrabold text-dark dark:!text-light'>
-                    Biaya Admin
-                  </p>
-                  <p className='text-right text-dark dark:!text-light'>
-                    {toIDRCurrency(invoice.data.biaya_admin)}
+                    {toIDRCurrency(invoice?.data.kode_unik)}
                   </p>
                 </div>
                 <div className='grid grid-cols-2 pt-3'>
@@ -199,9 +193,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                   </p>
                   <p className='text-right text-2xl font-extrabold text-dark dark:!text-light'>
                     {toIDRCurrency(
-                      +invoice.data.harga_akun +
-                        +invoice?.data.biaya_admin +
-                        +invoice?.data.biaya_rekber
+                      +invoice.data.biaya_penjualan + +invoice?.data.kode_unik
                     )}
                   </p>
                 </div>

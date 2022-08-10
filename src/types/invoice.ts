@@ -38,6 +38,7 @@ type Invoice = {
   phone: string;
   id: number;
   iklan_id: number;
+  kode_unik: number;
   jenis_invoice: JenisInvoice;
   jenis_pembayaran: {
     created_at: string;

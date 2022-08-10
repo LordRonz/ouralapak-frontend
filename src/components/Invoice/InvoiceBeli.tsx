@@ -151,7 +151,7 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
                   <div className='flex flex-col justify-center px-4'>
                     <h4 className='text-base md:text-lg'>Telp.</h4>
                     <h3 className='text-dark dark:!text-light'>
-                      +{invoice?.data.phone}
+                      {invoice?.data.phone}
                     </h3>
                   </div>
                 </div>

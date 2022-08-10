@@ -12,7 +12,7 @@ import {
   useFieldArray,
   useForm,
 } from 'react-hook-form';
-import { HiEye, HiPlus } from 'react-icons/hi';
+import { HiPlus } from 'react-icons/hi';
 import Lightbox from 'react-image-lightbox';
 import Select, { SingleValue } from 'react-select';
 import { Theme, toast } from 'react-toastify';
@@ -27,6 +27,7 @@ import Spinner from '@/components/Common/Spinner';
 import XButton from '@/components/Common/XButton';
 import UnstyledLink from '@/components/links/UnstyledLink';
 import ConfirmationDialog from '@/components/Upload/Dialog';
+import StyledInputFile from '@/components/Upload/StyledInputFile';
 import { selectDarkTheme } from '@/constant/colors';
 import { API_URL } from '@/constant/config';
 import { customSelectStyles, customSelectStylesMulti } from '@/constant/select';
@@ -292,6 +293,8 @@ const UploadMain = () => {
   const [imageSkin, setImageSkin] = useState<File | File[] | null>(null);
   const headers = useAuthHeader();
 
+  const [imgSkinField, setImgSkinField] = useState(0);
+
   const [responseCaptcha, setResponseCapthca] = useState<string | null>(null);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
@@ -318,27 +321,29 @@ const UploadMain = () => {
       );
     });
     if (Array.isArray(imageProfile)) {
-      imageProfile.forEach((v) => form.append('image_profile', v));
+      imageProfile.forEach((v) => v && form.append('image_profile', v));
     } else {
       form.append('image_profile', imageProfile);
     }
     if (Array.isArray(imageWinRate)) {
-      imageWinRate.forEach((v) => form.append('image_win_rate', v));
+      imageWinRate.forEach((v) => v && form.append('image_win_rate', v));
     } else {
       form.append('image_win_rate', imageWinRate);
     }
     if (Array.isArray(imageWinRateHero)) {
-      imageWinRateHero.forEach((v) => form.append('image_win_rate_hero', v));
+      imageWinRateHero.forEach(
+        (v) => v && form.append('image_win_rate_hero', v)
+      );
     } else {
       form.append('image_win_rate_hero', imageWinRateHero);
     }
     if (Array.isArray(imageEmblem)) {
-      imageEmblem.forEach((v) => form.append('image_emblem', v));
+      imageEmblem.forEach((v) => v && form.append('image_emblem', v));
     } else {
       form.append('image_emblem', imageEmblem);
     }
     if (Array.isArray(imageSkin)) {
-      imageSkin.forEach((v) => form.append('image_skin', v));
+      imageSkin.forEach((v) => v && form.append('image_skin', v));
     } else {
       form.append('image_skin', imageSkin);
     }
@@ -357,6 +362,7 @@ const UploadMain = () => {
     // for (const pair of form.entries()) {
     //   console.log(pair[0] + ', ' + pair[1]);
     // }
+    // return;
     const res = await toast.promise(
       axios.post(
         stringifyUrl({
@@ -423,7 +429,7 @@ const UploadMain = () => {
 
   const twibbonize = async (
     e: React.ChangeEvent<HTMLInputElement>,
-    setImage?: (value: React.SetStateAction<File | File[] | null>) => void
+    setImage?: (value: File | File[] | null) => void
   ) => {
     if (!e.target.files?.[0]) {
       return;
@@ -1144,20 +1150,26 @@ const UploadMain = () => {
                           <label className='mb-2 text-base font-bold text-[#171717] dark:text-white'>
                             Win Rate Hero
                           </label>
-                          <div className='flex items-center gap-x-2'>
-                            <input
-                              type='file'
+                          <div className='single-input-unit flex items-center gap-x-2'>
+                            <StyledInputFile
                               onChange={(e) => {
                                 twibbonize(e, setImageWinRateHero);
                               }}
-                            />
+                              labelClassName={clsxm(
+                                !imageWinRateHero && '!text-neutral-500'
+                              )}
+                            >
+                              {imageWinRateHero
+                                ? (imageWinRateHero as File).name
+                                : 'Silahkan pilih gambar'}
+                            </StyledInputFile>
                             {imageWinRateHero && (
                               <Button
                                 variant='success'
-                                className='self-end !rounded-full !p-1'
+                                className='h-[50px] !rounded-md'
                                 onClick={() => setPreviewWinRateHero(true)}
                               >
-                                <HiEye />
+                                Lihat
                               </Button>
                             )}
                           </div>
@@ -1176,20 +1188,26 @@ const UploadMain = () => {
                           <label className='mb-2 text-base font-bold text-[#171717] dark:text-white'>
                             Win Rate
                           </label>
-                          <div className='flex items-center gap-x-2'>
-                            <input
-                              type='file'
+                          <div className='single-input-unit flex items-center gap-x-2'>
+                            <StyledInputFile
                               onChange={(e) => {
                                 twibbonize(e, setImageWinRate);
                               }}
-                            />
+                              labelClassName={clsxm(
+                                !imageWinRate && '!text-neutral-500'
+                              )}
+                            >
+                              {imageWinRate
+                                ? (imageWinRate as File).name
+                                : 'Silahkan pilih gambar'}
+                            </StyledInputFile>
                             {imageWinRate && (
                               <Button
                                 variant='success'
-                                className='self-end !rounded-full !p-1'
+                                className='h-[50px] !rounded-md'
                                 onClick={() => setPreviewWinRate(true)}
                               >
-                                <HiEye />
+                                Lihat
                               </Button>
                             )}
                           </div>
@@ -1206,20 +1224,26 @@ const UploadMain = () => {
                           <label className='mb-2 text-base font-bold text-[#171717] dark:text-white'>
                             Profile
                           </label>
-                          <div className='flex items-center gap-x-2'>
-                            <input
-                              type='file'
+                          <div className='single-input-unit flex items-center gap-x-2'>
+                            <StyledInputFile
                               onChange={(e) => {
                                 twibbonize(e, setImageProfile);
                               }}
-                            />
+                              labelClassName={clsxm(
+                                !imageProfile && '!text-neutral-500'
+                              )}
+                            >
+                              {imageProfile
+                                ? (imageProfile as File).name
+                                : 'Silahkan pilih gambar'}
+                            </StyledInputFile>
                             {imageProfile && (
                               <Button
                                 variant='success'
-                                className='self-end !rounded-full !p-1'
+                                className='h-[50px] !rounded-md'
                                 onClick={() => setPreviewImgProfile(true)}
                               >
-                                <HiEye />
+                                Lihat
                               </Button>
                             )}
                           </div>
@@ -1236,20 +1260,26 @@ const UploadMain = () => {
                           <label className='mb-2 text-base font-bold text-[#171717] dark:text-white'>
                             Emblem
                           </label>
-                          <div className='flex items-center gap-x-2'>
-                            <input
-                              type='file'
+                          <div className='single-input-unit flex items-center gap-x-2'>
+                            <StyledInputFile
                               onChange={(e) => {
                                 twibbonize(e, setImageEmblem);
                               }}
-                            />
+                              labelClassName={clsxm(
+                                !imageEmblem && '!text-neutral-500'
+                              )}
+                            >
+                              {imageEmblem
+                                ? (imageEmblem as File).name
+                                : 'Silahkan pilih gambar'}
+                            </StyledInputFile>
                             {imageEmblem && (
                               <Button
                                 variant='success'
-                                className='self-end !rounded-full !p-1'
+                                className='h-[50px] !rounded-md'
                                 onClick={() => setPreviewEmblem(true)}
                               >
-                                <HiEye />
+                                Lihat
                               </Button>
                             )}
                           </div>
@@ -1261,122 +1291,150 @@ const UploadMain = () => {
                           />
                         )}
                       </div>
-                      <div>
+                      <div className='col-span-2'>
                         <div className=''>
-                          <label className='mb-2 text-base font-bold text-[#171717] dark:text-white'>
-                            Skin
+                          <label className='mb-2 space-x-4 text-base font-bold text-[#171717] dark:text-white'>
+                            <span>Skin</span>{' '}
+                            <Button
+                              variant='success'
+                              className='!rounded-full !p-1'
+                              onClick={() =>
+                                imgSkinField < 4 &&
+                                setImgSkinField(imgSkinField + 1)
+                              }
+                            >
+                              <HiPlus />
+                            </Button>
+                            <span className='text-neutral-400'>
+                              * dapat memilih lebih dari satu
+                            </span>
                           </label>
-                          <div className='flex items-center gap-x-2'>
-                            <input
-                              type='file'
-                              onChange={async (e) => {
-                                if (!e.target.files) {
-                                  return;
-                                }
-
-                                const imgArr = [];
-
-                                for (
-                                  let i = 0;
-                                  i < e.target.files.length;
-                                  ++i
-                                ) {
-                                  if (!e.target.files?.[i]) {
-                                    break;
-                                  }
-
-                                  const img = await resizeFile(
-                                    await dataURLtoFile(
-                                      (await resizeFile(
-                                        e.target.files[i],
-                                        1360,
-                                        760,
-                                        'PNG',
-                                        100,
-                                        0,
-                                        undefined,
-                                        1360,
-                                        760
-                                      )) as string,
-                                      e.target.files[i].name
-                                    ),
-                                    1360,
-                                    760,
-                                    'PNG',
-                                    100,
-                                    0
-                                  );
-                                  const { height, width } =
-                                    await getHeightAndWidthFromDataUrl(
-                                      img as string
-                                    );
-                                  const twibbonizedImg = await mergeImages([
-                                    {
-                                      src: img as string,
-                                      x: 68 + 680 - Math.round(width / 2),
-                                      y: 288 + 380 - Math.round(height / 2),
-                                    },
-                                    '/images/twibbon.png',
-                                  ]);
-
-                                  imgArr.push(
-                                    await dataURLtoFile(
-                                      twibbonizedImg,
-                                      e.target.files[i].name
-                                    )
-                                  );
-                                }
-
-                                setImageSkin([
-                                  ...(Array.isArray(imageSkin)
-                                    ? imageSkin
-                                    : []),
-                                  ...imgArr,
-                                ]);
-                              }}
-                            />
-                            {imageSkin && (
-                              <Button
-                                variant='success'
-                                className='self-end !rounded-full !p-1'
-                                onClick={() => setPreviewSkin(true)}
+                          <div className='flex flex-col gap-y-2'>
+                            {[...Array(imgSkinField + 1)].map((f, i) => (
+                              <div
+                                className='single-input-unit flex items-center gap-x-2'
+                                key={`${f}${i}`}
                               >
-                                <HiEye />
-                              </Button>
-                            )}
+                                <StyledInputFile
+                                  onChange={(e) => {
+                                    twibbonize(e, (a: File | File[] | null) => {
+                                      const b = [
+                                        ...((imageSkin as File[]) ?? []),
+                                      ];
+                                      b[i] = a as File;
+                                      setImageSkin(b);
+                                    });
+                                  }}
+                                  labelClassName={clsxm(
+                                    (!imageSkin || !(imageSkin as File[])[i]) &&
+                                      '!text-neutral-500'
+                                  )}
+                                >
+                                  {imageSkin && (imageSkin as File[])[i]
+                                    ? (imageSkin as File[])[i].name
+                                    : 'Silahkan pilih gambar'}
+                                </StyledInputFile>
+                                {imgSkinField > 0 && (
+                                  <Button
+                                    variant='danger'
+                                    className='h-[50px] !rounded-md'
+                                    onClick={() => {
+                                      const b = [
+                                        ...((imageSkin as File[]) ?? []),
+                                      ];
+                                      b.splice(i, 1);
+                                      imgSkinField &&
+                                        setImgSkinField(imgSkinField - 1);
+                                      setImageSkin(b);
+                                    }}
+                                  >
+                                    Cancel
+                                  </Button>
+                                )}
+                                {imageSkin && (imageSkin as File[])[i] && (
+                                  <>
+                                    <Button
+                                      variant='success'
+                                      className='h-[50px] !rounded-md'
+                                      onClick={() => {
+                                        setSkinIndex(i);
+                                        setPreviewSkin(true);
+                                      }}
+                                    >
+                                      Lihat
+                                    </Button>
+                                  </>
+                                )}
+                              </div>
+                            ))}
                           </div>
-                          <p>* dapat memilih lebih dari satu</p>
                         </div>
-                        {previewSkin && imageSkin && (
-                          <Lightbox
-                            mainSrc={URL.createObjectURL(
-                              (imageSkin as File[])[skinIndex] as File
-                            )}
-                            nextSrc={URL.createObjectURL(
-                              (imageSkin as File[])[
-                                (skinIndex + 1) % (imageSkin as File[]).length
-                              ] as File
-                            )}
-                            prevSrc={URL.createObjectURL(
-                              (imageSkin as File[])[
-                                (skinIndex + (imageSkin as File[]).length - 1) %
-                                  (imageSkin as File[]).length
-                              ] as File
-                            )}
-                            onCloseRequest={() => setPreviewSkin(false)}
-                            onMovePrevRequest={() =>
-                              setSkinIndex(
-                                (skinIndex + (imageSkin as File[]).length - 1) %
-                                  (imageSkin as File[]).length
-                              )
-                            }
-                            onMoveNextRequest={() =>
-                              setSkinIndex(
-                                (skinIndex + 1) % (imageSkin as File[]).length
-                              )
-                            }
-                          />
-                        )}
+                        {previewSkin &&
+                          imageSkin &&
+                          (imageSkin as File[])[skinIndex] && (
+                            <Lightbox
+                              mainSrc={
+                                (imageSkin as File[])[skinIndex] &&
+                                URL.createObjectURL(
+                                  (imageSkin as File[])[skinIndex]
+                                )
+                              }
+                              nextSrc={
+                                (imageSkin as File[]).length >
+                                  (skinIndex + 1) %
+                                    (imageSkin as File[]).length &&
+                                ((imageSkin as File[])[
+                                  (skinIndex + 1) % (imageSkin as File[]).length
+                                ] as File)
+                                  ? URL.createObjectURL(
+                                      (imageSkin as File[])[
+                                        (skinIndex + 1) %
+                                          (imageSkin as File[]).length
+                                      ] as File
+                                    )
+                                  : undefined
+                              }
+                              prevSrc={
+                                ((imageSkin as File[])[
+                                  (skinIndex +
+                                    (imageSkin as File[]).length -
+                                    1) %
+                                    (imageSkin as File[]).length
+                                ] as File) &&
+                                URL.createObjectURL(
+                                  (imageSkin as File[])[
+                                    (skinIndex +
+                                      (imageSkin as File[]).length -
+                                      1) %
+                                      (imageSkin as File[]).length
+                                  ] as File
+                                )
+                              }
+                              onCloseRequest={() => setPreviewSkin(false)}
+                              onMovePrevRequest={() =>
+                                (imageSkin as File[])[
+                                  (skinIndex +
+                                    (imageSkin as File[]).length -
+                                    1) %
+                                    (imageSkin as File[]).length
+                                ] &&
+                                setSkinIndex(
+                                  (skinIndex +
+                                    (imageSkin as File[]).length -
+                                    1) %
+                                    (imageSkin as File[]).length
+                                )
+                              }
+                              onMoveNextRequest={() =>
+                                (imageSkin as File[])[
+                                  (skinIndex + 1) % (imageSkin as File[]).length
+                                ] &&
+                                setSkinIndex(
+                                  (skinIndex + 1) % (imageSkin as File[]).length
+                                )
+                              }
+                            />
+                          )}
                       </div>
                     </div>
                   </div>
