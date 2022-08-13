@@ -98,7 +98,7 @@ const SellerMain = () => {
     }
   };
 
-  if (!authorized || !iklans || !user) {
+  if (!authorized || !user) {
     return <Spinner />;
   }
 

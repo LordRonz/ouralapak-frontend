@@ -14,9 +14,7 @@ const IklanCard = ({ iklan }: { iklan: Iklan }) => {
             src={
               iklan.user.profile_picture
                 ? `${API_URL}${iklan.user.profile_picture}`
-                : `https://robohash.org/${
-                    iklan.user.username || 'AMOGUS'
-                  }?set=set4`
+                : `/images/pfp.jpg`
             }
             alt='Picture of the author'
             width={500}

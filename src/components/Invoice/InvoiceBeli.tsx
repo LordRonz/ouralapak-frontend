@@ -178,10 +178,16 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
                 </div>
                 <div className='grid grid-cols-2 pt-3'>
                   <p className='text-lg font-extrabold text-dark dark:!text-light'>
-                    Biaya Admin
+                    {invoice.data.va || invoice.data.qris
+                      ? 'Biaya Admin'
+                      : 'Kode Unik'}
                   </p>
                   <p className='text-right text-dark dark:!text-light'>
-                    {toIDRCurrency(invoice.data.biaya_admin)}
+                    {toIDRCurrency(
+                      invoice.data.va || invoice.data.qris
+                        ? invoice.data.biaya_admin
+                        : invoice.data.kode_unik
+                    )}
                   </p>
                 </div>
                 <div className='grid grid-cols-2 pt-3'>
@@ -191,7 +197,9 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
                   <p className='text-right text-2xl font-extrabold text-dark dark:!text-light'>
                     {toIDRCurrency(
                       +invoice.data.harga_akun +
-                        +invoice?.data.biaya_admin +
+                        +(invoice.data.va || invoice.data.qris
+                          ? invoice.data.biaya_admin
+                          : invoice.data.kode_unik) +
                         +invoice?.data.biaya_rekber
                     )}
                   </p>

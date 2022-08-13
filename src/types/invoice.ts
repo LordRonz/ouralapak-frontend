@@ -58,6 +58,7 @@ type Invoice = {
   user_id: number;
   win_rate: number;
   va: null | string;
+  qris: null | string;
 };
 
 export type InvoicePembeli = {
@@ -82,6 +83,7 @@ export type InvoicePembeli = {
   user_id: number;
   win_rate: number;
   va: null | string;
+  qris: null | string;
 };
 
 export default Invoice;

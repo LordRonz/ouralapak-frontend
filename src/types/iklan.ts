@@ -49,6 +49,7 @@ export type IklanHome = {
     email: string;
     id: number;
     name: string;
+    profile_picture: string;
   };
   user_id: 2;
   win_rate: number;

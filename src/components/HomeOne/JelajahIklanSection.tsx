@@ -62,6 +62,8 @@ const JelajahIklanSection = () => {
             ...(sortDir !== '0' && { orderDir: sortDir }),
             ...(pagination && { page: +pagination.currentPage + 1 }),
             perPage: 8,
+            orderBy: 'created_at',
+            orderDir: 'DESC',
           },
         })
       );

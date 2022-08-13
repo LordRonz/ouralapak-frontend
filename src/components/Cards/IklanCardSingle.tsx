@@ -39,7 +39,11 @@ const IklanCardSingle = ({
               <div className='artist'>
                 <div className='profile-img pos-rel'>
                   <img
-                    src={`https://robohash.org/${'AMOGUS'}?set=set4`}
+                    src={
+                      iklan.user.profile_picture
+                        ? `${API_URL}${iklan.user.profile_picture}`
+                        : `/images/pfp.jpg`
+                    }
                     alt='profile-img'
                   />
                 </div>

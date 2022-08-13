@@ -125,9 +125,7 @@ const IklanAdmin = ({ id }: { id: number }) => {
                             src={
                               iklan.data.user?.profile_picture
                                 ? `${API_URL}/${iklan.data.user?.profile_picture}`
-                                : `https://robohash.org/${
-                                    iklan.data.user?.username || 'AMOGUS'
-                                  }?set=set4`
+                                : `/images/pfp.jpg`
                             }
                             alt='profile-img'
                           />
@@ -214,9 +212,7 @@ const IklanAdmin = ({ id }: { id: number }) => {
                       src={
                         iklan.data.user?.profile_picture
                           ? `${API_URL}/${iklan.data.user?.profile_picture}`
-                          : `https://robohash.org/${
-                              iklan.data.user?.username || 'AMOGUS'
-                            }?set=set4`
+                          : `/images/pfp.jpg`
                       }
                       alt='Picture of the author'
                       width={500}

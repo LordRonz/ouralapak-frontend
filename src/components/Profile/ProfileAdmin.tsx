@@ -82,9 +82,7 @@ const ProfileAdmin = ({ id }: { id: number }) => {
                       src={
                         user?.data.profile_picture
                           ? `${API_URL}${user?.data.profile_picture}`
-                          : `https://robohash.org/${
-                              user?.data.username || 'AMOGUS'
-                            }?set=set4`
+                          : `/images/pfp.jpg`
                       }
                       alt='profile-img'
                     />
@@ -219,8 +217,8 @@ const ProfileAdmin = ({ id }: { id: number }) => {
                           onClick={() => setPreviewIdCard(true)}
                         >
                           <Image
-                            src='https://cdn.myanimelist.net/r/360x360/images/characters/9/310307.jpg?s=56335bffa6f5da78c3824ba0dae14a26'
-                            alt='luffy'
+                            src={`${API_URL}/${user?.data.identity_card}`}
+                            alt=''
                             width={360}
                             height={360}
                           />
@@ -245,8 +243,8 @@ const ProfileAdmin = ({ id }: { id: number }) => {
                           onClick={() => setPreviewIdCardValidation(true)}
                         >
                           <Image
-                            src='https://cdn.myanimelist.net/r/360x360/images/characters/9/310307.jpg?s=56335bffa6f5da78c3824ba0dae14a26'
-                            alt='luffy'
+                            src={`${API_URL}/${user?.data.identity_card_validation}`}
+                            alt=''
                             width={360}
                             height={360}
                           />
