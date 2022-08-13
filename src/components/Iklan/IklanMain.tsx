@@ -278,6 +278,7 @@ const IklanMain = ({ id }: { id: number }) => {
                                       ? `${API_URL}/${iklan.data.user?.profile_picture}`
                                       : `/images/pfp.jpg`
                                   }
+                                  className='h-16 w-16 rounded-full object-cover'
                                   alt='profile-img'
                                 />
                               </a>

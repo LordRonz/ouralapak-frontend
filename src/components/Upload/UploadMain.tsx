@@ -861,57 +861,100 @@ const UploadMain = () => {
                         />
                       </div>
                     </div>
-                    <div className='col-md-6 mb-4'>
-                      <div className='single-input-unit'>
-                        <div className='mb-4 flex items-center space-x-4'>
-                          <label>Recall Effect</label>
+                    <div className='col-md-6'>
+                      <div className='single-input-unit space-y-4'>
+                        <div className='flex items-center space-x-4'>
+                          <label>Skin Rare</label>
                           <Button
                             variant='success'
-                            onClick={() => setRecallEffectCnt((v) => v + 1)}
                             className='!rounded-full !p-1'
+                            onClick={() =>
+                              totalSkinRareFields.append({
+                                jenis: 'medium',
+                                total_skin: undefined,
+                              })
+                            }
                           >
                             <HiPlus />
                           </Button>
                         </div>
-                        <div className='max-h-60 overflow-auto'>
-                          {[...new Array(recallEffectCnt)].map((_, index) => (
-                            <>
-                              <div className='flex gap-x-2'>
-                                <input
-                                  key={index}
-                                  type='text'
-                                  placeholder={`Recall effect #${index + 1}`}
-                                  {...register(`recall_effect.${index}`, {
-                                    required: 'Recall effect harus diisi',
-                                  })}
-                                  className='mb-0'
-                                />
-                                {recallEffectCnt > 1 && (
-                                  <XButton
-                                    className='self-center bg-rose-300'
-                                    onClick={() => {
-                                      if (recallEffectCnt > 1) {
-                                        unregister(`recall_effect.${index}`);
-                                        const arr = getValues('recall_effect');
-                                        arr.splice(index, 1);
-                                        setValue('recall_effect', arr);
-                                      } else {
-                                        setValue('recall_effect', []);
-                                      }
-                                      setRecallEffectCnt((v) =>
-                                        Math.max(v - 1, 0)
-                                      );
-                                    }}
-                                  />
-                                )}
+                        <div className='max-h-80 space-y-4 overflow-auto'>
+                          <div className='rounded-xl border-primary-200'>
+                            {!!totalSkinRareFields.fields.length && (
+                              <div className='flex justify-around'>
+                                <label
+                                  className='mr-2 basis-3/4'
+                                  htmlFor='jenis'
+                                >
+                                  Jenis
+                                </label>
+                                <label
+                                  className='mr-2 basis-1/4'
+                                  htmlFor='total_skin'
+                                >
+                                  Total Skin
+                                </label>
                               </div>
-                              <p className='text-red-500'>
-                                {errors.recall_effect?.[index]?.message}
-                              </p>
-                            </>
-                          ))}
+                            )}
+                            <div className='flex flex-col gap-y-3'>
+                              {totalSkinRareFields.fields.map(
+                                (field, index) => (
+                                  <div
+                                    className='flex justify-around'
+                                    key={field.id}
+                                  >
+                                    <div className='mr-2 basis-3/4'>
+                                      <input
+                                        type='text'
+                                        placeholder='Jenis'
+                                        {...register(
+                                          `total_skin_rare.${index}.jenis` as const,
+                                          {
+                                            required: 'Jenis harus diisi',
+                                          }
+                                        )}
+                                        className='mb-0'
+                                      />
+                                    </div>
+                                    <div className='mr-2 basis-1/4'>
+                                      <input
+                                        type='number'
+                                        onWheel={(e) =>
+                                          e.target instanceof HTMLElement &&
+                                          e.target.blur()
+                                        }
+                                        placeholder='0'
+                                        {...register(
+                                          `total_skin_rare.${index}.total_skin` as const,
+                                          {
+                                            required: 'Total skin harus diisi',
+                                            min: {
+                                              value: 1,
+                                              message:
+                                                'Minimum jumlah skin adalah 1',
+                                            },
+                                            valueAsNumber: true,
+                                          }
+                                        )}
+                                        className='mb-0'
+                                      />
+                                    </div>
+                                    {totalSkinRareFields.fields.length > 1 && (
+                                      <XButton
+                                        onClick={() =>
+                                          totalSkinRareFields.remove(index)
+                                        }
+                                        className='self-center bg-rose-300'
+                                      />
+                                    )}
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          </div>
                         </div>
                       </div>
+                      <p className='text-red-500'>{errors.title?.message}</p>
                     </div>
                     <div className='col-md-6 mb-4'>
                       <div className='single-input-unit space-y-4'>
@@ -1049,100 +1092,57 @@ const UploadMain = () => {
                         </div>
                       </div>
                     </div>
-                    <div className='col-md-6'>
-                      <div className='single-input-unit space-y-4'>
-                        <div className='flex items-center space-x-4'>
-                          <label>Skin Rare</label>
+                    <div className='col-md-6 mb-4'>
+                      <div className='single-input-unit'>
+                        <div className='mb-2 flex items-center space-x-4'>
+                          <label className='m-0'>Recall Effect</label>
                           <Button
                             variant='success'
+                            onClick={() => setRecallEffectCnt((v) => v + 1)}
                             className='!rounded-full !p-1'
-                            onClick={() =>
-                              totalSkinRareFields.append({
-                                jenis: 'medium',
-                                total_skin: undefined,
-                              })
-                            }
                           >
                             <HiPlus />
                           </Button>
                         </div>
-                        <div className='max-h-80 space-y-4 overflow-auto'>
-                          <div className='rounded-xl border-primary-200'>
-                            {!!totalSkinRareFields.fields.length && (
-                              <div className='flex justify-around'>
-                                <label
-                                  className='mr-2 basis-3/4'
-                                  htmlFor='jenis'
-                                >
-                                  Jenis
-                                </label>
-                                <label
-                                  className='mr-2 basis-1/4'
-                                  htmlFor='total_skin'
-                                >
-                                  Total Skin
-                                </label>
+                        <div className='max-h-60 overflow-auto'>
+                          {[...new Array(recallEffectCnt)].map((_, index) => (
+                            <>
+                              <div className='flex gap-x-2'>
+                                <input
+                                  key={index}
+                                  type='text'
+                                  placeholder={`Recall effect #${index + 1}`}
+                                  {...register(`recall_effect.${index}`, {
+                                    required: 'Recall effect harus diisi',
+                                  })}
+                                  className='mb-0'
+                                />
+                                {recallEffectCnt > 1 && (
+                                  <XButton
+                                    className='self-center bg-rose-300'
+                                    onClick={() => {
+                                      if (recallEffectCnt > 1) {
+                                        unregister(`recall_effect.${index}`);
+                                        const arr = getValues('recall_effect');
+                                        arr.splice(index, 1);
+                                        setValue('recall_effect', arr);
+                                      } else {
+                                        setValue('recall_effect', []);
+                                      }
+                                      setRecallEffectCnt((v) =>
+                                        Math.max(v - 1, 0)
+                                      );
+                                    }}
+                                  />
+                                )}
                               </div>
-                            )}
-                            <div className='flex flex-col gap-y-3'>
-                              {totalSkinRareFields.fields.map(
-                                (field, index) => (
-                                  <div
-                                    className='flex justify-around'
-                                    key={field.id}
-                                  >
-                                    <div className='mr-2 basis-3/4'>
-                                      <input
-                                        type='text'
-                                        placeholder='Jenis'
-                                        {...register(
-                                          `total_skin_rare.${index}.jenis` as const,
-                                          {
-                                            required: 'Jenis harus diisi',
-                                          }
-                                        )}
-                                        className='mb-0'
-                                      />
-                                    </div>
-                                    <div className='mr-2 basis-1/4'>
-                                      <input
-                                        type='number'
-                                        onWheel={(e) =>
-                                          e.target instanceof HTMLElement &&
-                                          e.target.blur()
-                                        }
-                                        placeholder='0'
-                                        {...register(
-                                          `total_skin_rare.${index}.total_skin` as const,
-                                          {
-                                            required: 'Total skin harus diisi',
-                                            min: {
-                                              value: 1,
-                                              message:
-                                                'Minimum jumlah skin adalah 1',
-                                            },
-                                            valueAsNumber: true,
-                                          }
-                                        )}
-                                        className='mb-0'
-                                      />
-                                    </div>
-                                    {totalSkinRareFields.fields.length > 1 && (
-                                      <XButton
-                                        onClick={() =>
-                                          totalSkinRareFields.remove(index)
-                                        }
-                                        className='self-center bg-rose-300'
-                                      />
-                                    )}
-                                  </div>
-                                )
-                              )}
-                            </div>
-                          </div>
+                              <p className='text-red-500'>
+                                {errors.recall_effect?.[index]?.message}
+                              </p>
+                            </>
+                          ))}
                         </div>
                       </div>
-                      <p className='text-red-500'>{errors.title?.message}</p>
                     </div>
                     <div className='col-md-6 grid grid-cols-2 gap-y-4 gap-x-4'>
                       <div>

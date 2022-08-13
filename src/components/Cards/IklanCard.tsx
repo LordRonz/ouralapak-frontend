@@ -13,7 +13,7 @@ const IklanCard = ({ iklan }: { iklan: Iklan }) => {
           <Image
             src={
               iklan.user.profile_picture
-                ? `${API_URL}${iklan.user.profile_picture}`
+                ? `${API_URL}/${iklan.user.profile_picture}`
                 : `/images/pfp.jpg`
             }
             alt='Picture of the author'

@@ -20,7 +20,7 @@ const IklanCardSingle = ({
       <div className='art-item-single mb-30'>
         <div className='art-item-wraper'>
           <div className='art-item-inner'>
-            <div className='art-item-img pos-rel flex h-60 items-center justify-center'>
+            <div className='art-item-img relative flex h-60 items-center justify-center'>
               <Link href={`/iklan/${iklan.id}`}>
                 <a>
                   <img
@@ -35,15 +35,16 @@ const IklanCardSingle = ({
                 </a>
               </Link>
             </div>
-            <div className='art-item-content pos-rel'>
+            <div className='art-item-content relative'>
               <div className='artist'>
-                <div className='profile-img pos-rel'>
+                <div className='profile-img relative'>
                   <img
                     src={
                       iklan.user.profile_picture
                         ? `${API_URL}/${iklan.user.profile_picture}`
                         : `/images/pfp.jpg`
                     }
+                    className='!h-8 !w-8 rounded-full object-cover'
                     alt='profile-img'
                   />
                 </div>
