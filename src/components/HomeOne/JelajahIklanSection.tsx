@@ -101,6 +101,8 @@ const JelajahIklanSection = () => {
     return <Spinner />;
   }
 
+  console.log(iklans);
+
   return (
     <section className='artworks-area artworks-area-bg pt-110 z-index-1 pb-40'>
       <div className='container'>

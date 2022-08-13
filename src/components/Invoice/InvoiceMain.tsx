@@ -199,7 +199,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                   </p>
                   <p className='text-right text-2xl font-extrabold text-dark dark:!text-light'>
                     {toIDRCurrency(
-                      +invoice.data.harga_akun +
+                      +invoice.data.biaya_penjualan +
                         +(invoice.data.va || invoice.data.qris
                           ? invoice.data.biaya_admin
                           : invoice.data.kode_unik)
