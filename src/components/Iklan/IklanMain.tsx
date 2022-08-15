@@ -129,6 +129,7 @@ const IklanMain = ({ id }: { id: number }) => {
 
     if (!recaptchaResponse) {
       toast.warn('Captcha harus diselesaikan');
+      return;
     }
     const res = await toast.promise(
       axios.post<{ data: InvoicePembeli; message: string; success: boolean }>(
