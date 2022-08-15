@@ -50,15 +50,18 @@ const SignUpMain = () => {
       return;
     }
 
+    if (!recaptchaResponse) {
+      toast.warn('Captcha harus diselesaikan');
+      return;
+    }
+
     await toast.promise(
       axios.post(
         stringifyUrl({
           url: `${API_URL}/auth/user/register`,
-          query: {
-            recaptcha_response: recaptchaResponse,
-          },
         }),
-        { ...data, phone: phone?.replace('+', '') }
+        { ...data, phone: phone?.replace('+', '') },
+        { headers: { recaptcha_response: recaptchaResponse } }
       ),
       {
         pending: {

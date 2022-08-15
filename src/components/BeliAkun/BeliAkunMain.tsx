@@ -63,16 +63,15 @@ const BeliAkunMain = ({ id }: { id: number }) => {
 
     if (!recaptchaResponse) {
       toast.warn('Captcha harus diselesaikan');
+      return;
     }
     const res = await toast.promise(
       axios.post<{ data: InvoicePembeli; message: string; success: boolean }>(
         stringifyUrl({
           url: `${API_URL}/invoice/${id}`,
-          query: {
-            recaptcha_response: recaptchaResponse,
-          },
         }),
-        { ...data, phone: phone?.replace('+', '') }
+        { ...data, phone: phone?.replace('+', '') },
+        { headers: { recaptcha_response: recaptchaResponse } }
       ),
       {
         pending: {

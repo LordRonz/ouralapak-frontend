@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useTheme } from 'next-themes';
 import { stringifyUrl } from 'query-string';
 import React, { useCallback, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -11,6 +12,8 @@ import { API_URL } from '@/constant/config';
 import { IklanHome } from '@/types/iklan';
 import Pagination from '@/types/pagination';
 import Refund from '@/types/refund';
+
+import IklanCardLoader from '../Cards/IklanCardLoader';
 
 const JelajahIklanSection = () => {
   const [sortBy, setSortBy] = useState('0');
@@ -36,6 +39,8 @@ const JelajahIklanSection = () => {
 
   const [iklans, setIklans] = useState<IklanHome[]>([]);
 
+  const { theme } = useTheme();
+
   const fetchIklans = useCallback(async () => {
     if (fetching) {
       return;
@@ -58,12 +63,12 @@ const JelajahIklanSection = () => {
         stringifyUrl({
           url: `${API_URL}/iklan`,
           query: {
+            perPage: 8,
+            orderBy: 'created_at',
+            orderDir: 'desc',
             ...(sortBy !== '0' && { orderBy: sortBy }),
             ...(sortDir !== '0' && { orderDir: sortDir }),
             ...(pagination && { page: +pagination.currentPage + 1 }),
-            perPage: 8,
-            orderBy: 'created_at',
-            orderDir: 'DESC',
           },
         })
       );
@@ -100,8 +105,6 @@ const JelajahIklanSection = () => {
   if (!iklans) {
     return <Spinner />;
   }
-
-  console.log(iklans);
 
   return (
     <section className='artworks-area artworks-area-bg pt-110 z-index-1 pb-40'>
@@ -144,8 +147,8 @@ const JelajahIklanSection = () => {
                   }}
                 >
                   <option value='0'>Urutan</option>
-                  <option value='ASC'>Rendah ke tinggi</option>
-                  <option value='DESC'>Tinggi ke rendah</option>
+                  <option value='asc'>Rendah ke tinggi</option>
+                  <option value='desc'>Tinggi ke rendah</option>
                 </select>
               </div>
             </form>
@@ -161,6 +164,14 @@ const JelajahIklanSection = () => {
                 refund={getRefundById(iklan.jenis_refund)}
               />
             ))}
+            {fetching &&
+              [...Array(4)].map((i) => (
+                <IklanCardLoader
+                  key={i}
+                  backgroundColor={theme === 'light' ? '#ddd' : '#333'}
+                  foregroundColor={theme === 'light' ? '#eee' : '#444'}
+                />
+              ))}
           </div>
         </InfiniteScroll>
         {pagination &&

@@ -28,15 +28,17 @@ const ForgotPassword = () => {
     null
   );
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    if (!recaptchaResponse) {
+      toast.warn('Captcha harus diselesaikan');
+      return;
+    }
     await toast.promise(
       axios.post(
         stringifyUrl({
           url: `${API_URL}/auth/forgot-password`,
-          query: {
-            recaptcha_response: recaptchaResponse,
-          },
         }),
-        data
+        data,
+        { headers: { recaptcha_response: recaptchaResponse } }
       ),
       {
         pending: {

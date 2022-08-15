@@ -134,11 +134,9 @@ const IklanMain = ({ id }: { id: number }) => {
       axios.post<{ data: InvoicePembeli; message: string; success: boolean }>(
         stringifyUrl({
           url: `${API_URL}/invoice/${id}`,
-          query: {
-            recaptcha_response: recaptchaResponse,
-          },
         }),
-        { ...data, phone: phone?.replace('+', '') }
+        { ...data, phone: phone?.replace('+', '') },
+        { headers: { recaptcha_response: recaptchaResponse } }
       ),
       {
         pending: {

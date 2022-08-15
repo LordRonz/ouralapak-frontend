@@ -367,12 +367,9 @@ const UploadMain = () => {
       axios.post(
         stringifyUrl({
           url: `${API_URL}/user/iklan`,
-          query: {
-            recaptcha_response: responseCaptcha,
-          },
         }),
         form,
-        { headers }
+        { headers: { ...headers, recaptcha_response: responseCaptcha } }
       ),
       {
         pending: {

@@ -39,15 +39,17 @@ const SignUpAdmin = () => {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    if (!recaptchaResponse) {
+      toast.warn('Captcha harus diselesaikan');
+      return;
+    }
     await toast.promise(
       axios.post(
         stringifyUrl({
           url: `${API_URL}/auth/admin/register`,
-          query: {
-            recaptcha_response: recaptchaResponse,
-          },
         }),
-        data
+        data,
+        { headers: { recaptcha_response: recaptchaResponse } }
       ),
       {
         pending: {
