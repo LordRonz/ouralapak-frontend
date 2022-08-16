@@ -7,7 +7,7 @@ export const formatDateStrId = (
 ) => {
   return formatInTimeZone(
     typeof date === 'number' ? date * 1000 : date,
-    'Asia/Jakarta',
+    Intl.DateTimeFormat().resolvedOptions().timeZone,
     format,
     { locale: id }
   );

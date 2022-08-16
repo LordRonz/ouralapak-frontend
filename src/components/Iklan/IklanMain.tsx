@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { add } from 'date-fns';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { stringifyUrl } from 'query-string';
-import React, { ReactChild, useState } from 'react';
+import React, { ReactChild, useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import Lightbox from 'react-image-lightbox';
 import PhoneInput, {
@@ -13,6 +14,7 @@ import { Carousel } from 'react-responsive-carousel';
 import Modal from 'react-responsive-modal';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
+import { useLifecycles, useSessionStorage } from 'react-use';
 import useSWR from 'swr';
 
 import Button from '@/components/buttons/Button';
@@ -26,6 +28,7 @@ import ButtonLink from '@/components/links/ButtonLink';
 import { API_URL } from '@/constant/config';
 import { customSelectStyles } from '@/constant/select';
 import clsxm from '@/lib/clsxm';
+import { calculateTimeLeft } from '@/lib/timeStuff';
 import toastPromiseError from '@/lib/toastPromiseError';
 import toIDRCurrency from '@/lib/toIDRCurrency';
 import Bank from '@/types/bank';
@@ -39,6 +42,7 @@ type IFormInput = {
   nama: string;
   email: string;
   phone: string;
+  token: string;
 };
 
 type CarouselNode = {
@@ -84,6 +88,44 @@ const IklanMain = ({ id }: { id: number }) => {
   const [open, setOpen] = useState(false);
   const [previewCarousel, setPreviewCarousel] = useState<boolean>(false);
   const [carouselImg, setCarouselImg] = useState<string>();
+  const [timeLeft, setTimeLeft] = useState<Duration>();
+  const [endVerifyDisable, setEndVerifyDisable] = useState<Date>();
+
+  const [verifyEmailData, setVerifyEmailData] = useSessionStorage<
+    { hasClicked?: boolean; end?: Date } | undefined
+  >('emailData');
+
+  useEffect(() => {
+    if (!endVerifyDisable) {
+      return;
+    }
+    if (new Date() >= endVerifyDisable) {
+      setEndVerifyDisable(undefined);
+      setTimeLeft(undefined);
+      return;
+    }
+    const intervalId = setInterval(() => {
+      const resDur = calculateTimeLeft(endVerifyDisable);
+      if (resDur.seconds === undefined && resDur.minutes === undefined) {
+        setEndVerifyDisable(undefined);
+        setTimeLeft(undefined);
+        const newData = verifyEmailData;
+        delete newData?.end;
+        setVerifyEmailData(newData);
+      } else {
+        setTimeLeft(resDur);
+      }
+    }, 500);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [endVerifyDisable, setVerifyEmailData, verifyEmailData]);
+
+  useLifecycles(() => {
+    if (verifyEmailData?.end) {
+      setEndVerifyDisable(new Date(verifyEmailData.end));
+    }
+  });
 
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
@@ -91,6 +133,7 @@ const IklanMain = ({ id }: { id: number }) => {
     control,
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm<IFormInput>();
 
@@ -161,6 +204,45 @@ const IklanMain = ({ id }: { id: number }) => {
       }
     );
     console.log(res);
+  };
+
+  const verifyEmail = async () => {
+    const email = getValues('email');
+    if (!email) {
+      return;
+    }
+    await toast.promise(
+      axios.post(
+        stringifyUrl({
+          url: `${API_URL}/auth/verify-email`,
+        }),
+        { email }
+      ),
+      {
+        pending: {
+          render: () => {
+            return 'Loading';
+          },
+        },
+        success: {
+          render: () => {
+            const tempEnd = add(new Date(), { seconds: 60 });
+            setEndVerifyDisable(tempEnd);
+            setVerifyEmailData({
+              ...verifyEmailData,
+              hasClicked: true,
+              end: tempEnd,
+            });
+            return 'Silahkan cek email!';
+          },
+        },
+        error: {
+          render: toastPromiseError(() => {
+            // setBeliBtnDisabled(false);
+          }, 'Gagal verifikasi email!'),
+        },
+      }
+    );
   };
 
   const getRefundById = (id: string | number) => {
@@ -350,24 +432,66 @@ const IklanMain = ({ id }: { id: number }) => {
                                       <div className='col-md-12'>
                                         <div className='single-input-unit'>
                                           <label htmlFor='email'>Email</label>
-                                          <input
-                                            type='email'
-                                            id='email'
-                                            placeholder='Masukkan email anda'
-                                            {...register('email', {
-                                              required: 'Email harus diisi',
-                                              pattern: {
-                                                value:
-                                                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                                                message: 'Email tidak valid!',
-                                              },
-                                            })}
-                                          />
+                                          <div className='flex gap-x-1'>
+                                            <input
+                                              type='email'
+                                              id='email'
+                                              placeholder='Masukkan email anda'
+                                              {...register('email', {
+                                                required: 'Email harus diisi',
+                                                pattern: {
+                                                  value:
+                                                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                                  message: 'Email tidak valid!',
+                                                },
+                                              })}
+                                            />
+                                            <Button
+                                              onClick={() => verifyEmail()}
+                                            >
+                                              {endVerifyDisable && timeLeft
+                                                ? `${timeLeft?.minutes
+                                                    ?.toString()
+                                                    .padStart(
+                                                      2,
+                                                      '0'
+                                                    )}:${timeLeft?.seconds
+                                                    ?.toString()
+                                                    .padStart(2, '0')}`
+                                                : 'Verify'}
+                                            </Button>
+                                          </div>
                                         </div>
                                         <p className='text-red-500'>
                                           {errors.email?.message}
                                         </p>
                                       </div>
+                                      {verifyEmailData?.hasClicked && (
+                                        <div className='col-md-12'>
+                                          <div className='single-input-unit'>
+                                            <label htmlFor='token'>
+                                              Kode Verifikasi
+                                            </label>
+                                            <div className='flex gap-x-1'>
+                                              <input
+                                                id='token'
+                                                placeholder='Masukkan Kode Verifikasi'
+                                                {...register('token', {
+                                                  required: 'Token harus diisi',
+                                                  pattern: {
+                                                    value: /^[0-9]{1,69}$/,
+                                                    message:
+                                                      'Token tidak valid!',
+                                                  },
+                                                })}
+                                              />
+                                            </div>
+                                          </div>
+                                          <p className='text-red-500'>
+                                            {errors.token?.message}
+                                          </p>
+                                        </div>
+                                      )}
                                       <div className='col-md-12'>
                                         <div className='single-input-unit'>
                                           <label htmlFor='phone'>
