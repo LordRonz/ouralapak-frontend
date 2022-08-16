@@ -448,17 +448,22 @@ const IklanMain = ({ id }: { id: number }) => {
                                             />
                                             <Button
                                               onClick={() => verifyEmail()}
+                                              disabled={
+                                                !!(endVerifyDisable && timeLeft)
+                                              }
                                             >
-                                              {endVerifyDisable && timeLeft
-                                                ? `${timeLeft?.minutes
-                                                    ?.toString()
-                                                    .padStart(
-                                                      2,
-                                                      '0'
-                                                    )}:${timeLeft?.seconds
-                                                    ?.toString()
-                                                    .padStart(2, '0')}`
-                                                : 'Verify'}
+                                              {endVerifyDisable && timeLeft ? (
+                                                <span className='text-red-600'>{`${timeLeft?.minutes
+                                                  ?.toString()
+                                                  .padStart(
+                                                    2,
+                                                    '0'
+                                                  )}:${timeLeft?.seconds
+                                                  ?.toString()
+                                                  .padStart(2, '0')}`}</span>
+                                              ) : (
+                                                'Verify'
+                                              )}
                                             </Button>
                                           </div>
                                         </div>
