@@ -34,6 +34,36 @@ type Iklan = {
   win_rate: number;
 };
 
+export type IklanAdmin = {
+  created_at: number;
+  harga_akun: string;
+  hero: {
+    id: number;
+    name: string;
+  }[];
+  id: number;
+  image_profile: string;
+  jenis_refund: number;
+  package_id: number;
+  platform: string;
+  platform_id: number;
+  recall_effect: string;
+  status: string;
+  status_id: number;
+  title: string;
+  total_hero: number;
+  total_skin: number;
+  total_skin_rare: string;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    profile_picture: number;
+  };
+  user_id: number;
+  win_rate: number;
+};
+
 export type IklanHome = {
   created_at: string;
   harga_akun: string;

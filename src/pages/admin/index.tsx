@@ -32,7 +32,7 @@ import formatDateStrId from '@/lib/formatDateStrId';
 import getStatusIklan, { statusIklanArray } from '@/lib/getStatusIklan';
 import toastPromiseError from '@/lib/toastPromiseError';
 import useAuthHeader from '@/services/authHeader';
-import type InvoiceAdmin from '@/types/invoiceAdmin';
+import { IklanAdmin } from '@/types/iklan';
 import type Pagination from '@/types/pagination';
 
 const MySwal = withReactContent(Swal);
@@ -46,13 +46,7 @@ const IndexPage = () => {
 
   const [delBtnDisabled, setDelBtnDisabled] = React.useState(false);
 
-  const [iklan, setIklan] = useState<{
-    created_at: string;
-    id: number;
-    status: number;
-    title: string;
-    updated_at: string;
-  }>();
+  const [iklan, setIklan] = useState<IklanAdmin>();
 
   const router = useRouter();
 
@@ -73,7 +67,7 @@ const IndexPage = () => {
     mutate,
   } = useSWR<{
     data: {
-      data: InvoiceAdmin[];
+      data: IklanAdmin[];
       pagination: Pagination;
     };
     message: string;
@@ -81,7 +75,7 @@ const IndexPage = () => {
   }>(
     mounted
       ? stringifyUrl({
-          url: `${API_URL}/admin/invoice`,
+          url: `${API_URL}/admin/iklan`,
           query: {
             page: curPage + 1,
             ...(filter && { search: filter }),
@@ -180,26 +174,18 @@ const IndexPage = () => {
 
   const data = React.useMemo(
     () =>
-      iklans?.data.data.map((invoice) => {
+      iklans?.data.data.map((iklan) => {
         return {
-          biayaAdmin: invoice.biaya_admin,
-          biayaPenjualan: invoice.biaya_penjualan,
-          createdAt: formatDateStrId(invoice.created_at),
-          createdBy: invoice.created_by,
-          expiredAt: invoice.expired_at,
-          id: invoice.id,
-          iklan: invoice.iklan,
-          iklanId: invoice.iklan_id,
-          jenisInvoice: invoice.jenis_invoice,
-          jenisPembayaran: invoice.jenis_pembayaran,
-          judulIklan: invoice.iklan.title,
-          noInvoice: invoice.no_invoice,
-          status: getStatusIklan(invoice.iklan.status),
-          statusIklan: invoice.iklan.status,
-          updatedAt: invoice.updated_at,
-          updatedBy: invoice.updated_by,
-          userId: invoice.user_id ?? invoice.user?.id,
-          user: invoice.user,
+          biayaPenjualan: iklan.harga_akun,
+          createdAt: formatDateStrId(iklan.created_at),
+          id: iklan.id,
+          iklan,
+          judulIklan: iklan.title,
+          status: getStatusIklan(iklan.status_id),
+          statusIklan: iklan.status,
+          userId: iklan.user_id ?? iklan.user?.id,
+          user: iklan.user,
+          userName: iklan.user.name,
           action: {},
         };
       }) ?? [],
@@ -221,8 +207,8 @@ const IndexPage = () => {
         accessor: 'judulIklan',
       },
       {
-        Header: 'Nomor Invoice',
-        accessor: 'noInvoice',
+        Header: 'Nama Penjual',
+        accessor: 'userName',
       },
       {
         Header: 'Aksi',
@@ -233,7 +219,7 @@ const IndexPage = () => {
               <ButtonLink
                 variant={theme === 'dark' ? 'dark' : 'light'}
                 className='text-green-500 hover:text-green-600'
-                href={`/admin/iklan/${row.original.iklanId}`}
+                href={`/admin/iklan/${row.original.id}`}
               >
                 <FiSearch />
               </ButtonLink>
@@ -255,7 +241,7 @@ const IndexPage = () => {
               <Button
                 variant={theme === 'dark' ? 'dark' : 'light'}
                 className='text-red-500 hover:text-red-600'
-                onClick={() => onClickDelete(row.original.iklanId)}
+                onClick={() => onClickDelete(row.original.id)}
                 disabled={delBtnDisabled}
               >
                 <FiTrash2 />
@@ -337,7 +323,7 @@ const IndexPage = () => {
                             <Controller
                               control={control}
                               defaultValue={
-                                iklan?.status ?? statusIklanOpts[0].value
+                                iklan?.status_id ?? statusIklanOpts[0].value
                               }
                               name='status'
                               render={({ field: { onChange, value } }) => (

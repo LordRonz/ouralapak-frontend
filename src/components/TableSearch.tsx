@@ -15,7 +15,7 @@ const TableSearch = ({ setFilter }: TableSearchProp) => {
           placeholder='Find...'
           className={clsxm(
             'w-full rounded-md dark:!bg-dark sm:max-w-xs',
-            'px-4 py-2 pl-9',
+            'px-6 py-2 pl-9',
             'placeholder-gray-400',
             'text-sm md:text-base',
             'border border-gray-300 dark:!border-gray-600',
