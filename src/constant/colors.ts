@@ -21,7 +21,7 @@ export const selectDarkTheme: ThemeConfig = (theme) => ({
     primary25: '#e3dbce',
     primary50: '#bfab8d',
     primary75: '#d1c3ad',
-    neutral0: '#1c2420',
+    neutral0: '#1c2434',
     neutral5: '#111',
     neutral10: '#222',
     neutral20: '#333',

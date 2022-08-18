@@ -584,6 +584,7 @@ const UploadMain = () => {
                         <div className='flex gap-x-1'>
                           <input
                             type='number'
+                            step='any'
                             onWheel={(e) =>
                               e.target instanceof HTMLElement && e.target.blur()
                             }
@@ -1153,7 +1154,8 @@ const UploadMain = () => {
                                 twibbonize(e, setImageWinRateHero);
                               }}
                               labelClassName={clsxm(
-                                !imageWinRateHero && '!text-neutral-500'
+                                !imageWinRateHero && '!text-neutral-500',
+                                'overflow-hidden'
                               )}
                             >
                               {imageWinRateHero
@@ -1191,7 +1193,8 @@ const UploadMain = () => {
                                 twibbonize(e, setImageWinRate);
                               }}
                               labelClassName={clsxm(
-                                !imageWinRate && '!text-neutral-500'
+                                !imageWinRate && '!text-neutral-500',
+                                'overflow-hidden'
                               )}
                             >
                               {imageWinRate
@@ -1227,7 +1230,8 @@ const UploadMain = () => {
                                 twibbonize(e, setImageProfile);
                               }}
                               labelClassName={clsxm(
-                                !imageProfile && '!text-neutral-500'
+                                !imageProfile && '!text-neutral-500',
+                                'overflow-hidden'
                               )}
                             >
                               {imageProfile
@@ -1263,7 +1267,8 @@ const UploadMain = () => {
                                 twibbonize(e, setImageEmblem);
                               }}
                               labelClassName={clsxm(
-                                !imageEmblem && '!text-neutral-500'
+                                !imageEmblem && '!text-neutral-500',
+                                'overflow-hidden'
                               )}
                             >
                               {imageEmblem
@@ -1324,7 +1329,8 @@ const UploadMain = () => {
                                   }}
                                   labelClassName={clsxm(
                                     (!imageSkin || !(imageSkin as File[])[i]) &&
-                                      '!text-neutral-500'
+                                      '!text-neutral-500',
+                                    'overflow-hidden'
                                   )}
                                 >
                                   {imageSkin && (imageSkin as File[])[i]
