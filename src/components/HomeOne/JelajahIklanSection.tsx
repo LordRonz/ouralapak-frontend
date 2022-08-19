@@ -72,7 +72,17 @@ const JelajahIklanSection = () => {
           },
         })
       );
-      setIklans([...iklans, ...data.data]);
+      const [notSold, sold] = // Use "deconstruction" style assignment
+        data.data.reduce(
+          (result: [IklanHome[], IklanHome[]], element) => {
+            result[element.status.toLowerCase() !== 'selesai' ? 0 : 1].push(
+              element
+            ); // Determine and push to small/large arr
+            return result;
+          },
+          [[], []]
+        );
+      setIklans([...iklans, ...notSold, ...sold]);
       setPagination(data.pagination);
     } finally {
       setFetching(false);

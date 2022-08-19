@@ -391,7 +391,10 @@ const IklanMain = ({ id }: { id: number }) => {
                         >
                           Hubungi Penjual
                         </ButtonLink>
-                        <Button onClick={onOpenModal}>Beli</Button>
+                        {iklan.data.status.toString().toLowerCase() ===
+                          'dipublikasi' && (
+                          <Button onClick={onOpenModal}>Beli</Button>
+                        )}
                         <Modal
                           open={open}
                           onClose={onCloseModal}

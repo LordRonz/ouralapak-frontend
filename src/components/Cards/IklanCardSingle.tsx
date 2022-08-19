@@ -2,6 +2,7 @@ import Link from 'next/link';
 import React from 'react';
 
 import { API_URL } from '@/constant/config';
+import clsxm from '@/lib/clsxm';
 import toIDRCurrency from '@/lib/toIDRCurrency';
 import { IklanHome } from '@/types/iklan';
 
@@ -34,6 +35,14 @@ const IklanCardSingle = ({
                   />
                 </a>
               </Link>
+              <div
+                className={clsxm(
+                  'absolute top-0 left-0 flex h-full w-full items-center justify-center bg-neutral-800/40',
+                  iklan.status.toLowerCase() !== 'selesai' && 'hidden'
+                )}
+              >
+                <img src='/images/sold_out.png' alt='' />
+              </div>
             </div>
             <div className='art-item-content relative'>
               <div className='artist'>
