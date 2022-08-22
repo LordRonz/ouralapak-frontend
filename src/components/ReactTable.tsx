@@ -46,7 +46,7 @@ const ReactTable = <T extends object>({
 
   return (
     <div className={clsx('flex w-full flex-col', className)}>
-      <div className='-my-2 mt-2 overflow-x-auto'>
+      <div className='-my-2 mt-2 !overflow-x-auto'>
         <div className='inline-block min-w-full py-2 align-middle'>
           <div className='overflow-hidden border-b border-gray-200 shadow-sm dark:!border-gray-800 sm:rounded-lg'>
             <table

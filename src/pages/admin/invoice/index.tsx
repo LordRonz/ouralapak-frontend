@@ -4,6 +4,7 @@ import { stringifyUrl } from 'query-string';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { FiSearch } from 'react-icons/fi';
+import Select, { SingleValue } from 'react-select';
 import { Column } from 'react-table';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
@@ -19,8 +20,10 @@ import Seo from '@/components/Seo';
 import TableSearch from '@/components/TableSearch';
 import Tooltip from '@/components/Tooltip';
 import { API_URL } from '@/constant/config';
+import { customSelectStyles } from '@/constant/select';
 import { mySwalOpts } from '@/constant/swal';
 import DashboardLayout from '@/dashboard/layout';
+import clsxm from '@/lib/clsxm';
 import formatDateStrId from '@/lib/formatDateStrId';
 import { StatusIklanEnum } from '@/lib/getStatusIklan';
 import toastPromiseError from '@/lib/toastPromiseError';
@@ -37,6 +40,9 @@ const IndexPage = () => {
   const [mounted, setMounted] = useState(false);
   const [curPage, setCurPage] = useState(0);
   const [filter, setFilter] = useState<string>();
+  const [jenisInvoice, setJenisInvoice] = useState(JenisInvoice.PENJUAL);
+  const [maxPerPage, setMaxPerPage] = useState(10);
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -57,6 +63,8 @@ const IndexPage = () => {
             ...(filter && { search: filter }),
             orderBy: 'created_at',
             orderDir: 'DESC',
+            jenis_invoice: jenisInvoice,
+            perPage: maxPerPage,
           },
         })
       : null
@@ -154,6 +162,7 @@ const IndexPage = () => {
           updatedBy: invoice.updated_by,
           userId: invoice.user_id ?? invoice.user?.id,
           user: invoice.user,
+          email: invoice.user.email,
           action: {},
         };
       }) ?? [],
@@ -167,12 +176,12 @@ const IndexPage = () => {
         accessor: 'createdAt',
       },
       {
-        Header: 'Nomor Invoice',
+        Header: 'No. Invoice',
         accessor: 'noInvoice',
       },
       {
-        Header: 'Metode Pembayaran',
-        accessor: 'jenisPembayaran',
+        Header: 'Email',
+        accessor: 'email',
       },
       {
         Header: 'Status',
@@ -214,19 +223,85 @@ const IndexPage = () => {
     [delBtnDisabled, onClickUpdate, theme]
   );
 
+  const filterOpts = [
+    {
+      label: 'Penjualan',
+      value: JenisInvoice.PENJUAL,
+    },
+    {
+      label: 'Pembelian',
+      value: JenisInvoice.PEMBELI,
+    },
+  ];
+
+  const maxEntriesOpts = [
+    {
+      label: '10',
+      value: 10,
+    },
+    {
+      label: '25',
+      value: 25,
+    },
+    {
+      label: '50',
+      value: 50,
+    },
+    {
+      label: '100',
+      value: 100,
+    },
+  ];
+
+  console.log(invoices);
+
   return (
     <>
       <Seo templateTitle='Admin | Invoice' />
       <AnimatePage>
         <DashboardLayout>
-          <TableSearch
-            setFilter={(s: string) => {
-              setCurPage(0);
-              setFilter(s);
-            }}
-          />
+          <div className='mb-4 flex items-center justify-between'>
+            <h1 className='text-3xl'>Data Invoice</h1>
+            <Select
+              styles={customSelectStyles}
+              className={clsxm('py-3 pt-0')}
+              options={filterOpts}
+              defaultValue={filterOpts[0]}
+              onChange={(val: SingleValue<{ label: string; value: number }>) =>
+                setJenisInvoice(val?.value ?? JenisInvoice.PENJUAL)
+              }
+            />
+          </div>
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center gap-x-2'>
+              <span>Show</span>
+              <Select
+                styles={customSelectStyles}
+                className={clsxm('py-0')}
+                options={maxEntriesOpts}
+                defaultValue={maxEntriesOpts[0]}
+                onChange={(
+                  val: SingleValue<{ label: string; value: number }>
+                ) => setMaxPerPage(val?.value ?? 10)}
+              />{' '}
+              <span>entries</span>
+            </div>
+            <TableSearch
+              setFilter={(s: string) => {
+                setCurPage(0);
+                setFilter(s);
+              }}
+            />
+          </div>
           {invoices && (
-            <ReactTable data={data} columns={columns} withFooter={false} />
+            <>
+              <ReactTable data={data} columns={columns} withFooter={false} />
+              <div className='w-full rounded-lg bg-neutral-100 py-2 px-8 dark:bg-neutral-800 dark:text-neutral-100'>
+                Showing {invoices.data.pagination.from + 1} to{' '}
+                {invoices.data.pagination.to} of{' '}
+                {invoices.data.pagination.total} entries
+              </div>
+            </>
           )}
           <div className='flex items-center justify-center'>
             <PaginationComponent

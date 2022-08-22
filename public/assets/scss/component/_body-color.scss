@@ -13,7 +13,8 @@
 }
 
 // body-bg-dark style
-[data-theme='dark'], .dark {
+[data-theme='dark'],
+.dark {
   .work-processes .row > div .step::before {
     color: #27303e;
   }
@@ -135,7 +136,8 @@
   display: none;
 }
 
-[data-theme='dark'], .dark {
+[data-theme='dark'],
+.dark {
   .home3-mode-switch .label .fa-sun {
     display: block;
   }
@@ -182,7 +184,8 @@
   }
 }
 
-[data-theme='dark'] .label .ball, .dark .label .ball {
+[data-theme='dark'] .label .ball,
+.dark .label .ball {
   background-color: var(--clr-common-white);
   border-radius: 50%;
   position: absolute;
