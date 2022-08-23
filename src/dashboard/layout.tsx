@@ -8,7 +8,7 @@ import TopNavigation from '@/dashboard/topnavigation';
 
 const style = {
   container: `dark:!bg-[#0e141b] !h-screen !overflow-hidden !relative`,
-  mainContainer: `!flex !flex-col !h-screen !pl-0 !w-full lg:!space-y-4 lg:!w-[calc(100%-14rem)]`,
+  mainContainer: `!flex !flex-col !h-screen !pl-0 !w-full lg:!space-y-4 lg:!w-[calc(100%-12rem)]`,
   main: `!h-screen !overflow-auto !pb-36 !pt-8 !px-2 md:!pb-8 md:!pt-4 md:!px-6 lg:!pt-0`,
 };
 

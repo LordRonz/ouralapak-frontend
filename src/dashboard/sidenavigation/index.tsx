@@ -9,7 +9,7 @@ const style = {
     right: '!right-0',
   },
   close: `!hidden`,
-  container: `!pb-32 !lg:pb-6 !w-64`,
+  container: `!pb-32 lg:!pb-6 !w-60`,
   open: `!w-8/12 !absolute !z-40 sm:!w-5/12`,
   default: `dark:!bg-[#0e141b] !bg-white !h-screen !overflow-y-auto !top-0 lg:!block lg:!relative lg:!w-64 lg:!z-auto !text-dark`,
 };
