@@ -34,3 +34,25 @@ export const selectDarkTheme: ThemeConfig = (theme) => ({
     neutral90: '#eee',
   },
 });
+
+export const selectPrimaryTheme: ThemeConfig = (theme) => ({
+  ...theme,
+  colors: {
+    ...theme.colors,
+    primary: '#937a53',
+    primary25: '#e3dbce',
+    primary50: '#bfab8d',
+    primary75: '#d1c3ad',
+    neutral0: '#DED3C4',
+    neutral5: '#d1c3ad',
+    neutral10: '#d1c3ad',
+    neutral20: '#B09873',
+    neutral30: '#443',
+    neutral40: '#555',
+    neutral50: '#666',
+    neutral60: '#888',
+    neutral70: '#aaa',
+    neutral80: '#B09873',
+    neutral90: '#eee',
+  },
+});

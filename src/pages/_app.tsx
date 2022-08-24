@@ -9,6 +9,7 @@ import 'react-phone-number-input/style.css';
 import '@/styles/index.scss';
 import 'react-tippy/dist/tippy.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import 'react-datepicker/dist/react-datepicker.css';
 
 import axios from 'axios';
 import { AnimatePresence } from 'framer-motion';

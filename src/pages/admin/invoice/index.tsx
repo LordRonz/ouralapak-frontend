@@ -19,6 +19,7 @@ import ReactTable from '@/components/ReactTable';
 import Seo from '@/components/Seo';
 import TableSearch from '@/components/TableSearch';
 import Tooltip from '@/components/Tooltip';
+import { selectPrimaryTheme } from '@/constant/colors';
 import { API_URL } from '@/constant/config';
 import { customSelectStyles } from '@/constant/select';
 import { mySwalOpts } from '@/constant/swal';
@@ -267,6 +268,7 @@ const IndexPage = () => {
               className={clsxm('py-3 pt-0')}
               options={filterOpts}
               defaultValue={filterOpts[0]}
+              theme={selectPrimaryTheme}
               onChange={(val: SingleValue<{ label: string; value: number }>) =>
                 setJenisInvoice(val?.value ?? JenisInvoice.PENJUAL)
               }

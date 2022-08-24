@@ -12,12 +12,17 @@ import {
 } from 'chart.js';
 import * as React from 'react';
 import { Line } from 'react-chartjs-2';
+import DatePicker from 'react-datepicker';
 import { AiFillDollarCircle } from 'react-icons/ai';
+import Select from 'react-select';
 
 import AnimatePage from '@/components/AnimatePage';
 import Seo from '@/components/Seo';
+import { selectPrimaryTheme } from '@/constant/colors';
+import { customSelectStyles } from '@/constant/select';
 import DashboardLayout from '@/dashboard/layout';
 import clsxm from '@/lib/clsxm';
+import { statusIklanArray } from '@/lib/getStatusIklan';
 import Chart1 from '@/svgs/chart1.svg';
 import Chart2 from '@/svgs/chart2.svg';
 import Chart3 from '@/svgs/chart3.svg';
@@ -39,6 +44,16 @@ const IndexPage = () => {
     React.useState<ChartData<'line', number[], string>>();
 
   const [activeChart, setActiveChart] = React.useState(0);
+  const [mainChartStartDate, setMainChartStartDate] = React.useState(
+    new Date()
+  );
+  const [mainChartEndDate, setMainChartEndDate] = React.useState(new Date());
+  const [secondaryChartStartDate, setSecondaryChartStartDate] = React.useState(
+    new Date()
+  );
+  const [secondaryChartEndDate, setSecondaryChartEndDate] = React.useState(
+    new Date()
+  );
 
   React.useEffect(() => {
     const ctx = (
@@ -140,13 +155,35 @@ const IndexPage = () => {
     ],
   };
 
+  const dashboardsOpts = [
+    {
+      label: 'Posting Iklan',
+      value: 0,
+    },
+    {
+      label: 'Rekber',
+      value: 1,
+    },
+  ];
+
+  const secondaryChartOpts = [statusIklanArray];
+
   return (
     <>
       <Seo templateTitle='Admin | Iklan' />
       <AnimatePage>
         <DashboardLayout>
           <div className='mb-4'>
-            <h1 className='text-2xl'>Dashboards</h1>
+            <div className='flex items-center gap-x-8'>
+              <h1 className='m-0 text-2xl'>Dashboards</h1>
+              <Select
+                styles={customSelectStyles}
+                className={clsxm('w-fit py-0')}
+                options={dashboardsOpts}
+                defaultValue={dashboardsOpts[0]}
+                theme={selectPrimaryTheme}
+              />
+            </div>
           </div>
           <div className='flex flex-col gap-y-4'>
             <div className='grid grid-cols-4 gap-x-2 divide-x-2 rounded-lg bg-white p-4 dark:!bg-neutral-800'>
@@ -192,30 +229,56 @@ const IndexPage = () => {
                   </div>
                 </div>
               </div>
-              <div className='col-span-3 pl-2'>
-                <Line
-                  id='mainChart'
-                  data={chartData ?? data}
-                  options={{
-                    scales: {
-                      x: {
-                        grid: {
-                          color: 'rgba(0, 0, 0, 0)',
+              <div className='col-span-3 flex flex-col pl-2'>
+                <div className='flex justify-end'>
+                  <div className='flex items-center justify-center gap-x-4'>
+                    <div className='flex items-center justify-center gap-x-1'>
+                      <p className='m-0 inline whitespace-nowrap text-xs'>
+                        Start Date:
+                      </p>
+                      <DatePicker
+                        className='w-28 rounded-lg p-1'
+                        selected={mainChartStartDate}
+                        onChange={(date: Date) => setMainChartStartDate(date)}
+                      />
+                    </div>
+                    <div className='flex items-center justify-center gap-x-1'>
+                      <p className='m-0 inline whitespace-nowrap text-xs'>
+                        End Date:
+                      </p>
+                      <DatePicker
+                        className='w-28 rounded-lg p-1'
+                        selected={mainChartEndDate}
+                        onChange={(date: Date) => setMainChartEndDate(date)}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <Line
+                    id='mainChart'
+                    data={chartData ?? data}
+                    options={{
+                      scales: {
+                        x: {
+                          grid: {
+                            color: 'rgba(0, 0, 0, 0)',
+                          },
+                        },
+                        y: {
+                          grid: {
+                            color: 'rgba(0, 0, 0, 0)',
+                          },
                         },
                       },
-                      y: {
-                        grid: {
-                          color: 'rgba(0, 0, 0, 0)',
+                      plugins: {
+                        tooltip: {
+                          intersect: false,
                         },
                       },
-                    },
-                    plugins: {
-                      tooltip: {
-                        intersect: false,
-                      },
-                    },
-                  }}
-                />
+                    }}
+                  />
+                </div>
               </div>
             </div>
             <div className='grid grid-cols-3 gap-x-2 rounded-lg bg-white p-4 dark:!bg-neutral-800'>
@@ -248,7 +311,7 @@ const IndexPage = () => {
               </div>
             </div>
             <div className='grid grid-cols-12 gap-x-2'>
-              <div className='col-span-5 rounded-lg bg-white py-4 dark:!bg-neutral-800'>
+              <div className='col-span-5 h-fit rounded-lg bg-white py-4 dark:!bg-neutral-800 '>
                 <div className='mb-3 flex w-full items-center justify-center'>
                   <h4 className='m-0'>Ad Post By Status</h4>
                 </div>
@@ -307,6 +370,73 @@ const IndexPage = () => {
                       <p className='m-0 text-sm'>Proses Rekber</p>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div className='col-span-7 flex h-fit flex-col gap-y-5 rounded-lg bg-white p-4 py-4 dark:!bg-neutral-800'>
+                <div className='align-center flex items-center justify-between'>
+                  <div className='flex flex-col gap-y-2'>
+                    <h4 className='m-0'>Ad Post By Statistics</h4>
+                    <Select
+                      styles={customSelectStyles}
+                      className={clsxm('w-fit py-0')}
+                      options={secondaryChartOpts[0]}
+                      defaultValue={secondaryChartOpts[0][3]}
+                      theme={selectPrimaryTheme}
+                    />
+                  </div>
+                  <div className='flex justify-end'>
+                    <div className='flex flex-col items-end justify-center gap-y-2'>
+                      <div className='flex items-center justify-center gap-x-1'>
+                        <p className='m-0 inline whitespace-nowrap text-xs'>
+                          Start Date:
+                        </p>
+                        <DatePicker
+                          className='w-28 rounded-lg p-1'
+                          selected={secondaryChartStartDate}
+                          onChange={(date: Date) =>
+                            setSecondaryChartStartDate(date)
+                          }
+                        />
+                      </div>
+                      <div className='flex items-center justify-center gap-x-1'>
+                        <p className='m-0 inline whitespace-nowrap text-xs'>
+                          End Date:
+                        </p>
+                        <DatePicker
+                          className='w-28 rounded-lg p-1'
+                          selected={secondaryChartEndDate}
+                          onChange={(date: Date) =>
+                            setSecondaryChartEndDate(date)
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <Line
+                    id='mainChart'
+                    data={chartData ?? data}
+                    options={{
+                      scales: {
+                        x: {
+                          grid: {
+                            color: 'rgba(0, 0, 0, 0)',
+                          },
+                        },
+                        y: {
+                          grid: {
+                            color: 'rgba(0, 0, 0, 0)',
+                          },
+                        },
+                      },
+                      plugins: {
+                        tooltip: {
+                          intersect: false,
+                        },
+                      },
+                    }}
+                  />
                 </div>
               </div>
             </div>
