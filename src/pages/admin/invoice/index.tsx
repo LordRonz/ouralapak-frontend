@@ -191,6 +191,7 @@ const IndexPage = () => {
       {
         Header: 'Aksi',
         accessor: 'action',
+        disableSortBy: true,
         Cell: ({ row }) => (
           <>
             <Tooltip interactive={false} content='Lihat'>
@@ -297,7 +298,12 @@ const IndexPage = () => {
           </div>
           {invoices && (
             <>
-              <ReactTable data={data} columns={columns} withFooter={false} />
+              <ReactTable
+                data={data}
+                columns={columns}
+                withFooter={false}
+                noSort={[4]}
+              />
               <div className='w-full rounded-lg bg-neutral-100 py-2 px-8 dark:bg-neutral-800 dark:text-neutral-100'>
                 Showing {invoices.data.pagination.from + 1} to{' '}
                 {invoices.data.pagination.to} of{' '}

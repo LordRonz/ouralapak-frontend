@@ -143,6 +143,7 @@ const IndexPage = () => {
       {
         Header: 'Aksi',
         accessor: 'action',
+        disableSortBy: true,
         Cell: ({ row }) => (
           <>
             <Tooltip interactive={false} content='Lihat'>

@@ -59,17 +59,19 @@ const IklanCardSingle = ({
                 </div>
                 <div className='artist-id'>{user.name}</div>
               </div>
-              <h4 className='art-name'>
+              <h4 className='art-name overflow-hidden overflow-ellipsis whitespace-nowrap'>
                 <Link href={`/iklan/${iklan.id}`}>
                   <a>{title}</a>
                 </Link>
               </h4>
-              <div className='art-meta-info'>
-                <div className='art-meta-item'>
-                  <div className='art-price'>{toIDRCurrency(harga_akun)}</div>
+              <div className='art-meta-info !items-center'>
+                <div className='art-meta-item w-1/2'>
+                  <h4 className='art-price m-0 overflow-hidden overflow-ellipsis whitespace-nowrap'>
+                    {toIDRCurrency(harga_akun)}
+                  </h4>
                 </div>
-                <div className='art-activity-btn'>
-                  <p className='art-activity inline'>{refund}</p>
+                <div className='art-activity-btn whitespace-nowrap'>
+                  <p className='art-activity m-0 inline'>{refund}</p>
                 </div>
               </div>
             </div>

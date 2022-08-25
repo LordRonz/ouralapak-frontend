@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import clsx from 'clsx';
 import * as React from 'react';
 import { GoTriangleDown, GoTriangleUp } from 'react-icons/go';
@@ -19,6 +20,7 @@ type Props<T extends object = {}> = {
   className?: string;
   withFooter?: boolean;
   setFilter?: (s: string) => void;
+  noSort?: number[];
 };
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -28,6 +30,7 @@ const ReactTable = <T extends object>({
   options,
   plugins = [],
   className,
+  noSort,
   withFooter = true,
 }: Props<T>) => {
   const {
@@ -56,9 +59,11 @@ const ReactTable = <T extends object>({
               <thead className='bg-gray-50 dark:!bg-gray-700'>
                 {headerGroups.map((headerGroup, index) => (
                   <tr {...headerGroup.getHeaderGroupProps()} key={index}>
-                    {headerGroup.headers.map((column) => (
+                    {headerGroup.headers.map((column: any, i) => (
                       <th
-                        {...column.getHeaderProps()}
+                        {...column.getHeaderProps(
+                          column.getSortByToggleProps()
+                        )}
                         key={column.id}
                         scope='col'
                         className='group px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:!text-gray-200'
@@ -69,21 +74,32 @@ const ReactTable = <T extends object>({
                             'justify-center'
                           )}
                         >
-                          <p>{column.render('Header')}</p>
-                          <span className='flex flex-col items-center justify-center'>
-                            <GoTriangleUp
-                              className={clsx(
-                                'transition-opacity',
-                                'text-gray-700 dark:!text-gray-200'
+                          <p className='m-0'>{column.render('Header')}</p>
+                          {!(noSort && noSort.some((v) => v == i)) && (
+                            <span className='flex flex-col items-center justify-center'>
+                              {column.isSorted ? (
+                                <>
+                                  {column.isSortedDesc ? (
+                                    <GoTriangleDown
+                                      className={clsx(
+                                        'transition-opacity',
+                                        'text-base text-gray-700 dark:!text-gray-200'
+                                      )}
+                                    />
+                                  ) : (
+                                    <GoTriangleUp
+                                      className={clsx(
+                                        '-mt-1 transition-opacity',
+                                        'text-base text-gray-700 dark:!text-gray-200'
+                                      )}
+                                    />
+                                  )}
+                                </>
+                              ) : (
+                                <></>
                               )}
-                            />
-                            <GoTriangleDown
-                              className={clsx(
-                                '-mt-1 transition-opacity',
-                                'text-gray-700 dark:!text-gray-200'
-                              )}
-                            />
-                          </span>
+                            </span>
+                          )}
                         </div>
                       </th>
                     ))}
