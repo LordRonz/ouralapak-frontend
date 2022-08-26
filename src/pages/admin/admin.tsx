@@ -295,7 +295,7 @@ const IndexPage = () => {
     <>
       <Seo templateTitle='Admin | Invoice' />
       <AnimatePage>
-        <DashboardLayout>
+        <DashboardLayout superAdmin>
           <TableSearch
             setFilter={(s: string) => {
               setCurPage(0);

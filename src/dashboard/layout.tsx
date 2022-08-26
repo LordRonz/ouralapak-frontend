@@ -13,7 +13,6 @@ const style = {
 };
 
 const DashboardLayout = ({
-  superAdmin = false,
   children,
 }: {
   superAdmin?: boolean;
@@ -24,7 +23,7 @@ const DashboardLayout = ({
       <div className={style.container}>
         <div className='!flex !items-start'>
           <Overlay />
-          <SideNavigation mobilePosition='left' superAdmin={superAdmin} />
+          <SideNavigation mobilePosition='left' />
           <div className={style.mainContainer}>
             <TopNavigation />
             <main className={style.main}>{children}</main>

@@ -19,6 +19,7 @@ import { Provider } from 'react-redux';
 import { Theme, ToastContainer } from 'react-toastify';
 import { SWRConfig } from 'swr';
 
+import customAxios from '@/lib/customAxios';
 import getAuthHeader from '@/lib/getAuthHeader';
 import getFromLocalStorage from '@/lib/getFromLocalStorage';
 import { store } from '@/redux/store';
@@ -53,7 +54,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
               const headers = {
                 Authorization: getAuthHeader() ?? Authorization ?? '',
               };
-              const res = await axios.get(url, {
+              const res = await customAxios.get(url, {
                 headers,
               });
               return res.data;

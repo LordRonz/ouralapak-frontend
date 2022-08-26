@@ -6,6 +6,7 @@ export type InvoiceAdmin = {
   created_at: string;
   created_by: number;
   expired_at: string;
+  email?: string;
   id: number;
   iklan: {
     created_at: string;
@@ -23,6 +24,7 @@ export type InvoiceAdmin = {
     rekening_number: string;
   };
   no_invoice: string;
+  phone?: string;
   status: number;
   updated_at: string;
   updated_by: number;

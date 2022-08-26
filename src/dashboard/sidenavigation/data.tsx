@@ -39,6 +39,46 @@ const dataAdmin = [
       },
     ],
   },
+  {
+    section: 'User',
+    content: [
+      {
+        title: 'Admin',
+        icon: <FiUsers />,
+        link: '/admin/admin',
+      },
+    ],
+  },
+  {
+    section: 'Master',
+    content: [
+      {
+        title: 'Bank',
+        icon: <FiDollarSign />,
+        link: '/admin/bank',
+      },
+      {
+        title: 'Binding Account',
+        icon: <FiLink />,
+        link: '/admin/binding-account',
+      },
+      {
+        title: 'Config',
+        icon: <FiTool />,
+        link: '/admin/config',
+      },
+      {
+        title: 'Emblem',
+        icon: <FiAward />,
+        link: '/admin/emblem',
+      },
+      {
+        title: 'Hero',
+        icon: <FiZap />,
+        link: '/admin/hero',
+      },
+    ],
+  },
   // {
   //   section: 'Monitoring',
   //   content: [

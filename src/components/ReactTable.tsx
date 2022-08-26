@@ -71,7 +71,7 @@ const ReactTable = <T extends object>({
                         <div
                           className={clsx(
                             'relative flex items-center gap-4 py-1',
-                            'justify-center'
+                            'justify-center text-center'
                           )}
                         >
                           <p className='m-0'>{column.render('Header')}</p>

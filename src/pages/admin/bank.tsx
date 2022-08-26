@@ -281,7 +281,7 @@ const IndexPage = () => {
     <>
       <Seo templateTitle='Admin | Invoice' />
       <AnimatePage>
-        <DashboardLayout>
+        <DashboardLayout superAdmin>
           <div className='flex justify-between'>
             <TableSearch
               setFilter={(s: string) => {

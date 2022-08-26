@@ -27,15 +27,13 @@ import { mySwalOpts } from '@/constant/swal';
 import DashboardLayout from '@/dashboard/layout';
 import clsxm from '@/lib/clsxm';
 import toastPromiseError from '@/lib/toastPromiseError';
-import Bank from '@/types/bank';
+import EmblemMaster from '@/types/emblemMaster';
 import Pagination from '@/types/pagination';
 
 const MySwal = withReactContent(Swal);
 
 type IFormInput = {
   name: string;
-  rekening_name: string;
-  rekening_number: string;
   is_active: boolean;
 };
 
@@ -74,12 +72,12 @@ const IndexPage = () => {
   } = useForm<IFormInput>();
 
   const {
-    data: banks,
+    data: emblems,
     error,
     mutate,
   } = useSWR<{
     data: {
-      data: Bank[];
+      data: EmblemMaster[];
       pagination: Pagination;
     };
     message: string;
@@ -87,7 +85,7 @@ const IndexPage = () => {
   }>(
     mounted
       ? stringifyUrl({
-          url: `${API_URL}/master/bank`,
+          url: `${API_URL}/master/emblem`,
           query: {
             page: curPage + 1,
             ...(filter && { search: filter }),
@@ -109,9 +107,9 @@ const IndexPage = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     await toast.promise(
-      axios.post<{ data: Bank; message: string; success: boolean }>(
+      axios.post<{ data: EmblemMaster; message: string; success: boolean }>(
         stringifyUrl({
-          url: `${API_URL}/master/bank`,
+          url: `${API_URL}/master/emblem`,
         }),
         data
       ),
@@ -125,11 +123,11 @@ const IndexPage = () => {
           render: () => {
             mutate();
             setOpen(false);
-            return 'Berhasil tambah bank';
+            return 'Berhasil tambah emblem';
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal tambah bank!'),
+          render: toastPromiseError(undefined, 'Gagal tambah emblem!'),
         },
       }
     );
@@ -137,9 +135,9 @@ const IndexPage = () => {
 
   const onSubmit2: SubmitHandler<IFormInput> = async (data) => {
     await toast.promise(
-      axios.put<{ data: Bank; message: string; success: boolean }>(
+      axios.put<{ data: EmblemMaster; message: string; success: boolean }>(
         stringifyUrl({
-          url: `${API_URL}/master/bank/${activeId}`,
+          url: `${API_URL}/master/emblem/${activeId}`,
         }),
         data
       ),
@@ -153,11 +151,11 @@ const IndexPage = () => {
           render: () => {
             mutate();
             setOpen(false);
-            return 'Berhasil update bank';
+            return 'Berhasil update emblem';
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal update bank!'),
+          render: toastPromiseError(undefined, 'Gagal update config!'),
         },
       }
     );
@@ -166,7 +164,7 @@ const IndexPage = () => {
   const onClickDelete = React.useCallback(
     async (id: number) => {
       const { isConfirmed } = await MySwal.fire({
-        title: 'Yakin ingin hapus bank ini?',
+        title: 'Yakin ingin hapus emblem ini?',
         text: 'Tindakan ini tidak bisa dibatalkan!',
         icon: 'warning',
         showCancelButton: true,
@@ -175,7 +173,7 @@ const IndexPage = () => {
       });
 
       if (isConfirmed) {
-        toast.promise(axios.delete(`${API_URL}/master/bank/${id}`), {
+        toast.promise(axios.delete(`${API_URL}/master/emblem/${id}`), {
           pending: {
             render: () => {
               return 'Loading';
@@ -184,11 +182,11 @@ const IndexPage = () => {
           success: {
             render: () => {
               mutate();
-              return 'Berhasil hapus bank!';
+              return 'Berhasil hapus emblem!';
             },
           },
           error: {
-            render: toastPromiseError(undefined, 'Gagal hapus bank!'),
+            render: toastPromiseError(undefined, 'Gagal hapus config!'),
           },
         });
       }
@@ -198,19 +196,17 @@ const IndexPage = () => {
 
   const data = React.useMemo(
     () =>
-      banks?.data.data.map((bank) => {
+      emblems?.data.data.map((emblem) => {
         return {
-          id: bank.id,
-          rekening_name: bank.rekening_name,
-          rekening_number: bank.rekening_number,
-          status: bank.is_active ? 'Aktif' : 'Nonaktif',
-          is_active: bank.is_active,
-          name: bank.name,
+          id: emblem.id,
+          status: emblem.is_active ? 'Aktif' : 'Nonaktif',
+          is_active: emblem.is_active,
+          name: emblem.name,
           action: {},
-          bank,
+          emblem,
         };
       }) ?? [],
-    [banks?.data.data]
+    [emblems?.data.data]
   );
 
   const columns = React.useMemo<Column<typeof data[number]>[]>(
@@ -218,14 +214,6 @@ const IndexPage = () => {
       {
         Header: 'Nama',
         accessor: 'name',
-      },
-      {
-        Header: 'Nama Rek.',
-        accessor: 'rekening_name',
-      },
-      {
-        Header: 'Nomor Rek.',
-        accessor: 'rekening_number',
       },
       {
         Header: 'Status',
@@ -243,12 +231,9 @@ const IndexPage = () => {
                 className='text-red-500 hover:text-red-600'
                 onClick={() => {
                   setOpen2(true);
-                  const { is_active, name, rekening_name, rekening_number } =
-                    row.original.bank;
+                  const { is_active, name } = row.original.emblem;
                   setValue('is_active', !!is_active);
                   setValue('name', name);
-                  setValue('rekening_name', rekening_name);
-                  setValue('rekening_number', rekening_number);
                   setActiveId(row.original.id);
                 }}
                 disabled={updBtnDisabled}
@@ -279,9 +264,9 @@ const IndexPage = () => {
 
   return (
     <>
-      <Seo templateTitle='Admin | Invoice' />
+      <Seo templateTitle='SuperAdmin | Emblem' />
       <AnimatePage>
-        <DashboardLayout>
+        <DashboardLayout superAdmin>
           <div className='flex justify-between'>
             <TableSearch
               setFilter={(s: string) => {
@@ -298,12 +283,12 @@ const IndexPage = () => {
               <FiPlus />
             </Button>
           </div>
-          {banks && (
+          {emblems && (
             <ReactTable data={data} columns={columns} withFooter={false} />
           )}
           <div className='flex items-center justify-center'>
             <PaginationComponent
-              pageCount={banks?.data.pagination.lastPage ?? 1}
+              pageCount={emblems?.data.pagination.lastPage ?? 1}
               onPageChange={({ selected }) => setCurPage(selected)}
             />
           </div>
@@ -313,7 +298,7 @@ const IndexPage = () => {
                 <div className='login-wrapper pos-rel wow fadeInUp mb-40'>
                   <div className=' login-inner'>
                     <div className='login-content'>
-                      <h4>Tambah Bank</h4>
+                      <h4>Tambah Emblem</h4>
                       <form
                         className='login-form'
                         onSubmit={handleSubmit(onSubmit)}
@@ -321,13 +306,13 @@ const IndexPage = () => {
                         <div className='row gap-y-6'>
                           <div className='col-md-12'>
                             <div className='single-input-unit'>
-                              <label htmlFor='email'>Nama</label>
+                              <label htmlFor='name'>Nama</label>
                               <input
                                 type='text'
-                                placeholder='Masukkan Nama Bank'
+                                placeholder='Masukkan Nama Emblem'
                                 autoFocus
                                 {...register('name', {
-                                  required: 'Nama bank harus diisi',
+                                  required: 'Nama Emblem harus diisi',
                                 })}
                               />
                             </div>
@@ -337,41 +322,7 @@ const IndexPage = () => {
                           </div>
                           <div className='col-md-12'>
                             <div className='single-input-unit'>
-                              <label htmlFor='email'>Nama Rekening</label>
-                              <input
-                                type='text'
-                                placeholder='Masukkan Nama Rekening'
-                                autoFocus
-                                {...register('rekening_name', {
-                                  required: 'Nama rekening harus diisi',
-                                })}
-                              />
-                            </div>
-                            <p className='text-red-500'>
-                              {errors.rekening_name?.message}
-                            </p>
-                          </div>
-                          <div className='col-md-12'>
-                            <div className='single-input-unit'>
-                              <label htmlFor='email'>Nomor Rekening</label>
-                              <input
-                                type='text'
-                                placeholder='Masukkan Nomor Rekening'
-                                autoFocus
-                                {...register('rekening_number', {
-                                  required: 'Nomor rekening harus diisi',
-                                })}
-                              />
-                            </div>
-                            <p className='text-red-500'>
-                              {errors.rekening_number?.message}
-                            </p>
-                          </div>
-                          <div className='col-md-12'>
-                            <div className='single-input-unit'>
-                              <label htmlFor='jenis_pembayaran'>
-                                Jenis Pembayaran
-                              </label>
+                              <label htmlFor='is_active'>Status</label>
                               <Controller
                                 control={control}
                                 defaultValue={isActiveOpts[0].value}
@@ -408,7 +359,7 @@ const IndexPage = () => {
                 <div className='login-wrapper pos-rel wow fadeInUp mb-40'>
                   <div className=' login-inner'>
                     <div className='login-content'>
-                      <h4>Update Bank</h4>
+                      <h4>Update Emblem</h4>
                       <form
                         className='login-form'
                         onSubmit={handleSubmit(onSubmit2)}
@@ -416,48 +367,16 @@ const IndexPage = () => {
                         <div className='row'>
                           <div className='col-md-12'>
                             <div className='single-input-unit'>
-                              <label htmlFor='name'>Nama</label>
+                              <label htmlFor='email'>Nama</label>
                               <input
                                 type='text'
-                                placeholder='Masukkan Nama Bank'
+                                placeholder='Masukkan Nama Emblem'
                                 autoFocus
                                 {...register('name')}
                               />
                             </div>
                             <p className='text-red-500'>
                               {errors.name?.message}
-                            </p>
-                          </div>
-                          <div className='col-md-12'>
-                            <div className='single-input-unit'>
-                              <label htmlFor='rekening_name'>
-                                Nama Rekening
-                              </label>
-                              <input
-                                type='text'
-                                placeholder='Masukkan Nama Rekening'
-                                autoFocus
-                                {...register('rekening_name')}
-                              />
-                            </div>
-                            <p className='text-red-500'>
-                              {errors.rekening_name?.message}
-                            </p>
-                          </div>
-                          <div className='col-md-12'>
-                            <div className='single-input-unit'>
-                              <label htmlFor='rekening_number'>
-                                Nomor Rekening
-                              </label>
-                              <input
-                                type='text'
-                                placeholder='Masukkan Nomor Rekening'
-                                autoFocus
-                                {...register('rekening_number')}
-                              />
-                            </div>
-                            <p className='text-red-500'>
-                              {errors.rekening_number?.message}
                             </p>
                           </div>
                           <div className='col-md-12'>

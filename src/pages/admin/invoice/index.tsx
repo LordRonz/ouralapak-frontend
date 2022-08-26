@@ -1,9 +1,9 @@
 import axios from 'axios';
+import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { stringifyUrl } from 'query-string';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { FiSearch } from 'react-icons/fi';
 import Select, { SingleValue } from 'react-select';
 import { Column } from 'react-table';
 import { toast } from 'react-toastify';
@@ -12,9 +12,7 @@ import withReactContent from 'sweetalert2-react-content';
 import useSWR from 'swr';
 
 import AnimatePage from '@/components/AnimatePage';
-import Button from '@/components/buttons/Button';
 import PaginationComponent from '@/components/Common/Pagination';
-import ButtonLink from '@/components/links/ButtonLink';
 import ReactTable from '@/components/ReactTable';
 import Seo from '@/components/Seo';
 import TableSearch from '@/components/TableSearch';
@@ -27,7 +25,12 @@ import DashboardLayout from '@/dashboard/layout';
 import clsxm from '@/lib/clsxm';
 import formatDateStrId from '@/lib/formatDateStrId';
 import { StatusIklanEnum } from '@/lib/getStatusIklan';
+import getWaLink from '@/lib/getWhatsappLink';
 import toastPromiseError from '@/lib/toastPromiseError';
+import CheckMark from '@/svgs/checkmark.svg';
+import DetailIcon from '@/svgs/detail.svg';
+import Whatsapp from '@/svgs/whatsapp.svg';
+import XMark from '@/svgs/xmark.svg';
 import { getStatusInvoice, JenisInvoice, StatusInvoice } from '@/types/invoice';
 import InvoiceAdmin from '@/types/invoiceAdmin';
 import Pagination from '@/types/pagination';
@@ -37,7 +40,7 @@ const MySwal = withReactContent(Swal);
 const IndexPage = () => {
   const { theme } = useTheme();
 
-  const [delBtnDisabled, setDelBtnDisabled] = React.useState(false);
+  const [, setDelBtnDisabled] = React.useState(false);
   const [mounted, setMounted] = useState(false);
   const [curPage, setCurPage] = useState(0);
   const [filter, setFilter] = useState<string>();
@@ -163,7 +166,8 @@ const IndexPage = () => {
           updatedBy: invoice.updated_by,
           userId: invoice.user_id ?? invoice.user?.id,
           user: invoice.user,
-          email: invoice.user.email,
+          phone: invoice?.phone,
+          email: invoice.user?.email ?? invoice.email,
           action: {},
         };
       }) ?? [],
@@ -186,7 +190,24 @@ const IndexPage = () => {
       },
       {
         Header: 'Status',
-        accessor: 'status', // accessor is the "key" in the data
+        accessor: 'status',
+        Cell: ({ row }) => (
+          <>
+            <div
+              className={clsxm(
+                'rounded-xl px-4 py-2',
+                row.original.statusCode === StatusInvoice.SUDAH_DIBAYAR &&
+                  'bg-green-200 text-green-600',
+                row.original.statusCode === StatusInvoice.MENUNGGU_PEMBAYARAN &&
+                  'bg-violet-200 text-violet-600',
+                row.original.statusCode === StatusInvoice.EXPIRED &&
+                  'bg-red-200 text-red-600'
+              )}
+            >
+              {row.original.status}
+            </div>
+          </>
+        ),
       },
       {
         Header: 'Aksi',
@@ -194,35 +215,52 @@ const IndexPage = () => {
         disableSortBy: true,
         Cell: ({ row }) => (
           <>
-            <Tooltip interactive={false} content='Lihat'>
-              <ButtonLink
-                variant={theme === 'dark' ? 'dark' : 'light'}
-                className='text-green-500 hover:text-green-600'
-                href={`/admin/invoice/${row.original.id}`}
-              >
-                <FiSearch />
-              </ButtonLink>
-            </Tooltip>
-            <Button
-              variant={theme === 'dark' ? 'dark' : 'light'}
-              className='h-8 text-yellow-500 hover:text-yellow-600'
-              onClick={() => onClickUpdate(row.original.invoice)}
-              disabled={
-                delBtnDisabled ||
-                row.original.statusCode === StatusInvoice.EXPIRED
-              }
-            >
-              {row.original.statusCode === StatusInvoice.MENUNGGU_PEMBAYARAN
-                ? 'Sudah Dibayar'
-                : row.original.statusCode === StatusInvoice.SUDAH_DIBAYAR
-                ? 'Menunggu Pembayaran'
-                : 'Expired'}
-            </Button>
+            <div className='flex items-center justify-center gap-x-2'>
+              {row.original.statusCode !== StatusInvoice.EXPIRED && (
+                <Tooltip interactive={false} content='Update'>
+                  <div
+                    className='cursor-pointer'
+                    onClick={() => onClickUpdate(row.original.invoice)}
+                  >
+                    {row.original.statusCode ===
+                    StatusInvoice.MENUNGGU_PEMBAYARAN ? (
+                      <CheckMark />
+                    ) : (
+                      <XMark />
+                    )}
+                  </div>
+                </Tooltip>
+              )}
+              <Tooltip interactive={false} content='Lihat'>
+                <Link
+                  href={`/invoice${
+                    row.original.jenisInvoice === JenisInvoice.PEMBELI
+                      ? '-beli'
+                      : ''
+                  }/${row.original.id}`}
+                >
+                  <a>
+                    <DetailIcon />
+                  </a>
+                </Link>
+              </Tooltip>
+              <Tooltip interactive={false} content='Whatsapp'>
+                <Link
+                  href={getWaLink(
+                    row.original.user?.phone ?? row.original.phone
+                  )}
+                >
+                  <a>
+                    <Whatsapp />
+                  </a>
+                </Link>
+              </Tooltip>
+            </div>
           </>
         ),
       },
     ],
-    [delBtnDisabled, onClickUpdate, theme]
+    [onClickUpdate]
   );
 
   const filterOpts = [

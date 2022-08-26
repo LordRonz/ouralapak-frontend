@@ -10,23 +10,33 @@ import {
   Title,
   Tooltip,
 } from 'chart.js';
+import { sub } from 'date-fns';
+import { stringifyUrl } from 'query-string';
 import * as React from 'react';
 import { Line } from 'react-chartjs-2';
 import DatePicker from 'react-datepicker';
 import { AiFillDollarCircle } from 'react-icons/ai';
 import Select from 'react-select';
+import useSWR from 'swr';
 
 import AnimatePage from '@/components/AnimatePage';
 import Seo from '@/components/Seo';
 import { selectPrimaryTheme } from '@/constant/colors';
+import { API_URL } from '@/constant/config';
 import { customSelectStyles } from '@/constant/select';
 import DashboardLayout from '@/dashboard/layout';
 import clsxm from '@/lib/clsxm';
-import { statusIklanArray } from '@/lib/getStatusIklan';
+import formatDateStrId from '@/lib/formatDateStrId';
+import getEpochSecond from '@/lib/getEpochSecond';
+import { statusIklanArray, StatusIklanEnum } from '@/lib/getStatusIklan';
+import toIDRCurrency from '@/lib/toIDRCurrency';
 import Chart1 from '@/svgs/chart1.svg';
 import Chart2 from '@/svgs/chart2.svg';
 import Chart3 from '@/svgs/chart3.svg';
 import Chart4 from '@/svgs/chart4.svg';
+import APIResponse from '@/types/response';
+import Revenue from '@/types/revenue';
+import TotalData from '@/types/totalData';
 
 ChartJS.register(
   CategoryScale,
@@ -44,8 +54,9 @@ const IndexPage = () => {
     React.useState<ChartData<'line', number[], string>>();
 
   const [activeChart, setActiveChart] = React.useState(0);
+  const [dashboardType, setDashboardType] = React.useState(0);
   const [mainChartStartDate, setMainChartStartDate] = React.useState(
-    new Date()
+    sub(new Date(), { days: 30 })
   );
   const [mainChartEndDate, setMainChartEndDate] = React.useState(new Date());
   const [secondaryChartStartDate, setSecondaryChartStartDate] = React.useState(
@@ -55,50 +66,131 @@ const IndexPage = () => {
     new Date()
   );
 
+  const { data: mainChart } = useSWR<APIResponse<Revenue>>(
+    stringifyUrl({
+      url: `${API_URL}/admin/statistik/${
+        ['iklan', 'rekber'][dashboardType]
+      }-revenue/${['net', 'gross', 'admin-fee'][activeChart]}`,
+      query: {
+        start_date: getEpochSecond(mainChartStartDate),
+        end_date: getEpochSecond(mainChartEndDate),
+      },
+    })
+  );
+
+  const { data: todayNetRevenue } = useSWR<APIResponse<Revenue>>(
+    stringifyUrl({
+      url: `${API_URL}/admin/statistik/${
+        ['iklan', 'rekber'][dashboardType]
+      }-revenue/net`,
+      query: {
+        start_date: getEpochSecond(sub(new Date(), { days: 1 })),
+        end_date: getEpochSecond(new Date()),
+      },
+    })
+  );
+
+  const { data: todayGrossRevenue } = useSWR<APIResponse<Revenue>>(
+    stringifyUrl({
+      url: `${API_URL}/admin/statistik/${
+        ['iklan', 'rekber'][dashboardType]
+      }-revenue/gross`,
+      query: {
+        start_date: getEpochSecond(sub(new Date(), { days: 1 })),
+        end_date: getEpochSecond(new Date()),
+      },
+    })
+  );
+
+  const { data: todayAdminFeeRevenue } = useSWR<APIResponse<Revenue>>(
+    stringifyUrl({
+      url: `${API_URL}/admin/statistik/${
+        ['iklan', 'rekber'][dashboardType]
+      }-revenue/admin-fee`,
+      query: {
+        start_date: getEpochSecond(sub(new Date(), { days: 1 })),
+        end_date: getEpochSecond(new Date()),
+      },
+    })
+  );
+
+  const { data: totalDipublikasi } = useSWR<APIResponse<TotalData>>(
+    stringifyUrl({
+      url: `${API_URL}/admin/statistik/${['iklan', 'rekber'][dashboardType]}`,
+      query: {
+        status: StatusIklanEnum.DIPUBLIKASI,
+      },
+    })
+  );
+
+  const { data: totalMenungguKonfirmasi } = useSWR<APIResponse<TotalData>>(
+    stringifyUrl({
+      url: `${API_URL}/admin/statistik/${['iklan', 'rekber'][dashboardType]}`,
+      query: {
+        status: StatusIklanEnum.MENUNGGU_KONFIRMASI,
+      },
+    })
+  );
+
+  const { data: totalMenungguPembayaranPenjual } = useSWR<
+    APIResponse<TotalData>
+  >(
+    stringifyUrl({
+      url: `${API_URL}/admin/statistik/${['iklan', 'rekber'][dashboardType]}`,
+      query: {
+        status: StatusIklanEnum.MENUNGGU_PEMBAYARAN,
+      },
+    })
+  );
+
+  const { data: totalMenungguPembayaranPembeli } = useSWR<
+    APIResponse<TotalData>
+  >(
+    stringifyUrl({
+      url: `${API_URL}/admin/statistik/${['iklan', 'rekber'][dashboardType]}`,
+      query: {
+        status: StatusIklanEnum.MENUNGGU_PEMBAYARAN_PEMBELI,
+      },
+    })
+  );
+
+  const { data: totalTerjual } = useSWR<APIResponse<TotalData>>(
+    stringifyUrl({
+      url: `${API_URL}/admin/statistik/${['iklan', 'rekber'][dashboardType]}`,
+      query: {
+        status: StatusIklanEnum.SELESAI,
+      },
+    })
+  );
+
+  const { data: totalProsesRekber } = useSWR<APIResponse<TotalData>>(
+    stringifyUrl({
+      url: `${API_URL}/admin/statistik/${['iklan', 'rekber'][dashboardType]}`,
+      query: {
+        status: StatusIklanEnum.PROSES_REKBER,
+      },
+    })
+  );
+
   React.useEffect(() => {
     const ctx = (
       document.getElementById('mainChart') as HTMLCanvasElement
     )?.getContext('2d');
-    if (!ctx) return;
+    if (!ctx || !mainChart?.data) return;
 
     const gradient = ctx.createLinearGradient(0, 0, 0, 400);
     gradient.addColorStop(1, 'rgba(196, 196, 196, 0)');
     gradient.addColorStop(0, '#B49E7C');
+    const labels = mainChart.data.val.map((v) =>
+      formatDateStrId(v.date, 'dd/MM/yy')
+    );
+    const data = mainChart.data.val.map(({ value }) => value);
     const newData = {
-      labels: [
-        '02:00',
-        '04:00',
-        '06:00',
-        '08:00',
-        '10:00',
-        '12:00',
-        '14:00',
-        '16:00',
-        '18:00',
-        '20:00',
-        '22:00',
-        '00:00',
-      ],
+      labels,
       datasets: [
         {
-          labels: [
-            '02:00',
-            '04:00',
-            '06:00',
-            '08:00',
-            '10:00',
-            '12:00',
-            '14:00',
-            '16:00',
-            '18:00',
-            '20:00',
-            '22:00',
-            '00:00',
-          ],
-          data: [
-            25.0, 32.4, 22.2, 39.4, 34.2, 22.0, 23.2, 24.1, 20.0, 18.4, 19.1,
-            17.4,
-          ],
+          labels,
+          data,
           backgroundColor: gradient,
           borderColor: '#B49E7C',
           pointRadius: 0,
@@ -107,7 +199,7 @@ const IndexPage = () => {
       ],
     };
     setChartData(newData);
-  }, []);
+  }, [mainChart, mainChart?.data]);
 
   const data = {
     labels: [
@@ -182,6 +274,7 @@ const IndexPage = () => {
                 options={dashboardsOpts}
                 defaultValue={dashboardsOpts[0]}
                 theme={selectPrimaryTheme}
+                onChange={(v) => setDashboardType(v?.value ?? 0)}
               />
             </div>
           </div>
@@ -240,6 +333,7 @@ const IndexPage = () => {
                         className='w-28 rounded-lg p-1'
                         selected={mainChartStartDate}
                         onChange={(date: Date) => setMainChartStartDate(date)}
+                        dateFormat='dd/MM/yyyy'
                       />
                     </div>
                     <div className='flex items-center justify-center gap-x-1'>
@@ -250,6 +344,7 @@ const IndexPage = () => {
                         className='w-28 rounded-lg p-1'
                         selected={mainChartEndDate}
                         onChange={(date: Date) => setMainChartEndDate(date)}
+                        dateFormat='dd/MM/yyyy'
                       />
                     </div>
                   </div>
@@ -269,12 +364,37 @@ const IndexPage = () => {
                           grid: {
                             color: 'rgba(0, 0, 0, 0)',
                           },
+                          beginAtZero: true,
+                          ticks: {
+                            callback: function (value) {
+                              return 'Rp ' + value;
+                            },
+                          },
                         },
                       },
                       plugins: {
                         tooltip: {
                           intersect: false,
+                          callbacks: {
+                            label: function (context) {
+                              let label = context.dataset.label || '';
+
+                              if (label) {
+                                label += ': ';
+                              }
+                              if (context.parsed.y !== null) {
+                                label += new Intl.NumberFormat('id-ID', {
+                                  style: 'currency',
+                                  currency: 'IDR',
+                                })
+                                  .format(context.parsed.y)
+                                  .slice(0, -3);
+                              }
+                              return label;
+                            },
+                          },
                         },
+                        legend: { display: false },
                       },
                     }}
                   />
@@ -284,29 +404,35 @@ const IndexPage = () => {
             <div className='grid grid-cols-3 gap-x-2 rounded-lg bg-white p-4 dark:!bg-neutral-800'>
               <div className='flex w-full items-center justify-center gap-x-3'>
                 <div>
-                  <AiFillDollarCircle className='text-5xl text-[#7366FF]' />
+                  <AiFillDollarCircle className='text-4xl text-[#7366FF]' />
                 </div>
                 <div>
                   <h4 className='m-0'>Today{"'"}s Nett Revenue</h4>
-                  <p className='m-0'>Rp. 250.000</p>
+                  <p className='m-0'>
+                    {toIDRCurrency(todayNetRevenue?.data?.total_revenue)}
+                  </p>
                 </div>
               </div>
               <div className='flex w-full items-center justify-center gap-x-3'>
                 <div>
-                  <AiFillDollarCircle className='text-5xl text-[#F73164]' />
+                  <AiFillDollarCircle className='text-4xl text-[#F73164]' />
                 </div>
                 <div>
-                  <h4 className='m-0'>Today{"'"}s Nett Revenue</h4>
-                  <p className='m-0'>Rp. 250.000</p>
+                  <h4 className='m-0'>Today{"'"}s Gross Revenue</h4>
+                  <p className='m-0'>
+                    {toIDRCurrency(todayGrossRevenue?.data?.total_revenue)}
+                  </p>
                 </div>
               </div>
               <div className='flex w-full items-center justify-center gap-x-3'>
                 <div>
-                  <AiFillDollarCircle className='text-5xl text-[#7366FF]' />
+                  <AiFillDollarCircle className='text-4xl text-[#7366FF]' />
                 </div>
                 <div>
-                  <h4 className='m-0'>Today{"'"}s Nett Revenue</h4>
-                  <p className='m-0'>Rp. 250.000</p>
+                  <h4 className='m-0'>Today{"'"}s Admin Fee Revenue</h4>
+                  <p className='m-0'>
+                    {toIDRCurrency(todayAdminFeeRevenue?.data?.total_revenue)}
+                  </p>
                 </div>
               </div>
             </div>
@@ -321,7 +447,7 @@ const IndexPage = () => {
                       <Chart1 />
                     </div>
                     <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                      <h5 className='m-0'>1001</h5>
+                      <h5 className='m-0'>{totalDipublikasi?.data?.total}</h5>
                       <p className='m-0 text-sm'>Dipublikasi</p>
                     </div>
                   </div>
@@ -330,7 +456,9 @@ const IndexPage = () => {
                       <Chart2 />
                     </div>
                     <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                      <h5 className='m-0'>1001</h5>
+                      <h5 className='m-0'>
+                        {totalMenungguKonfirmasi?.data?.total}
+                      </h5>
                       <p className='m-0 text-sm'>Menunggu Konfirmasi</p>
                     </div>
                   </div>
@@ -339,7 +467,9 @@ const IndexPage = () => {
                       <Chart3 />
                     </div>
                     <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                      <h5 className='m-0'>1001</h5>
+                      <h5 className='m-0'>
+                        {totalMenungguPembayaranPenjual?.data?.total}
+                      </h5>
                       <p className='m-0 text-sm'>Menunggu Pembayaran Penjual</p>
                     </div>
                   </div>
@@ -348,7 +478,9 @@ const IndexPage = () => {
                       <Chart4 />
                     </div>
                     <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                      <h5 className='m-0'>1001</h5>
+                      <h5 className='m-0'>
+                        {totalMenungguPembayaranPembeli?.data?.total}
+                      </h5>
                       <p className='m-0 text-sm'>Menunggu Pembayaran Pembeli</p>
                     </div>
                   </div>
@@ -357,7 +489,7 @@ const IndexPage = () => {
                       <Chart3 />
                     </div>
                     <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                      <h5 className='m-0'>1001</h5>
+                      <h5 className='m-0'>{totalTerjual?.data?.total}</h5>
                       <p className='m-0 text-sm'>Terjual</p>
                     </div>
                   </div>
@@ -366,7 +498,7 @@ const IndexPage = () => {
                       <Chart4 />
                     </div>
                     <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                      <h5 className='m-0'>1001</h5>
+                      <h5 className='m-0'>{totalProsesRekber?.data?.total}</h5>
                       <p className='m-0 text-sm'>Proses Rekber</p>
                     </div>
                   </div>
@@ -396,6 +528,7 @@ const IndexPage = () => {
                           onChange={(date: Date) =>
                             setSecondaryChartStartDate(date)
                           }
+                          dateFormat='dd/MM/yyyy'
                         />
                       </div>
                       <div className='flex items-center justify-center gap-x-1'>
@@ -408,6 +541,7 @@ const IndexPage = () => {
                           onChange={(date: Date) =>
                             setSecondaryChartEndDate(date)
                           }
+                          dateFormat='dd/MM/yyyy'
                         />
                       </div>
                     </div>
@@ -428,12 +562,37 @@ const IndexPage = () => {
                           grid: {
                             color: 'rgba(0, 0, 0, 0)',
                           },
+                          beginAtZero: true,
+                          ticks: {
+                            callback: function (value) {
+                              return 'Rp ' + value;
+                            },
+                          },
                         },
                       },
                       plugins: {
                         tooltip: {
                           intersect: false,
+                          callbacks: {
+                            label: function (context) {
+                              let label = context.dataset.label || '';
+
+                              if (label) {
+                                label += ': ';
+                              }
+                              if (context.parsed.y !== null) {
+                                label += new Intl.NumberFormat('id-ID', {
+                                  style: 'currency',
+                                  currency: 'IDR',
+                                })
+                                  .format(context.parsed.y)
+                                  .slice(0, -3);
+                              }
+                              return label;
+                            },
+                          },
                         },
+                        legend: { display: false },
                       },
                     }}
                   />
