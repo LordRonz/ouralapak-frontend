@@ -1,25 +1,20 @@
 import { Dialog, Transition } from '@headlessui/react';
 import axios from 'axios';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useTheme } from 'next-themes';
 import { stringifyUrl } from 'query-string';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Fragment } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { FiEdit2, FiSearch, FiTrash2 } from 'react-icons/fi';
 import Select, { SingleValue } from 'react-select';
 import { Column } from 'react-table';
 import { toast } from 'react-toastify';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
 import useSWR from 'swr';
 
 import AnimatePage from '@/components/AnimatePage';
-import Button from '@/components/buttons/Button';
 import ButtonGradient from '@/components/buttons/ButtonGradient';
 import PaginationComponent from '@/components/Common/Pagination';
-import ButtonLink from '@/components/links/ButtonLink';
 import ReactTable from '@/components/ReactTable';
 import Seo from '@/components/Seo';
 import TableSearch from '@/components/TableSearch';
@@ -27,28 +22,28 @@ import Tooltip from '@/components/Tooltip';
 import { maxEntriesOpts } from '@/constant/admin';
 import { API_URL } from '@/constant/config';
 import { customSelectStyles } from '@/constant/select';
-import { mySwalOpts } from '@/constant/swal';
 import DashboardLayout from '@/dashboard/layout';
 import { clsxm } from '@/lib/clsxm';
 import formatDateStrId from '@/lib/formatDateStrId';
-import getStatusIklan, { statusIklanArray } from '@/lib/getStatusIklan';
+import getStatusIklan, {
+  statusIklanArray,
+  StatusIklanEnum,
+} from '@/lib/getStatusIklan';
+import getWaLink from '@/lib/getWhatsappLink';
 import toastPromiseError from '@/lib/toastPromiseError';
 import useAuthHeader from '@/services/authHeader';
+import Detail from '@/svgs/detail.svg';
+import EditStatus from '@/svgs/editStatus.svg';
+import Whatsapp from '@/svgs/whatsapp.svg';
 import { IklanAdmin } from '@/types/iklan';
 import type Pagination from '@/types/pagination';
 import Refund from '@/types/refund';
-
-const MySwal = withReactContent(Swal);
 
 type IFormInput = {
   status?: number;
 };
 
 const IndexPage = () => {
-  const { theme } = useTheme();
-
-  const [delBtnDisabled, setDelBtnDisabled] = React.useState(false);
-
   const [iklan, setIklan] = useState<IklanAdmin>();
 
   const router = useRouter();
@@ -138,41 +133,41 @@ const IndexPage = () => {
     [headers, iklan?.id, mutate]
   );
 
-  const onClickDelete = React.useCallback(
-    async (id: number) => {
-      const { isConfirmed } = await MySwal.fire({
-        title: 'Yakin ingin hapus iklan ini?',
-        text: 'Tindakan ini tidak bisa dibatalkan!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Hapus',
-        ...mySwalOpts(theme),
-      });
-      if (isConfirmed) {
-        toast.promise(axios.delete(`${API_URL}/admin/iklan/${id}`), {
-          pending: {
-            render: () => {
-              setDelBtnDisabled(true);
-              return 'Loading';
-            },
-          },
-          success: {
-            render: () => {
-              mutate();
-              setDelBtnDisabled(false);
-              return 'Berhasil hapus iklan!';
-            },
-          },
-          error: {
-            render: toastPromiseError(() => {
-              setDelBtnDisabled(false);
-            }, 'Gagal menghapus iklan!'),
-          },
-        });
-      }
-    },
-    [mutate, theme]
-  );
+  // const onClickDelete = React.useCallback(
+  //   async (id: number) => {
+  //     const { isConfirmed } = await MySwal.fire({
+  //       title: 'Yakin ingin hapus iklan ini?',
+  //       text: 'Tindakan ini tidak bisa dibatalkan!',
+  //       icon: 'warning',
+  //       showCancelButton: true,
+  //       confirmButtonText: 'Hapus',
+  //       ...mySwalOpts(theme),
+  //     });
+  //     if (isConfirmed) {
+  //       toast.promise(axios.delete(`${API_URL}/admin/iklan/${id}`), {
+  //         pending: {
+  //           render: () => {
+  //             setDelBtnDisabled(true);
+  //             return 'Loading';
+  //           },
+  //         },
+  //         success: {
+  //           render: () => {
+  //             mutate();
+  //             setDelBtnDisabled(false);
+  //             return 'Berhasil hapus iklan!';
+  //           },
+  //         },
+  //         error: {
+  //           render: toastPromiseError(() => {
+  //             setDelBtnDisabled(false);
+  //           }, 'Gagal menghapus iklan!'),
+  //         },
+  //       });
+  //     }
+  //   },
+  //   [mutate, theme]
+  // );
 
   if (error) {
     router.push('/');
@@ -205,6 +200,7 @@ const IndexPage = () => {
           iklan,
           judulIklan: iklan.title,
           status: getStatusIklan(iklan.status_id),
+          statusCode: iklan.status_id,
           statusIklan: iklan.status,
           userId: iklan.user_id ?? iklan.user?.id,
           user: iklan.user,
@@ -216,6 +212,8 @@ const IndexPage = () => {
       }) ?? [],
     [getJenisRefund, iklans?.data.data]
   );
+
+  console.log(data);
 
   const columns = React.useMemo<Column<typeof data[number]>[]>(
     () => [
@@ -237,7 +235,39 @@ const IndexPage = () => {
       },
       {
         Header: 'Status',
-        accessor: 'status', // accessor is the "key" in the data
+        accessor: 'status',
+        Cell: ({ row }) => (
+          <>
+            <div
+              className={clsxm(
+                'rounded-xl px-4 py-2',
+                row.original.statusCode === StatusIklanEnum.DIHAPUS &&
+                  'bg-neutral-200 text-neutral-600',
+                row.original.statusCode ===
+                  StatusIklanEnum.MENUNGGU_PEMBAYARAN &&
+                  'bg-violet-200 text-violet-600',
+                row.original.statusCode ===
+                  StatusIklanEnum.MENUNGGU_KONFIRMASI &&
+                  'bg-yellow-200 text-yellow-600',
+                row.original.statusCode === StatusIklanEnum.DIPUBLIKASI &&
+                  'bg-indigo-200 text-indigo-600',
+                row.original.statusCode === StatusIklanEnum.DITOLAK &&
+                  'bg-orange-200 text-orange-600',
+                row.original.statusCode === StatusIklanEnum.DIBATALKAN &&
+                  'bg-rose-200 text-rose-600',
+                row.original.statusCode === StatusIklanEnum.PROSES_REKBER &&
+                  'bg-teal-200 text-teal-600',
+                row.original.statusCode === StatusIklanEnum.SELESAI &&
+                  'bg-green-200 text-green-600',
+                row.original.statusCode ===
+                  StatusIklanEnum.MENUNGGU_PEMBAYARAN_PEMBELI &&
+                  'bg-violet-200 text-violet-600'
+              )}
+            >
+              {row.original.status}
+            </div>
+          </>
+        ),
       },
       {
         Header: 'Aksi',
@@ -245,43 +275,39 @@ const IndexPage = () => {
         disableSortBy: true,
         Cell: ({ row }) => (
           <>
-            <Tooltip interactive={false} content='Lihat'>
-              <ButtonLink
-                variant={theme === 'dark' ? 'dark' : 'light'}
-                className='text-green-500 hover:text-green-600'
-                href={`/admin/iklan/${row.original.id}`}
-              >
-                <FiSearch />
-              </ButtonLink>
-            </Tooltip>
-            <Tooltip interactive={false} content='Edit'>
-              <Button
-                variant={theme === 'dark' ? 'dark' : 'light'}
-                className='text-red-500 hover:text-red-600'
-                onClick={() => {
-                  setIklan(row.original.iklan);
-                  reset();
-                  setIsModalOpen(true);
-                }}
-              >
-                <FiEdit2 />
-              </Button>
-            </Tooltip>
-            <Tooltip interactive={false} content='Hapus'>
-              <Button
-                variant={theme === 'dark' ? 'dark' : 'light'}
-                className='text-red-500 hover:text-red-600'
-                onClick={() => onClickDelete(row.original.id)}
-                disabled={delBtnDisabled}
-              >
-                <FiTrash2 />
-              </Button>
-            </Tooltip>
+            <div className='flex items-center justify-center gap-x-3'>
+              <Tooltip interactive={false} content='Update'>
+                <div
+                  className='cursor-pointer'
+                  onClick={() => {
+                    setIklan(row.original.iklan);
+                    reset();
+                    setIsModalOpen(true);
+                  }}
+                >
+                  <EditStatus />
+                </div>
+              </Tooltip>
+              <Tooltip interactive={false} content='Detail'>
+                <Link href={`/admin/iklan/${row.original.id}`}>
+                  <a>
+                    <Detail />
+                  </a>
+                </Link>
+              </Tooltip>
+              <Tooltip interactive={false} content='Whatsapp'>
+                <Link href={getWaLink('+69696969')}>
+                  <a>
+                    <Whatsapp />
+                  </a>
+                </Link>
+              </Tooltip>
+            </div>
           </>
         ),
       },
     ],
-    [theme, delBtnDisabled, reset, onClickDelete]
+    [reset]
   );
 
   return (
