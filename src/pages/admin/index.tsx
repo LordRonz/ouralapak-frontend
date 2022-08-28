@@ -28,7 +28,7 @@ import DashboardLayout from '@/dashboard/layout';
 import clsxm from '@/lib/clsxm';
 import formatDateStrId from '@/lib/formatDateStrId';
 import getEpochSecond from '@/lib/getEpochSecond';
-import { statusIklanArray, StatusIklanEnum } from '@/lib/getStatusIklan';
+import { StatusIklanEnum } from '@/lib/getStatusIklan';
 import toIDRCurrency from '@/lib/toIDRCurrency';
 import Chart1 from '@/svgs/chart1.svg';
 import Chart2 from '@/svgs/chart2.svg';
@@ -59,12 +59,6 @@ const IndexPage = () => {
     sub(new Date(), { days: 30 })
   );
   const [mainChartEndDate, setMainChartEndDate] = React.useState(new Date());
-  const [secondaryChartStartDate, setSecondaryChartStartDate] = React.useState(
-    new Date()
-  );
-  const [secondaryChartEndDate, setSecondaryChartEndDate] = React.useState(
-    new Date()
-  );
 
   const { data: mainChart } = useSWR<APIResponse<Revenue>>(
     stringifyUrl({
@@ -258,8 +252,6 @@ const IndexPage = () => {
     },
   ];
 
-  const secondaryChartOpts = [statusIklanArray];
-
   return (
     <>
       <Seo templateTitle='Admin | Iklan' />
@@ -436,13 +428,15 @@ const IndexPage = () => {
                 </div>
               </div>
             </div>
-            <div className='grid grid-cols-12 gap-x-2'>
-              <div className='col-span-5 h-fit rounded-lg bg-white py-4 dark:!bg-neutral-800 '>
-                <div className='mb-3 flex w-full items-center justify-center'>
-                  <h4 className='m-0'>Ad Post By Status</h4>
+            <div className='grid gap-x-2'>
+              <div className='h-fit rounded-lg bg-white py-4 dark:!bg-neutral-800 '>
+                <div className='mb-4 flex w-full items-center justify-center'>
+                  <h4 className='m-0'>{`Total ${
+                    ['Iklan', 'Rekber'][dashboardType]
+                  }`}</h4>
                 </div>
                 <div className='grid grid-cols-2 divide-x divide-y'>
-                  <div className='grid grid-cols-12 gap-x-2 py-4 px-4'>
+                  <div className='grid grid-cols-12 items-center justify-center gap-x-2 py-4 px-4'>
                     <div className='col-span-5'>
                       <Chart1 />
                     </div>
@@ -502,100 +496,6 @@ const IndexPage = () => {
                       <p className='m-0 text-sm'>Proses Rekber</p>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div className='col-span-7 flex h-fit flex-col gap-y-5 rounded-lg bg-white p-4 py-4 dark:!bg-neutral-800'>
-                <div className='align-center flex items-center justify-between'>
-                  <div className='flex flex-col gap-y-2'>
-                    <h4 className='m-0'>Ad Post By Statistics</h4>
-                    <Select
-                      styles={customSelectStyles}
-                      className={clsxm('w-fit py-0')}
-                      options={secondaryChartOpts[0]}
-                      defaultValue={secondaryChartOpts[0][3]}
-                      theme={selectPrimaryTheme}
-                    />
-                  </div>
-                  <div className='flex justify-end'>
-                    <div className='flex flex-col items-end justify-center gap-y-2'>
-                      <div className='flex items-center justify-center gap-x-1'>
-                        <p className='m-0 inline whitespace-nowrap text-xs'>
-                          Start Date:
-                        </p>
-                        <DatePicker
-                          className='w-28 rounded-lg p-1'
-                          selected={secondaryChartStartDate}
-                          onChange={(date: Date) =>
-                            setSecondaryChartStartDate(date)
-                          }
-                          dateFormat='dd/MM/yyyy'
-                        />
-                      </div>
-                      <div className='flex items-center justify-center gap-x-1'>
-                        <p className='m-0 inline whitespace-nowrap text-xs'>
-                          End Date:
-                        </p>
-                        <DatePicker
-                          className='w-28 rounded-lg p-1'
-                          selected={secondaryChartEndDate}
-                          onChange={(date: Date) =>
-                            setSecondaryChartEndDate(date)
-                          }
-                          dateFormat='dd/MM/yyyy'
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <Line
-                    id='mainChart'
-                    data={chartData ?? data}
-                    options={{
-                      scales: {
-                        x: {
-                          grid: {
-                            color: 'rgba(0, 0, 0, 0)',
-                          },
-                        },
-                        y: {
-                          grid: {
-                            color: 'rgba(0, 0, 0, 0)',
-                          },
-                          beginAtZero: true,
-                          ticks: {
-                            callback: function (value) {
-                              return 'Rp ' + value;
-                            },
-                          },
-                        },
-                      },
-                      plugins: {
-                        tooltip: {
-                          intersect: false,
-                          callbacks: {
-                            label: function (context) {
-                              let label = context.dataset.label || '';
-
-                              if (label) {
-                                label += ': ';
-                              }
-                              if (context.parsed.y !== null) {
-                                label += new Intl.NumberFormat('id-ID', {
-                                  style: 'currency',
-                                  currency: 'IDR',
-                                })
-                                  .format(context.parsed.y)
-                                  .slice(0, -3);
-                              }
-                              return label;
-                            },
-                          },
-                        },
-                        legend: { display: false },
-                      },
-                    }}
-                  />
                 </div>
               </div>
             </div>

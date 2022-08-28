@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { add } from 'date-fns';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { stringifyUrl } from 'query-string';
@@ -338,11 +339,11 @@ const IklanMain = ({ id }: { id: number }) => {
                 )}
               </div>
               <div className='col-xl-6 col-lg-7 pb-6'>
-                <div className='mb-6 space-x-4'>
-                  <h1 className='inline'>{iklan.data.title}</h1>
-                  <p className='inline rounded-lg bg-neutral-300 py-1 px-2'>
+                <div className='mb-6'>
+                  <h1 className='mr-4 inline'>{iklan.data.title}</h1>
+                  <span className='inline-block rounded-lg bg-neutral-300 py-1 px-2'>
                     {iklan.data.platform}
-                  </p>
+                  </span>
                 </div>
                 <div className='art-details-content wow fadeInUp'>
                   <div className='flex items-center space-x-8'>
@@ -353,7 +354,7 @@ const IklanMain = ({ id }: { id: number }) => {
                           <div className='profile-img pos-rel'>
                             <Link href='/creators'>
                               <a>
-                                <img
+                                <Image
                                   src={
                                     iklan.data.user?.profile_picture
                                       ? `${API_URL}/${iklan.data.user?.profile_picture}`
@@ -361,6 +362,8 @@ const IklanMain = ({ id }: { id: number }) => {
                                   }
                                   className='h-16 w-16 rounded-full object-cover'
                                   alt='profile-img'
+                                  height={64}
+                                  width={64}
                                 />
                               </a>
                             </Link>

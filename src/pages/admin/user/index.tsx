@@ -4,6 +4,8 @@ import { useTheme } from 'next-themes';
 import { stringifyUrl } from 'query-string';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { SingleValue } from 'react-select';
+import Select from 'react-select';
 import { Column } from 'react-table';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
@@ -16,7 +18,9 @@ import ReactTable from '@/components/ReactTable';
 import Seo from '@/components/Seo';
 import TableSearch from '@/components/TableSearch';
 import Tooltip from '@/components/Tooltip';
+import { maxEntriesOpts } from '@/constant/admin';
 import { API_URL } from '@/constant/config';
+import { customSelectStyles } from '@/constant/select';
 import { mySwalOpts } from '@/constant/swal';
 import DashboardLayout from '@/dashboard/layout';
 import clsxm from '@/lib/clsxm';
@@ -38,6 +42,7 @@ const IndexPage = () => {
   const [mounted, setMounted] = useState(false);
   const [curPage, setCurPage] = useState(0);
   const [filter, setFilter] = useState<string>();
+  const [maxPerPage, setMaxPerPage] = useState(10);
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -58,6 +63,7 @@ const IndexPage = () => {
             ...(filter && { search: filter }),
             orderBy: 'created_at',
             orderDir: 'DESC',
+            perPage: maxPerPage,
           },
         })
       : null
@@ -182,7 +188,13 @@ const IndexPage = () => {
                 </Link>
               </Tooltip>
               <Tooltip interactive={false} content='Whatsapp'>
-                <Link href={getWaLink(row.original.noHp)}>
+                <Link
+                  href={
+                    row.original.noHp !== null
+                      ? getWaLink(row.original.noHp)
+                      : '#'
+                  }
+                >
                   <a>
                     <Whatsapp />
                   </a>
@@ -198,17 +210,42 @@ const IndexPage = () => {
 
   return (
     <>
-      <Seo templateTitle='Admin | Invoice' />
+      <Seo templateTitle='Admin | Akun Penjual' />
       <AnimatePage>
         <DashboardLayout>
-          <TableSearch
-            setFilter={(s: string) => {
-              setCurPage(0);
-              setFilter(s);
-            }}
-          />
+          <div className='mb-4 flex items-center justify-between'>
+            <h1 className='text-3xl'>Data Akun Penjual</h1>
+          </div>
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center gap-x-2'>
+              <span>Show</span>
+              <Select
+                styles={customSelectStyles}
+                className={clsxm('py-0')}
+                options={maxEntriesOpts}
+                defaultValue={maxEntriesOpts[0]}
+                onChange={(
+                  val: SingleValue<{ label: string; value: number }>
+                ) => setMaxPerPage(val?.value ?? 10)}
+              />{' '}
+              <span>entries</span>
+            </div>
+            <TableSearch
+              setFilter={(s: string) => {
+                setCurPage(0);
+                setFilter(s);
+              }}
+            />
+          </div>
           {users && (
-            <ReactTable data={data} columns={columns} withFooter={false} />
+            <>
+              <ReactTable data={data} columns={columns} withFooter={false} />
+              <div className='w-full rounded-lg bg-neutral-100 py-2 px-8 dark:bg-neutral-800 dark:text-neutral-100'>
+                Showing {users.data.pagination.from + 1} to{' '}
+                {users.data.pagination.to} of {users.data.pagination.total}{' '}
+                entries
+              </div>
+            </>
           )}
           <div className='flex items-center justify-center'>
             <PaginationComponent

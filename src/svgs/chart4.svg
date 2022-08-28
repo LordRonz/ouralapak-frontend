@@ -1,17 +1,17 @@
-<svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="0.697266" y="0.802643" width="2.93001" height="43.25" fill="#F1EFFF"/>
-<rect x="0.697266" y="9.90787" width="2.93001" height="34.1447" fill="#7366FF"/>
-<rect x="7.53394" y="0.802643" width="2.93001" height="43.25" fill="#F1EFFF"/>
-<rect x="7.53394" y="15.5987" width="2.93001" height="28.4539" fill="#7366FF"/>
-<rect x="14.3708" y="0.802643" width="2.93001" height="43.25" fill="#F1EFFF"/>
-<rect x="14.3708" y="0.802643" width="2.93001" height="43.25" fill="#F1EFFF"/>
-<path d="M14.3708 24.7039H17.3009V44.0526H14.3708V24.7039Z" fill="#7366FF"/>
-<rect x="21.2075" y="0.802643" width="2.93001" height="43.25" fill="#F1EFFF"/>
-<rect x="21.2075" y="13.3224" width="2.93001" height="30.7303" fill="#7366FF"/>
-<rect x="28.0439" y="0.802643" width="2.93001" height="43.25" fill="#F1EFFF"/>
-<rect x="28.0439" y="22.4276" width="2.93001" height="21.625" fill="#7366FF"/>
-<rect x="35.8572" y="0.802643" width="2.93001" height="43.25" fill="#F1EFFF"/>
-<rect x="35.8572" y="6.49344" width="2.93001" height="37.5592" fill="#7366FF"/>
-<rect x="42.6941" y="0.802643" width="2.93001" height="43.25" fill="#F1EFFF"/>
-<path d="M42.6941 33.8092H45.6241V44.0526H42.6941V33.8092Z" fill="#7366FF"/>
+<svg width="114" height="44" viewBox="0 0 114 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.591797" width="7.38123" height="43.25" fill="#F1EFFF"/>
+<rect x="0.591797" y="9.10522" width="7.38123" height="34.1447" fill="#7366FF"/>
+<rect x="17.8147" width="7.38123" height="43.25" fill="#F1EFFF"/>
+<rect x="17.8147" y="14.796" width="7.38123" height="28.4539" fill="#7366FF"/>
+<rect x="35.0381" width="7.38123" height="43.25" fill="#F1EFFF"/>
+<rect x="35.0381" width="7.38123" height="43.25" fill="#F1EFFF"/>
+<path d="M35.0381 23.9013H42.4193V43.25H35.0381V23.9013Z" fill="#7366FF"/>
+<rect x="52.261" width="7.38123" height="43.25" fill="#F1EFFF"/>
+<rect x="52.261" y="12.5198" width="7.38123" height="30.7303" fill="#7366FF"/>
+<rect x="69.4832" width="7.38123" height="43.25" fill="#F1EFFF"/>
+<rect x="69.4832" y="21.625" width="7.38123" height="21.625" fill="#7366FF"/>
+<rect x="89.1663" width="7.38123" height="43.25" fill="#F1EFFF"/>
+<rect x="89.1663" y="5.6908" width="7.38123" height="37.5592" fill="#7366FF"/>
+<rect x="106.39" width="7.38123" height="43.25" fill="#F1EFFF"/>
+<path d="M106.39 33.0066H113.771V43.25H106.39V33.0066Z" fill="#7366FF"/>
 </svg>
