@@ -13,6 +13,7 @@ import useSWR from 'swr';
 
 import AnimatePage from '@/components/AnimatePage';
 import PaginationComponent from '@/components/Common/Pagination';
+import UnstyledLink from '@/components/links/UnstyledLink';
 import ReactTable from '@/components/ReactTable';
 import Seo from '@/components/Seo';
 import TableSearch from '@/components/TableSearch';
@@ -245,15 +246,13 @@ const IndexPage = () => {
                 </Link>
               </Tooltip>
               <Tooltip interactive={false} content='Whatsapp'>
-                <Link
+                <UnstyledLink
                   href={getWaLink(
                     row.original.user?.phone ?? row.original.phone
                   )}
                 >
-                  <a>
-                    <Whatsapp />
-                  </a>
-                </Link>
+                  <Whatsapp />
+                </UnstyledLink>
               </Tooltip>
             </div>
           </>

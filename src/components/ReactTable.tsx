@@ -11,6 +11,8 @@ import {
   useTable,
 } from 'react-table';
 
+import clsxm from '@/lib/clsxm';
+
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props<T extends object = {}> = {
   data: readonly T[];
@@ -69,9 +71,12 @@ const ReactTable = <T extends object>({
                         className='group px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:!text-gray-200'
                       >
                         <div
-                          className={clsx(
+                          className={clsxm(
                             'relative flex items-center gap-4 py-1',
-                            'justify-center text-center'
+                            'justify-start text-left',
+                            (column.id.toLowerCase() === 'status' ||
+                              column.id.toLowerCase() === 'action') &&
+                              'justify-center text-center'
                           )}
                         >
                           <p className='m-0'>{column.render('Header')}</p>
@@ -123,11 +128,14 @@ const ReactTable = <T extends object>({
                         return (
                           <td
                             {...cell.getCellProps()}
-                            className={clsx(
-                              'whitespace-nowrap px-6 py-4 text-center text-sm text-gray-700',
+                            className={clsxm(
+                              'whitespace-nowrap px-6 py-4 text-left text-sm text-gray-700',
                               i === 0
                                 ? 'font-medium text-gray-900 dark:!text-gray-50'
-                                : 'text-gray-500  dark:!text-gray-200'
+                                : 'text-gray-500  dark:!text-gray-200',
+                              (cell.column.id.toLowerCase() === 'status' ||
+                                cell.column.id.toLowerCase() === 'action') &&
+                                'text-center'
                             )}
                             key={i}
                           >

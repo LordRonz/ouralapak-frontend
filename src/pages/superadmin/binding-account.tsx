@@ -26,6 +26,7 @@ import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
 import DashboardLayout from '@/dashboard/layout';
 import clsxm from '@/lib/clsxm';
+import customAxios from '@/lib/customAxios';
 import toastPromiseError from '@/lib/toastPromiseError';
 import BindingAcc from '@/types/bindingAccount';
 import Pagination from '@/types/pagination';
@@ -107,7 +108,7 @@ const IndexPage = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     await toast.promise(
-      axios.post<{ data: BindingAcc; message: string; success: boolean }>(
+      customAxios.post<{ data: BindingAcc; message: string; success: boolean }>(
         stringifyUrl({
           url: `${API_URL}/master/binding-account`,
         }),
@@ -135,7 +136,7 @@ const IndexPage = () => {
 
   const onSubmit2: SubmitHandler<IFormInput> = async (data) => {
     await toast.promise(
-      axios.put<{ data: BindingAcc; message: string; success: boolean }>(
+      customAxios.put<{ data: BindingAcc; message: string; success: boolean }>(
         stringifyUrl({
           url: `${API_URL}/master/binding-account/${activeId}`,
         }),
