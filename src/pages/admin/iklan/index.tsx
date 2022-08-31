@@ -1,5 +1,4 @@
 import { Dialog, Transition } from '@headlessui/react';
-import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { stringifyUrl } from 'query-string';
@@ -25,6 +24,7 @@ import { API_URL } from '@/constant/config';
 import { customSelectStyles } from '@/constant/select';
 import DashboardLayout from '@/dashboard/layout';
 import { clsxm } from '@/lib/clsxm';
+import customAxios from '@/lib/customAxios';
 import formatDateStrId from '@/lib/formatDateStrId';
 import getStatusIklan, {
   statusIklanArray,
@@ -107,7 +107,9 @@ const IndexPage = () => {
         return;
       }
       await toast.promise(
-        axios.put(`${API_URL}/admin/iklan/${iklan?.id}`, data, { headers }),
+        customAxios.put(`${API_URL}/admin/iklan/${iklan?.id}`, data, {
+          headers,
+        }),
         {
           pending: {
             render: () => {

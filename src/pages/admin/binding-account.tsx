@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
 import { stringifyUrl } from 'query-string';
@@ -27,6 +26,7 @@ import { customSelectStyles } from '@/constant/select';
 import { mySwalOpts } from '@/constant/swal';
 import DashboardLayout from '@/dashboard/layout';
 import clsxm from '@/lib/clsxm';
+import customAxios from '@/lib/customAxios';
 import toastPromiseError from '@/lib/toastPromiseError';
 import CheckMark from '@/svgs/checkmark.svg';
 import Edit from '@/svgs/edit.svg';
@@ -134,7 +134,7 @@ const IndexPage = () => {
 
       if (isConfirmed) {
         toast.promise(
-          axios.put(`${API_URL}/master/binding-account/${id}`, payload),
+          customAxios.put(`${API_URL}/master/binding-account/${id}`, payload),
           {
             pending: {
               render: () => {
@@ -162,7 +162,7 @@ const IndexPage = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     await toast.promise(
-      axios.post<{ data: BindingAcc; message: string; success: boolean }>(
+      customAxios.post<{ data: BindingAcc; message: string; success: boolean }>(
         stringifyUrl({
           url: `${API_URL}/master/binding-account`,
         }),
@@ -190,7 +190,7 @@ const IndexPage = () => {
 
   const onSubmit2: SubmitHandler<IFormInput> = async (data) => {
     await toast.promise(
-      axios.put<{ data: BindingAcc; message: string; success: boolean }>(
+      customAxios.put<{ data: BindingAcc; message: string; success: boolean }>(
         stringifyUrl({
           url: `${API_URL}/master/binding-account/${activeId}`,
         }),
@@ -228,25 +228,28 @@ const IndexPage = () => {
       });
 
       if (isConfirmed) {
-        toast.promise(axios.delete(`${API_URL}/master/binding-account/${id}`), {
-          pending: {
-            render: () => {
-              return 'Loading';
+        toast.promise(
+          customAxios.delete(`${API_URL}/master/binding-account/${id}`),
+          {
+            pending: {
+              render: () => {
+                return 'Loading';
+              },
             },
-          },
-          success: {
-            render: () => {
-              mutate();
-              return 'Berhasil hapus binding account!';
+            success: {
+              render: () => {
+                mutate();
+                return 'Berhasil hapus binding account!';
+              },
             },
-          },
-          error: {
-            render: toastPromiseError(
-              undefined,
-              'Gagal hapus binding account!'
-            ),
-          },
-        });
+            error: {
+              render: toastPromiseError(
+                undefined,
+                'Gagal hapus binding account!'
+              ),
+            },
+          }
+        );
       }
     },
     [mutate, theme]

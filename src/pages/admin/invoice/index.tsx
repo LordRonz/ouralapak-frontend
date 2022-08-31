@@ -1,4 +1,3 @@
-import axios from 'axios';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { stringifyUrl } from 'query-string';
@@ -24,6 +23,7 @@ import { customSelectStyles } from '@/constant/select';
 import { mySwalOpts } from '@/constant/swal';
 import DashboardLayout from '@/dashboard/layout';
 import clsxm from '@/lib/clsxm';
+import customAxios from '@/lib/customAxios';
 import formatDateStrId from '@/lib/formatDateStrId';
 import { StatusIklanEnum } from '@/lib/getStatusIklan';
 import getWaLink from '@/lib/getWhatsappLink';
@@ -112,7 +112,7 @@ const IndexPage = () => {
 
       if (isConfirmed) {
         const res = await toast.promise(
-          axios.put(
+          customAxios.put(
             `${API_URL}/admin/invoice-${
               inv.jenis_invoice === JenisInvoice.PEMBELI ? 'pembeli' : 'penjual'
             }/${inv.id}`,

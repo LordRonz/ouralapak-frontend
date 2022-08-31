@@ -16,7 +16,6 @@ import AnimatePage from '@/components/AnimatePage';
 import Button from '@/components/buttons/Button';
 import ButtonGradient from '@/components/buttons/ButtonGradient';
 import PaginationComponent from '@/components/Common/Pagination';
-import XButton from '@/components/Common/XButton';
 import ReactTable from '@/components/ReactTable';
 import Seo from '@/components/Seo';
 import TableSearch from '@/components/TableSearch';
@@ -33,15 +32,14 @@ import CheckMark from '@/svgs/checkmark.svg';
 import Edit from '@/svgs/edit.svg';
 import Trash from '@/svgs/trash.svg';
 import XMark from '@/svgs/xmark.svg';
-import Bank from '@/types/bank';
 import Pagination from '@/types/pagination';
+import Refund from '@/types/refund';
 
 const MySwal = withReactContent(Swal);
 
 type IFormInput = {
   name: string;
-  rekening_name: string;
-  rekening_number: string;
+  desc: string;
   is_active: boolean;
 };
 
@@ -82,12 +80,12 @@ const IndexPage = () => {
   } = useForm<IFormInput>();
 
   const {
-    data: banks,
+    data: refunds,
     error,
     mutate,
   } = useSWR<{
     data: {
-      data: Bank[];
+      data: Refund[];
       pagination: Pagination;
     };
     message: string;
@@ -95,7 +93,7 @@ const IndexPage = () => {
   }>(
     mounted
       ? stringifyUrl({
-          url: `${API_URL}/master/bank`,
+          url: `${API_URL}/master/refund`,
           query: {
             page: curPage + 1,
             ...(filter && { search: filter }),
@@ -121,7 +119,7 @@ const IndexPage = () => {
   const onToggleStatus = React.useCallback(
     async (is_active: boolean, id: number) => {
       const { isConfirmed } = await MySwal.fire({
-        title: `Yakin ingin ubah status bank dari ${
+        title: `Yakin ingin ubah status refund dari ${
           is_active ? 'aktif' : 'nonaktif'
         } jadi ${is_active ? 'nonaktif' : 'aktif'}?`,
         text: 'Tindakan ini bisa diubah nantinya!',
@@ -137,7 +135,7 @@ const IndexPage = () => {
 
       if (isConfirmed) {
         toast.promise(
-          customAxios.put(`${API_URL}/master/bank/${id}`, payload),
+          customAxios.put(`${API_URL}/master/refund/${id}`, payload),
           {
             pending: {
               render: () => {
@@ -147,11 +145,11 @@ const IndexPage = () => {
             success: {
               render: () => {
                 mutate();
-                return 'Berhasil update bank!';
+                return 'Berhasil update refund!';
               },
             },
             error: {
-              render: toastPromiseError(undefined, 'Gagal update bank!'),
+              render: toastPromiseError(undefined, 'Gagal update refund!'),
             },
           }
         );
@@ -161,10 +159,11 @@ const IndexPage = () => {
   );
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    console.log(data);
     await toast.promise(
-      customAxios.post<{ data: Bank; message: string; success: boolean }>(
+      customAxios.post<{ data: Refund; message: string; success: boolean }>(
         stringifyUrl({
-          url: `${API_URL}/master/bank`,
+          url: `${API_URL}/master/refund`,
         }),
         data
       ),
@@ -178,11 +177,11 @@ const IndexPage = () => {
           render: () => {
             mutate();
             setOpen(false);
-            return 'Berhasil tambah bank';
+            return 'Berhasil tambah refund';
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal tambah bank!'),
+          render: toastPromiseError(undefined, 'Gagal tambah refund!'),
         },
       }
     );
@@ -190,9 +189,9 @@ const IndexPage = () => {
 
   const onSubmit2: SubmitHandler<IFormInput> = async (data) => {
     await toast.promise(
-      customAxios.put<{ data: Bank; message: string; success: boolean }>(
+      customAxios.put<{ data: Refund; message: string; success: boolean }>(
         stringifyUrl({
-          url: `${API_URL}/master/bank/${activeId}`,
+          url: `${API_URL}/master/refund/${activeId}`,
         }),
         data
       ),
@@ -206,11 +205,11 @@ const IndexPage = () => {
           render: () => {
             mutate();
             setOpen(false);
-            return 'Berhasil update bank';
+            return 'Berhasil update refund';
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal update bank!'),
+          render: toastPromiseError(undefined, 'Gagal update refund!'),
         },
       }
     );
@@ -219,7 +218,7 @@ const IndexPage = () => {
   const onClickDelete = React.useCallback(
     async (id: number) => {
       const { isConfirmed } = await MySwal.fire({
-        title: 'Yakin ingin hapus bank ini?',
+        title: 'Yakin ingin hapus refund ini?',
         text: 'Tindakan ini tidak bisa dibatalkan!',
         icon: 'warning',
         showCancelButton: true,
@@ -228,7 +227,7 @@ const IndexPage = () => {
       });
 
       if (isConfirmed) {
-        toast.promise(customAxios.delete(`${API_URL}/master/bank/${id}`), {
+        toast.promise(customAxios.delete(`${API_URL}/master/refund/${id}`), {
           pending: {
             render: () => {
               return 'Loading';
@@ -237,11 +236,11 @@ const IndexPage = () => {
           success: {
             render: () => {
               mutate();
-              return 'Berhasil hapus bank!';
+              return 'Berhasil hapus refund!';
             },
           },
           error: {
-            render: toastPromiseError(undefined, 'Gagal hapus bank!'),
+            render: toastPromiseError(undefined, 'Gagal hapus refund!'),
           },
         });
       }
@@ -251,20 +250,18 @@ const IndexPage = () => {
 
   const data = React.useMemo(
     () =>
-      banks?.data.data.map((bank) => {
+      refunds?.data.data.map((refund) => {
         return {
-          id: bank.id,
-          rekening_name: bank.rekening_name,
-          rekening_number: bank.rekening_number,
-          status: bank.is_active ? 'Aktif' : 'Nonaktif',
-          is_active: bank.is_active,
-          name: bank.name,
-          jenis: bank.method === 'va' ? 'Virtual Account' : 'Manual',
+          id: refund.id,
+          status: refund.is_active ? 'Aktif' : 'Nonaktif',
+          is_active: refund.is_active,
+          name: refund.name,
+          desc: refund.desc,
           action: {},
-          bank,
+          refund,
         };
       }) ?? [],
-    [banks?.data.data]
+    [refunds?.data.data]
   );
 
   const columns = React.useMemo<Column<typeof data[number]>[]>(
@@ -274,16 +271,8 @@ const IndexPage = () => {
         accessor: 'name',
       },
       {
-        Header: 'Nama Rek.',
-        accessor: 'rekening_name',
-      },
-      {
-        Header: 'Nomor Rek.',
-        accessor: 'rekening_number',
-      },
-      {
-        Header: 'Jenis',
-        accessor: 'jenis',
+        Header: 'Deskripsi',
+        accessor: 'desc',
       },
       {
         Header: 'Status',
@@ -325,12 +314,9 @@ const IndexPage = () => {
                   className='cursor-pointer'
                   onClick={() => {
                     setOpen2(true);
-                    const { is_active, name, rekening_name, rekening_number } =
-                      row.original.bank;
+                    const { is_active, name } = row.original.refund;
                     setValue('is_active', !!is_active);
                     setValue('name', name);
-                    setValue('rekening_name', rekening_name);
-                    setValue('rekening_number', rekening_number);
                     setActiveId(row.original.id);
                   }}
                 >
@@ -359,13 +345,13 @@ const IndexPage = () => {
 
   return (
     <>
-      <Seo templateTitle='Admin | Invoice' />
+      <Seo templateTitle='SuperAdmin | Refund' />
       <AnimatePage>
         <DashboardLayout superAdmin>
           <div className='mb-4 flex items-center justify-between'>
-            <h1 className='text-3xl'>Data Bank</h1>
+            <h1 className='text-3xl'>Data Refund</h1>
             <Button onClick={() => setOpen(true)} disabled={updBtnDisabled}>
-              Add Bank
+              Add Refund
             </Button>
           </div>
           <div className='flex items-center justify-between'>
@@ -389,12 +375,12 @@ const IndexPage = () => {
               }}
             />
           </div>
-          {banks && (
+          {refunds && (
             <ReactTable data={data} columns={columns} withFooter={false} />
           )}
           <div className='flex items-center justify-center'>
             <PaginationComponent
-              pageCount={banks?.data.pagination.lastPage ?? 1}
+              pageCount={refunds?.data.pagination.lastPage ?? 1}
               onPageChange={({ selected }) => setCurPage(selected)}
             />
           </div>
@@ -407,13 +393,12 @@ const IndexPage = () => {
               root: 'overflow-y-auto',
               modalContainer: 'overflow-y-auto',
             }}
-            closeIcon={<XButton />}
           >
             <div className='row justify-content-center gap-y-6'>
               <div className='login-wrapper pos-rel wow fadeInUp'>
                 <div className=' login-inner'>
                   <div className='login-content'>
-                    <h4>Tambah Bank</h4>
+                    <h4>Tambah Refund</h4>
                     <form
                       className='login-form'
                       onSubmit={handleSubmit(onSubmit)}
@@ -421,13 +406,13 @@ const IndexPage = () => {
                       <div className='row gap-y-6'>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='email'>Nama</label>
+                            <label htmlFor='name'>Nama</label>
                             <input
                               type='text'
-                              placeholder='Masukkan Nama Bank'
+                              placeholder='Masukkan Nama Refund'
                               autoFocus
                               {...register('name', {
-                                required: 'Nama bank harus diisi',
+                                required: 'Nama Refund harus diisi',
                               })}
                             />
                           </div>
@@ -435,41 +420,21 @@ const IndexPage = () => {
                         </div>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='email'>Nama Rekening</label>
+                            <label htmlFor='desc'>Description</label>
                             <input
                               type='text'
-                              placeholder='Masukkan Nama Rekening'
+                              placeholder='Masukkan Deskripsi Refund'
                               autoFocus
-                              {...register('rekening_name', {
-                                required: 'Nama rekening harus diisi',
+                              {...register('desc', {
+                                required: 'Deskripsi Refund harus diisi',
                               })}
                             />
                           </div>
-                          <p className='text-red-500'>
-                            {errors.rekening_name?.message}
-                          </p>
+                          <p className='text-red-500'>{errors.desc?.message}</p>
                         </div>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='email'>Nomor Rekening</label>
-                            <input
-                              type='text'
-                              placeholder='Masukkan Nomor Rekening'
-                              autoFocus
-                              {...register('rekening_number', {
-                                required: 'Nomor rekening harus diisi',
-                              })}
-                            />
-                          </div>
-                          <p className='text-red-500'>
-                            {errors.rekening_number?.message}
-                          </p>
-                        </div>
-                        <div className='col-md-12'>
-                          <div className='single-input-unit'>
-                            <label htmlFor='jenis_pembayaran'>
-                              Jenis Pembayaran
-                            </label>
+                            <label htmlFor='is_active'>Status</label>
                             <Controller
                               control={control}
                               defaultValue={isActiveOpts[0].value}
@@ -513,7 +478,7 @@ const IndexPage = () => {
               <div className='login-wrapper pos-rel wow fadeInUp'>
                 <div className=' login-inner'>
                   <div className='login-content'>
-                    <h4>Update Bank</h4>
+                    <h4>Update Refund</h4>
                     <form
                       className='login-form'
                       onSubmit={handleSubmit(onSubmit2)}
@@ -521,10 +486,10 @@ const IndexPage = () => {
                       <div className='row'>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='name'>Nama</label>
+                            <label htmlFor='email'>Nama</label>
                             <input
                               type='text'
-                              placeholder='Masukkan Nama Bank'
+                              placeholder='Masukkan Nama Refund'
                               autoFocus
                               {...register('name')}
                             />
@@ -533,33 +498,15 @@ const IndexPage = () => {
                         </div>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='rekening_name'>Nama Rekening</label>
+                            <label htmlFor='desc'>Description</label>
                             <input
-                              type='text'
-                              placeholder='Masukkan Nama Rekening'
+                              type='desc'
+                              placeholder='Masukkan Deskripsi Refund'
                               autoFocus
-                              {...register('rekening_name')}
+                              {...register('desc')}
                             />
                           </div>
-                          <p className='text-red-500'>
-                            {errors.rekening_name?.message}
-                          </p>
-                        </div>
-                        <div className='col-md-12'>
-                          <div className='single-input-unit'>
-                            <label htmlFor='rekening_number'>
-                              Nomor Rekening
-                            </label>
-                            <input
-                              type='text'
-                              placeholder='Masukkan Nomor Rekening'
-                              autoFocus
-                              {...register('rekening_number')}
-                            />
-                          </div>
-                          <p className='text-red-500'>
-                            {errors.rekening_number?.message}
-                          </p>
+                          <p className='text-red-500'>{errors.desc?.message}</p>
                         </div>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>

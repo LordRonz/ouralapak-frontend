@@ -7,6 +7,7 @@ type User = {
   id: number;
   identity_card: string;
   identity_card_validation: string;
+  identity_card_validation_mask: string;
   ig_username: string;
   is_active: number;
   is_blacklist: number;

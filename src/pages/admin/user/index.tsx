@@ -1,9 +1,10 @@
-import axios from 'axios';
-import Link from 'next/link';
+import Image from 'next/image';
 import { useTheme } from 'next-themes';
 import { stringifyUrl } from 'query-string';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import Lightbox from 'react-image-lightbox';
+import Modal from 'react-responsive-modal';
 import { SingleValue } from 'react-select';
 import Select from 'react-select';
 import { Column } from 'react-table';
@@ -13,7 +14,9 @@ import withReactContent from 'sweetalert2-react-content';
 import useSWR from 'swr';
 
 import AnimatePage from '@/components/AnimatePage';
+import ButtonGradient from '@/components/buttons/ButtonGradient';
 import PaginationComponent from '@/components/Common/Pagination';
+import XButton from '@/components/Common/XButton';
 import UnstyledLink from '@/components/links/UnstyledLink';
 import ReactTable from '@/components/ReactTable';
 import Seo from '@/components/Seo';
@@ -25,6 +28,7 @@ import { customSelectStyles } from '@/constant/select';
 import { mySwalOpts } from '@/constant/swal';
 import DashboardLayout from '@/dashboard/layout';
 import clsxm from '@/lib/clsxm';
+import customAxios from '@/lib/customAxios';
 import getWaLink from '@/lib/getWhatsappLink';
 import toastPromiseError from '@/lib/toastPromiseError';
 import CheckMark from '@/svgs/checkmark.svg';
@@ -44,6 +48,15 @@ const IndexPage = () => {
   const [curPage, setCurPage] = useState(0);
   const [filter, setFilter] = useState<string>();
   const [maxPerPage, setMaxPerPage] = useState(10);
+  const [lightboxImg, setLightboxImg] = useState<string>();
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  const [selectedUser, setSelectedUser] = useState(0);
+
+  const [open, setOpen] = useState(false);
+
+  const onCloseModal = () => setOpen(false);
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -88,26 +101,29 @@ const IndexPage = () => {
       };
 
       if (isConfirmed) {
-        toast.promise(axios.put(`${API_URL}/admin/user/${user.id}`, payload), {
-          pending: {
-            render: () => {
-              setUpdBtnDisabled(true);
-              return 'Loading';
+        toast.promise(
+          customAxios.put(`${API_URL}/admin/user/${user.id}`, payload),
+          {
+            pending: {
+              render: () => {
+                setUpdBtnDisabled(true);
+                return 'Loading';
+              },
             },
-          },
-          success: {
-            render: () => {
-              setUpdBtnDisabled(false);
-              mutate();
-              return 'Berhasil update user!';
+            success: {
+              render: () => {
+                setUpdBtnDisabled(false);
+                mutate();
+                return 'Berhasil update user!';
+              },
             },
-          },
-          error: {
-            render: toastPromiseError(() => {
-              setUpdBtnDisabled(false);
-            }, 'Gagal update user!'),
-          },
-        });
+            error: {
+              render: toastPromiseError(() => {
+                setUpdBtnDisabled(false);
+              }, 'Gagal update user!'),
+            },
+          }
+        );
       }
     },
     [mutate, theme]
@@ -115,8 +131,9 @@ const IndexPage = () => {
 
   const data = React.useMemo(
     () =>
-      users?.data.data.map((user) => {
+      users?.data.data.map((user, i) => {
         return {
+          index: i,
           id: user.id,
           email: user.email,
           username: user.username,
@@ -182,11 +199,15 @@ const IndexPage = () => {
                 </div>
               </Tooltip>
               <Tooltip interactive={false} content='Detail'>
-                <Link href={`/admin/user/${row.original.id}`}>
-                  <a>
-                    <Detail />
-                  </a>
-                </Link>
+                <div
+                  className='cursor-pointer'
+                  onClick={() => {
+                    setSelectedUser(row.original.index);
+                    setOpen(true);
+                  }}
+                >
+                  <Detail />
+                </div>
               </Tooltip>
               <Tooltip interactive={false} content='Whatsapp'>
                 <UnstyledLink
@@ -252,6 +273,140 @@ const IndexPage = () => {
               onPageChange={({ selected }) => setCurPage(selected)}
             />
           </div>
+          <Modal
+            open={open}
+            onClose={onCloseModal}
+            center
+            classNames={{
+              modal: 'rounded-xl p-0 overflow-y-auto',
+              root: 'overflow-y-auto',
+              modalContainer: 'overflow-y-auto',
+            }}
+            closeIcon={<XButton />}
+          >
+            <div className='row gap-y-6'>
+              <div className='py-2 !px-8'>
+                <div className=' login-inner'>
+                  <div className='login-content text-left'>
+                    <h4>Detail Penjual</h4>
+                  </div>
+                  <div className='grid grid-cols-12 gap-x-4'>
+                    <div className='col-span-4'>
+                      <div className='grid grid-rows-5 gap-y-1'>
+                        <div className='row-span-2'>
+                          <Image
+                            src={
+                              users?.data.data[selectedUser].profile_picture
+                                ? `${API_URL}/${users?.data.data[selectedUser].profile_picture}`
+                                : '/images/pfp.jpg'
+                            }
+                            width={180}
+                            height={180}
+                            alt='Profil'
+                            className='overflow-hidden rounded-xl'
+                          />
+                        </div>
+                        <div>
+                          <h5>Kartu Identitas 1</h5>
+                          <ButtonGradient
+                            className='text-primary-800'
+                            onClick={() => {
+                              if (!users?.data.data[selectedUser].identity_card)
+                                return;
+                              setLightboxImg(
+                                `${API_URL}/${users?.data.data[selectedUser].identity_card}`
+                              );
+                              setLightboxOpen(true);
+                            }}
+                          >
+                            Show
+                          </ButtonGradient>
+                        </div>
+                        <div>
+                          <h5>Kartu Identitas 2</h5>
+                          <ButtonGradient
+                            className='text-primary-800'
+                            onClick={() => {
+                              if (
+                                !users?.data.data[selectedUser]
+                                  .identity_card_validation
+                              )
+                                return;
+                              setLightboxImg(
+                                `${API_URL}/${users?.data.data[selectedUser].identity_card_validation}`
+                              );
+                              setLightboxOpen(true);
+                            }}
+                          >
+                            Show
+                          </ButtonGradient>
+                        </div>
+                        <div>
+                          <h5>Kartu Identitas 3</h5>
+                          <ButtonGradient
+                            className='text-primary-800'
+                            onClick={() => {
+                              if (
+                                !users?.data.data[selectedUser]
+                                  .identity_card_validation_mask
+                              )
+                                return;
+                              setLightboxImg(
+                                `${API_URL}/${users?.data.data[selectedUser].identity_card_validation_mask}`
+                              );
+                              setLightboxOpen(true);
+                            }}
+                          >
+                            Show
+                          </ButtonGradient>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='col-span-8 h-full'>
+                      <div className='grid h-full grid-rows-5 gap-y-1 text-black'>
+                        <div>
+                          <h5>Nama</h5>
+                          <div className='rounded-lg border border-[#C9D1DD] bg-neutral-100 p-2'>
+                            {users?.data.data[selectedUser].name}
+                          </div>
+                        </div>
+                        <div>
+                          <h5>Email</h5>
+                          <div className='rounded-lg border border-[#C9D1DD] bg-neutral-100 p-2'>
+                            {users?.data.data[selectedUser].email}
+                          </div>
+                        </div>
+                        <div>
+                          <h5>Username</h5>
+                          <div className='rounded-lg border border-[#C9D1DD] bg-neutral-100 p-2'>
+                            {users?.data.data[selectedUser].username}
+                          </div>
+                        </div>
+                        <div>
+                          <h5>No. Handphone</h5>
+                          <div className='rounded-lg border border-[#C9D1DD] bg-neutral-100 p-2'>
+                            {users?.data.data[selectedUser].phone}
+                          </div>
+                        </div>
+                        <div>
+                          <h5>Instagram</h5>
+                          <div className='rounded-lg border border-[#C9D1DD] bg-neutral-100 p-2'>
+                            {users?.data.data[selectedUser].ig_username}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {lightboxOpen && lightboxImg && (
+                <Lightbox
+                  mainSrc={lightboxImg}
+                  onCloseRequest={() => setLightboxOpen(false)}
+                />
+              )}
+            </div>
+          </Modal>
         </DashboardLayout>
       </AnimatePage>
     </>

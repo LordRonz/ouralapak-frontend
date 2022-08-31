@@ -3,7 +3,7 @@ import { useTheme } from 'next-themes';
 import { stringifyUrl } from 'query-string';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import Modal from 'react-responsive-modal';
 import Select, { SingleValue } from 'react-select';
 import { Column } from 'react-table';
@@ -16,7 +16,6 @@ import AnimatePage from '@/components/AnimatePage';
 import Button from '@/components/buttons/Button';
 import ButtonGradient from '@/components/buttons/ButtonGradient';
 import PaginationComponent from '@/components/Common/Pagination';
-import XButton from '@/components/Common/XButton';
 import ReactTable from '@/components/ReactTable';
 import Seo from '@/components/Seo';
 import TableSearch from '@/components/TableSearch';
@@ -29,20 +28,18 @@ import DashboardLayout from '@/dashboard/layout';
 import clsxm from '@/lib/clsxm';
 import customAxios from '@/lib/customAxios';
 import toastPromiseError from '@/lib/toastPromiseError';
-import CheckMark from '@/svgs/checkmark.svg';
+import toIDRCurrency from '@/lib/toIDRCurrency';
 import Edit from '@/svgs/edit.svg';
 import Trash from '@/svgs/trash.svg';
-import XMark from '@/svgs/xmark.svg';
-import Bank from '@/types/bank';
+import Packages from '@/types/packages';
 import Pagination from '@/types/pagination';
 
 const MySwal = withReactContent(Swal);
 
 type IFormInput = {
   name: string;
-  rekening_name: string;
-  rekening_number: string;
-  is_active: boolean;
+  description: string;
+  price: number;
 };
 
 const IndexPage = () => {
@@ -74,7 +71,6 @@ const IndexPage = () => {
 
   const onCloseModal2 = () => setOpen2(false);
   const {
-    control,
     register,
     handleSubmit,
     setValue,
@@ -82,12 +78,12 @@ const IndexPage = () => {
   } = useForm<IFormInput>();
 
   const {
-    data: banks,
+    data: packages,
     error,
     mutate,
   } = useSWR<{
     data: {
-      data: Bank[];
+      data: Packages[];
       pagination: Pagination;
     };
     message: string;
@@ -95,7 +91,7 @@ const IndexPage = () => {
   }>(
     mounted
       ? stringifyUrl({
-          url: `${API_URL}/master/bank`,
+          url: `${API_URL}/master/packages`,
           query: {
             page: curPage + 1,
             ...(filter && { search: filter }),
@@ -107,64 +103,11 @@ const IndexPage = () => {
       : null
   );
 
-  const isActiveOpts = [
-    {
-      value: true,
-      label: 'Aktif',
-    },
-    {
-      value: false,
-      label: 'Nonaktif',
-    },
-  ];
-
-  const onToggleStatus = React.useCallback(
-    async (is_active: boolean, id: number) => {
-      const { isConfirmed } = await MySwal.fire({
-        title: `Yakin ingin ubah status bank dari ${
-          is_active ? 'aktif' : 'nonaktif'
-        } jadi ${is_active ? 'nonaktif' : 'aktif'}?`,
-        text: 'Tindakan ini bisa diubah nantinya!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Update',
-        ...mySwalOpts(theme),
-      });
-
-      const payload = {
-        is_active: !is_active,
-      };
-
-      if (isConfirmed) {
-        toast.promise(
-          customAxios.put(`${API_URL}/master/bank/${id}`, payload),
-          {
-            pending: {
-              render: () => {
-                return 'Loading';
-              },
-            },
-            success: {
-              render: () => {
-                mutate();
-                return 'Berhasil update bank!';
-              },
-            },
-            error: {
-              render: toastPromiseError(undefined, 'Gagal update bank!'),
-            },
-          }
-        );
-      }
-    },
-    [mutate, theme]
-  );
-
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     await toast.promise(
-      customAxios.post<{ data: Bank; message: string; success: boolean }>(
+      customAxios.post<{ data: Packages; message: string; success: boolean }>(
         stringifyUrl({
-          url: `${API_URL}/master/bank`,
+          url: `${API_URL}/master/package`,
         }),
         data
       ),
@@ -178,11 +121,11 @@ const IndexPage = () => {
           render: () => {
             mutate();
             setOpen(false);
-            return 'Berhasil tambah bank';
+            return 'Berhasil tambah package';
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal tambah bank!'),
+          render: toastPromiseError(undefined, 'Gagal tambah package!'),
         },
       }
     );
@@ -190,9 +133,9 @@ const IndexPage = () => {
 
   const onSubmit2: SubmitHandler<IFormInput> = async (data) => {
     await toast.promise(
-      customAxios.put<{ data: Bank; message: string; success: boolean }>(
+      customAxios.put<{ data: Packages; message: string; success: boolean }>(
         stringifyUrl({
-          url: `${API_URL}/master/bank/${activeId}`,
+          url: `${API_URL}/master/package/${activeId}`,
         }),
         data
       ),
@@ -206,11 +149,11 @@ const IndexPage = () => {
           render: () => {
             mutate();
             setOpen(false);
-            return 'Berhasil update bank';
+            return 'Berhasil update package';
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal update bank!'),
+          render: toastPromiseError(undefined, 'Gagal update package!'),
         },
       }
     );
@@ -219,7 +162,7 @@ const IndexPage = () => {
   const onClickDelete = React.useCallback(
     async (id: number) => {
       const { isConfirmed } = await MySwal.fire({
-        title: 'Yakin ingin hapus bank ini?',
+        title: 'Yakin ingin hapus package ini?',
         text: 'Tindakan ini tidak bisa dibatalkan!',
         icon: 'warning',
         showCancelButton: true,
@@ -228,7 +171,7 @@ const IndexPage = () => {
       });
 
       if (isConfirmed) {
-        toast.promise(customAxios.delete(`${API_URL}/master/bank/${id}`), {
+        toast.promise(customAxios.delete(`${API_URL}/master/package/${id}`), {
           pending: {
             render: () => {
               return 'Loading';
@@ -237,11 +180,11 @@ const IndexPage = () => {
           success: {
             render: () => {
               mutate();
-              return 'Berhasil hapus bank!';
+              return 'Berhasil hapus package!';
             },
           },
           error: {
-            render: toastPromiseError(undefined, 'Gagal hapus bank!'),
+            render: toastPromiseError(undefined, 'Gagal hapus package!'),
           },
         });
       }
@@ -251,20 +194,17 @@ const IndexPage = () => {
 
   const data = React.useMemo(
     () =>
-      banks?.data.data.map((bank) => {
+      packages?.data.data.map((pkg) => {
         return {
-          id: bank.id,
-          rekening_name: bank.rekening_name,
-          rekening_number: bank.rekening_number,
-          status: bank.is_active ? 'Aktif' : 'Nonaktif',
-          is_active: bank.is_active,
-          name: bank.name,
-          jenis: bank.method === 'va' ? 'Virtual Account' : 'Manual',
+          id: pkg.id,
+          description: pkg.description,
+          price: toIDRCurrency(pkg.price),
+          name: pkg.name,
           action: {},
-          bank,
+          pkg,
         };
       }) ?? [],
-    [banks?.data.data]
+    [packages?.data.data]
   );
 
   const columns = React.useMemo<Column<typeof data[number]>[]>(
@@ -274,34 +214,12 @@ const IndexPage = () => {
         accessor: 'name',
       },
       {
-        Header: 'Nama Rek.',
-        accessor: 'rekening_name',
+        Header: 'Description',
+        accessor: 'description',
       },
       {
-        Header: 'Nomor Rek.',
-        accessor: 'rekening_number',
-      },
-      {
-        Header: 'Jenis',
-        accessor: 'jenis',
-      },
-      {
-        Header: 'Status',
-        accessor: 'status',
-        Cell: ({ row }) => (
-          <>
-            <div
-              className={clsxm(
-                'rounded-xl px-4 py-2',
-                row.original.is_active
-                  ? 'bg-green-200 text-green-600'
-                  : 'bg-red-200 text-red-600'
-              )}
-            >
-              {row.original.status}
-            </div>
-          </>
-        ),
+        Header: 'Price',
+        accessor: 'price',
       },
       {
         Header: 'Aksi',
@@ -313,24 +231,12 @@ const IndexPage = () => {
               <Tooltip interactive={false} content='Update'>
                 <div
                   className='cursor-pointer'
-                  onClick={() =>
-                    onToggleStatus(!!row.original.is_active, row.original.id)
-                  }
-                >
-                  {row.original.is_active ? <XMark /> : <CheckMark />}
-                </div>
-              </Tooltip>
-              <Tooltip interactive={false} content='Update'>
-                <div
-                  className='cursor-pointer'
                   onClick={() => {
                     setOpen2(true);
-                    const { is_active, name, rekening_name, rekening_number } =
-                      row.original.bank;
-                    setValue('is_active', !!is_active);
+                    const { description, name, price } = row.original.pkg;
+                    setValue('description', description);
                     setValue('name', name);
-                    setValue('rekening_name', rekening_name);
-                    setValue('rekening_number', rekening_number);
+                    setValue('price', price);
                     setActiveId(row.original.id);
                   }}
                 >
@@ -350,7 +256,7 @@ const IndexPage = () => {
         ),
       },
     ],
-    [onClickDelete, onToggleStatus, setValue]
+    [onClickDelete, setValue]
   );
 
   if (error) {
@@ -359,13 +265,13 @@ const IndexPage = () => {
 
   return (
     <>
-      <Seo templateTitle='Admin | Invoice' />
+      <Seo templateTitle='SuperAdmin | Package Iklan' />
       <AnimatePage>
         <DashboardLayout superAdmin>
           <div className='mb-4 flex items-center justify-between'>
-            <h1 className='text-3xl'>Data Bank</h1>
+            <h1 className='text-3xl'>Data Package Iklan</h1>
             <Button onClick={() => setOpen(true)} disabled={updBtnDisabled}>
-              Add Bank
+              Add Package Iklan
             </Button>
           </div>
           <div className='flex items-center justify-between'>
@@ -389,12 +295,12 @@ const IndexPage = () => {
               }}
             />
           </div>
-          {banks && (
+          {packages && (
             <ReactTable data={data} columns={columns} withFooter={false} />
           )}
           <div className='flex items-center justify-center'>
             <PaginationComponent
-              pageCount={banks?.data.pagination.lastPage ?? 1}
+              pageCount={packages?.data.pagination.lastPage ?? 1}
               onPageChange={({ selected }) => setCurPage(selected)}
             />
           </div>
@@ -407,13 +313,12 @@ const IndexPage = () => {
               root: 'overflow-y-auto',
               modalContainer: 'overflow-y-auto',
             }}
-            closeIcon={<XButton />}
           >
             <div className='row justify-content-center gap-y-6'>
               <div className='login-wrapper pos-rel wow fadeInUp'>
                 <div className=' login-inner'>
                   <div className='login-content'>
-                    <h4>Tambah Bank</h4>
+                    <h4>Tambah Package Iklan</h4>
                     <form
                       className='login-form'
                       onSubmit={handleSubmit(onSubmit)}
@@ -421,13 +326,13 @@ const IndexPage = () => {
                       <div className='row gap-y-6'>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='email'>Nama</label>
+                            <label htmlFor='name'>Nama</label>
                             <input
                               type='text'
-                              placeholder='Masukkan Nama Bank'
+                              placeholder='Masukkan Nama Package Iklan'
                               autoFocus
                               {...register('name', {
-                                required: 'Nama bank harus diisi',
+                                required: 'Nama Package Iklan harus diisi',
                               })}
                             />
                           </div>
@@ -435,57 +340,35 @@ const IndexPage = () => {
                         </div>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='email'>Nama Rekening</label>
+                            <label htmlFor='description'>Description</label>
                             <input
                               type='text'
-                              placeholder='Masukkan Nama Rekening'
+                              placeholder='Masukkan Deskripsi Package Iklan'
                               autoFocus
-                              {...register('rekening_name', {
-                                required: 'Nama rekening harus diisi',
+                              {...register('description', {
+                                required: 'Deskripsi Package Iklan harus diisi',
                               })}
                             />
                           </div>
                           <p className='text-red-500'>
-                            {errors.rekening_name?.message}
+                            {errors.description?.message}
                           </p>
                         </div>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='email'>Nomor Rekening</label>
+                            <label htmlFor='price'>Price (Rp.)</label>
                             <input
-                              type='text'
-                              placeholder='Masukkan Nomor Rekening'
+                              type='number'
+                              placeholder='Masukkan Harga Package Iklan'
                               autoFocus
-                              {...register('rekening_number', {
-                                required: 'Nomor rekening harus diisi',
+                              {...register('price', {
+                                required: 'Harga Package Iklan harus diisi',
                               })}
                             />
                           </div>
                           <p className='text-red-500'>
-                            {errors.rekening_number?.message}
+                            {errors.price?.message}
                           </p>
-                        </div>
-                        <div className='col-md-12'>
-                          <div className='single-input-unit'>
-                            <label htmlFor='jenis_pembayaran'>
-                              Jenis Pembayaran
-                            </label>
-                            <Controller
-                              control={control}
-                              defaultValue={isActiveOpts[0].value}
-                              name='is_active'
-                              render={({ field: { onChange, value } }) => (
-                                <Select
-                                  className={clsxm('py-3 pt-0')}
-                                  options={isActiveOpts}
-                                  value={isActiveOpts.find(
-                                    (c) => c.value === value
-                                  )}
-                                  onChange={(val) => onChange(val?.value)}
-                                />
-                              )}
-                            />
-                          </div>
                         </div>
                       </div>
                       <div className='login-btn mt-4'>
@@ -513,7 +396,7 @@ const IndexPage = () => {
               <div className='login-wrapper pos-rel wow fadeInUp'>
                 <div className=' login-inner'>
                   <div className='login-content'>
-                    <h4>Update Bank</h4>
+                    <h4>Update Package Iklan</h4>
                     <form
                       className='login-form'
                       onSubmit={handleSubmit(onSubmit2)}
@@ -521,10 +404,10 @@ const IndexPage = () => {
                       <div className='row'>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='name'>Nama</label>
+                            <label htmlFor='email'>Nama</label>
                             <input
                               type='text'
-                              placeholder='Masukkan Nama Bank'
+                              placeholder='Masukkan Nama Package Iklan'
                               autoFocus
                               {...register('name')}
                             />
@@ -533,53 +416,31 @@ const IndexPage = () => {
                         </div>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='rekening_name'>Nama Rekening</label>
+                            <label htmlFor='description'>Description</label>
                             <input
                               type='text'
-                              placeholder='Masukkan Nama Rekening'
+                              placeholder='Masukkan Deskripsi Package Iklan'
                               autoFocus
-                              {...register('rekening_name')}
+                              {...register('description')}
                             />
                           </div>
                           <p className='text-red-500'>
-                            {errors.rekening_name?.message}
+                            {errors.description?.message}
                           </p>
                         </div>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='rekening_number'>
-                              Nomor Rekening
-                            </label>
+                            <label htmlFor='price'>Price (Rp.)</label>
                             <input
-                              type='text'
-                              placeholder='Masukkan Nomor Rekening'
+                              type='number'
+                              placeholder='Masukkan Harga Package Iklan'
                               autoFocus
-                              {...register('rekening_number')}
+                              {...register('price')}
                             />
                           </div>
                           <p className='text-red-500'>
-                            {errors.rekening_number?.message}
+                            {errors.price?.message}
                           </p>
-                        </div>
-                        <div className='col-md-12'>
-                          <div className='single-input-unit'>
-                            <label htmlFor='is_active'>Status</label>
-                            <Controller
-                              control={control}
-                              defaultValue={isActiveOpts[0].value}
-                              name='is_active'
-                              render={({ field: { onChange, value } }) => (
-                                <Select
-                                  className={clsxm('py-3 pt-0')}
-                                  options={isActiveOpts}
-                                  value={isActiveOpts.find(
-                                    (c) => c.value === value
-                                  )}
-                                  onChange={(val) => onChange(val?.value)}
-                                />
-                              )}
-                            />
-                          </div>
                         </div>
                       </div>
                       <div className='login-btn mt-4'>

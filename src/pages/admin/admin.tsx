@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
 import { stringifyUrl } from 'query-string';
@@ -22,6 +21,7 @@ import Tooltip from '@/components/Tooltip';
 import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
 import DashboardLayout from '@/dashboard/layout';
+import customAxios from '@/lib/customAxios';
 import toastPromiseError from '@/lib/toastPromiseError';
 import Pagination from '@/types/pagination';
 import User from '@/types/user';
@@ -89,7 +89,10 @@ const IndexPage = () => {
 
       if (isConfirmed) {
         toast.promise(
-          axios.put(`${API_URL}/superuser/config-admin/${user.id}`, payload),
+          customAxios.put(
+            `${API_URL}/superuser/config-admin/${user.id}`,
+            payload
+          ),
           {
             pending: {
               render: () => {
@@ -126,22 +129,25 @@ const IndexPage = () => {
       });
 
       if (isConfirmed) {
-        toast.promise(axios.delete(`${API_URL}/superuser/config-admin/${id}`), {
-          pending: {
-            render: () => {
-              return 'Loading';
+        toast.promise(
+          customAxios.delete(`${API_URL}/superuser/config-admin/${id}`),
+          {
+            pending: {
+              render: () => {
+                return 'Loading';
+              },
             },
-          },
-          success: {
-            render: () => {
-              mutate();
-              return 'Berhasil hapus admin!';
+            success: {
+              render: () => {
+                mutate();
+                return 'Berhasil hapus admin!';
+              },
             },
-          },
-          error: {
-            render: toastPromiseError(undefined, 'Gagal hapus admin!'),
-          },
-        });
+            error: {
+              render: toastPromiseError(undefined, 'Gagal hapus admin!'),
+            },
+          }
+        );
       }
     },
     [mutate, theme]
@@ -170,7 +176,9 @@ const IndexPage = () => {
 
       if (isConfirmed && password) {
         toast.promise(
-          axios.put(`${API_URL}/superuser/config-admin/${id}`, { password }),
+          customAxios.put(`${API_URL}/superuser/config-admin/${id}`, {
+            password,
+          }),
           {
             pending: {
               render: () => {
