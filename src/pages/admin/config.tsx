@@ -20,6 +20,7 @@ import ReactTable from '@/components/ReactTable';
 import Seo from '@/components/Seo';
 import TableSearch from '@/components/TableSearch';
 import Tooltip from '@/components/Tooltip';
+import StyledInputFile from '@/components/Upload/StyledInputFile';
 import { maxEntriesOpts } from '@/constant/admin';
 import { API_URL } from '@/constant/config';
 import { customSelectStyles } from '@/constant/select';
@@ -54,6 +55,10 @@ const IndexPage = () => {
   const [activeId, setActiveId] = useState<number>();
 
   const [maxPerPage, setMaxPerPage] = useState(10);
+
+  const [configType, setConfigType] = useState('text');
+
+  const [configFile, setConfigFile] = useState<File>();
 
   useEffect(() => {
     setMounted(true);
@@ -102,12 +107,30 @@ const IndexPage = () => {
   );
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    const form = new FormData();
+    if (configType === 'file') {
+      if (!configFile) {
+        toast.error('Please upload a file!');
+        return;
+      }
+      Object.entries(data).forEach((v) => {
+        if ((Array.isArray(v[1]) && v[1].length === 0) || v[1] === undefined) {
+          return;
+        }
+        form.append(
+          v[0],
+          Array.isArray(v[1]) ? JSON.stringify(v[1]) : v[1].toString()
+        );
+      });
+      form.append('value', configFile);
+    }
+
     await toast.promise(
       customAxios.post<{ data: Config; message: string; success: boolean }>(
         stringifyUrl({
           url: `${API_URL}/master/config`,
         }),
-        data
+        configType === 'file' ? form : data
       ),
       {
         pending: {
@@ -133,12 +156,30 @@ const IndexPage = () => {
   };
 
   const onSubmit2: SubmitHandler<IFormInput> = async (data) => {
+    const form = new FormData();
+    if (configType === 'file') {
+      if (!configFile) {
+        toast.error('Please upload a file!');
+        return;
+      }
+      Object.entries(data).forEach((v) => {
+        if ((Array.isArray(v[1]) && v[1].length === 0) || v[1] === undefined) {
+          return;
+        }
+        form.append(
+          v[0],
+          Array.isArray(v[1]) ? JSON.stringify(v[1]) : v[1].toString()
+        );
+      });
+      form.append('value', configFile);
+    }
+
     await toast.promise(
       customAxios.put<{ data: Config; message: string; success: boolean }>(
         stringifyUrl({
           url: `${API_URL}/master/config/${activeId}`,
         }),
-        data
+        configType === 'file' ? form : data
       ),
       {
         pending: {
@@ -324,6 +365,20 @@ const IndexPage = () => {
                       <div className='row gap-y-6'>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
+                            <label htmlFor='key'>Jenis</label>
+                            <select
+                              value={configType}
+                              onChange={(e) => setConfigType(e.target.value)}
+                              className='h-[50px] w-full rounded-md border-none dark:bg-[rgb(28,36,52)]'
+                            >
+                              <option value='text'>Text</option>
+                              <option value='file'>File</option>
+                            </select>
+                          </div>
+                          <p className='text-red-500'>{errors.key?.message}</p>
+                        </div>
+                        <div className='col-md-12'>
+                          <div className='single-input-unit'>
                             <label htmlFor='key'>Key</label>
                             <input
                               type='text'
@@ -339,14 +394,25 @@ const IndexPage = () => {
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
                             <label htmlFor='value'>Value</label>
-                            <input
-                              type='text'
-                              placeholder='Masukkan Value'
-                              autoFocus
-                              {...register('value', {
-                                required: 'Key harus diisi',
-                              })}
-                            />
+                            {configType === 'text' ? (
+                              <input
+                                type='text'
+                                placeholder='Masukkan Value'
+                                autoFocus
+                                {...register('value')}
+                              />
+                            ) : (
+                              <StyledInputFile
+                                onChange={(e) =>
+                                  setConfigFile(e.target.files?.[0])
+                                }
+                                labelClassName='!text-left !justify-start !text-neutral-400'
+                              >
+                                {configFile?.name
+                                  ? configFile.name
+                                  : 'Pilih file gambar...'}
+                              </StyledInputFile>
+                            )}
                           </div>
                           <p className='text-red-500'>
                             {errors.value?.message}
@@ -386,6 +452,20 @@ const IndexPage = () => {
                       <div className='row'>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
+                            <label htmlFor='key'>Jenis</label>
+                            <select
+                              value={configType}
+                              onChange={(e) => setConfigType(e.target.value)}
+                              className='h-[50px] w-full rounded-md border-none dark:bg-[rgb(28,36,52)]'
+                            >
+                              <option value='text'>Text</option>
+                              <option value='file'>File</option>
+                            </select>
+                          </div>
+                          <p className='text-red-500'>{errors.key?.message}</p>
+                        </div>
+                        <div className='col-md-12'>
+                          <div className='single-input-unit'>
                             <label htmlFor='key'>Key</label>
                             <input
                               type='text'
@@ -398,13 +478,26 @@ const IndexPage = () => {
                         </div>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='is_active'>Value</label>
-                            <input
-                              type='text'
-                              placeholder='Masukkan Value'
-                              autoFocus
-                              {...register('value')}
-                            />
+                            <label htmlFor='value'>Value</label>
+                            {configType === 'text' ? (
+                              <input
+                                type='text'
+                                placeholder='Masukkan Value'
+                                autoFocus
+                                {...register('value')}
+                              />
+                            ) : (
+                              <StyledInputFile
+                                onChange={(e) =>
+                                  setConfigFile(e.target.files?.[0])
+                                }
+                                labelClassName='!text-left !justify-start !text-neutral-400'
+                              >
+                                {configFile?.name
+                                  ? configFile.name
+                                  : 'Pilih file gambar...'}
+                              </StyledInputFile>
+                            )}
                           </div>
                           <p className='text-red-500'>
                             {errors.value?.message}

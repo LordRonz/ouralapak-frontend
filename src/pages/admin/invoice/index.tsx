@@ -198,11 +198,11 @@ const IndexPage = () => {
               className={clsxm(
                 'rounded-xl px-4 py-2',
                 row.original.statusCode === StatusInvoice.SUDAH_DIBAYAR &&
-                  'bg-green-200 text-green-600',
+                  'bg-[#51BB25] !bg-opacity-[0.18] text-[#51BB25]',
                 row.original.statusCode === StatusInvoice.MENUNGGU_PEMBAYARAN &&
-                  'bg-violet-200 text-violet-600',
+                  'bg-[#7366FF] !bg-opacity-[0.18] text-[#7366FF]',
                 row.original.statusCode === StatusInvoice.EXPIRED &&
-                  'bg-red-200 text-red-600'
+                  'bg-[#DC3545] !bg-opacity-[0.18] text-[#DC3545]'
               )}
             >
               {row.original.status}

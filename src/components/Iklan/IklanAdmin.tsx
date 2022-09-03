@@ -114,149 +114,306 @@ const IklanAdmin = ({ id }: { id: number }) => {
                   />
                 )}
               </div>
-              <div className='col-xl-6 col-lg-7'>
+              <div className='col-xl-6 col-lg-7 pb-6'>
+                <div className='mb-6'>
+                  <h1 className='mr-4 inline'>{iklan.data.title}</h1>
+                  <span className='inline-block rounded-lg bg-neutral-300 py-1 px-2'>
+                    {iklan.data.platform}
+                  </span>
+                </div>
                 <div className='art-details-content wow fadeInUp'>
-                  <div className='created-by'>Created by</div>
-                  <div className='creator mb-30'>
-                    <div className='profile-img pos-rel'>
-                      <Link href='/creators'>
-                        <a>
-                          <img
-                            src={
-                              iklan.data.user?.profile_picture
-                                ? `${API_URL}/${iklan.data.user?.profile_picture}`
-                                : `/images/pfp.jpg`
-                            }
-                            alt='profile-img'
-                          />
-                        </a>
-                      </Link>
-                      <div className='profile-verification verified'>
-                        <i className='fas fa-check'></i>
-                      </div>
-                    </div>
-                    <div className='creator-name-id'>
-                      <h4 className='artist-name'>
-                        <Link href='/creators'>
-                          <a>{iklan.data.user.name}</a>
-                        </Link>
-                      </h4>
-                      <div className='artist-id'>
-                        {iklan.data.user.username}
+                  <div className='flex items-center space-x-8'>
+                    <div className='flex w-full justify-between'>
+                      <div>
+                        <div className='created-by mb-2'>Created by</div>
+                        <div className='creator mb-30'>
+                          <div className='profile-img pos-rel'>
+                            <Link href='/creators'>
+                              <a>
+                                <Image
+                                  src={
+                                    iklan.data.user?.profile_picture
+                                      ? `${API_URL}/${iklan.data.user?.profile_picture}`
+                                      : `/images/pfp.jpg`
+                                  }
+                                  className='h-16 w-16 rounded-full object-cover'
+                                  alt='profile-img'
+                                  height={64}
+                                  width={64}
+                                />
+                              </a>
+                            </Link>
+                            <div className='profile-verification verified'>
+                              <i className='fas fa-check'></i>
+                            </div>
+                          </div>
+                          <div className='creator-name-id'>
+                            <h4 className='artist-name'>
+                              <Link href='/creators'>
+                                <a>{iklan.data.user.name}</a>
+                              </Link>
+                            </h4>
+                            <div className='artist-id'>
+                              {iklan.data.user.username}
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div className='art-name-details'>
-                    <h4 className='art-name mb-25'>{iklan.data.title}</h4>
-                    <div className='space-x-4'>
-                      <h5 className='inline'>First Hand Status:</h5>
-                      <p className='inline'>
-                        {+iklan.data.first_hand_status === 0
-                          ? 'First hand'
-                          : 'Second hand'}
-                      </p>
-                    </div>
-                    <div className='space-x-4'>
-                      <h5 className='inline'>Account Bind:</h5>
-                      <p className='inline'>
-                        {iklan.data.account_bind
-                          .map((a) => a.name)
-                          .join(', ') || '-'}
-                      </p>
-                    </div>
-                    <div className='space-x-4'>
-                      <h5 className='inline'>Change Name Status:</h5>
-                      <p className='inline'>
-                        {+iklan.data.change_name_status === 0
-                          ? 'Change name non-aktif'
-                          : 'Change name aktif'}
-                      </p>
-                    </div>
-                    <div className='space-x-4'>
-                      <h5 className='inline'>Status:</h5>
-                      <p className='inline'>{iklan.data.status}</p>
-                    </div>
-                  </div>
-                  <div className='artist-meta-info art-details-meta-info'>
-                    <div className='art-meta-item artist-meta-item-border'>
+                  <div className='art-details-meta-info my-8 grid grid-cols-3 divide-x-2'>
+                    <div className='art-meta-item'>
                       <div className='art-meta-type'>Harga</div>
-                      <div className='art-price'>
+                      <div className='art-sale'>
                         {toIDRCurrency(iklan.data.harga_akun)}
                       </div>
                     </div>
-                    <div className='art-meta-item artist-meta-item-border'>
-                      <div className='art-meta-type'>Win Rate</div>
-                      <div className='art-sale'>
-                        <span className='art-sold'>
-                          {iklan.data.win_rate} %
-                        </span>
-                      </div>
-                    </div>
+                  </div>
+                  <div className='art-details-meta-info my-8 grid grid-cols-2 divide-x-2'>
                     <div className='art-meta-item'>
+                      <div className='art-meta-type'>Win Rate</div>
+                      <div className='art-sale'>{iklan.data.win_rate} %</div>
+                    </div>
+                    <div className='art-meta-item pl-3'>
                       <div className='art-meta-type'>Jenis Refund</div>
-                      <div className='art-sale'>
-                        <span className='art-sold'>
-                          {iklan.data.jenis_refund}
-                        </span>
+                      <div className='art-sale'>{iklan.data.jenis_refund}</div>
+                    </div>
+                  </div>
+                  <div className='art-details-information'>
+                    <div className='art-information-tab-nav mb-20'>
+                      <nav>
+                        <div
+                          className='nav nav-tabs flex justify-between'
+                          id='nav-tab'
+                          role='tablist'
+                        >
+                          <button
+                            className='nav-link active'
+                            id='nav-bid-tab'
+                            data-bs-toggle='tab'
+                            data-bs-target='#tab-nav1'
+                            type='button'
+                            role='tab'
+                            aria-selected='true'
+                          >
+                            <span className='profile-nav-button'>Detail</span>
+                          </button>
+                          <button
+                            className='nav-link'
+                            id='nav-info-tab'
+                            data-bs-toggle='tab'
+                            data-bs-target='#tab-nav2'
+                            type='button'
+                            role='tab'
+                            aria-selected='false'
+                          >
+                            <span className='profile-nav-button'>Hero</span>
+                          </button>
+                          <button
+                            className='nav-link'
+                            id='nav-details-tab'
+                            data-bs-toggle='tab'
+                            data-bs-target='#tab-nav3'
+                            type='button'
+                            role='tab'
+                            aria-selected='false'
+                          >
+                            <span className='profile-nav-button'>Skin</span>
+                          </button>
+                          <button
+                            className='nav-link'
+                            id='nav-details-tab'
+                            data-bs-toggle='tab'
+                            data-bs-target='#tab-nav4'
+                            type='button'
+                            role='tab'
+                            aria-selected='false'
+                          >
+                            <span className='profile-nav-button'>Recall</span>
+                          </button>
+                          <button
+                            className='nav-link'
+                            id='nav-details-tab'
+                            data-bs-toggle='tab'
+                            data-bs-target='#tab-nav5'
+                            type='button'
+                            role='tab'
+                            aria-selected='false'
+                          >
+                            <span className='profile-nav-button'>Emblem</span>
+                          </button>
+                        </div>
+                      </nav>
+                    </div>
+                    <div className='art-information-tab-contents mb-0'>
+                      <div className='tab-content' id='nav-tabContent'>
+                        <div
+                          className='tab-pane fade active show'
+                          id='tab-nav1'
+                          role='tabpanel'
+                          aria-labelledby='nav-bid-tab'
+                        >
+                          <div className='art-user-wrapper'>
+                            <div className='flex flex-wrap gap-x-10 gap-y-4'>
+                              <div>
+                                <h5>Status Akun</h5>
+                                <h4>
+                                  {+iklan.data.first_hand_status === 0
+                                    ? 'Pribadi'
+                                    : 'Akun Beli'}
+                                </h4>
+                              </div>
+                              <div>
+                                <h5>Ganti Nama Akun</h5>
+                                <h4>
+                                  {+iklan.data.change_name_status === 0
+                                    ? 'Nonaktif'
+                                    : 'Aktif'}
+                                </h4>
+                              </div>
+                              <div>
+                                <h5>Total Hero</h5>
+                                <h4>{iklan.data.total_hero}</h4>
+                              </div>
+                              <div>
+                                <h5>Total Skin</h5>
+                                <h4>{iklan.data.total_skin}</h4>
+                              </div>
+                              <div>
+                                <h5>Binding Account</h5>
+                                <div className='flex gap-x-2'>
+                                  {iklan.data.account_bind.length > 0
+                                    ? iklan.data.account_bind.map((a) => (
+                                        <span
+                                          className='rounded bg-neutral-300 px-3 py-1'
+                                          key={a.id}
+                                        >
+                                          {a.name}
+                                        </span>
+                                      ))
+                                    : '-'}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className='tab-pane fade'
+                          id='tab-nav2'
+                          role='tabpanel'
+                          aria-labelledby='nav-info-tab'
+                        >
+                          <div className='art-user-wrapper'>
+                            <div className='flex flex-wrap gap-x-10 gap-y-4'>
+                              <div>
+                                <h5>Favorite</h5>
+                                <div className='flex gap-x-2'>
+                                  {iklan.data.hero.length > 0
+                                    ? iklan.data.hero.map((a) => (
+                                        <span
+                                          className='rounded bg-neutral-300 px-3 py-1'
+                                          key={a.id}
+                                        >
+                                          {a.name}
+                                        </span>
+                                      ))
+                                    : '-'}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className='tab-pane fade'
+                          id='tab-nav3'
+                          role='tabpanel'
+                          aria-labelledby='nav-details-tab'
+                        >
+                          <div className='art-user-wrapper overflow-auto'>
+                            <div className='flex flex-wrap gap-x-10 gap-y-4'>
+                              <div>
+                                <h5>Skin Rare</h5>
+                                <div className='flex flex-wrap gap-x-3 gap-y-3'>
+                                  {iklan.data.total_skin_rare.length > 0
+                                    ? iklan.data.total_skin_rare.map((a, i) => (
+                                        <div
+                                          className='flex gap-x-1'
+                                          key={`${a.jenis}-${i}`}
+                                        >
+                                          <span className='rounded bg-neutral-300 px-3 py-1'>
+                                            {a.jenis}
+                                          </span>
+                                          <span className='rounded bg-neutral-300 px-1 py-1'>
+                                            {a.total_skin}
+                                          </span>
+                                        </div>
+                                      ))
+                                    : '-'}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className='tab-pane fade'
+                          id='tab-nav4'
+                          role='tabpanel'
+                          aria-labelledby='nav-details-tab'
+                        >
+                          <div className='art-user-wrapper overflow-auto'>
+                            <div className='flex flex-wrap gap-x-10 gap-y-4'>
+                              <div>
+                                <h5>Efek Recall</h5>
+                                <div className='flex flex-wrap gap-x-3 gap-y-3'>
+                                  {iklan.data.recall_effect.length > 0
+                                    ? iklan.data.recall_effect.map((a, i) => (
+                                        <span
+                                          className='rounded bg-neutral-300 px-3 py-1'
+                                          key={`${a}-${i}`}
+                                        >
+                                          {a}
+                                        </span>
+                                      ))
+                                    : '-'}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className='tab-pane fade'
+                          id='tab-nav5'
+                          role='tabpanel'
+                          aria-labelledby='nav-details-tab'
+                        >
+                          <div className='art-user-wrapper overflow-auto'>
+                            <div className='flex flex-wrap gap-x-10 gap-y-4'>
+                              <div>
+                                <h5>Emblem</h5>
+                                <div className='flex flex-wrap gap-x-3 gap-y-3'>
+                                  {iklan.data.emblem.length > 0
+                                    ? iklan.data.emblem.map((a, i) => (
+                                        <div
+                                          className='flex gap-x-1'
+                                          key={`${a.id}-${i}`}
+                                        >
+                                          <span className='rounded bg-neutral-300 px-3 py-1'>
+                                            {a.name}
+                                          </span>
+                                          <span className='rounded bg-neutral-300 px-1 py-1'>
+                                            {a.level}
+                                          </span>
+                                        </div>
+                                      ))
+                                    : '-'}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-            <div className='row my-8'>
-              <div className='grid grid-cols-3 rounded-lg border-2 border-primary-200 bg-neutral-50 py-6 dark:bg-neutral-800'>
-                <div className='flex flex-col items-start justify-center'>
-                  <div className='h-24 w-24 overflow-hidden rounded-lg md:h-48 md:w-48'>
-                    <Image
-                      src={
-                        iklan.data.user?.profile_picture
-                          ? `${API_URL}/${iklan.data.user?.profile_picture}`
-                          : `/images/pfp.jpg`
-                      }
-                      alt='Picture of the author'
-                      width={500}
-                      height={500}
-                    />
-                  </div>
-                </div>
-                <div className='flex flex-col justify-between'>
-                  <h1 className='text-xl  md:text-4xl'>Penjual</h1>
-                  <p className='text-sm dark:!text-light md:text-base'>
-                    Nama: {iklan.data.user.name}
-                  </p>
-                  <p className='text-sm dark:!text-light md:text-base'>
-                    No. HP: {iklan.data.user.phone}
-                  </p>
-                  <p className='text-sm dark:!text-light md:text-base'>
-                    Email: {iklan.data.user.email}
-                  </p>
-                  <p className='text-sm dark:!text-light md:text-base'>
-                    Instagram: @{iklan.data.user.ig_username}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className='row my-8'>
-              <div className='grid grid-cols-3 rounded-lg border-2 border-primary-200 bg-neutral-50 py-6 dark:bg-neutral-800'>
-                <div className='flex flex-col justify-between'>
-                  <h1 className='text-xl  md:text-4xl'>Info Akun</h1>
-                  <p className='text-sm dark:!text-light md:text-base'>
-                    Platform: {iklan.data.platform}
-                  </p>
-                  <p className='text-sm dark:!text-light md:text-base'>
-                    Favorite Heroes:{' '}
-                    {iklan.data.hero.map((hero) => hero.name).join(', ') || '-'}
-                  </p>
-                  <p className='text-sm dark:!text-light md:text-base'>
-                    Total hero: {iklan.data.total_hero}
-                  </p>
-                  <p className='text-sm dark:!text-light md:text-base'>
-                    Total skin: {iklan.data.total_skin}
-                  </p>
-                  <p className='text-sm dark:!text-light md:text-base'>
-                    Recall effect: {iklan.data.recall_effect.join(', ') || '-'}
-                  </p>
                 </div>
               </div>
             </div>

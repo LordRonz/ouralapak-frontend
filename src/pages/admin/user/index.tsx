@@ -174,8 +174,8 @@ const IndexPage = () => {
               className={clsxm(
                 'rounded-xl px-4 py-2',
                 row.original.isVerified
-                  ? 'bg-green-200 text-green-600'
-                  : 'bg-red-200 text-red-600'
+                  ? 'bg-[#51BB25] !bg-opacity-[0.18] text-[#51BB25]'
+                  : 'bg-[#DC3545] !bg-opacity-[0.18] text-[#DC3545]'
               )}
             >
               {row.original.status}

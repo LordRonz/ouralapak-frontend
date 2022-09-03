@@ -56,7 +56,7 @@ const ReactTable = <T extends object>({
           <div className='overflow-hidden border-b border-gray-200 shadow-sm dark:!border-gray-800 sm:rounded-lg'>
             <table
               {...getTableProps()}
-              className='min-w-full divide-y divide-gray-200 dark:!divide-gray-800'
+              className='min-w-full divide-y divide-gray-200 !font-table dark:!divide-gray-800'
             >
               <thead className='bg-gray-50 dark:!bg-gray-700'>
                 {headerGroups.map((headerGroup, index) => (
@@ -131,7 +131,7 @@ const ReactTable = <T extends object>({
                             className={clsxm(
                               'max-w-xs overflow-hidden text-ellipsis whitespace-nowrap px-6 py-4 text-left text-sm text-gray-700',
                               i === 0
-                                ? 'font-medium text-gray-900 dark:!text-gray-50'
+                                ? 'text-gray-900 dark:!text-gray-50'
                                 : 'text-gray-500  dark:!text-gray-200',
                               (cell.column.id.toLowerCase() === 'status' ||
                                 cell.column.id.toLowerCase() === 'action') &&

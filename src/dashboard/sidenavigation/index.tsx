@@ -19,7 +19,10 @@ type SideNavigationProps = {
   superAdmin?: boolean;
 };
 
-const SideNavigation = ({ mobilePosition }: SideNavigationProps) => {
+const SideNavigation = ({
+  mobilePosition,
+  superAdmin,
+}: SideNavigationProps) => {
   const { open, ref } = useToggle();
   return (
     <>
@@ -34,7 +37,7 @@ const SideNavigation = ({ mobilePosition }: SideNavigationProps) => {
       >
         <div className={style.container}>
           <SidenavHeader />
-          <SidenavItems />
+          <SidenavItems superAdmin={superAdmin} />
         </div>
       </aside>
       <style jsx>{`

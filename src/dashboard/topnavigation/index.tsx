@@ -2,17 +2,21 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
 import { useState } from 'react';
+import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import { useLocalStorage } from 'react-use';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
 import ColorModeToggle from '@/components/ColorModeToggle';
+import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
 import { useToggle } from '@/dashboard/provider/context';
+import Roles from '@/types/roles';
+import User from '@/types/user';
 
 const MySwal = withReactContent(Swal);
 
-const TopNavigation = () => {
+const TopNavigation = ({ user }: { user?: User }) => {
   const { theme } = useTheme();
   const { toggle } = useToggle();
   const [isActive11, setActive11] = useState(true);
@@ -81,9 +85,29 @@ const TopNavigation = () => {
                     </li>
                   </ul>
                 </div>
-                <img src='/assets/img/profile/profile4.jpg' alt='profile-img' />
-                <div className='profile-verification verified'>
-                  <i className='fas fa-check'></i>
+                <div className='flex w-48 items-center justify-center gap-x-3'>
+                  <img
+                    src={
+                      user?.profile_picture
+                        ? `${API_URL}/${user?.profile_picture}`
+                        : `/images/pfp.jpg`
+                    }
+                    alt='profile-img'
+                    className='!rounded-xl'
+                  />
+                  <div className='w-full !overflow-hidden !text-ellipsis !whitespace-nowrap'>
+                    <p className='!m-0 font-extrabold dark:!text-white'>
+                      {user?.name}
+                    </p>
+                    <div className='flex items-center justify-start gap-x-1'>
+                      <p className='!m-0 !text-ellipsis dark:!text-white'>
+                        {user?.role.includes('SU' as Roles)
+                          ? 'Super Admin'
+                          : 'Admin'}
+                      </p>
+                      <MdOutlineKeyboardArrowDown />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

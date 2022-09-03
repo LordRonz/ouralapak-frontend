@@ -34,6 +34,7 @@ import Chart1 from '@/svgs/chart1.svg';
 import Chart2 from '@/svgs/chart2.svg';
 import Chart3 from '@/svgs/chart3.svg';
 import Chart4 from '@/svgs/chart4.svg';
+import { StatusInvoice } from '@/types/invoice';
 import APIResponse from '@/types/response';
 import Revenue from '@/types/revenue';
 import TotalData from '@/types/totalData';
@@ -162,6 +163,33 @@ const IndexPage = () => {
       url: `${API_URL}/admin/statistik/${['iklan', 'rekber'][dashboardType]}`,
       query: {
         status: StatusIklanEnum.PROSES_REKBER,
+      },
+    })
+  );
+
+  const { data: totalMenungguPembayaran } = useSWR<APIResponse<TotalData>>(
+    stringifyUrl({
+      url: `${API_URL}/admin/statistik/${['iklan', 'rekber'][dashboardType]}`,
+      query: {
+        status: StatusInvoice.MENUNGGU_PEMBAYARAN,
+      },
+    })
+  );
+
+  const { data: totalSudahDibayar } = useSWR<APIResponse<TotalData>>(
+    stringifyUrl({
+      url: `${API_URL}/admin/statistik/${['iklan', 'rekber'][dashboardType]}`,
+      query: {
+        status: StatusInvoice.SUDAH_DIBAYAR,
+      },
+    })
+  );
+
+  const { data: totalExpired } = useSWR<APIResponse<TotalData>>(
+    stringifyUrl({
+      url: `${API_URL}/admin/statistik/${['iklan', 'rekber'][dashboardType]}`,
+      query: {
+        status: StatusInvoice.EXPIRED,
       },
     })
   );
@@ -521,31 +549,29 @@ const IndexPage = () => {
                         </div>
                         <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
                           <h5 className='m-0'>
-                            {totalDipublikasi?.data?.total}
+                            {totalMenungguPembayaran?.data?.total}
                           </h5>
-                          <p className='m-0 text-sm'>Dipublikasi</p>
+                          <p className='m-0 text-sm'>Menunggu Pembayaran</p>
                         </div>
                       </div>
                       <div className='grid grid-cols-12 items-center justify-center gap-x-2 py-4 px-4'>
                         <div className='col-span-5'>
-                          <Chart1 />
+                          <Chart2 />
                         </div>
                         <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
                           <h5 className='m-0'>
-                            {totalDipublikasi?.data?.total}
+                            {totalSudahDibayar?.data?.total}
                           </h5>
-                          <p className='m-0 text-sm'>Dipublikasi</p>
+                          <p className='m-0 text-sm'>Sudah Dibayar</p>
                         </div>
                       </div>
                       <div className='grid grid-cols-12 items-center justify-center gap-x-2 py-4 px-4'>
                         <div className='col-span-5'>
-                          <Chart1 />
+                          <Chart3 />
                         </div>
                         <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                          <h5 className='m-0'>
-                            {totalDipublikasi?.data?.total}
-                          </h5>
-                          <p className='m-0 text-sm'>Dipublikasi</p>
+                          <h5 className='m-0'>{totalExpired?.data?.total}</h5>
+                          <p className='m-0 text-sm'>Expired</p>
                         </div>
                       </div>
                     </>

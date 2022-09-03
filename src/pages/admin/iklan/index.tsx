@@ -245,26 +245,26 @@ const IndexPage = () => {
               className={clsxm(
                 'rounded-xl px-4 py-2',
                 row.original.statusCode === StatusIklanEnum.DIHAPUS &&
-                  'bg-neutral-200 text-neutral-600',
+                  'bg-[#2B2B2B] !bg-opacity-[0.18] text-[#2B2B2B]',
                 row.original.statusCode ===
                   StatusIklanEnum.MENUNGGU_PEMBAYARAN &&
-                  'bg-violet-200 text-violet-600',
+                  'bg-[#A927F9] !bg-opacity-[0.18] text-[#A927F9]',
                 row.original.statusCode ===
                   StatusIklanEnum.MENUNGGU_KONFIRMASI &&
-                  'bg-yellow-200 text-yellow-600',
+                  'bg-[#C8A700] !bg-opacity-[0.18] text-[#C8A700]',
                 row.original.statusCode === StatusIklanEnum.DIPUBLIKASI &&
-                  'bg-indigo-200 text-indigo-600',
+                  'bg-[#7366FF] !bg-opacity-[0.18] text-[#7366FF]',
                 row.original.statusCode === StatusIklanEnum.DITOLAK &&
-                  'bg-orange-200 text-orange-600',
+                  'bg-[#F73164] !bg-opacity-[0.18] text-[#F73164]',
                 row.original.statusCode === StatusIklanEnum.DIBATALKAN &&
-                  'bg-rose-200 text-rose-600',
+                  'bg-[#DC3545] !bg-opacity-[0.18] text-[#DC3545]',
                 row.original.statusCode === StatusIklanEnum.PROSES_REKBER &&
-                  'bg-teal-200 text-teal-600',
+                  'bg-[#189D55] !bg-opacity-[0.18] text-[#189D55]',
                 row.original.statusCode === StatusIklanEnum.SELESAI &&
-                  'bg-green-200 text-green-600',
+                  'bg-[#51BB25] !bg-opacity-[0.18] text-[#51BB25]',
                 row.original.statusCode ===
                   StatusIklanEnum.MENUNGGU_PEMBAYARAN_PEMBELI &&
-                  'bg-violet-200 text-violet-600'
+                  'bg-[#A927F9] !bg-opacity-[0.18] text-[#A927F9]'
               )}
             >
               {row.original.status}

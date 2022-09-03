@@ -22,6 +22,7 @@ module.exports = {
     extend: {
       fontFamily: {
         primary: ['Lato', ...fontFamily.sans],
+        table: ['RubikVariable', ...fontFamily.sans],
       },
       colors: {
         // Customize it on globals.css :root

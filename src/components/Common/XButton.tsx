@@ -11,7 +11,7 @@ const XButton = ({
     <button
       type='button'
       className={clsxm(
-        'rounded-full p-1 ring-red-400 transition hover:bg-red-500 focus:outline-none focus-visible:ring group-hover:block',
+        '!rounded-full !p-1 !ring-red-400 !transition hover:!bg-red-500 focus:!outline-none focus-visible:!ring group-hover:!block',
         className
       )}
       {...rest}
