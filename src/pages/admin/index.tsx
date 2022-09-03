@@ -72,38 +72,38 @@ const IndexPage = () => {
     })
   );
 
-  const { data: todayNetRevenue } = useSWR<APIResponse<Revenue>>(
+  const { data: accumulatedNetRevenue } = useSWR<APIResponse<Revenue>>(
     stringifyUrl({
       url: `${API_URL}/admin/statistik/${
         ['iklan', 'rekber'][dashboardType]
       }-revenue/net`,
       query: {
-        start_date: getEpochSecond(sub(new Date(), { days: 1 })),
-        end_date: getEpochSecond(new Date()),
+        start_date: getEpochSecond(mainChartStartDate),
+        end_date: getEpochSecond(mainChartEndDate),
       },
     })
   );
 
-  const { data: todayGrossRevenue } = useSWR<APIResponse<Revenue>>(
+  const { data: accumulatedGrossRevenue } = useSWR<APIResponse<Revenue>>(
     stringifyUrl({
       url: `${API_URL}/admin/statistik/${
         ['iklan', 'rekber'][dashboardType]
       }-revenue/gross`,
       query: {
-        start_date: getEpochSecond(sub(new Date(), { days: 1 })),
-        end_date: getEpochSecond(new Date()),
+        start_date: getEpochSecond(mainChartStartDate),
+        end_date: getEpochSecond(mainChartEndDate),
       },
     })
   );
 
-  const { data: todayAdminFeeRevenue } = useSWR<APIResponse<Revenue>>(
+  const { data: accumulatedAdminFeeRevenue } = useSWR<APIResponse<Revenue>>(
     stringifyUrl({
       url: `${API_URL}/admin/statistik/${
         ['iklan', 'rekber'][dashboardType]
       }-revenue/admin-fee`,
       query: {
-        start_date: getEpochSecond(sub(new Date(), { days: 1 })),
-        end_date: getEpochSecond(new Date()),
+        start_date: getEpochSecond(mainChartStartDate),
+        end_date: getEpochSecond(mainChartEndDate),
       },
     })
   );
@@ -262,7 +262,7 @@ const IndexPage = () => {
               <h1 className='m-0 text-2xl'>Dashboards</h1>
               <Select
                 styles={customSelectStyles}
-                className={clsxm('w-fit py-0')}
+                className={clsxm('w-44 py-0')}
                 options={dashboardsOpts}
                 defaultValue={dashboardsOpts[0]}
                 theme={selectPrimaryTheme}
@@ -399,9 +399,9 @@ const IndexPage = () => {
                   <AiFillDollarCircle className='text-4xl text-[#7366FF]' />
                 </div>
                 <div>
-                  <h4 className='m-0'>Today{"'"}s Nett Revenue</h4>
+                  <h4 className='m-0 text-base'>Accumulated Nett Revenue</h4>
                   <p className='m-0'>
-                    {toIDRCurrency(todayNetRevenue?.data?.total_revenue)}
+                    {toIDRCurrency(accumulatedNetRevenue?.data?.total_revenue)}
                   </p>
                 </div>
               </div>
@@ -410,9 +410,11 @@ const IndexPage = () => {
                   <AiFillDollarCircle className='text-4xl text-[#F73164]' />
                 </div>
                 <div>
-                  <h4 className='m-0'>Today{"'"}s Gross Revenue</h4>
+                  <h4 className='m-0 text-base'>Accumulated Gross Revenue</h4>
                   <p className='m-0'>
-                    {toIDRCurrency(todayGrossRevenue?.data?.total_revenue)}
+                    {toIDRCurrency(
+                      accumulatedGrossRevenue?.data?.total_revenue
+                    )}
                   </p>
                 </div>
               </div>
@@ -421,9 +423,13 @@ const IndexPage = () => {
                   <AiFillDollarCircle className='text-4xl text-[#7366FF]' />
                 </div>
                 <div>
-                  <h4 className='m-0'>Today{"'"}s Admin Fee Revenue</h4>
+                  <h4 className='m-0 text-base'>
+                    Accumulated Admin Fee Revenue
+                  </h4>
                   <p className='m-0'>
-                    {toIDRCurrency(todayAdminFeeRevenue?.data?.total_revenue)}
+                    {toIDRCurrency(
+                      accumulatedAdminFeeRevenue?.data?.total_revenue
+                    )}
                   </p>
                 </div>
               </div>
@@ -436,66 +442,114 @@ const IndexPage = () => {
                   }`}</h4>
                 </div>
                 <div className='grid grid-cols-2 divide-x divide-y'>
-                  <div className='grid grid-cols-12 items-center justify-center gap-x-2 py-4 px-4'>
-                    <div className='col-span-5'>
-                      <Chart1 />
-                    </div>
-                    <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                      <h5 className='m-0'>{totalDipublikasi?.data?.total}</h5>
-                      <p className='m-0 text-sm'>Dipublikasi</p>
-                    </div>
-                  </div>
-                  <div className='grid grid-cols-12 gap-x-2 !border-t-0 py-4 px-4'>
-                    <div className='col-span-5'>
-                      <Chart2 />
-                    </div>
-                    <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                      <h5 className='m-0'>
-                        {totalMenungguKonfirmasi?.data?.total}
-                      </h5>
-                      <p className='m-0 text-sm'>Menunggu Konfirmasi</p>
-                    </div>
-                  </div>
-                  <div className='grid grid-cols-12 gap-x-2 py-4 px-4'>
-                    <div className='col-span-5'>
-                      <Chart3 />
-                    </div>
-                    <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                      <h5 className='m-0'>
-                        {totalMenungguPembayaranPenjual?.data?.total}
-                      </h5>
-                      <p className='m-0 text-sm'>Menunggu Pembayaran Penjual</p>
-                    </div>
-                  </div>
-                  <div className='grid grid-cols-12 gap-x-2 py-4 px-4'>
-                    <div className='col-span-5'>
-                      <Chart4 />
-                    </div>
-                    <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                      <h5 className='m-0'>
-                        {totalMenungguPembayaranPembeli?.data?.total}
-                      </h5>
-                      <p className='m-0 text-sm'>Menunggu Pembayaran Pembeli</p>
-                    </div>
-                  </div>
-                  <div className='grid grid-cols-12 gap-x-2 py-4 px-4'>
-                    <div className='col-span-5'>
-                      <Chart3 />
-                    </div>
-                    <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                      <h5 className='m-0'>{totalTerjual?.data?.total}</h5>
-                      <p className='m-0 text-sm'>Terjual</p>
-                    </div>
-                  </div>
-                  <div className='grid grid-cols-12 gap-x-2 py-4 px-4'>
-                    <div className='col-span-5'>
-                      <Chart4 />
-                    </div>
-                    <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                      <h5 className='m-0'>{totalProsesRekber?.data?.total}</h5>
-                      <p className='m-0 text-sm'>Proses Rekber</p>
-                    </div>
-                  </div>
+                  {dashboardType === 0 ? (
+                    <>
+                      <div className='grid grid-cols-12 items-center justify-center gap-x-2 py-4 px-4'>
+                        <div className='col-span-5'>
+                          <Chart1 />
+                        </div>
+                        <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
+                          <h5 className='m-0'>
+                            {totalDipublikasi?.data?.total}
+                          </h5>
+                          <p className='m-0 text-sm'>Dipublikasi</p>
+                        </div>
+                      </div>
+                      <div className='grid grid-cols-12 gap-x-2 !border-t-0 py-4 px-4'>
+                        <div className='col-span-5'>
+                          <Chart2 />
+                        </div>
+                        <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
+                          <h5 className='m-0'>
+                            {totalMenungguKonfirmasi?.data?.total}
+                          </h5>
+                          <p className='m-0 text-sm'>Menunggu Konfirmasi</p>
+                        </div>
+                      </div>
+                      <div className='grid grid-cols-12 gap-x-2 py-4 px-4'>
+                        <div className='col-span-5'>
+                          <Chart3 />
+                        </div>
+                        <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
+                          <h5 className='m-0'>
+                            {totalMenungguPembayaranPenjual?.data?.total}
+                          </h5>
+                          <p className='m-0 text-sm'>
+                            Menunggu Pembayaran Penjual
+                          </p>
+                        </div>
+                      </div>
+                      <div className='grid grid-cols-12 gap-x-2 py-4 px-4'>
+                        <div className='col-span-5'>
+                          <Chart4 />
+                        </div>
+                        <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
+                          <h5 className='m-0'>
+                            {totalMenungguPembayaranPembeli?.data?.total}
+                          </h5>
+                          <p className='m-0 text-sm'>
+                            Menunggu Pembayaran Pembeli
+                          </p>
+                        </div>
+                      </div>
+                      <div className='grid grid-cols-12 gap-x-2 py-4 px-4'>
+                        <div className='col-span-5'>
+                          <Chart3 />
+                        </div>
+                        <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
+                          <h5 className='m-0'>{totalTerjual?.data?.total}</h5>
+                          <p className='m-0 text-sm'>Terjual</p>
+                        </div>
+                      </div>
+                      <div className='grid grid-cols-12 gap-x-2 py-4 px-4'>
+                        <div className='col-span-5'>
+                          <Chart4 />
+                        </div>
+                        <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
+                          <h5 className='m-0'>
+                            {totalProsesRekber?.data?.total}
+                          </h5>
+                          <p className='m-0 text-sm'>Proses Rekber</p>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className='grid grid-cols-12 items-center justify-center gap-x-2 py-4 px-4'>
+                        <div className='col-span-5'>
+                          <Chart1 />
+                        </div>
+                        <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
+                          <h5 className='m-0'>
+                            {totalDipublikasi?.data?.total}
+                          </h5>
+                          <p className='m-0 text-sm'>Dipublikasi</p>
+                        </div>
+                      </div>
+                      <div className='grid grid-cols-12 items-center justify-center gap-x-2 py-4 px-4'>
+                        <div className='col-span-5'>
+                          <Chart1 />
+                        </div>
+                        <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
+                          <h5 className='m-0'>
+                            {totalDipublikasi?.data?.total}
+                          </h5>
+                          <p className='m-0 text-sm'>Dipublikasi</p>
+                        </div>
+                      </div>
+                      <div className='grid grid-cols-12 items-center justify-center gap-x-2 py-4 px-4'>
+                        <div className='col-span-5'>
+                          <Chart1 />
+                        </div>
+                        <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
+                          <h5 className='m-0'>
+                            {totalDipublikasi?.data?.total}
+                          </h5>
+                          <p className='m-0 text-sm'>Dipublikasi</p>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

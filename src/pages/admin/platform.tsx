@@ -179,7 +179,10 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal tambah platform!'),
+          render: toastPromiseError(
+            () => setOpen(false),
+            'Gagal tambah platform!'
+          ),
         },
       }
     );
@@ -202,12 +205,15 @@ const IndexPage = () => {
         success: {
           render: () => {
             mutate();
-            setOpen(false);
+            setOpen2(false);
             return 'Berhasil update platform';
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal update platform!'),
+          render: toastPromiseError(
+            () => setOpen2(false),
+            'Gagal update platform!'
+          ),
         },
       }
     );

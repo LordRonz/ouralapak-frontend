@@ -229,11 +229,11 @@ const IndexPage = () => {
         accessor: 'judulIklan',
       },
       {
-        Header: 'Jenis Refund',
+        Header: 'Refund',
         accessor: 'jenisRefund',
       },
       {
-        Header: 'Email Penjual',
+        Header: 'Email',
         accessor: 'email',
       },
       {
@@ -299,7 +299,9 @@ const IndexPage = () => {
                 </Link>
               </Tooltip>
               <Tooltip interactive={false} content='Whatsapp'>
-                <UnstyledLink href={getWaLink('+69696969')}>
+                <UnstyledLink
+                  href={getWaLink(row.original.user.phone ?? '+69696969')}
+                >
                   <Whatsapp />
                 </UnstyledLink>
               </Tooltip>
@@ -384,17 +386,21 @@ const IndexPage = () => {
                     leaveFrom='opacity-100 scale-100'
                     leaveTo='opacity-0 scale-95'
                   >
-                    <Dialog.Panel className='w-full max-w-md transform overflow-visible rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'>
+                    <Dialog.Panel className='w-full max-w-md transform overflow-visible rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:!bg-neutral-800'>
                       <Dialog.Title
                         as='h3'
-                        className='text-lg font-medium leading-6 text-gray-900'
+                        className='mb-2 text-lg font-medium leading-6 text-gray-900 dark:text-white'
                       >
-                        {iklan?.title}
+                        Edit Status Iklan
                       </Dialog.Title>
+                      <label className='font-bold'>Judul Iklan</label>
+                      <div className='mb-2 rounded-md bg-neutral-200 py-2 px-3'>
+                        {iklan?.title}
+                      </div>
                       <form onSubmit={handleSubmit(onSubmit)}>
                         <div className='row'>
                           <div>
-                            <label>Status Iklan</label>
+                            <label className='font-bold'>Status Iklan</label>
                             <Controller
                               control={control}
                               defaultValue={

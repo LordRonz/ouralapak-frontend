@@ -33,7 +33,7 @@ const ButtonGradient = ({
           'border border-primary-500',
           'hover:bg-primary-50 active:bg-primary-100 disabled:bg-primary-100',
         ],
-        'disabled:cursor-not-allowed',
+        'disabled:cursor-not-allowed disabled:opacity-70',
         className
       )}
       {...rest}

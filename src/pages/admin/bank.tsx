@@ -182,7 +182,7 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal tambah bank!'),
+          render: toastPromiseError(() => setOpen(false), 'Gagal tambah bank!'),
         },
       }
     );
@@ -205,12 +205,15 @@ const IndexPage = () => {
         success: {
           render: () => {
             mutate();
-            setOpen(false);
+            setOpen2(false);
             return 'Berhasil update bank';
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal update bank!'),
+          render: toastPromiseError(
+            () => setOpen2(false),
+            'Gagal update bank!'
+          ),
         },
       }
     );

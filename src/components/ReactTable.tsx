@@ -129,7 +129,7 @@ const ReactTable = <T extends object>({
                           <td
                             {...cell.getCellProps()}
                             className={clsxm(
-                              'whitespace-nowrap px-6 py-4 text-left text-sm text-gray-700',
+                              'max-w-xs overflow-hidden text-ellipsis whitespace-nowrap px-6 py-4 text-left text-sm text-gray-700',
                               i === 0
                                 ? 'font-medium text-gray-900 dark:!text-gray-50'
                                 : 'text-gray-500  dark:!text-gray-200',

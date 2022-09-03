@@ -72,7 +72,7 @@ const LoginMain = () => {
             if (
               (res.data.data?.user.roles as string[]).includes(Roles.SUPERUSER)
             ) {
-              router.push('/superadmin');
+              router.push('/admin');
             } else if (
               (res.data.data?.user.roles as string[]).includes(Roles.ADMIN)
             ) {

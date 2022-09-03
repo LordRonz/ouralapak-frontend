@@ -176,7 +176,7 @@ const IndexPage = () => {
         },
         error: {
           render: toastPromiseError(
-            undefined,
+            () => setOpen(false),
             'Gagal tambah message template!'
           ),
         },
@@ -205,13 +205,13 @@ const IndexPage = () => {
         success: {
           render: () => {
             mutate();
-            setOpen(false);
+            setOpen2(false);
             return 'Berhasil update message template';
           },
         },
         error: {
           render: toastPromiseError(
-            undefined,
+            () => setOpen2(false),
             'Gagal update message template!'
           ),
         },

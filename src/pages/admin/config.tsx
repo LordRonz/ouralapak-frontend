@@ -123,7 +123,10 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal tambah config!'),
+          render: toastPromiseError(
+            () => setOpen(false),
+            'Gagal tambah config!'
+          ),
         },
       }
     );
@@ -146,12 +149,15 @@ const IndexPage = () => {
         success: {
           render: () => {
             mutate();
-            setOpen(false);
+            setOpen2(false);
             return 'Berhasil update config';
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal update config!'),
+          render: toastPromiseError(
+            () => setOpen2(false),
+            'Gagal update config!'
+          ),
         },
       }
     );

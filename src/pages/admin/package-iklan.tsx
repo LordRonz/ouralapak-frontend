@@ -125,7 +125,10 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal tambah package!'),
+          render: toastPromiseError(
+            () => setOpen(false),
+            'Gagal tambah package!'
+          ),
         },
       }
     );
@@ -148,12 +151,15 @@ const IndexPage = () => {
         success: {
           render: () => {
             mutate();
-            setOpen(false);
+            setOpen2(false);
             return 'Berhasil update package';
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal update package!'),
+          render: toastPromiseError(
+            () => setOpen2(false),
+            'Gagal update package!'
+          ),
         },
       }
     );

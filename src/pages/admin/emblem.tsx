@@ -183,7 +183,10 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal tambah emblem!'),
+          render: toastPromiseError(
+            () => setOpen(false),
+            'Gagal tambah emblem!'
+          ),
         },
       }
     );
@@ -210,12 +213,15 @@ const IndexPage = () => {
         success: {
           render: () => {
             mutate();
-            setOpen(false);
+            setOpen2(false);
             return 'Berhasil update emblem';
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal update config!'),
+          render: toastPromiseError(
+            () => setOpen2(false),
+            'Gagal update config!'
+          ),
         },
       }
     );

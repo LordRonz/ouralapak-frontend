@@ -182,7 +182,10 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal tambah binding account!'),
+          render: toastPromiseError(
+            () => setOpen(false),
+            'Gagal tambah binding account!'
+          ),
         },
       }
     );
@@ -205,12 +208,15 @@ const IndexPage = () => {
         success: {
           render: () => {
             mutate();
-            setOpen(false);
+            setOpen2(false);
             return 'Berhasil update binding account';
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal update binding account!'),
+          render: toastPromiseError(
+            () => setOpen2(false),
+            'Gagal update binding account!'
+          ),
         },
       }
     );

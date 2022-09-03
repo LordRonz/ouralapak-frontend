@@ -181,7 +181,10 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal tambah refund!'),
+          render: toastPromiseError(
+            () => setOpen(false),
+            'Gagal tambah refund!'
+          ),
         },
       }
     );
@@ -204,12 +207,15 @@ const IndexPage = () => {
         success: {
           render: () => {
             mutate();
-            setOpen(false);
+            setOpen2(false);
             return 'Berhasil update refund';
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal update refund!'),
+          render: toastPromiseError(
+            () => setOpen2(false),
+            'Gagal update refund!'
+          ),
         },
       }
     );

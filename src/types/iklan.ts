@@ -59,6 +59,7 @@ export type IklanAdmin = {
     name: string;
     email: string;
     profile_picture: number;
+    phone: string;
   };
   user_id: number;
   win_rate: number;

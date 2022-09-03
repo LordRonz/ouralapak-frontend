@@ -318,6 +318,9 @@ const IndexPage = () => {
                               );
                               setLightboxOpen(true);
                             }}
+                            disabled={
+                              !users?.data.data[selectedUser].identity_card
+                            }
                           >
                             Show
                           </ButtonGradient>
@@ -337,6 +340,10 @@ const IndexPage = () => {
                               );
                               setLightboxOpen(true);
                             }}
+                            disabled={
+                              !users?.data.data[selectedUser]
+                                .identity_card_validation
+                            }
                           >
                             Show
                           </ButtonGradient>
@@ -356,6 +363,10 @@ const IndexPage = () => {
                               );
                               setLightboxOpen(true);
                             }}
+                            disabled={
+                              !users?.data.data[selectedUser]
+                                .identity_card_validation_mask
+                            }
                           >
                             Show
                           </ButtonGradient>

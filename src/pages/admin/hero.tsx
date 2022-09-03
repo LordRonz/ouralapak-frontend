@@ -179,7 +179,7 @@ const IndexPage = () => {
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal tambah hero!'),
+          render: toastPromiseError(() => setOpen(false), 'Gagal tambah hero!'),
         },
       }
     );
@@ -202,12 +202,15 @@ const IndexPage = () => {
         success: {
           render: () => {
             mutate();
-            setOpen(false);
+            setOpen2(false);
             return 'Berhasil update hero';
           },
         },
         error: {
-          render: toastPromiseError(undefined, 'Gagal update hero!'),
+          render: toastPromiseError(
+            () => setOpen2(false),
+            'Gagal update hero!'
+          ),
         },
       }
     );
