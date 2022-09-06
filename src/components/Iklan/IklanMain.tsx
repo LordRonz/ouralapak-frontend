@@ -351,7 +351,7 @@ const IklanMain = ({ id }: { id: number }) => {
                       <div>
                         <div className='created-by mb-2'>Created by</div>
                         <div className='creator mb-30'>
-                          <div className='profile-img pos-rel'>
+                          <div className='profile-img relative'>
                             <Link href='/creators'>
                               <a>
                                 <Image
@@ -410,7 +410,7 @@ const IklanMain = ({ id }: { id: number }) => {
                           closeIcon={<XButton />}
                         >
                           <div className='row justify-content-center gap-y-6'>
-                            <div className='login-wrapper pos-rel wow fadeInUp'>
+                            <div className='login-wrapper wow fadeInUp relative'>
                               <div className=' login-inner'>
                                 <div className='login-content'>
                                   <h4>Beli Akun</h4>

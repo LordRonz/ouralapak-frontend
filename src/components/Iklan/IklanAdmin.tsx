@@ -127,7 +127,7 @@ const IklanAdmin = ({ id }: { id: number }) => {
                       <div>
                         <div className='created-by mb-2'>Created by</div>
                         <div className='creator mb-30'>
-                          <div className='profile-img pos-rel'>
+                          <div className='profile-img relative'>
                             <Link href='/creators'>
                               <a>
                                 <Image

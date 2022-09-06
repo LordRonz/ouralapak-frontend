@@ -12,7 +12,7 @@ const ErrorPageMain = () => {
         <div className='container'>
           <div className='row justify-content-center wow fadeInUp'>
             <div className='col-lg-8'>
-              <div className='error-404-wrapper pos-rel mb-40'>
+              <div className='error-404-wrapper relative mb-40'>
                 <div className=' error-404-inner'>
                   <div className='error-404-content text-center'>
                     <div className='error-404-img mb-30'>

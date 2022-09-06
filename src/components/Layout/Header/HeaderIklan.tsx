@@ -64,7 +64,7 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
           className={
             sticky
               ? 'header-main header-main1 sticky'
-              : 'header-main header-main1'
+              : 'header-main header-main1 sticky'
           }
         >
           <div className='header-container container'>
@@ -108,9 +108,9 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
                     </nav>
                   </div>
                   <ColorModeToggle className='mx-2' />
-                  <div className='profile-item profile-item-header d-none d-md-inline-block pos-rel ml-20'>
+                  <div className='profile-item profile-item-header d-none d-md-inline-block relative ml-20'>
                     <div
-                      className={`profile-img pos-rel ${
+                      className={`profile-img relative ${
                         isActive11 ? '' : 'show-element'
                       }`}
                       onClick={handleToggle11}

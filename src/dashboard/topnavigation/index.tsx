@@ -57,9 +57,9 @@ const TopNavigation = ({ user }: { user?: User }) => {
           </div>
           <div className='!relative !ml-5 !flex !w-1/4 !items-center !justify-end !p-1 sm:!right-auto sm:!mr-0'>
             <ColorModeToggle />
-            <div className='profile-item profile-item-header d-none d-md-inline-block pos-rel ml-20'>
+            <div className='profile-item profile-item-header d-none d-md-inline-block relative ml-20'>
               <div
-                className={`profile-img pos-rel ${
+                className={`profile-img relative ${
                   isActive11 ? '' : 'show-element'
                 }`}
                 onClick={handleToggle11}

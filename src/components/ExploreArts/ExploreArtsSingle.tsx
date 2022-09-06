@@ -36,7 +36,7 @@ const ExploreArtsSingle = ({ product }: { product: Product }) => {
       <div className='art-item-single mb-30'>
         <div className='art-item-wraper'>
           <div className='art-item-inner'>
-            <div className='art-item-img pos-rel'>
+            <div className='art-item-img relative'>
               <div className={featureClass}>
                 <i className='fas fa-star'></i>
                 {tag}
@@ -59,7 +59,7 @@ const ExploreArtsSingle = ({ product }: { product: Product }) => {
                 </a>
               </Link>
             </div>
-            <div className='art-item-content pos-rel'>
+            <div className='art-item-content relative'>
               <div className='art-3dots-menu'>
                 <div className='art-3dots-action'>
                   <ul>
@@ -82,7 +82,7 @@ const ExploreArtsSingle = ({ product }: { product: Product }) => {
                 </button>
               </div>
               <div className='artist'>
-                <div className='profile-img pos-rel'>
+                <div className='profile-img relative'>
                   <Link href='/creator-profile'>
                     <a>
                       <img src={profileImage} alt='profile-img' />

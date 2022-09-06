@@ -65,7 +65,7 @@ const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
                 {user && (
                   <div className='profile-item profile-item-header into-sidebar d-md-none'>
                     <div
-                      className={`profile-img pos-rel ${
+                      className={`profile-img relative ${
                         isActive14 ? '' : 'show-element'
                       }`}
                       onClick={handleToggle14}

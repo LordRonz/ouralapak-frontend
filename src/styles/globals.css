@@ -48,6 +48,28 @@
   --clr-secondary-700: rgb(var(--tw-clr-secondary-700)); /* #2e3c52 */
   --clr-secondary-800: rgb(var(--tw-clr-secondary-800)); /* #1c2431 */
   --clr-secondary-900: rgb(var(--tw-clr-secondary-900)); /* #090c10 */
+
+  --tw-clr-tertiary-50: 233 240 251;
+  --tw-clr-tertiary-100: 190 211 243;
+  --tw-clr-tertiary-200: 147 182 235;
+  --tw-clr-tertiary-300: 104 153 227;
+  --tw-clr-tertiary-400: 61 124 219;
+  --tw-clr-tertiary-500: 36 99 194;
+  --tw-clr-tertiary-600: 30 83 163;
+  --tw-clr-tertiary-700: 20 55 108;
+  --tw-clr-tertiary-800: 12 33 65;
+  --tw-clr-tertiary-900: 4 11 22;
+
+  --clr-tertiary-50: rgb(var(--tw-clr-tertiary-50)); /* #e9f0fb */
+  --clr-tertiary-100: rgb(var(--tw-clr-tertiary-100)); /* #bed3f3 */
+  --clr-tertiary-200: rgb(var(--tw-clr-tertiary-200)); /* #93b6eb */
+  --clr-tertiary-300: rgb(var(--tw-clr-tertiary-300)); /* #6899e3 */
+  --clr-tertiary-400: rgb(var(--tw-clr-tertiary-400)); /* #3d7cdb */
+  --clr-tertiary-500: rgb(var(--tw-clr-tertiary-500)); /* #2463c2 */
+  --clr-tertiary-600: rgb(var(--tw-clr-tertiary-600)); /* #1E53A3 */
+  --clr-tertiary-700: rgb(var(--tw-clr-tertiary-700)); /* #14376c */
+  --clr-tertiary-800: rgb(var(--tw-clr-tertiary-800)); /* #0c2141 */
+  --clr-tertiary-900: rgb(var(--tw-clr-tertiary-900)); /* #040b16 */
 }
 
 @layer base {

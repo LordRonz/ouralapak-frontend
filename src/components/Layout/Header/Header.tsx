@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import queryString from 'query-string';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import useSWR from 'swr';
 
 import ColorModeToggle from '@/components/ColorModeToggle';
@@ -11,13 +11,20 @@ import Config from '@/types/config';
 
 type HeaderProps = {
   HeaderStatic?: string;
-};
+  setHeight?: (a?: number) => void;
+} & React.ComponentPropsWithRef<'div'>;
 
-const Header = ({ HeaderStatic }: HeaderProps) => {
+const Header = ({ HeaderStatic, setHeight }: HeaderProps) => {
   // sticky nav
   const { sticky } = useSticky();
 
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setHeight && setHeight(ref.current?.clientHeight);
+  }, [ref, setHeight]);
 
   const { data: config } = useSWR<{
     data: Config;
@@ -35,14 +42,15 @@ const Header = ({ HeaderStatic }: HeaderProps) => {
 
   return (
     <>
-      <header className={`header1 ${HeaderStatic ? HeaderStatic : ''}`}>
+      <header className={`${HeaderStatic ? HeaderStatic : ''}`}>
         <div
           id='header-sticky'
           className={
             sticky
               ? 'header-main header-main1 sticky'
-              : 'header-main header-main1'
+              : 'header-main header-main1 sticky'
           }
+          ref={ref}
         >
           <div className='header-container container'>
             <div className='row align-items-center'>
@@ -68,7 +76,7 @@ const Header = ({ HeaderStatic }: HeaderProps) => {
                   </div>
                 </div>
               </div>
-              <div className='col-xl-10 col-lg-10 col-md-8 col-8'>
+              <div className='col-xl-10 col-lg-10 col-md-8 col-8 py-2'>
                 <div className='header-main-right'>
                   <form
                     action='#'
@@ -87,13 +95,14 @@ const Header = ({ HeaderStatic }: HeaderProps) => {
                             href={getWaLink()}
                             target='_blank'
                             rel='noopener noreferrer'
+                            className='py-0'
                           >
                             Jasa Rekber
                           </a>
                         </li>
                         <li>
                           <Link href='/seller'>
-                            <a>Jual Akun</a>
+                            <a className='py-0'>Jual Akun</a>
                           </Link>
                         </li>
                       </ul>

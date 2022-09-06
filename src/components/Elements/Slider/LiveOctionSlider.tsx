@@ -12,7 +12,7 @@ const LiveOctionSlider = () => {
   const products = useSelector((state: RootState) => state.products.products);
 
   return (
-    <div className='auction-wrapper pos-rel'>
+    <div className='auction-wrapper relative'>
       <div className='swiper-container auction-active'>
         <div className='swiper-wrapper'>
           <Swiper

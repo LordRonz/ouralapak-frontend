@@ -58,9 +58,9 @@ const HeaderTwo = () => {
                         <a className='fill-btn'>Connect Wallet</a>
                       </Link>
                     </div>
-                    <div className='profile-item profile-item-header d-none d-md-inline-block pos-rel ml-20'>
+                    <div className='profile-item profile-item-header d-none d-md-inline-block relative ml-20'>
                       <div
-                        className={`profile-img pos-rel ${
+                        className={`profile-img relative ${
                           isActive13 ? '' : 'show-element'
                         }`}
                         onClick={handleToggle13}

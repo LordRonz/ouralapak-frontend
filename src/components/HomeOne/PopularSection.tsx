@@ -45,7 +45,7 @@ const PopularSection = () => {
       <div className='container'>
         <div className='row wow fadeInUp'>
           <div className='col-lg-12'>
-            <div className='section-title1 pos-rel mb-40 text-center'>
+            <div className='section-title1 relative mb-40 text-center'>
               <h2 className='section-main-title1'>Popular Collection</h2>
               <p>Browse most popular collections and Choose between auctions</p>
             </div>
@@ -64,7 +64,7 @@ const PopularSection = () => {
                             <div className='art-item-single'>
                               <div className='art-item-wraper'>
                                 <div className='art-item-inner'>
-                                  <div className='art-item-img pos-rel'>
+                                  <div className='art-item-img relative'>
                                     <Link href='/art-details'>
                                       <a>
                                         <img
@@ -82,7 +82,7 @@ const PopularSection = () => {
                             <div className='art-item-single'>
                               <div className='art-item-wraper'>
                                 <div className='art-item-inner'>
-                                  <div className='art-item-img pos-rel'>
+                                  <div className='art-item-img relative'>
                                     <Link href='/art-details'>
                                       <a>
                                         <img
@@ -102,7 +102,7 @@ const PopularSection = () => {
                         <div className='art-item-single'>
                           <div className='art-item-wraper'>
                             <div className='art-item-inner'>
-                              <div className='art-item-img pos-rel'>
+                              <div className='art-item-img relative'>
                                 <Link href='/art-details'>
                                   <a>
                                     <img
@@ -117,7 +117,7 @@ const PopularSection = () => {
                         </div>
                       </div>
                     </div>
-                    <div className='collection-content pos-rel'>
+                    <div className='collection-content relative'>
                       <div className='art-3dots-menu'>
                         <div className='art-3dots-action'>
                           <ul>

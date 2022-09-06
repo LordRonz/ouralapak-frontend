@@ -86,7 +86,7 @@ const SignUpAdmin = () => {
         <div className='container'>
           <div className='row justify-content-center'>
             <div className='col-xxl-6 col-xl-7 col-lg-8'>
-              <div className='sign-up-wrapper pos-rel wow fadeInUp mb-40 !bg-neutral-200 dark:!bg-neutral-800'>
+              <div className='sign-up-wrapper wow fadeInUp relative mb-40 !bg-neutral-200 dark:!bg-neutral-800'>
                 <div className='sign-up-inner'>
                   <div className='sign-up-content'>
                     <h4>Buat Akun Admin</h4>

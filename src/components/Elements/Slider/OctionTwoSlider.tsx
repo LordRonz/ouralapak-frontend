@@ -50,7 +50,7 @@ const OctionTwoSlider = () => {
       <div className='auction2-container container'>
         <div className='row wow fadeInUp'>
           <div className='col-lg-12'>
-            <div className='auction2-wrapper pos-rel'>
+            <div className='auction2-wrapper relative'>
               <div className='swiper-container auction2-active'>
                 {OctionItem && (
                   <div className='swiper-wrapper'>
@@ -96,7 +96,7 @@ const OctionTwoSlider = () => {
                           <div className='art-item-single art-item2-single mb-0'>
                             <div className='art-item-wraper'>
                               <div className='art-item-inner'>
-                                <div className='art-item-img pos-rel'>
+                                <div className='art-item-img relative'>
                                   <Link href='/explore-arts'>
                                     <a>
                                       <img
@@ -109,9 +109,9 @@ const OctionTwoSlider = () => {
                                     {OctionTwoSlider.placeBid}
                                   </a>
                                 </div>
-                                <div className='art-item-content pos-rel'>
+                                <div className='art-item-content relative'>
                                   <div className='artist'>
-                                    <div className='profile-img pos-rel'>
+                                    <div className='profile-img relative'>
                                       <Link href='/creators'>
                                         <a>
                                           <img

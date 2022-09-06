@@ -241,7 +241,7 @@ const SidebarMenuSection = ({
                     <div className='creator-wraper'>
                       <div className='creator-inner'>
                         <div className='artist'>
-                          <div className='profile-img pos-rel'>
+                          <div className='profile-img relative'>
                             <Link href='/creators'>
                               <a>
                                 <img
@@ -270,7 +270,7 @@ const SidebarMenuSection = ({
                     <div className='creator-wraper'>
                       <div className='creator-inner'>
                         <div className='artist'>
-                          <div className='profile-img pos-rel'>
+                          <div className='profile-img relative'>
                             <Link href='/creators'>
                               <a>
                                 <img
@@ -299,7 +299,7 @@ const SidebarMenuSection = ({
                     <div className='creator-wraper'>
                       <div className='creator-inner'>
                         <div className='artist'>
-                          <div className='profile-img pos-rel'>
+                          <div className='profile-img relative'>
                             <Link href='/creators'>
                               <a>
                                 <img
@@ -328,7 +328,7 @@ const SidebarMenuSection = ({
                     <div className='creator-wraper'>
                       <div className='creator-inner'>
                         <div className='artist'>
-                          <div className='profile-img pos-rel'>
+                          <div className='profile-img relative'>
                             <Link href='/creators'>
                               <a>
                                 <img
@@ -356,7 +356,7 @@ const SidebarMenuSection = ({
                 </div>
               </div>
               <div className='menu2-sidebar-widget mt-35'>
-                <div className='work-process-single pos-rel'>
+                <div className='work-process-single relative'>
                   <div className='work-process-content'>
                     <div className='process-icon'>
                       <img src='assets/img/shape/list-icon-2.png' alt='img' />

@@ -413,7 +413,7 @@ const IndexPage = () => {
             closeIcon={<XButton />}
           >
             <div className='row justify-content-center gap-y-6'>
-              <div className='login-wrapper pos-rel wow fadeInUp'>
+              <div className='login-wrapper wow fadeInUp relative'>
                 <div className=' login-inner'>
                   <div className='login-content'>
                     <h4>Tambah Bank</h4>
@@ -513,7 +513,7 @@ const IndexPage = () => {
             }}
           >
             <div className='row justify-content-center gap-y-6'>
-              <div className='login-wrapper pos-rel wow fadeInUp'>
+              <div className='login-wrapper wow fadeInUp relative'>
                 <div className=' login-inner'>
                   <div className='login-content'>
                     <h4>Update Bank</h4>

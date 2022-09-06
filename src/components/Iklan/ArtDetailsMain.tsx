@@ -42,7 +42,7 @@ const ArtDetailsMain = () => {
           <div className='art-details-wrapper'>
             <div className='row'>
               <div className='col-xl-6 col-lg-3'>
-                <div className='art-item-img pos-rel art-details-img wow fadeInUp'>
+                <div className='art-item-img art-details-img wow fadeInUp relative'>
                   <span>
                     <img src={productItem.img} alt='art-img' />
                   </span>
@@ -52,7 +52,7 @@ const ArtDetailsMain = () => {
                 <div className='art-details-content wow fadeInUp'>
                   <div className='created-by'>Created by</div>
                   <div className='creator mb-30'>
-                    <div className='profile-img pos-rel'>
+                    <div className='profile-img relative'>
                       <Link href='/creators'>
                         <a>
                           <img

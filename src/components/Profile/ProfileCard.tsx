@@ -39,7 +39,7 @@ const ProfileCard = ({
     <div className='col-lg-3 col-md-8'>
       <div className='creator-info-details wow fadeInUp mb-40'>
         <div className='creator-img-name'>
-          <div className='profile-img pos-rel'>
+          <div className='profile-img relative'>
             <img
               src={
                 user?.profile_picture
@@ -77,7 +77,7 @@ const ProfileCard = ({
             </Tooltip>
           )}
           <div className='creator-name-id'>
-            <h4 className='artist-name pos-rel'>
+            <h4 className='artist-name relative'>
               {user?.name}
               {!!user?.is_verified && (
                 <span className='profile-verification verified'>

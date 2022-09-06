@@ -132,8 +132,8 @@ const TopSellerSection = () => {
                       <div className='creator-single creator-single-short mb-30'>
                         <div className='creator-wraper'>
                           <div className='creator-inner'>
-                            <div className='creator-content pos-rel creator-short-content'>
-                              <div className='profile-img pos-rel'>
+                            <div className='creator-content creator-short-content relative'>
+                              <div className='profile-img relative'>
                                 <Link href='/creators'>
                                   <a>
                                     <img
@@ -145,7 +145,7 @@ const TopSellerSection = () => {
                               </div>
                               <div className='creator-info'>
                                 <div>
-                                  <h4 className='artist-name pos-rel'>
+                                  <h4 className='artist-name relative'>
                                     <Link href='/creators'>
                                       <a>{TopSellerSection.TopCreatorTitle}</a>
                                     </Link>
@@ -213,8 +213,8 @@ const TopSellerSection = () => {
                       <div className='creator-single creator-single-short mb-30'>
                         <div className='creator-wraper'>
                           <div className='creator-inner'>
-                            <div className='creator-content pos-rel creator-short-content'>
-                              <div className='profile-img pos-rel'>
+                            <div className='creator-content creator-short-content relative'>
+                              <div className='profile-img relative'>
                                 <Link href='/creators'>
                                   <a>
                                     <img
@@ -226,7 +226,7 @@ const TopSellerSection = () => {
                               </div>
                               <div className='creator-info'>
                                 <div>
-                                  <h4 className='artist-name pos-rel'>
+                                  <h4 className='artist-name relative'>
                                     <Link href='/creators'>
                                       <a>{TopSellerSection.TopSellerTitle}</a>
                                     </Link>

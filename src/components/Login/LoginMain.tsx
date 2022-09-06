@@ -101,7 +101,7 @@ const LoginMain = () => {
         <div className='container'>
           <div className='row justify-content-center'>
             <div className='col-xxl-6 col-xl-7 col-lg-8'>
-              <div className='login-wrapper pos-rel wow fadeInUp mb-40 !bg-neutral-200 dark:!bg-neutral-800'>
+              <div className='login-wrapper wow fadeInUp relative mb-40 !bg-neutral-200 dark:!bg-neutral-800'>
                 <div className=' login-inner'>
                   <div className='login-content'>
                     <h4>Masuk Akun</h4>

@@ -13,7 +13,7 @@ const LiveOctionSection = () => {
       <div className='container'>
         <div className='row wow fadeInUp'>
           <div className='col-lg-8'>
-            <div className='section-title1 pos-rel'>
+            <div className='section-title1 relative'>
               <div className='live-blink'></div>
               <h2 className='section-main-title1 pl-35 mb-40'>Live Bids</h2>
             </div>
@@ -21,7 +21,7 @@ const LiveOctionSection = () => {
         </div>
         <div className='row wow fadeInUp'>
           <div className='col-lg-12'>
-            <div className='auction-wrapper pos-rel'>
+            <div className='auction-wrapper relative'>
               <LiveOctionSlider />
             </div>
           </div>

@@ -30,7 +30,7 @@ const WalletSection = ({ walletSpacing = 'pt-110' }) => {
       <div className='container'>
         <div className='row wow fadeInUp'>
           <div className='col-12'>
-            <div className='section-title1 pos-rel mb-40 text-center'>
+            <div className='section-title1 relative mb-40 text-center'>
               <h2 className='section-main-title1'>Set Your Wallet</h2>
               <p>Here are a few reasons why you should choose Oction</p>
             </div>

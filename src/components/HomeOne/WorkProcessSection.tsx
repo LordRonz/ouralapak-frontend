@@ -34,7 +34,7 @@ const WorkProcessSection = () => {
       <div className='container'>
         <div className='row wow fadeInUp'>
           <div className='col-lg-12'>
-            <div className='section-title1 pos-rel mb-40 text-center'>
+            <div className='section-title1 relative mb-40 text-center'>
               <h2 className='section-main-title1'>Create and sell your NFTs</h2>
               <p>
                 Here are a few reasons why you should choose Oction for sell
@@ -48,7 +48,7 @@ const WorkProcessSection = () => {
             <div className='row wow fadeInUp'>
               {WorkProcessItem.map((WorkProcessSection, num) => (
                 <div key={num} className='col-lg-4 col-md-6'>
-                  <div className='work-process-single mb-30 pos-rel'>
+                  <div className='work-process-single mb-30 relative'>
                     <div className='step'>
                       {WorkProcessSection.WorkProcessStep}
                     </div>

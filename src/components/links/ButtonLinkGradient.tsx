@@ -7,6 +7,7 @@ const enum ButtonVariant {
   primary,
   secondary,
   outline,
+  tertiary,
 }
 
 export type ButtonLinkGradientProps = {
@@ -28,6 +29,8 @@ const ButtonLinkGradient = ({
           'from-primary-300 via-primary-400 to-primary-500',
         variant === 'secondary' &&
           'from-secondary-300 via-secondary-400 to-secondary-500',
+        variant === 'tertiary' &&
+          'from-tertiary-300 via-tertiary-400 to-tertiary-500',
         variant === 'outline' && [
           'text-primary-500',
           'border border-primary-500',

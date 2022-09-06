@@ -15,7 +15,7 @@ const ForumAuctionSidebar = () => {
   return (
     <div className='sidebar-widget-single mb-30 wow fadeInUp'>
       <h4 className='sidebar-widget-title'>Live Auctions</h4>
-      <div className='sidebar-auction-wrapper pos-rel'>
+      <div className='sidebar-auction-wrapper relative'>
         <div className='swiper-container sidebar-auction-active'>
           <div className='swiper-wrapper'>
             <Swiper

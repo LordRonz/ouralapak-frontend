@@ -77,7 +77,7 @@ const ProfileAdmin = ({ id }: { id: number }) => {
             <div className='col-lg-3 col-md-8'>
               <div className='creator-info-details wow fadeInUp mb-40'>
                 <div className='creator-img-name'>
-                  <div className='profile-img pos-rel'>
+                  <div className='profile-img relative'>
                     <img
                       src={
                         user?.data.profile_picture
@@ -88,7 +88,7 @@ const ProfileAdmin = ({ id }: { id: number }) => {
                     />
                   </div>
                   <div className='creator-name-id'>
-                    <h4 className='artist-name pos-rel'>
+                    <h4 className='artist-name relative'>
                       {user?.data.name}
                       {!!user?.data.is_verified && (
                         <span className='profile-verification verified'>

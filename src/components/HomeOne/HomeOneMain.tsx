@@ -4,10 +4,10 @@ import HeroSection from '@/components/HomeOne/HeroSection';
 
 import JelajahIklanSection from './JelajahIklanSection';
 
-const HomeOneMain = () => {
+const HomeOneMain = ({ navHeight }: { navHeight: number }) => {
   return (
     <main>
-      <HeroSection />
+      <HeroSection navHeight={navHeight} />
       <JelajahIklanSection />
     </main>
   );

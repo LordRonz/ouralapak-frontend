@@ -391,7 +391,7 @@ const IndexPage = () => {
             }}
           >
             <div className='row justify-content-center gap-y-6'>
-              <div className='login-wrapper pos-rel wow fadeInUp'>
+              <div className='login-wrapper wow fadeInUp relative'>
                 <div className=' login-inner'>
                   <div className='login-content'>
                     <h4>Tambah Hero</h4>
@@ -457,7 +457,7 @@ const IndexPage = () => {
             }}
           >
             <div className='row justify-content-center gap-y-6'>
-              <div className='login-wrapper pos-rel wow fadeInUp'>
+              <div className='login-wrapper wow fadeInUp relative'>
                 <div className=' login-inner'>
                   <div className='login-content'>
                     <h4>Update Hero</h4>

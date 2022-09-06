@@ -3,11 +3,11 @@ import React from 'react';
 
 const HeroSectionThree = () => {
   return (
-    <div className='banner-area banner-area3 pos-rel pt-130'>
+    <div className='banner-area banner-area3 pt-130 relative'>
       <div className='c-container-1 container'>
         <div className='row'>
           <div className='col-xl-8 banner-3-column'>
-            <div className='single-banner single-banner-3 banner-460 d-flex align-items-center pos-rel'>
+            <div className='single-banner single-banner-3 banner-460 d-flex align-items-center relative'>
               <div className='banner-bg'>
                 <img
                   src='assets/img/banner/banner-3-bg.jpg'
@@ -49,7 +49,7 @@ const HeroSectionThree = () => {
               <div className='art-item-single sidebar-art-item'>
                 <div className='art-item-wraper'>
                   <div className='art-item-inner'>
-                    <div className='art-item-img pos-rel'>
+                    <div className='art-item-img relative'>
                       <Link href='/explore-arts'>
                         <a>
                           <img
@@ -59,14 +59,14 @@ const HeroSectionThree = () => {
                         </a>
                       </Link>
                     </div>
-                    <div className='art-item-content pos-rel'>
+                    <div className='art-item-content relative'>
                       <h4 className='art-name'>
                         <Link href='/explore-arts'>
                           <a>Color Abstract Cube</a>
                         </Link>
                       </h4>
                       <div className='artist'>
-                        <div className='profile-img pos-rel'>
+                        <div className='profile-img relative'>
                           <Link href='/creators'>
                             <a>
                               <img
@@ -99,7 +99,7 @@ const HeroSectionThree = () => {
               <div className='art-item-single sidebar-art-item'>
                 <div className='art-item-wraper'>
                   <div className='art-item-inner'>
-                    <div className='art-item-img pos-rel'>
+                    <div className='art-item-img relative'>
                       <Link href='/explore-arts'>
                         <a>
                           <img
@@ -109,14 +109,14 @@ const HeroSectionThree = () => {
                         </a>
                       </Link>
                     </div>
-                    <div className='art-item-content pos-rel'>
+                    <div className='art-item-content relative'>
                       <h4 className='art-name'>
                         <Link href='/explore-arts'>
                           <a>3D Crypto Artwork</a>
                         </Link>
                       </h4>
                       <div className='artist'>
-                        <div className='profile-img pos-rel'>
+                        <div className='profile-img relative'>
                           <Link href='/creators'>
                             <a>
                               <img
@@ -149,7 +149,7 @@ const HeroSectionThree = () => {
               <div className='art-item-single sidebar-art-item'>
                 <div className='art-item-wraper'>
                   <div className='art-item-inner'>
-                    <div className='art-item-img pos-rel'>
+                    <div className='art-item-img relative'>
                       <Link href='/explore-arts'>
                         <a>
                           <img
@@ -159,14 +159,14 @@ const HeroSectionThree = () => {
                         </a>
                       </Link>
                     </div>
-                    <div className='art-item-content pos-rel'>
+                    <div className='art-item-content relative'>
                       <h4 className='art-name'>
                         <Link href='/explore-arts'>
                           <a>Watch Looper</a>
                         </Link>
                       </h4>
                       <div className='artist'>
-                        <div className='profile-img pos-rel'>
+                        <div className='profile-img relative'>
                           <Link href='/creators'>
                             <a>
                               <img

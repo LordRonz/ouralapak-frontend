@@ -45,7 +45,7 @@ const ExploreCategorySlider = () => {
   return (
     <div className='row wow fadeInUp'>
       <div className='col-lg-12'>
-        <div className='categories-bar pos-rel mb-30'>
+        <div className='categories-bar mb-30 relative'>
           <div className='swiper-container categories-bar-active'>
             {categoryList && (
               <div className='swiper-wrapper'>

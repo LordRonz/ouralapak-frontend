@@ -20,6 +20,10 @@ module.exports = {
   darkMode: 'class', // or 'media' or 'class'
   theme: {
     extend: {
+      backgroundImage: {
+        'hero-pattern': "url('/images/hero_bg.png')",
+        'footer-texture': "url('/img/footer-texture.png')",
+      },
       fontFamily: {
         primary: ['Lato', ...fontFamily.sans],
         table: ['RubikVariable', ...fontFamily.sans],
@@ -32,6 +36,10 @@ module.exports = {
         secondary: getColorShades(
           [50, 100, 200, 300, 400, 500, 600, 700, 800, 900],
           'secondary'
+        ),
+        tertiary: getColorShades(
+          [50, 100, 200, 300, 400, 500, 600, 700, 800, 900],
+          'tertiary'
         ),
         dark: '#111',
         light: '#eee',

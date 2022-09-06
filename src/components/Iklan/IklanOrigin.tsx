@@ -41,17 +41,17 @@ const IklanOrigin = () => {
       </section>
 
       <section className='creator-details-area pb-90 pt-0'>
-        <div className='creator-cover-img creator-details-cover-img pos-rel wow fadeInUp'>
+        <div className='creator-cover-img creator-details-cover-img wow fadeInUp relative'>
           <img src={creatorItem.coverImage} alt='cover-img' />
         </div>
         <div className='container'>
           <div className='row'>
             <div className='col-xl-3 col-lg-6 col-md-8'>
               <div className='creator-about wow fadeInUp mb-40'>
-                <div className='profile-img pos-rel'>
+                <div className='profile-img relative'>
                   <img src={creatorItem.profileImage} alt='img' />
                 </div>
-                <h4 className='artist-name pos-rel'>
+                <h4 className='artist-name relative'>
                   {creatorItem.name}
                   <span className='profile-verification verified'>
                     <i className='fas fa-check'></i>
@@ -221,7 +221,7 @@ const IklanOrigin = () => {
                                         <div className='art-item-single'>
                                           <div className='art-item-wraper'>
                                             <div className='art-item-inner'>
-                                              <div className='art-item-img pos-rel'>
+                                              <div className='art-item-img relative'>
                                                 <Link href='/art-details'>
                                                   <a>
                                                     <img
@@ -239,7 +239,7 @@ const IklanOrigin = () => {
                                         <div className='art-item-single'>
                                           <div className='art-item-wraper'>
                                             <div className='art-item-inner'>
-                                              <div className='art-item-img pos-rel'>
+                                              <div className='art-item-img relative'>
                                                 <Link href='/art-details'>
                                                   <a>
                                                     <img
@@ -259,7 +259,7 @@ const IklanOrigin = () => {
                                     <div className='art-item-single'>
                                       <div className='art-item-wraper'>
                                         <div className='art-item-inner'>
-                                          <div className='art-item-img pos-rel'>
+                                          <div className='art-item-img relative'>
                                             <Link href='/art-details'>
                                               <a>
                                                 <img
@@ -274,7 +274,7 @@ const IklanOrigin = () => {
                                     </div>
                                   </div>
                                 </div>
-                                <div className='collection-content pos-rel'>
+                                <div className='collection-content relative'>
                                   <div className='art-3dots-menu'>
                                     <div className='art-3dots-action'>
                                       <ul>
@@ -321,7 +321,7 @@ const IklanOrigin = () => {
                                         <div className='art-item-single'>
                                           <div className='art-item-wraper'>
                                             <div className='art-item-inner'>
-                                              <div className='art-item-img pos-rel'>
+                                              <div className='art-item-img relative'>
                                                 <Link href='/art-details'>
                                                   <a>
                                                     <img
@@ -339,7 +339,7 @@ const IklanOrigin = () => {
                                         <div className='art-item-single'>
                                           <div className='art-item-wraper'>
                                             <div className='art-item-inner'>
-                                              <div className='art-item-img pos-rel'>
+                                              <div className='art-item-img relative'>
                                                 <Link href='/art-details'>
                                                   <a>
                                                     <img
@@ -359,7 +359,7 @@ const IklanOrigin = () => {
                                     <div className='art-item-single'>
                                       <div className='art-item-wraper'>
                                         <div className='art-item-inner'>
-                                          <div className='art-item-img pos-rel'>
+                                          <div className='art-item-img relative'>
                                             <Link href='/art-details'>
                                               <a>
                                                 <img
@@ -374,7 +374,7 @@ const IklanOrigin = () => {
                                     </div>
                                   </div>
                                 </div>
-                                <div className='collection-content pos-rel'>
+                                <div className='collection-content relative'>
                                   <div className='art-3dots-menu'>
                                     <div className='art-3dots-action'>
                                       <ul>
@@ -421,7 +421,7 @@ const IklanOrigin = () => {
                                         <div className='art-item-single'>
                                           <div className='art-item-wraper'>
                                             <div className='art-item-inner'>
-                                              <div className='art-item-img pos-rel'>
+                                              <div className='art-item-img relative'>
                                                 <Link href='/art-details'>
                                                   <a>
                                                     <img
@@ -439,7 +439,7 @@ const IklanOrigin = () => {
                                         <div className='art-item-single'>
                                           <div className='art-item-wraper'>
                                             <div className='art-item-inner'>
-                                              <div className='art-item-img pos-rel'>
+                                              <div className='art-item-img relative'>
                                                 <Link href='/art-details'>
                                                   <a>
                                                     <img
@@ -459,7 +459,7 @@ const IklanOrigin = () => {
                                     <div className='art-item-single'>
                                       <div className='art-item-wraper'>
                                         <div className='art-item-inner'>
-                                          <div className='art-item-img pos-rel'>
+                                          <div className='art-item-img relative'>
                                             <Link href='/art-details'>
                                               <a>
                                                 <img
@@ -474,7 +474,7 @@ const IklanOrigin = () => {
                                     </div>
                                   </div>
                                 </div>
-                                <div className='collection-content pos-rel'>
+                                <div className='collection-content relative'>
                                   <div className='art-3dots-menu'>
                                     <div className='art-3dots-action'>
                                       <ul>
@@ -521,7 +521,7 @@ const IklanOrigin = () => {
                                         <div className='art-item-single'>
                                           <div className='art-item-wraper'>
                                             <div className='art-item-inner'>
-                                              <div className='art-item-img pos-rel'>
+                                              <div className='art-item-img relative'>
                                                 <Link href='/art-details'>
                                                   <a>
                                                     <img
@@ -539,7 +539,7 @@ const IklanOrigin = () => {
                                         <div className='art-item-single'>
                                           <div className='art-item-wraper'>
                                             <div className='art-item-inner'>
-                                              <div className='art-item-img pos-rel'>
+                                              <div className='art-item-img relative'>
                                                 <Link href='/art-details'>
                                                   <a>
                                                     <img
@@ -559,7 +559,7 @@ const IklanOrigin = () => {
                                     <div className='art-item-single'>
                                       <div className='art-item-wraper'>
                                         <div className='art-item-inner'>
-                                          <div className='art-item-img pos-rel'>
+                                          <div className='art-item-img relative'>
                                             <Link href='/art-details'>
                                               <a>
                                                 <img
@@ -574,7 +574,7 @@ const IklanOrigin = () => {
                                     </div>
                                   </div>
                                 </div>
-                                <div className='collection-content pos-rel'>
+                                <div className='collection-content relative'>
                                   <div className='art-3dots-menu'>
                                     <div className='art-3dots-action'>
                                       <ul>
@@ -621,7 +621,7 @@ const IklanOrigin = () => {
                                         <div className='art-item-single'>
                                           <div className='art-item-wraper'>
                                             <div className='art-item-inner'>
-                                              <div className='art-item-img pos-rel'>
+                                              <div className='art-item-img relative'>
                                                 <Link href='/art-details'>
                                                   <a>
                                                     <img
@@ -639,7 +639,7 @@ const IklanOrigin = () => {
                                         <div className='art-item-single'>
                                           <div className='art-item-wraper'>
                                             <div className='art-item-inner'>
-                                              <div className='art-item-img pos-rel'>
+                                              <div className='art-item-img relative'>
                                                 <Link href='/art-details'>
                                                   <a>
                                                     <img
@@ -659,7 +659,7 @@ const IklanOrigin = () => {
                                     <div className='art-item-single'>
                                       <div className='art-item-wraper'>
                                         <div className='art-item-inner'>
-                                          <div className='art-item-img pos-rel'>
+                                          <div className='art-item-img relative'>
                                             <Link href='/art-details'>
                                               <a>
                                                 <img
@@ -674,7 +674,7 @@ const IklanOrigin = () => {
                                     </div>
                                   </div>
                                 </div>
-                                <div className='collection-content pos-rel'>
+                                <div className='collection-content relative'>
                                   <div className='art-3dots-menu'>
                                     <div className='art-3dots-action'>
                                       <ul>
@@ -721,7 +721,7 @@ const IklanOrigin = () => {
                                         <div className='art-item-single'>
                                           <div className='art-item-wraper'>
                                             <div className='art-item-inner'>
-                                              <div className='art-item-img pos-rel'>
+                                              <div className='art-item-img relative'>
                                                 <Link href='/art-details'>
                                                   <a>
                                                     <img
@@ -739,7 +739,7 @@ const IklanOrigin = () => {
                                         <div className='art-item-single'>
                                           <div className='art-item-wraper'>
                                             <div className='art-item-inner'>
-                                              <div className='art-item-img pos-rel'>
+                                              <div className='art-item-img relative'>
                                                 <Link href='/art-details'>
                                                   <a>
                                                     <img
@@ -759,7 +759,7 @@ const IklanOrigin = () => {
                                     <div className='art-item-single'>
                                       <div className='art-item-wraper'>
                                         <div className='art-item-inner'>
-                                          <div className='art-item-img pos-rel'>
+                                          <div className='art-item-img relative'>
                                             <Link href='/art-details'>
                                               <a>
                                                 <img
@@ -774,7 +774,7 @@ const IklanOrigin = () => {
                                     </div>
                                   </div>
                                 </div>
-                                <div className='collection-content pos-rel'>
+                                <div className='collection-content relative'>
                                   <div className='art-3dots-menu'>
                                     <div className='art-3dots-action'>
                                       <ul>
@@ -875,7 +875,7 @@ const IklanOrigin = () => {
                         <div className='placed-bids-wrapper'>
                           <div className='single-bid'>
                             <div className='creator'>
-                              <div className='profile-img pos-rel'>
+                              <div className='profile-img relative'>
                                 <Link href='/creator-profile'>
                                   <a>
                                     <img
@@ -903,7 +903,7 @@ const IklanOrigin = () => {
                                 <div className='art-item-single'>
                                   <div className='art-item-wraper'>
                                     <div className='art-item-inner'>
-                                      <div className='art-item-img pos-rel'>
+                                      <div className='art-item-img relative'>
                                         <Link href='/explore-arts'>
                                           <a>
                                             <img
@@ -919,7 +919,7 @@ const IklanOrigin = () => {
                                 <div className='art-item-single'>
                                   <div className='art-item-wraper'>
                                     <div className='art-item-inner'>
-                                      <div className='art-item-img pos-rel'>
+                                      <div className='art-item-img relative'>
                                         <Link href='/explore-arts'>
                                           <a>
                                             <img
@@ -947,7 +947,7 @@ const IklanOrigin = () => {
                           </div>
                           <div className='single-bid'>
                             <div className='creator'>
-                              <div className='profile-img pos-rel'>
+                              <div className='profile-img relative'>
                                 <Link href='/creator-profile'>
                                   <a>
                                     <img
@@ -975,7 +975,7 @@ const IklanOrigin = () => {
                                 <div className='art-item-single'>
                                   <div className='art-item-wraper'>
                                     <div className='art-item-inner'>
-                                      <div className='art-item-img pos-rel'>
+                                      <div className='art-item-img relative'>
                                         <Link href='/explore-arts'>
                                           <a>
                                             <img
@@ -991,7 +991,7 @@ const IklanOrigin = () => {
                                 <div className='art-item-single'>
                                   <div className='art-item-wraper'>
                                     <div className='art-item-inner'>
-                                      <div className='art-item-img pos-rel'>
+                                      <div className='art-item-img relative'>
                                         <Link href='/explore-arts'>
                                           <a>
                                             <img
@@ -1007,7 +1007,7 @@ const IklanOrigin = () => {
                                 <div className='art-item-single'>
                                   <div className='art-item-wraper'>
                                     <div className='art-item-inner'>
-                                      <div className='art-item-img pos-rel'>
+                                      <div className='art-item-img relative'>
                                         <Link href='/explore-arts'>
                                           <a>
                                             <img
@@ -1023,7 +1023,7 @@ const IklanOrigin = () => {
                                 <div className='art-item-single'>
                                   <div className='art-item-wraper'>
                                     <div className='art-item-inner'>
-                                      <div className='art-item-img pos-rel'>
+                                      <div className='art-item-img relative'>
                                         <Link href='/explore-arts'>
                                           <a>
                                             <img
@@ -1051,7 +1051,7 @@ const IklanOrigin = () => {
                           </div>
                           <div className='single-bid'>
                             <div className='creator'>
-                              <div className='profile-img pos-rel'>
+                              <div className='profile-img relative'>
                                 <Link href='/creator-profile'>
                                   <a>
                                     <img
@@ -1079,7 +1079,7 @@ const IklanOrigin = () => {
                                 <div className='art-item-single'>
                                   <div className='art-item-wraper'>
                                     <div className='art-item-inner'>
-                                      <div className='art-item-img pos-rel'>
+                                      <div className='art-item-img relative'>
                                         <Link href='/explore-arts'>
                                           <a>
                                             <img
@@ -1095,7 +1095,7 @@ const IklanOrigin = () => {
                                 <div className='art-item-single'>
                                   <div className='art-item-wraper'>
                                     <div className='art-item-inner'>
-                                      <div className='art-item-img pos-rel'>
+                                      <div className='art-item-img relative'>
                                         <Link href='/explore-arts'>
                                           <a>
                                             <img
@@ -1111,7 +1111,7 @@ const IklanOrigin = () => {
                                 <div className='art-item-single'>
                                   <div className='art-item-wraper'>
                                     <div className='art-item-inner'>
-                                      <div className='art-item-img pos-rel'>
+                                      <div className='art-item-img relative'>
                                         <Link href='/explore-arts'>
                                           <a>
                                             <img
@@ -1139,7 +1139,7 @@ const IklanOrigin = () => {
                           </div>
                           <div className='single-bid'>
                             <div className='creator'>
-                              <div className='profile-img pos-rel'>
+                              <div className='profile-img relative'>
                                 <Link href='/creator-profile'>
                                   <a>
                                     <img
@@ -1167,7 +1167,7 @@ const IklanOrigin = () => {
                                 <div className='art-item-single'>
                                   <div className='art-item-wraper'>
                                     <div className='art-item-inner'>
-                                      <div className='art-item-img pos-rel'>
+                                      <div className='art-item-img relative'>
                                         <Link href='/explore-arts'>
                                           <a>
                                             <img
@@ -1195,7 +1195,7 @@ const IklanOrigin = () => {
                           </div>
                           <div className='single-bid'>
                             <div className='creator'>
-                              <div className='profile-img pos-rel'>
+                              <div className='profile-img relative'>
                                 <Link href='/creator-profile'>
                                   <a>
                                     <img
@@ -1223,7 +1223,7 @@ const IklanOrigin = () => {
                                 <div className='art-item-single'>
                                   <div className='art-item-wraper'>
                                     <div className='art-item-inner'>
-                                      <div className='art-item-img pos-rel'>
+                                      <div className='art-item-img relative'>
                                         <Link href='/explore-arts'>
                                           <a>
                                             <img
@@ -1239,7 +1239,7 @@ const IklanOrigin = () => {
                                 <div className='art-item-single'>
                                   <div className='art-item-wraper'>
                                     <div className='art-item-inner'>
-                                      <div className='art-item-img pos-rel'>
+                                      <div className='art-item-img relative'>
                                         <Link href='/explore-arts'>
                                           <a>
                                             <img
@@ -1267,7 +1267,7 @@ const IklanOrigin = () => {
                           </div>
                           <div className='single-bid'>
                             <div className='creator'>
-                              <div className='profile-img pos-rel'>
+                              <div className='profile-img relative'>
                                 <Link href='/creator-profile'>
                                   <a>
                                     <img
@@ -1295,7 +1295,7 @@ const IklanOrigin = () => {
                                 <div className='art-item-single'>
                                   <div className='art-item-wraper'>
                                     <div className='art-item-inner'>
-                                      <div className='art-item-img pos-rel'>
+                                      <div className='art-item-img relative'>
                                         <Link href='/explore-arts'>
                                           <a>
                                             <img
@@ -1311,7 +1311,7 @@ const IklanOrigin = () => {
                                 <div className='art-item-single'>
                                   <div className='art-item-wraper'>
                                     <div className='art-item-inner'>
-                                      <div className='art-item-img pos-rel'>
+                                      <div className='art-item-img relative'>
                                         <Link href='/explore-arts'>
                                           <a>
                                             <img
@@ -1327,7 +1327,7 @@ const IklanOrigin = () => {
                                 <div className='art-item-single'>
                                   <div className='art-item-wraper'>
                                     <div className='art-item-inner'>
-                                      <div className='art-item-img pos-rel'>
+                                      <div className='art-item-img relative'>
                                         <Link href='/explore-arts'>
                                           <a>
                                             <img
