@@ -132,6 +132,11 @@ export const dataSuperAdmin = [
         link: '/admin/emblem',
       },
       {
+        title: 'Fee Admin',
+        icon: <></>,
+        link: '/admin/fee-admin',
+      },
+      {
         title: 'Hero',
         icon: <FiZap />,
         link: '/admin/hero',

@@ -3,6 +3,7 @@ export type FeePayment = {
   id_bank: number;
   type: number;
   fee_flat: number;
+  price: number;
   fee_percent: number;
   is_active: number;
   created_by: number;
