@@ -1,10 +1,12 @@
 import Link from 'next/link';
 import queryString from 'query-string';
 import React, { useEffect, useRef, useState } from 'react';
+import { FaPhoneAlt } from 'react-icons/fa';
 import useSWR from 'swr';
 
 import ColorModeToggle from '@/components/ColorModeToggle';
 import MobileMenu from '@/components/Layout/Header/MobileMenu';
+import ButtonLinkGradient from '@/components/links/ButtonLinkGradient';
 import { API_URL } from '@/constant/config';
 import useSticky from '@/hooks/useSticky';
 import Config from '@/types/config';
@@ -87,32 +89,59 @@ const Header = ({ HeaderStatic, setHeight }: HeaderProps) => {
                       <i className='fal fa-search'></i>
                     </button>
                   </form> */}
-                  <div className='main-menu main-menu1 d-none d-lg-block'>
+                  <div className='main-menu main-menu1 d-none d-lg-block uppercase'>
                     <nav id='mobile-menu'>
                       <ul>
+                        <li>
+                          <Link href='/'>
+                            <a className='animated-underline py-0 !text-base !font-bold !text-primary-600 dark:!text-primary-300'>
+                              Home
+                            </a>
+                          </Link>
+                        </li>
                         <li>
                           <a
                             href={getWaLink()}
                             target='_blank'
                             rel='noopener noreferrer'
-                            className='py-0'
+                            className='animated-underline py-0 !text-base !font-medium !text-primary-600 dark:!text-primary-300'
                           >
                             Jasa Rekber
                           </a>
                         </li>
                         <li>
                           <Link href='/seller'>
-                            <a className='py-0'>Jual Akun</a>
+                            <a className='animated-underline py-0 !text-base !font-medium !text-primary-600 dark:!text-primary-300'>
+                              Jual Akun
+                            </a>
                           </Link>
                         </li>
                         <li>
                           <Link href='/#jelajah_akun'>
-                            <a className='py-0'>Beli Akun</a>
+                            <a className='animated-underline py-0 !text-base !font-medium !text-primary-600 dark:!text-primary-300'>
+                              Beli Akun
+                            </a>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link href='/#jelajah_akun'>
+                            <a className='animated-underline py-0 !text-base !font-medium !text-primary-600 dark:!text-primary-300'>
+                              Cek Invoice
+                            </a>
                           </Link>
                         </li>
                       </ul>
                     </nav>
                   </div>
+                  <ButtonLinkGradient
+                    href='/seller'
+                    className='hidden px-3 font-medium uppercase text-white md:block'
+                  >
+                    <div className='flex items-center justify-center gap-x-2'>
+                      <FaPhoneAlt />
+                      Contact Us
+                    </div>
+                  </ButtonLinkGradient>
                   <ColorModeToggle className='mx-2' />
                   <div className='menu-bar d-xl-none ml-20'>
                     <a

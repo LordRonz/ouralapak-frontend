@@ -1,8 +1,12 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { FaPhoneAlt } from 'react-icons/fa';
 import useSWR from 'swr';
 
+import ButtonLinkGradient from '@/components/links/ButtonLinkGradient';
 import { API_URL } from '@/constant/config';
+import getWaLink from '@/lib/getWhatsappLink';
+import Config from '@/types/config';
 import User from '@/types/user';
 
 type MobileMenuProps = {
@@ -21,6 +25,12 @@ const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
     message: string;
     success: boolean;
   }>(`${API_URL}/profile`);
+
+  const { data: config } = useSWR<{
+    data: Config;
+    message: string;
+    success: boolean;
+  }>(() => `${API_URL}/master/config/4`);
 
   return (
     <>
@@ -49,17 +59,47 @@ const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
             <div className='mm-menu mm-menu-1 d-lg-none mb-60'>
               <ul>
                 <li>
-                  <Link href='/rekber'>
-                    <a>Jasa Rekber</a>
-                  </Link>
+                  <a
+                    href={getWaLink(config?.data?.value ?? '+62869696969')}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='animated-underline !text-base !font-medium !text-primary-600 dark:!text-primary-300'
+                  >
+                    Jasa Rekber
+                  </a>
                 </li>
                 <li>
                   <Link href='/seller'>
-                    <a>Jual Akun</a>
+                    <a className='animated-underline !text-base !font-medium !text-primary-600 dark:!text-primary-300'>
+                      Jual Akun
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href='/#jelajah_akun'>
+                    <a className='animated-underline !text-base !font-medium !text-primary-600 dark:!text-primary-300'>
+                      Beli Akun
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href='/#jelajah_akun'>
+                    <a className='animated-underline !text-base !font-medium !text-primary-600 dark:!text-primary-300'>
+                      Cek Invoice
+                    </a>
                   </Link>
                 </li>
               </ul>
             </div>
+            <ButtonLinkGradient
+              href='/seller'
+              className='px-3 font-medium uppercase text-white'
+            >
+              <div className='flex items-center justify-center gap-x-2'>
+                <FaPhoneAlt />
+                Contact Us
+              </div>
+            </ButtonLinkGradient>
             <div className='offset-profile-action d-md-none'>
               <div className='offset-widget mb-40'>
                 {user && (

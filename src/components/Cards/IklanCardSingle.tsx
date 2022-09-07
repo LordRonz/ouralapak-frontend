@@ -26,7 +26,7 @@ const IklanCardSingle = ({
       <Link href={`/iklan/${iklan.id}`}>
         <a>
           <div className='art-item-single'>
-            <div className='rounded-xl bg-white p-[0.7rem]'>
+            <div className='rounded-xl bg-white p-[0.7rem] dark:!bg-gray-800'>
               <div className='art-item-inner'>
                 <div className='art-item-img h-30 relative flex items-center justify-center md:h-60'>
                   <Link href={`/iklan/${iklan.id}`}>
