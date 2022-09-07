@@ -24,7 +24,7 @@ const Footer = () => {
 
   return (
     <footer className='footer1-bg'>
-      <section className='footer-area footer-area1 footer-area1-bg pt-100 pb-50'>
+      <section className='footer-area footer-area1 footer-area1-bg pt-100 pb-50 !bg-neutral-900'>
         <div className='container'>
           <div className='row'>
             <div className='col-lg-4 col-md-6 col-sm-6'>
@@ -47,16 +47,16 @@ const Footer = () => {
                     </a>
                   </Link>
                 </div>
-                <p className='mb-35'>
+                <p className='mb-35 text-white'>
                   We provide one-stop solutions for all IT items; your bliss is
                   just a click away. Star Tech trusts in quality client
                 </p>
               </div>
             </div>
-            <div className='col-lg-4 col-md-6 col-sm-6'>
+            <div className='col-lg-4 col-md-6 col-sm-6 text-white'>
               <div className='footer-widget footer1-widget footer1-widget2 mb-40'>
                 <div className='footer-widget-title'>
-                  <h4>Layanan</h4>
+                  <h4 className='!font-black'>Layanan</h4>
                 </div>
                 <ul>
                   <li>

@@ -82,7 +82,18 @@ const JelajahIklanSection = () => {
           },
           [[], []]
         );
-      setIklans([...iklans, ...notSold, ...sold]);
+
+      const [notSoldPrev, soldPrev] = // Use "deconstruction" style assignment
+        iklans.reduce(
+          (result: [IklanHome[], IklanHome[]], element) => {
+            result[element.status.toLowerCase() !== 'selesai' ? 0 : 1].push(
+              element
+            ); // Determine and push to small/large arr
+            return result;
+          },
+          [[], []]
+        );
+      setIklans([...notSoldPrev, ...notSold, ...soldPrev, ...sold]);
       setPagination(data.pagination);
     } finally {
       setFetching(false);
@@ -106,6 +117,8 @@ const JelajahIklanSection = () => {
   const hasMoreItems =
     !pagination || (pagination && pagination.currentPage < pagination.lastPage);
 
+  console.log(pagination);
+
   const getRefundById = (id: string | number) => {
     if (!refund) return '';
     const res = refund.data.data.find((x) => +x.id === +id);
@@ -117,9 +130,12 @@ const JelajahIklanSection = () => {
   }
 
   return (
-    <section className='artworks-area artworks-area-bg pt-110 z-index-1 pb-40'>
+    <section
+      className='artworks-area artworks-area-bg pt-110 z-index-1 pb-40'
+      id='jelajah_akun'
+    >
       <div className='container'>
-        <div className='row wow fadeInUp'>
+        <div className='row wow fadeInUp items-center justify-center'>
           <div className='col-lg-4'>
             <div className='section-title1'>
               <h2 className='section-main-title1 mb-40'>Jelajahi Akun</h2>
@@ -127,7 +143,7 @@ const JelajahIklanSection = () => {
           </div>
           <div className='col-lg-8'>
             <form action='#' className='artwork-filter-row mb-40'>
-              <div className='common-select-arrow common-select-arrow-40 white-bg'>
+              <div className='common-select-arrow common-select-arrow-40 white-bg rounded-xl'>
                 <select
                   name='s-t-select'
                   id='s-t-select'
@@ -144,7 +160,7 @@ const JelajahIklanSection = () => {
                   <option value='win_rate'>Win Rate</option>
                 </select>
               </div>
-              <div className='common-select-arrow common-select-arrow-40 white-bg'>
+              <div className='common-select-arrow common-select-arrow-40 white-bg rounded-xl'>
                 <select
                   name='cat-select'
                   id='cat-select'
@@ -166,7 +182,7 @@ const JelajahIklanSection = () => {
         </div>
 
         <InfiniteScroll loadMore={fetchIklans} hasMore={hasMoreItems}>
-          <div className='row wow fadeInUp'>
+          <div className='grid grid-cols-12 gap-y-3 gap-x-2 md:gap-y-5 md:gap-x-4'>
             {iklans.map((iklan, index) => (
               <IklanCardSingle
                 iklan={iklan}

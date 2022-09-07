@@ -78,7 +78,7 @@ const Header = ({ HeaderStatic, setHeight }: HeaderProps) => {
               </div>
               <div className='col-xl-10 col-lg-10 col-md-8 col-8 py-2'>
                 <div className='header-main-right'>
-                  <form
+                  {/* <form
                     action='#'
                     className='filter-search-input header-search d-none d-xl-inline-block'
                   >
@@ -86,7 +86,7 @@ const Header = ({ HeaderStatic, setHeight }: HeaderProps) => {
                     <button>
                       <i className='fal fa-search'></i>
                     </button>
-                  </form>
+                  </form> */}
                   <div className='main-menu main-menu1 d-none d-lg-block'>
                     <nav id='mobile-menu'>
                       <ul>
@@ -103,6 +103,11 @@ const Header = ({ HeaderStatic, setHeight }: HeaderProps) => {
                         <li>
                           <Link href='/seller'>
                             <a className='py-0'>Jual Akun</a>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link href='/#jelajah_akun'>
+                            <a className='py-0'>Beli Akun</a>
                           </Link>
                         </li>
                       </ul>

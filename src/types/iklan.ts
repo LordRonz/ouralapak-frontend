@@ -66,13 +66,21 @@ export type IklanAdmin = {
 };
 
 export type IklanHome = {
+  change_name_status: number;
   created_at: string;
   harga_akun: string;
+  hero: {
+    id: number;
+    name: string;
+  }[];
   id: number;
   image_profile: string;
   jenis_refund: number;
   package_id: number;
+  platform: string;
+  platform_id: number;
   status: string;
+  status_id: number;
   title: string;
   total_hero: number;
   total_skin: number;

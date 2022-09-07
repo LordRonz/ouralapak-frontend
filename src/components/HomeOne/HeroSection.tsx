@@ -95,6 +95,7 @@ const HeroSection = ({ navHeight }: { navHeight: number }) => {
             </div> */}
             <div className='col-xl-5 col-lg-5 p-0'>
               <img
+                loading='lazy'
                 src='/images/heroes.png'
                 alt='heroes'
                 className='block h-auto w-full bg-cover bg-center bg-no-repeat md:hidden'
@@ -103,6 +104,7 @@ const HeroSection = ({ navHeight }: { navHeight: number }) => {
           </div>
         </div>
         <img
+          loading='lazy'
           src='/images/heroes.png'
           alt='heroes'
           className='absolute right-0 hidden h-full w-auto bg-cover bg-center bg-no-repeat md:block'
