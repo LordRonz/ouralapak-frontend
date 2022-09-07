@@ -2,9 +2,11 @@ import Link from 'next/link';
 import React from 'react';
 import { FiCheckCircle, FiXCircle } from 'react-icons/fi';
 
+import ThumbnailChip from '@/components/Cards/ThumbnailChip';
 import RefundChip from '@/components/HomeOne/RefundChip';
 import { API_URL } from '@/constant/config';
 import clsxm from '@/lib/clsxm';
+import { StatusIklanEnum } from '@/lib/getStatusIklan';
 import toIDRCurrency from '@/lib/toIDRCurrency';
 import Capote from '@/svgs/capote.svg';
 import Superhero from '@/svgs/superhero.svg';
@@ -44,12 +46,15 @@ const IklanCardSingle = ({
                   </Link>
                   <div
                     className={clsxm(
-                      'absolute top-0 left-0 flex h-full w-full items-center justify-center bg-neutral-800/40',
+                      'absolute top-0 left-0 flex h-full w-full items-center justify-center bg-neutral-800/90 text-xl font-bold text-white',
                       iklan.status.toLowerCase() !== 'selesai' && 'hidden'
                     )}
                   >
-                    <img src='/images/sold_out.png' alt='' />
+                    Sold Out
                   </div>
+                  {iklan.status_id === StatusIklanEnum.PROSES_REKBER && (
+                    <ThumbnailChip />
+                  )}
                 </div>
                 <div className='relative py-3'>
                   <div className='mb-3 flex w-full items-center justify-between'>
@@ -96,20 +101,26 @@ const IklanCardSingle = ({
                     </div>
                   </div>
                   <div className='grid w-full grid-cols-3'>
-                    <div className='flex items-center justify-center gap-x-1 text-center'>
-                      <Superhero />
+                    <div className='flex items-center justify-center gap-x-1 whitespace-nowrap text-center'>
+                      <div>
+                        <Superhero />
+                      </div>
                       <p className='m-0 p-0 text-[0.5rem] md:text-xs'>
                         Hero {iklan.total_hero > 99 ? '99+' : iklan.total_hero}
                       </p>
                     </div>
-                    <div className='flex items-center justify-center gap-x-1 text-center'>
-                      <Capote />
+                    <div className='flex items-center justify-center gap-x-1 whitespace-nowrap text-center'>
+                      <div>
+                        <Capote />
+                      </div>
                       <p className='m-0 p-0 text-[0.5rem] md:text-xs'>
                         Skin {iklan.total_skin > 99 ? '99+' : iklan.total_skin}
                       </p>
                     </div>
-                    <div className='flex items-center justify-center gap-x-1 text-center'>
-                      <Trophy />
+                    <div className='flex items-center justify-center gap-x-1 whitespace-nowrap text-center'>
+                      <div>
+                        <Trophy />
+                      </div>
                       <p className='m-0 p-0 text-[0.5rem] md:text-xs'>
                         WR {iklan.win_rate}%
                       </p>

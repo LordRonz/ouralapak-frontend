@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import queryString from 'query-string';
 import React, { useEffect, useRef, useState } from 'react';
 import { FaPhoneAlt } from 'react-icons/fa';
 import useSWR from 'swr';
@@ -9,6 +8,7 @@ import MobileMenu from '@/components/Layout/Header/MobileMenu';
 import ButtonLinkGradient from '@/components/links/ButtonLinkGradient';
 import { API_URL } from '@/constant/config';
 import useSticky from '@/hooks/useSticky';
+import getWaLink from '@/lib/getWhatsappLink';
 import Config from '@/types/config';
 
 type HeaderProps = {
@@ -33,14 +33,6 @@ const Header = ({ HeaderStatic, setHeight }: HeaderProps) => {
     message: string;
     success: boolean;
   }>(() => `${API_URL}/master/config/4`);
-
-  const getWaLink = () =>
-    queryString.stringifyUrl({
-      url: `https://wa.me/${config?.data?.value}`,
-      query: {
-        text: `Halo admin Oura Lapak,\n\nSaya ingin menggunakan jasa rekber Oura Lapak untuk pembelian akun di luar Oura Lapak. Boleh tanya-tanya dulu?`,
-      },
-    });
 
   return (
     <>
@@ -94,38 +86,40 @@ const Header = ({ HeaderStatic, setHeight }: HeaderProps) => {
                       <ul>
                         <li>
                           <Link href='/'>
-                            <a className='animated-underline py-0 !text-base !font-bold !text-primary-600 dark:!text-primary-300'>
+                            <a className='animated-underline py-0 !text-sm !font-bold !text-primary-600 dark:!text-primary-300'>
                               Home
                             </a>
                           </Link>
                         </li>
                         <li>
                           <a
-                            href={getWaLink()}
+                            href={getWaLink(
+                              config?.data?.value ?? '+62816969696'
+                            )}
                             target='_blank'
                             rel='noopener noreferrer'
-                            className='animated-underline py-0 !text-base !font-medium !text-primary-600 dark:!text-primary-300'
+                            className='animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300'
                           >
                             Jasa Rekber
                           </a>
                         </li>
                         <li>
                           <Link href='/seller'>
-                            <a className='animated-underline py-0 !text-base !font-medium !text-primary-600 dark:!text-primary-300'>
+                            <a className='animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300'>
                               Jual Akun
                             </a>
                           </Link>
                         </li>
                         <li>
                           <Link href='/#jelajah_akun'>
-                            <a className='animated-underline py-0 !text-base !font-medium !text-primary-600 dark:!text-primary-300'>
+                            <a className='animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300'>
                               Beli Akun
                             </a>
                           </Link>
                         </li>
                         <li>
                           <Link href='/#jelajah_akun'>
-                            <a className='animated-underline py-0 !text-base !font-medium !text-primary-600 dark:!text-primary-300'>
+                            <a className='animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300'>
                               Cek Invoice
                             </a>
                           </Link>
@@ -135,7 +129,7 @@ const Header = ({ HeaderStatic, setHeight }: HeaderProps) => {
                   </div>
                   <ButtonLinkGradient
                     href='/seller'
-                    className='hidden px-3 font-medium uppercase text-white md:block'
+                    className='hidden px-3 text-xs font-medium uppercase text-white md:block'
                   >
                     <div className='flex items-center justify-center gap-x-2'>
                       <FaPhoneAlt />

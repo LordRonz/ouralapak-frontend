@@ -28,8 +28,8 @@ const HeroSection = ({ navHeight }: { navHeight: number }) => {
             className='row align-items-center justify-content-between'
             style={{ height: `calc(100vh - ${navHeight}px` }}
           >
-            <div className='col-xl-7 col-lg-7'>
-              <div className='banner-content banner-content1 banner-content1-1 hero-info flex flex-col items-center justify-center gap-y-4 pt-0 pb-0 md:items-start'>
+            <div className='col-xl-6 col-lg-6'>
+              <div className='banner-content banner-content1 banner-content1-1 hero-info flex flex-col items-center justify-center gap-y-7 pt-0 pb-0 md:items-start'>
                 <img
                   src='/images/ouralapak_logo_long.png'
                   alt='logo-img'
