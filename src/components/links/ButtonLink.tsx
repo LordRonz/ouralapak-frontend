@@ -33,18 +33,17 @@ const ButtonLink = ({
       'animate-shadow',
       [
         variant === 'primary' && [
-          'bg-primary-300 text-black',
-          'border border-primary-500',
+          'bg-primary-300 text-white outline outline-transparent',
+          'border-2 border-solid border-primary-500',
           'hover:bg-primary-500 hover:text-primary-50',
           'active:bg-primary-600',
           'disabled:bg-primary-600 disabled:hover:bg-primary-600',
         ],
         variant === 'outline' && [
           'text-primary-500',
-          'border border-primary-500',
+          'border-2 border-solid border-primary-500',
           'hover:bg-primary-50 active:bg-primary-100 disabled:bg-primary-100',
-          isDarkBg &&
-            'hover:bg-gray-900 active:bg-gray-800 disabled:bg-gray-800',
+          'dark:bg-gray-800  dark:hover:bg-gray-900 dark:active:bg-gray-800 dark:disabled:bg-gray-800',
         ],
         variant === 'ghost' && [
           'text-primary-500',

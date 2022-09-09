@@ -96,7 +96,7 @@ const LoginMain = () => {
     <main>
       <Breadcrumbs breadcrumbTitle='Sign in' breadcrumbSubTitle='Sign in' />
 
-      <section className='login-area pb-90 relative'>
+      <section className='login-area relative pb-10 pt-20'>
         <ParticleComponent />
         <div className='container'>
           <div className='row justify-content-center'>

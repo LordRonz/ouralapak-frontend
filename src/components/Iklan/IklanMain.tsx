@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { stringifyUrl } from 'query-string';
 import React, { ReactChild, useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { FiInstagram } from 'react-icons/fi';
 import Lightbox from 'react-image-lightbox';
 import PhoneInput, {
   isPossiblePhoneNumber,
@@ -26,12 +27,14 @@ import Breadcrumbs from '@/components/Common/PageTitle';
 import Spinner from '@/components/Common/Spinner';
 import XButton from '@/components/Common/XButton';
 import ButtonLink from '@/components/links/ButtonLink';
+import UnstyledLink from '@/components/links/UnstyledLink';
 import { API_URL } from '@/constant/config';
 import { customSelectStyles } from '@/constant/select';
 import clsxm from '@/lib/clsxm';
 import { calculateTimeLeft } from '@/lib/timeStuff';
 import toastPromiseError from '@/lib/toastPromiseError';
 import toIDRCurrency from '@/lib/toIDRCurrency';
+import TrophyGreen from '@/svgs/trophy_green.svg';
 import Bank from '@/types/bank';
 import { IklanDetail, IklanHome } from '@/types/iklan';
 import { InvoicePembeli } from '@/types/invoice';
@@ -260,7 +263,7 @@ const IklanMain = ({ id }: { id: number }) => {
     <main>
       <Breadcrumbs breadcrumbSubTitle={iklan.data.title} />
 
-      <section className='art-details-area pt-8'>
+      <section className='art-details-area bg-white pt-8 dark:!bg-dark'>
         <div className='container'>
           <div className='art-details-wrapper'>
             <div className='row'>
@@ -339,65 +342,54 @@ const IklanMain = ({ id }: { id: number }) => {
                 )}
               </div>
               <div className='col-xl-6 col-lg-7 pb-6'>
-                <div className='mb-6'>
-                  <h1 className='mr-4 inline'>{iklan.data.title}</h1>
-                  <span className='inline-block rounded-lg bg-neutral-300 py-1 px-2'>
-                    {iklan.data.platform}
-                  </span>
-                </div>
-                <div className='art-details-content wow fadeInUp'>
+                <div className='art-details-content wow fadeInUp px-1 md:px-6'>
                   <div className='flex items-center space-x-8'>
                     <div className='flex w-full justify-between'>
                       <div>
                         <div className='created-by mb-2'>Created by</div>
                         <div className='creator mb-30'>
                           <div className='profile-img relative'>
-                            <Link href='/creators'>
-                              <a>
-                                <Image
-                                  src={
-                                    iklan.data.user?.profile_picture
-                                      ? `${API_URL}/${iklan.data.user?.profile_picture}`
-                                      : `/images/pfp.jpg`
-                                  }
-                                  className='h-16 w-16 rounded-full object-cover'
-                                  alt='profile-img'
-                                  height={64}
-                                  width={64}
-                                />
-                              </a>
-                            </Link>
+                            <UnstyledLink
+                              href={`https://instagram.com/${iklan.data.user.ig_username}`}
+                            >
+                              <Image
+                                src={
+                                  iklan.data.user?.profile_picture
+                                    ? `${API_URL}/${iklan.data.user?.profile_picture}`
+                                    : `/images/pfp.jpg`
+                                }
+                                className='h-16 w-16 rounded-full object-cover'
+                                alt='profile-img'
+                                height={64}
+                                width={64}
+                              />
+                            </UnstyledLink>
                             <div className='profile-verification verified'>
                               <i className='fas fa-check'></i>
                             </div>
                           </div>
                           <div className='creator-name-id'>
                             <h4 className='artist-name'>
-                              <Link href='/creators'>
+                              <UnstyledLink
+                                href={`https://instagram.com/${iklan.data.user.ig_username}`}
+                              >
                                 <a>{iklan.data.user.name}</a>
-                              </Link>
+                              </UnstyledLink>
                             </h4>
-                            <div className='artist-id'>
-                              {iklan.data.user.username}
+                            <div className='flex items-center justify-center gap-x-1'>
+                              <span>
+                                <FiInstagram />
+                              </span>
+                              <span>
+                                {iklan.data.user.username.startsWith('@')
+                                  ? ''
+                                  : '@' + iklan.data.user.username}
+                              </span>
                             </div>
                           </div>
                         </div>
                       </div>
                       <div className='mt-50 mb-30 flex items-center gap-x-2'>
-                        <ButtonLink
-                          href={`https://wa.me/${iklan.data.user.phone
-                            .replace(/\+/g, '')
-                            .replace(/-/g, '')
-                            .replace(/\(/g, '')
-                            .replace(/\)/g, '')
-                            .trim()}`}
-                        >
-                          Hubungi Penjual
-                        </ButtonLink>
-                        {iklan.data.status.toString().toLowerCase() ===
-                          'dipublikasi' && (
-                          <Button onClick={onOpenModal}>Beli</Button>
-                        )}
                         <Modal
                           open={open}
                           onClose={onCloseModal}
@@ -581,34 +573,46 @@ const IklanMain = ({ id }: { id: number }) => {
                       </div>
                     </div>
                   </div>
+                  <div className='mb-6'>
+                    <h1 className='mr-4 inline'>{iklan.data.title}</h1>
+                  </div>
+                  <div className='#2EA0DE flex gap-x-2'>
+                    <div className='rounded-3xl bg-[#EFEFEF] px-3 py-1'>
+                      <p className='m-0 p-0 text-xs font-bold text-[#525358]'>
+                        {iklan.data.platform}
+                      </p>
+                    </div>
+                    <div className='rounded-3xl bg-[#D3EBF8] px-3 py-1'>
+                      <p className='m-0 p-0 text-xs font-bold text-[#2EA0DE]'>
+                        {iklan.data.jenis_refund}
+                      </p>
+                    </div>
+                    <div className='rounded-3xl bg-[rgba(52,_196,_84,_0.2)] px-3 py-1'>
+                      <p className='m-0 flex items-center justify-center gap-x-1 p-0 text-xs font-bold text-[#228F01]'>
+                        <span>
+                          <TrophyGreen />
+                        </span>
+                        Win Rate {iklan.data.win_rate}%
+                      </p>
+                    </div>
+                  </div>
                   <div className='art-details-meta-info my-8 grid grid-cols-3 divide-x-2'>
                     <div className='art-meta-item'>
-                      <div className='art-meta-type'>Harga</div>
-                      <div className='art-sale'>
+                      <div className='text-4xl font-bold text-[#1E53A3]'>
                         {toIDRCurrency(iklan.data.harga_akun)}
                       </div>
                     </div>
                   </div>
-                  <div className='art-details-meta-info my-8 grid grid-cols-2 divide-x-2'>
-                    <div className='art-meta-item'>
-                      <div className='art-meta-type'>Win Rate</div>
-                      <div className='art-sale'>{iklan.data.win_rate} %</div>
-                    </div>
-                    <div className='art-meta-item pl-3'>
-                      <div className='art-meta-type'>Jenis Refund</div>
-                      <div className='art-sale'>{iklan.data.jenis_refund}</div>
-                    </div>
-                  </div>
                   <div className='art-details-information'>
-                    <div className='art-information-tab-nav mb-20'>
+                    <div className='art-information-tab-nav'>
                       <nav>
                         <div
-                          className='nav nav-tabs flex justify-between'
+                          className='nav-tabs grid w-full grid-cols-5'
                           id='nav-tab'
                           role='tablist'
                         >
                           <button
-                            className='nav-link active'
+                            className='nav-link active !border-t-1 w-full !rounded-none !border-x-0 !border-neutral-400'
                             id='nav-bid-tab'
                             data-bs-toggle='tab'
                             data-bs-target='#tab-nav1'
@@ -616,10 +620,10 @@ const IklanMain = ({ id }: { id: number }) => {
                             role='tab'
                             aria-selected='true'
                           >
-                            <span className='profile-nav-button'>Detail</span>
+                            <span className=''>Detail</span>
                           </button>
                           <button
-                            className='nav-link'
+                            className='nav-link !border-b-1 !border-t-1 w-full !rounded-none !border-x-0 !border-neutral-400'
                             id='nav-info-tab'
                             data-bs-toggle='tab'
                             data-bs-target='#tab-nav2'
@@ -627,10 +631,10 @@ const IklanMain = ({ id }: { id: number }) => {
                             role='tab'
                             aria-selected='false'
                           >
-                            <span className='profile-nav-button'>Hero</span>
+                            <span className=''>Hero</span>
                           </button>
                           <button
-                            className='nav-link'
+                            className='nav-link !border-b-1 !border-t-1 w-full !rounded-none !border-x-0 !border-neutral-400'
                             id='nav-details-tab'
                             data-bs-toggle='tab'
                             data-bs-target='#tab-nav3'
@@ -638,10 +642,10 @@ const IklanMain = ({ id }: { id: number }) => {
                             role='tab'
                             aria-selected='false'
                           >
-                            <span className='profile-nav-button'>Skin</span>
+                            <span className=''>Skin</span>
                           </button>
                           <button
-                            className='nav-link'
+                            className='nav-link !border-b-1 !border-t-1 w-full !rounded-none !border-x-0 !border-neutral-400'
                             id='nav-details-tab'
                             data-bs-toggle='tab'
                             data-bs-target='#tab-nav4'
@@ -649,10 +653,10 @@ const IklanMain = ({ id }: { id: number }) => {
                             role='tab'
                             aria-selected='false'
                           >
-                            <span className='profile-nav-button'>Recall</span>
+                            <span className=''>Recall</span>
                           </button>
                           <button
-                            className='nav-link'
+                            className='nav-link !border-b-1 !border-t-1 w-full !rounded-none !border-x-0 !border-neutral-400'
                             id='nav-details-tab'
                             data-bs-toggle='tab'
                             data-bs-target='#tab-nav5'
@@ -660,13 +664,13 @@ const IklanMain = ({ id }: { id: number }) => {
                             role='tab'
                             aria-selected='false'
                           >
-                            <span className='profile-nav-button'>Emblem</span>
+                            <span className=''>Emblem</span>
                           </button>
                         </div>
                       </nav>
                     </div>
                     <div className='art-information-tab-contents mb-0'>
-                      <div className='tab-content' id='nav-tabContent'>
+                      <div className='tab-content ' id='nav-tabContent'>
                         <div
                           className='tab-pane fade active show'
                           id='tab-nav1'
@@ -674,7 +678,7 @@ const IklanMain = ({ id }: { id: number }) => {
                           aria-labelledby='nav-bid-tab'
                         >
                           <div className='art-user-wrapper'>
-                            <div className='flex flex-wrap gap-x-10 gap-y-4'>
+                            <div className='flex flex-wrap gap-x-10 gap-y-4 border-b border-neutral-400 pb-3'>
                               <div>
                                 <h5>Status Akun</h5>
                                 <h4>
@@ -705,7 +709,7 @@ const IklanMain = ({ id }: { id: number }) => {
                                   {iklan.data.account_bind.length > 0
                                     ? iklan.data.account_bind.map((a) => (
                                         <span
-                                          className='rounded bg-neutral-300 px-3 py-1'
+                                          className='rounded-2xl bg-neutral-300 px-3 py-1'
                                           key={a.id}
                                         >
                                           {a.name}
@@ -724,14 +728,14 @@ const IklanMain = ({ id }: { id: number }) => {
                           aria-labelledby='nav-info-tab'
                         >
                           <div className='art-user-wrapper'>
-                            <div className='flex flex-wrap gap-x-10 gap-y-4'>
+                            <div className='flex flex-wrap gap-x-10 gap-y-4 border-b border-neutral-400 pb-3'>
                               <div>
                                 <h5>Favorite</h5>
                                 <div className='flex gap-x-2'>
                                   {iklan.data.hero.length > 0
                                     ? iklan.data.hero.map((a) => (
                                         <span
-                                          className='rounded bg-neutral-300 px-3 py-1'
+                                          className='rounded-2xl bg-neutral-300 px-3 py-1'
                                           key={a.id}
                                         >
                                           {a.name}
@@ -750,7 +754,7 @@ const IklanMain = ({ id }: { id: number }) => {
                           aria-labelledby='nav-details-tab'
                         >
                           <div className='art-user-wrapper overflow-auto'>
-                            <div className='flex flex-wrap gap-x-10 gap-y-4'>
+                            <div className='flex flex-wrap gap-x-10 gap-y-4 border-b border-neutral-400 pb-3'>
                               <div>
                                 <h5>Skin Rare</h5>
                                 <div className='flex flex-wrap gap-x-3 gap-y-3'>
@@ -760,11 +764,11 @@ const IklanMain = ({ id }: { id: number }) => {
                                           className='flex gap-x-1'
                                           key={`${a.jenis}-${i}`}
                                         >
-                                          <span className='rounded bg-neutral-300 px-3 py-1'>
-                                            {a.jenis}
-                                          </span>
-                                          <span className='rounded bg-neutral-300 px-1 py-1'>
-                                            {a.total_skin}
+                                          <span className='flex items-center justify-center gap-x-2 overflow-hidden rounded-2xl bg-neutral-300 px-3 py-1'>
+                                            <span className=''>{a.jenis}</span>
+                                            <span className='flex h-8 w-8 items-center justify-center rounded-full bg-[#D3EBF8] text-[#2EA0DE]'>
+                                              {a.total_skin}
+                                            </span>
                                           </span>
                                         </div>
                                       ))
@@ -781,14 +785,14 @@ const IklanMain = ({ id }: { id: number }) => {
                           aria-labelledby='nav-details-tab'
                         >
                           <div className='art-user-wrapper overflow-auto'>
-                            <div className='flex flex-wrap gap-x-10 gap-y-4'>
+                            <div className='flex flex-wrap gap-x-10 gap-y-4 border-b border-neutral-400 pb-3'>
                               <div>
                                 <h5>Efek Recall</h5>
                                 <div className='flex flex-wrap gap-x-3 gap-y-3'>
                                   {iklan.data.recall_effect.length > 0
                                     ? iklan.data.recall_effect.map((a, i) => (
                                         <span
-                                          className='rounded bg-neutral-300 px-3 py-1'
+                                          className='rounded-2xl bg-neutral-300 px-3 py-1'
                                           key={`${a}-${i}`}
                                         >
                                           {a}
@@ -807,7 +811,7 @@ const IklanMain = ({ id }: { id: number }) => {
                           aria-labelledby='nav-details-tab'
                         >
                           <div className='art-user-wrapper overflow-auto'>
-                            <div className='flex flex-wrap gap-x-10 gap-y-4'>
+                            <div className='flex flex-wrap gap-x-10 gap-y-4 border-b border-neutral-400 pb-3'>
                               <div>
                                 <h5>Emblem</h5>
                                 <div className='flex flex-wrap gap-x-3 gap-y-3'>
@@ -817,11 +821,11 @@ const IklanMain = ({ id }: { id: number }) => {
                                           className='flex gap-x-1'
                                           key={`${a.id}-${i}`}
                                         >
-                                          <span className='rounded bg-neutral-300 px-3 py-1'>
-                                            {a.name}
-                                          </span>
-                                          <span className='rounded bg-neutral-300 px-1 py-1'>
-                                            {a.level}
+                                          <span className='flex items-center justify-center gap-x-2 overflow-hidden rounded-2xl bg-neutral-300 px-3 py-1'>
+                                            <span className=''>{a.name}</span>
+                                            <span className='flex h-8 w-8 items-center justify-center rounded-full bg-[#D3EBF8] text-[#2EA0DE]'>
+                                              {a.level}
+                                            </span>
                                           </span>
                                         </div>
                                       ))
@@ -834,24 +838,45 @@ const IklanMain = ({ id }: { id: number }) => {
                       </div>
                     </div>
                   </div>
+                  <div className='flex gap-x-3'>
+                    {iklan.data.status.toString().toLowerCase() ===
+                      'dipublikasi' ||
+                      (true && (
+                        <Button onClick={onOpenModal}>Beli Sekarang</Button>
+                      ))}
+                    <ButtonLink
+                      className=''
+                      variant='outline'
+                      href={`https://wa.me/${iklan.data.user.phone
+                        .replace(/\+/g, '')
+                        .replace(/-/g, '')
+                        .replace(/\(/g, '')
+                        .replace(/\)/g, '')
+                        .trim()}`}
+                    >
+                      Hubungi Penjual
+                    </ButtonLink>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className='row wow fadeInUp'>
-            <div className='flex gap-x-4'>
-              <h3>Iklan lain</h3>
+          <div className='py-4'>
+            <div className='mb-4 flex gap-x-4'>
+              <h3>Iklan lainnya</h3>
               <Link href='/iklan'>
                 <a className='text-blue-400'>Lihat semua</a>
               </Link>
             </div>
-            {iklans.data.data.map((iklan, index) => (
-              <IklanCardSingle
-                iklan={iklan}
-                key={`${iklan.id}${index}`}
-                refund={getRefundById(iklan.jenis_refund)}
-              />
-            ))}
+            <div className='grid grid-cols-12 gap-y-3 gap-x-2 md:gap-y-5 md:gap-x-4'>
+              {iklans.data.data.map((iklan, index) => (
+                <IklanCardSingle
+                  iklan={iklan}
+                  key={`${iklan.id}${index}`}
+                  refund={getRefundById(iklan.jenis_refund)}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>

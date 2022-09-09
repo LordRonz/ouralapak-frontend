@@ -117,8 +117,6 @@ const JelajahIklanSection = () => {
   const hasMoreItems =
     !pagination || (pagination && pagination.currentPage < pagination.lastPage);
 
-  console.log(pagination);
-
   const getRefundById = (id: string | number) => {
     if (!refund) return '';
     const res = refund.data.data.find((x) => +x.id === +id);
@@ -142,10 +140,7 @@ const JelajahIklanSection = () => {
             </div>
           </div>
           <div className='col-lg-8'>
-            <form
-              action='#'
-              className='artwork-filter-row mb-40 !flex !w-full !flex-wrap !items-center !justify-end'
-            >
+            <div className='artwork-filter-row mb-40 !flex !w-full !flex-wrap !items-center !justify-end'>
               <div className='common-select-arrow common-select-arrow-40 white-bg !w-40 rounded-xl'>
                 <select
                   name='s-t-select'
@@ -180,16 +175,13 @@ const JelajahIklanSection = () => {
                   <option value='desc'>Tinggi ke rendah</option>
                 </select>
               </div>
-              <form
-                action='#'
-                className='filter-search-input header-search inline-block'
-              >
+              <div className='filter-search-input header-search inline-block'>
                 <input type='text' placeholder='Search keyword' />
                 <button>
                   <i className='fal fa-search'></i>
                 </button>
-              </form>
-            </form>
+              </div>
+            </div>
           </div>
         </div>
 

@@ -62,7 +62,7 @@ const ResetPasswordMain = () => {
         breadcrumbSubTitle='Reset Password'
       />
 
-      <section className='login-area pb-90 relative'>
+      <section className='login-area relative pb-10 pt-20'>
         <ParticleComponent />
         <div className='container'>
           <div className='row justify-content-center'>

@@ -93,7 +93,7 @@ const SignUpMain = () => {
         breadcrumbSubTitle='Create Account'
       />
 
-      <section className='sign-up-area pb-90 relative'>
+      <section className='login-area relative pb-10 pt-20'>
         <ParticleComponent />
         <div className='container'>
           <div className='row justify-content-center'>

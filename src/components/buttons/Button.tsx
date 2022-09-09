@@ -39,18 +39,17 @@ const Button = ({
           : '',
         [
           variant === 'primary' && [
-            'bg-primary-300 text-black',
-            'border border-primary-500',
-            'hover:bg-primary-500 hover:text-primary-50',
+            'bg-primary-300 text-white outline outline-transparent',
+            'border-2 border-solid border-primary-300',
+            'hover:border-primary-500 hover:bg-primary-500 hover:text-primary-50',
             'active:bg-primary-600',
             'disabled:bg-primary-300 disabled:hover:bg-primary-300 disabled:hover:text-black',
           ],
           variant === 'outline' && [
-            'text-primary-50',
-            'border border-primary-500',
-            isDarkBg
-              ? 'hover:bg-primary-700 hover:text-primary-50 active:bg-primary-600 disabled:bg-transparent'
-              : 'hover:bg-primary-50 active:bg-primary-100 disabled:bg-primary-100',
+            'text-primary-500',
+            'border-2 border-solid border-primary-500',
+            'hover:bg-primary-50 active:bg-primary-100 disabled:bg-primary-100',
+            'dark:bg-gray-800  dark:hover:bg-gray-900 dark:active:bg-gray-800 dark:disabled:bg-gray-800',
           ],
           variant === 'ghost' && [
             'text-primary-50',
