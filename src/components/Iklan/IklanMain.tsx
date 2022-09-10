@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { stringifyUrl } from 'query-string';
 import React, { ReactChild, useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { FaPhoneAlt } from 'react-icons/fa';
 import { FiInstagram } from 'react-icons/fi';
 import Lightbox from 'react-image-lightbox';
 import PhoneInput, {
@@ -574,7 +575,14 @@ const IklanMain = ({ id }: { id: number }) => {
                     </div>
                   </div>
                   <div className='mb-6'>
-                    <h1 className='mr-4 inline'>{iklan.data.title}</h1>
+                    <div className='grid grid-cols-5 items-center justify-center md:grid-cols-1'>
+                      <h1 className='col-span-3 text-3xl'>
+                        {iklan.data.title}
+                      </h1>
+                      <div className='col-span-2 text-right text-xl font-bold text-[#1E53A3] md:hidden'>
+                        {toIDRCurrency(iklan.data.harga_akun)}
+                      </div>
+                    </div>
                   </div>
                   <div className='#2EA0DE flex gap-x-2'>
                     <div className='rounded-3xl bg-[#EFEFEF] px-3 py-1'>
@@ -587,17 +595,17 @@ const IklanMain = ({ id }: { id: number }) => {
                         {iklan.data.jenis_refund}
                       </p>
                     </div>
-                    <div className='rounded-3xl bg-[rgba(52,_196,_84,_0.2)] px-3 py-1'>
+                    <div className='flex items-center justify-center rounded-3xl bg-[rgba(52,_196,_84,_0.2)] px-2 py-1 md:gap-x-1'>
+                      <span>
+                        <TrophyGreen />
+                      </span>
                       <p className='m-0 flex items-center justify-center gap-x-1 p-0 text-xs font-bold text-[#228F01]'>
-                        <span>
-                          <TrophyGreen />
-                        </span>
                         Win Rate {iklan.data.win_rate}%
                       </p>
                     </div>
                   </div>
-                  <div className='art-details-meta-info my-8 grid grid-cols-3 divide-x-2'>
-                    <div className='art-meta-item'>
+                  <div className='art-details-meta-info my-8 grid-cols-3 divide-x-2 md:grid'>
+                    <div className='art-meta-item hidden md:block'>
                       <div className='text-4xl font-bold text-[#1E53A3]'>
                         {toIDRCurrency(iklan.data.harga_akun)}
                       </div>
@@ -680,36 +688,50 @@ const IklanMain = ({ id }: { id: number }) => {
                           <div className='art-user-wrapper'>
                             <div className='flex flex-wrap gap-x-10 gap-y-4 border-b border-neutral-400 pb-3'>
                               <div>
-                                <h5>Status Akun</h5>
-                                <h4>
+                                <h5 className='text-xs md:text-lg'>
+                                  Status Akun
+                                </h5>
+                                <h4 className='text-sm md:text-xl'>
                                   {+iklan.data.first_hand_status === 0
                                     ? 'Pribadi'
                                     : 'Akun Beli'}
                                 </h4>
                               </div>
                               <div>
-                                <h5>Ganti Nama Akun</h5>
-                                <h4>
+                                <h5 className='text-xs md:text-lg'>
+                                  Ganti Nama Akun
+                                </h5>
+                                <h4 className='text-sm md:text-xl'>
                                   {+iklan.data.change_name_status === 0
                                     ? 'Nonaktif'
                                     : 'Aktif'}
                                 </h4>
                               </div>
                               <div>
-                                <h5>Total Hero</h5>
-                                <h4>{iklan.data.total_hero}</h4>
+                                <h5 className='text-xs md:text-lg'>
+                                  Total Hero
+                                </h5>
+                                <h4 className='text-sm md:text-xl'>
+                                  {iklan.data.total_hero}
+                                </h4>
                               </div>
                               <div>
-                                <h5>Total Skin</h5>
-                                <h4>{iklan.data.total_skin}</h4>
+                                <h5 className='text-xs md:text-lg'>
+                                  Total Skin
+                                </h5>
+                                <h4 className='text-sm md:text-xl'>
+                                  {iklan.data.total_skin}
+                                </h4>
                               </div>
                               <div>
-                                <h5>Binding Account</h5>
+                                <h5 className='text-xs md:text-lg'>
+                                  Binding Account
+                                </h5>
                                 <div className='flex gap-x-2'>
                                   {iklan.data.account_bind.length > 0
                                     ? iklan.data.account_bind.map((a) => (
                                         <span
-                                          className='rounded-2xl bg-neutral-300 px-3 py-1'
+                                          className='rounded-2xl bg-neutral-300 px-3 py-1 text-sm md:text-xl'
                                           key={a.id}
                                         >
                                           {a.name}
@@ -840,12 +862,36 @@ const IklanMain = ({ id }: { id: number }) => {
                   </div>
                   <div className='flex gap-x-3'>
                     {iklan.data.status.toString().toLowerCase() ===
-                      'dipublikasi' ||
-                      (true && (
-                        <Button onClick={onOpenModal}>Beli Sekarang</Button>
-                      ))}
+                      'dipublikasi' && (
+                      <>
+                        <Button
+                          onClick={onOpenModal}
+                          className='w-full md:hidden'
+                        >
+                          Beli Sekarang
+                        </Button>
+                        <Button
+                          onClick={onOpenModal}
+                          className='hidden md:block'
+                        >
+                          Beli Sekarang
+                        </Button>
+                      </>
+                    )}
                     <ButtonLink
-                      className=''
+                      className='md:hidden'
+                      variant='outline'
+                      href={`https://wa.me/${iklan.data.user.phone
+                        .replace(/\+/g, '')
+                        .replace(/-/g, '')
+                        .replace(/\(/g, '')
+                        .replace(/\)/g, '')
+                        .trim()}`}
+                    >
+                      <FaPhoneAlt />
+                    </ButtonLink>
+                    <ButtonLink
+                      className='hidden md:block'
                       variant='outline'
                       href={`https://wa.me/${iklan.data.user.phone
                         .replace(/\+/g, '')
