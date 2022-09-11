@@ -1,19 +1,20 @@
+import { Popover, Transition } from '@headlessui/react';
 import axios from 'axios';
 import { useTheme } from 'next-themes';
 import { stringifyUrl } from 'query-string';
-import React, { useCallback, useState } from 'react';
+import React, { Fragment, useCallback, useState } from 'react';
+import { GiSettingsKnobs } from 'react-icons/gi';
 import InfiniteScroll from 'react-infinite-scroller';
 import useSWR from 'swr';
 
 import Button from '@/components/buttons/Button';
+import IklanCardLoader from '@/components/Cards/IklanCardLoader';
 import IklanCardSingle from '@/components/Cards/IklanCardSingle';
 import Spinner from '@/components/Common/Spinner';
 import { API_URL } from '@/constant/config';
 import { IklanHome } from '@/types/iklan';
 import Pagination from '@/types/pagination';
 import Refund from '@/types/refund';
-
-import IklanCardLoader from '../Cards/IklanCardLoader';
 
 const JelajahIklanSection = () => {
   const [sortBy, setSortBy] = useState('0');
@@ -141,7 +142,68 @@ const JelajahIklanSection = () => {
           </div>
           <div className='col-lg-8'>
             <div className='artwork-filter-row mb-40 !flex !w-full !flex-wrap !items-center !justify-end'>
-              <div className='common-select-arrow common-select-arrow-40 white-bg !w-40 rounded-xl'>
+              <Popover className='relative md:hidden'>
+                {() => (
+                  <>
+                    <Popover.Button>
+                      <div>
+                        <GiSettingsKnobs />
+                      </div>
+                    </Popover.Button>
+                    <Transition
+                      as={Fragment}
+                      enter='transition ease-out duration-200'
+                      enterFrom='opacity-0 translate-y-1'
+                      enterTo='opacity-100 translate-y-0'
+                      leave='transition ease-in duration-150'
+                      leaveFrom='opacity-100 translate-y-0'
+                      leaveTo='opacity-0 translate-y-1'
+                    >
+                      <Popover.Panel className='absolute right-full z-50'>
+                        <div>
+                          <div className='common-select-arrow common-select-arrow-40 white-bg !w-36 rounded-xl'>
+                            <select
+                              name='s-t-select'
+                              id='s-t-select'
+                              className='sale-type-select !text-xs'
+                              value={sortBy}
+                              onChange={(e) => {
+                                setIklans([]);
+                                setPagination(undefined);
+                                setSortBy(e.target.value);
+                              }}
+                            >
+                              <option value='0'>Urutkan Dengan</option>
+                              <option value='harga_akun'>Harga Akun</option>
+                              <option value='win_rate'>Win Rate</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div>
+                          <div className='common-select-arrow common-select-arrow-40 white-bg rounded-xl'>
+                            <select
+                              name='cat-select'
+                              id='cat-select'
+                              className='category-select !text-xs'
+                              value={sortDir}
+                              onChange={(e) => {
+                                setIklans([]);
+                                setPagination(undefined);
+                                setSortDir(e.target.value);
+                              }}
+                            >
+                              <option value='0'>Urutan</option>
+                              <option value='asc'>Rendah ke tinggi</option>
+                              <option value='desc'>Tinggi ke rendah</option>
+                            </select>
+                          </div>
+                        </div>
+                      </Popover.Panel>
+                    </Transition>
+                  </>
+                )}
+              </Popover>
+              <div className='common-select-arrow common-select-arrow-40 white-bg !hidden !w-40 rounded-xl md:!block'>
                 <select
                   name='s-t-select'
                   id='s-t-select'
@@ -158,7 +220,7 @@ const JelajahIklanSection = () => {
                   <option value='win_rate'>Win Rate</option>
                 </select>
               </div>
-              <div className='common-select-arrow common-select-arrow-40 white-bg rounded-xl'>
+              <div className='common-select-arrow common-select-arrow-40 white-bg !hidden rounded-xl md:!block'>
                 <select
                   name='cat-select'
                   id='cat-select'
@@ -175,10 +237,14 @@ const JelajahIklanSection = () => {
                   <option value='desc'>Tinggi ke rendah</option>
                 </select>
               </div>
-              <div className='filter-search-input header-search inline-block'>
-                <input type='text' placeholder='Search keyword' />
+              <div className='filter-search-input header-search inline-block max-w-[50%]'>
+                <input
+                  className='max-h-10 placeholder:text-xs md:max-h-full md:placeholder:text-base'
+                  type='text'
+                  placeholder='Search keyword'
+                />
                 <button>
-                  <i className='fal fa-search'></i>
+                  <i className='fal fa-search' />
                 </button>
               </div>
             </div>
