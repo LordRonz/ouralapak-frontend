@@ -193,16 +193,20 @@ const ProfileMain = () => {
         breadcrumbTitle='Informasi Profil'
         breadcrumbSubTitle='Informasi Profil'
       />
-
+      <div className='creator-cover-img pos-rel mt-4'>
+        <img src='images/banner_cover.png' alt='cover-img' />
+      </div>
       <section className='creator-info-area pb-90 pt-60'>
         <div className='container'>
           <div className='row'>
-            <ProfileCard
-              user={user?.data}
-              handleLogout={handleLogout}
-              withEdit
-              setFile={setProfilePicture}
-            />
+            <div className='col-lg-4'>
+              <ProfileCard
+                user={user?.data}
+                handleLogout={handleLogout}
+                withEdit
+                setFile={setProfilePicture}
+              />
+            </div>
             <div className='col-lg-8'>
               <div className='creator-info-personal wow fadeInUp mb-40'>
                 <form

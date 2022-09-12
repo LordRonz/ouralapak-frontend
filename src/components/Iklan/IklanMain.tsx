@@ -74,6 +74,9 @@ const IklanMain = ({ id }: { id: number }) => {
   }>(
     stringifyUrl({
       url: `${API_URL}/iklan`,
+      query: {
+        perPage: 4,
+      },
     })
   );
 
@@ -404,7 +407,7 @@ const IklanMain = ({ id }: { id: number }) => {
                         >
                           <div className='row justify-content-center gap-y-6'>
                             <div className='login-wrapper wow fadeInUp relative'>
-                              <div className=' login-inner'>
+                              <div className=' login-inner px-3 md:p-0'>
                                 <div className='login-content'>
                                   <h4>Beli Akun</h4>
                                   <form
@@ -417,7 +420,7 @@ const IklanMain = ({ id }: { id: number }) => {
                                           <label htmlFor='email'>Nama</label>
                                           <input
                                             type='text'
-                                            placeholder='Masukkan Nama Anda'
+                                            placeholder='Nama Anda'
                                             autoFocus
                                             {...register('nama', {
                                               required: 'Nama harus diisi',
@@ -435,7 +438,7 @@ const IklanMain = ({ id }: { id: number }) => {
                                             <input
                                               type='email'
                                               id='email'
-                                              placeholder='Masukkan email anda'
+                                              placeholder='Email Anda'
                                               {...register('email', {
                                                 required: 'Email harus diisi',
                                                 pattern: {
@@ -461,7 +464,7 @@ const IklanMain = ({ id }: { id: number }) => {
                                                   ?.toString()
                                                   .padStart(2, '0')}`}</span>
                                               ) : (
-                                                'Verify'
+                                                'Verifikasi'
                                               )}
                                             </Button>
                                           </div>
@@ -503,7 +506,7 @@ const IklanMain = ({ id }: { id: number }) => {
                                           </label>
                                           <PhoneInput
                                             defaultCountry='ID'
-                                            placeholder='Masukkan No. Handphone'
+                                            placeholder='No. Handphone Anda'
                                             value={phone}
                                             onChange={setPhone}
                                             error={
@@ -688,7 +691,7 @@ const IklanMain = ({ id }: { id: number }) => {
                           <div className='art-user-wrapper'>
                             <div className='flex flex-wrap gap-x-10 gap-y-4 border-b border-neutral-400 pb-3'>
                               <div>
-                                <h5 className='text-xs md:text-lg'>
+                                <h5 className='text-xs font-normal md:text-lg'>
                                   Status Akun
                                 </h5>
                                 <h4 className='text-sm md:text-xl'>
@@ -698,7 +701,7 @@ const IklanMain = ({ id }: { id: number }) => {
                                 </h4>
                               </div>
                               <div>
-                                <h5 className='text-xs md:text-lg'>
+                                <h5 className='text-xs font-normal md:text-lg'>
                                   Ganti Nama Akun
                                 </h5>
                                 <h4 className='text-sm md:text-xl'>
@@ -708,7 +711,7 @@ const IklanMain = ({ id }: { id: number }) => {
                                 </h4>
                               </div>
                               <div>
-                                <h5 className='text-xs md:text-lg'>
+                                <h5 className='text-xs font-normal md:text-lg'>
                                   Total Hero
                                 </h5>
                                 <h4 className='text-sm md:text-xl'>
@@ -716,7 +719,7 @@ const IklanMain = ({ id }: { id: number }) => {
                                 </h4>
                               </div>
                               <div>
-                                <h5 className='text-xs md:text-lg'>
+                                <h5 className='text-xs font-normal md:text-lg'>
                                   Total Skin
                                 </h5>
                                 <h4 className='text-sm md:text-xl'>
@@ -724,7 +727,7 @@ const IklanMain = ({ id }: { id: number }) => {
                                 </h4>
                               </div>
                               <div>
-                                <h5 className='text-xs md:text-lg'>
+                                <h5 className='text-xs font-normal md:text-lg'>
                                   Binding Account
                                 </h5>
                                 <div className='flex gap-x-2'>
@@ -752,7 +755,9 @@ const IklanMain = ({ id }: { id: number }) => {
                           <div className='art-user-wrapper'>
                             <div className='flex flex-wrap gap-x-10 gap-y-4 border-b border-neutral-400 pb-3'>
                               <div>
-                                <h5>Favorite</h5>
+                                <h5 className='text-xs font-normal md:text-lg'>
+                                  Favorite
+                                </h5>
                                 <div className='flex gap-x-2'>
                                   {iklan.data.hero.length > 0
                                     ? iklan.data.hero.map((a) => (
@@ -778,7 +783,9 @@ const IklanMain = ({ id }: { id: number }) => {
                           <div className='art-user-wrapper overflow-auto'>
                             <div className='flex flex-wrap gap-x-10 gap-y-4 border-b border-neutral-400 pb-3'>
                               <div>
-                                <h5>Skin Rare</h5>
+                                <h5 className='text-xs font-normal md:text-lg'>
+                                  Skin Rare
+                                </h5>
                                 <div className='flex flex-wrap gap-x-3 gap-y-3'>
                                   {iklan.data.total_skin_rare.length > 0
                                     ? iklan.data.total_skin_rare.map((a, i) => (
@@ -809,7 +816,9 @@ const IklanMain = ({ id }: { id: number }) => {
                           <div className='art-user-wrapper overflow-auto'>
                             <div className='flex flex-wrap gap-x-10 gap-y-4 border-b border-neutral-400 pb-3'>
                               <div>
-                                <h5>Efek Recall</h5>
+                                <h5 className='text-xs font-normal md:text-lg'>
+                                  Efek Recall
+                                </h5>
                                 <div className='flex flex-wrap gap-x-3 gap-y-3'>
                                   {iklan.data.recall_effect.length > 0
                                     ? iklan.data.recall_effect.map((a, i) => (
@@ -835,7 +844,9 @@ const IklanMain = ({ id }: { id: number }) => {
                           <div className='art-user-wrapper overflow-auto'>
                             <div className='flex flex-wrap gap-x-10 gap-y-4 border-b border-neutral-400 pb-3'>
                               <div>
-                                <h5>Emblem</h5>
+                                <h5 className='text-xs font-normal md:text-lg'>
+                                  Emblem
+                                </h5>
                                 <div className='flex flex-wrap gap-x-3 gap-y-3'>
                                   {iklan.data.emblem.length > 0
                                     ? iklan.data.emblem.map((a, i) => (
@@ -910,7 +921,7 @@ const IklanMain = ({ id }: { id: number }) => {
           <div className='py-4'>
             <div className='mb-4 flex gap-x-4'>
               <h3>Iklan lainnya</h3>
-              <Link href='/iklan'>
+              <Link href='/#jelajah_akun'>
                 <a className='text-blue-400'>Lihat semua</a>
               </Link>
             </div>

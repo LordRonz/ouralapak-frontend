@@ -23,7 +23,7 @@ const Footer = () => {
     });
 
   return (
-    <footer className='footer1-bg'>
+    <footer className='footer1-bg' id='footer'>
       <section className='footer-area footer-area1 footer-area1-bg pt-100 pb-50 !bg-neutral-900'>
         <div className='container'>
           <div className='row'>

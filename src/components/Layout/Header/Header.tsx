@@ -128,7 +128,7 @@ const Header = ({ HeaderStatic, setHeight }: HeaderProps) => {
                     </nav>
                   </div>
                   <ButtonLinkGradient
-                    href='/seller'
+                    href='#footer'
                     className='hidden px-3 text-xs font-medium uppercase text-white md:block'
                   >
                     <div className='flex items-center justify-center gap-x-2'>
