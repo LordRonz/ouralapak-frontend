@@ -39,7 +39,9 @@ const InputFile = ({
         key={key}
         ref={ref}
       />
-      <span className='text-neutral-500 dark:text-neutral-400'>{fileName}</span>
+      <span className='overflow-hidden text-ellipsis whitespace-nowrap text-neutral-500 dark:text-neutral-400'>
+        {fileName}
+      </span>
       {children}
     </div>
   );

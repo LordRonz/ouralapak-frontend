@@ -53,6 +53,8 @@ const ProfileMain = () => {
   const [identityCard, setIdentityCard] = useState<File | null>(null);
   const [identityCardValidation, setIdentityCardValidation] =
     useState<File | null>(null);
+  const [identityCardValidationMask, setIdentityCardValidationMask] =
+    useState<File | null>(null);
 
   // const [openDialog, setOpenDialog] = useState(false);
   // const [profilePic, setProfilePic] = useState<File | File[] | null>(null);
@@ -118,6 +120,12 @@ const ProfileMain = () => {
     if (identityCardValidation) {
       identityForm.append('identity_card_validation', identityCardValidation);
     }
+    if (identityCardValidationMask) {
+      identityForm.append(
+        'identity_card_validation_mask',
+        identityCardValidationMask
+      );
+    }
     const { password, confirm_password, ...profileData } = data;
     const passwordData = { password, confirm_password };
     await toast.promise(
@@ -138,7 +146,7 @@ const ProfileMain = () => {
               }),
             ]
           : []),
-        ...(identityCard || identityCardValidation
+        ...(identityCard || identityCardValidation || identityCardValidationMask
           ? [
               axios.put(`${API_URL}/profile/identity`, identityForm, {
                 headers,
@@ -322,7 +330,7 @@ const ProfileMain = () => {
                       <div className='mx-[12px] w-1 border border-black' />
                       <div className='col-md-6 space-y-4'>
                         <label className='text-black dark:!text-white'>
-                          Kartu Identitas
+                          Kartu Identitas (2 buah)
                         </label>
                         <img
                           src={`${API_URL}/${user?.data.identity_card}`}
@@ -351,6 +359,23 @@ const ProfileMain = () => {
                             setIdentityCardValidation(e.target.files[0])
                           }
                           fileName={identityCardValidation?.name}
+                        />
+                      </div>
+                      <div className='col-md-6 space-y-4'>
+                        <label className=' text-black dark:!text-white'>
+                          Kartu Identitas + Tulisan Ouralapak
+                        </label>
+                        <img
+                          src={`${API_URL}/${user?.data.identity_card_validation_mask}`}
+                          alt=''
+                        />
+                        <InputFile
+                          type='file'
+                          onChange={(e) =>
+                            e.target.files &&
+                            setIdentityCardValidationMask(e.target.files[0])
+                          }
+                          fileName={identityCardValidationMask?.name}
                         />
                       </div>
                       <div className='col-md-6'>
@@ -417,6 +442,10 @@ const ProfileMain = () => {
                           </>
                         )}
                       </div>
+                    </div>
+                    <div className='row !mt-8 gap-y-6'>
+                      <h2 className='m-0 text-xl font-normal'>Ubah Password</h2>
+                      <div className='mx-[12px] w-1 border border-black' />
                     </div>
                   </div>
                   <div className='personal-info-btn mt-4'>
