@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
 import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { FiEye } from 'react-icons/fi';
 import PhoneInput, {
   isPossiblePhoneNumber,
   isValidPhoneNumber,
@@ -14,9 +15,7 @@ import withReactContent from 'sweetalert2-react-content';
 import useSWR from 'swr';
 
 import ButtonGradient from '@/components/buttons/ButtonGradient';
-import EditButton from '@/components/Common/EditButton';
 import Breadcrumbs from '@/components/Common/PageTitle';
-import XButton from '@/components/Common/XButton';
 import InputFile from '@/components/Profile/InputFile';
 import ProfileCard from '@/components/Profile/ProfileCard';
 import { API_URL } from '@/constant/config';
@@ -37,14 +36,17 @@ const MySwal = withReactContent(Swal);
 const ProfileMain = () => {
   const {
     register,
-    unregister,
     handleSubmit,
     formState: { errors },
     watch,
   } = useForm<IFormInput>();
 
-  const [toggleEditPassword, setToggleEditPassword] = useState(false);
   const [updateBtnDisabled, setUpdateBtnDisabled] = useState(false);
+  const [passwordInputType, setPasswordInputType] = useState<
+    'password' | 'text'
+  >('password');
+  const [passwordConfirmationInputType, setPasswordConfirmationInputType] =
+    useState<'password' | 'text'>('password');
   const [phone, setPhone] = useState<string>();
 
   // const [previewIdCard, setPreviewIdCard] = useState(false);
@@ -64,8 +66,6 @@ const ProfileMain = () => {
     message: string;
     success: boolean;
   }>(() => `${API_URL}/profile`);
-
-  console.log(user);
 
   useEffect(() => {
     setPhone(user?.data.phone);
@@ -378,7 +378,7 @@ const ProfileMain = () => {
                           fileName={identityCardValidationMask?.name}
                         />
                       </div>
-                      <div className='col-md-6'>
+                      {/* <div className='col-md-6'>
                         <h3 className='text-lg'>
                           Edit password{' '}
                           {toggleEditPassword ? (
@@ -441,11 +441,87 @@ const ProfileMain = () => {
                             </div>
                           </>
                         )}
-                      </div>
+                      </div> */}
                     </div>
                     <div className='row !mt-8 gap-y-6'>
                       <h2 className='m-0 text-xl font-normal'>Ubah Password</h2>
                       <div className='mx-[12px] w-1 border border-black' />
+                      <div className='col-md-6'>
+                        <div className='single-input-unit'>
+                          <label className='!font-normal'>
+                            Kata sandi baru
+                          </label>
+                          {user && (
+                            <div className='flex items-center'>
+                              <input
+                                type={passwordInputType}
+                                className='rounded-lg border'
+                                {...register('password', {
+                                  minLength: {
+                                    value: 8,
+                                    message:
+                                      'Password harus berisi setidaknya 8 karakter',
+                                  },
+                                })}
+                                defaultValue=''
+                                autoComplete='off'
+                                aria-autocomplete='none'
+                              />
+                              <div
+                                className='flex h-[50px] !w-8 items-center justify-center rounded-r-[5px] bg-[rgba(30,_83,_163,_0.13)]'
+                                onClick={() =>
+                                  setPasswordInputType((v) =>
+                                    v === 'password' ? 'text' : 'password'
+                                  )
+                                }
+                              >
+                                <FiEye />
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                        <p className='text-red-500'>
+                          {errors.password?.message}
+                        </p>
+                      </div>
+                      <div className='col-md-6'>
+                        <div className='single-input-unit'>
+                          <label className='!font-normal'>
+                            Ulangi kata sandi baru
+                          </label>
+                          {user && (
+                            <div className='flex items-center'>
+                              <input
+                                type={passwordConfirmationInputType}
+                                className='inline !rounded-r-none border'
+                                {...register('confirm_password', {
+                                  validate: (val?: string) => {
+                                    if (watch('password') != val) {
+                                      return 'Konfirmasi password tidak sesuai!';
+                                    }
+                                  },
+                                })}
+                                defaultValue=''
+                                autoComplete='off'
+                                aria-autocomplete='none'
+                              />
+                              <div
+                                className='flex h-[50px] !w-8 items-center justify-center rounded-r-[5px] bg-[rgba(30,_83,_163,_0.13)]'
+                                onClick={() =>
+                                  setPasswordConfirmationInputType((v) =>
+                                    v === 'password' ? 'text' : 'password'
+                                  )
+                                }
+                              >
+                                <FiEye />
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                        <p className='text-red-500'>
+                          {errors.confirm_password?.message}
+                        </p>
+                      </div>
                     </div>
                   </div>
                   <div className='personal-info-btn mt-4'>
