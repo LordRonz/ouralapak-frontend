@@ -17,6 +17,7 @@ import ButtonGradient from '@/components/buttons/ButtonGradient';
 import EditButton from '@/components/Common/EditButton';
 import Breadcrumbs from '@/components/Common/PageTitle';
 import XButton from '@/components/Common/XButton';
+import InputFile from '@/components/Profile/InputFile';
 import ProfileCard from '@/components/Profile/ProfileCard';
 import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
@@ -196,8 +197,8 @@ const ProfileMain = () => {
       <div className='creator-cover-img pos-rel mt-4'>
         <img src='images/banner_cover.png' alt='cover-img' />
       </div>
-      <section className='creator-info-area pb-90 pt-60'>
-        <div className='container'>
+      <section className='creator-info-area pb-90 pt-40'>
+        <div className='px-16'>
           <div className='row'>
             <div className='col-lg-4'>
               <ProfileCard
@@ -208,159 +209,220 @@ const ProfileMain = () => {
               />
             </div>
             <div className='col-lg-8'>
-              <div className='creator-info-personal wow fadeInUp mb-40'>
+              <div className='absolute top-36 flex flex-col'>
+                <div className='flex'>
+                  <h4 className='artist-name relative text-2xl text-white'>
+                    {user?.data.name}
+                    {!!user?.data.is_verified && (
+                      <span className='profile-verification verified !right-[-30px]'>
+                        <i className='fas fa-check' />
+                      </span>
+                    )}
+                  </h4>
+                </div>
+                <div className='artist-id text-white'>
+                  @{user?.data.username}
+                </div>
+              </div>
+              <div className='creator-info-personal wow fadeInUp mb-40 rounded-xl bg-white px-3 py-3 dark:!bg-[#1c2434]'>
+                <h1 className='mb-4 text-3xl text-[#B89C74]'>Profile</h1>
                 <form
                   className='personal-info-form'
                   onSubmit={handleSubmit(onSubmit)}
                 >
                   <div className='row gap-y-6'>
-                    <div className='col-md-6'>
-                      <div className='single-input-unit'>
-                        <label>Nama</label>
-                        {user && (
-                          <input
-                            type='text'
-                            defaultValue={user?.data.name}
-                            {...register('name')}
+                    <div className='row gap-y-6'>
+                      <h2 className='m-0 text-xl font-normal'>Umum</h2>
+                      <div className='mx-[12px] w-1 border border-black' />
+                      <div className='col-md-12'>
+                        <div className='single-input-unit'>
+                          <label className='!font-normal'>Nama</label>
+                          {user && (
+                            <input
+                              type='text'
+                              defaultValue={user?.data.name}
+                              className='rounded-lg border'
+                              {...register('name')}
+                            />
+                          )}
+                        </div>
+                      </div>
+                      <div className='col-md-6'>
+                        <div className='single-input-unit'>
+                          <label className='!font-normal'>Email</label>
+                          {user && (
+                            <input
+                              type='text'
+                              defaultValue={user?.data.email}
+                              className='rounded-lg border disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:dark:bg-neutral-700'
+                              disabled
+                            />
+                          )}
+                        </div>
+                      </div>
+                      <div className='col-md-6'>
+                        <div className='single-input-unit'>
+                          <label htmlFor='phone' className='!font-normal'>
+                            No. Handphone
+                          </label>
+                          <PhoneInput
+                            defaultCountry='ID'
+                            placeholder='Masukkan No. Handphone'
+                            value={phone}
+                            onChange={setPhone}
+                            error={
+                              phone
+                                ? isValidPhoneNumber(phone)
+                                  ? undefined
+                                  : 'Invalid phone number'
+                                : 'Phone number required'
+                            }
+                            className='rounded-lg border pl-[20px]'
                           />
-                        )}
+                        </div>
+                        <p className='text-red-500'>
+                          {phone &&
+                            !isPossiblePhoneNumber(phone) &&
+                            'Nomor telepon tidak valid'}
+                        </p>
+                      </div>
+                      <div className='col-md-6'>
+                        <div className='single-input-unit'>
+                          <label className='!font-normal'>Username</label>
+                          {user && (
+                            <input
+                              type='text'
+                              defaultValue={user?.data.username}
+                              className='rounded-lg border disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:dark:bg-neutral-700'
+                              disabled
+                            />
+                          )}
+                        </div>
+                      </div>
+                      <div className='col-md-6'>
+                        <div className='single-input-unit'>
+                          <label className='!font-normal'>
+                            Username Instagram
+                          </label>
+                          {user && (
+                            <input
+                              type='text'
+                              defaultValue={user?.data.ig_username}
+                              {...register('ig_username')}
+                              className='rounded-lg border'
+                            />
+                          )}
+                        </div>
                       </div>
                     </div>
-                    <div className='col-md-6'>
-                      <div className='single-input-unit'>
-                        <label htmlFor='phone'>No. Handphone</label>
-                        <PhoneInput
-                          defaultCountry='ID'
-                          placeholder='Masukkan No. Handphone'
-                          value={phone}
-                          onChange={setPhone}
-                          error={
-                            phone
-                              ? isValidPhoneNumber(phone)
-                                ? undefined
-                                : 'Invalid phone number'
-                              : 'Phone number required'
+                    <div className='row !mt-8 gap-y-6'>
+                      <h2 className='m-0 text-xl font-normal'>
+                        Verifikasi Akun
+                      </h2>
+                      <div className='mx-[12px] w-1 border border-black' />
+                      <div className='col-md-6 space-y-4'>
+                        <label className='text-black dark:!text-white'>
+                          Kartu Identitas
+                        </label>
+                        <img
+                          src={`${API_URL}/${user?.data.identity_card}`}
+                          alt=''
+                        />
+                        <InputFile
+                          type='file'
+                          onChange={(e) =>
+                            e.target.files && setIdentityCard(e.target.files[0])
                           }
+                          fileName={identityCard?.name}
                         />
                       </div>
-                      <p className='text-red-500'>
-                        {phone &&
-                          !isPossiblePhoneNumber(phone) &&
-                          'Nomor telepon tidak valid'}
-                      </p>
-                    </div>
-                    <div className='col-md-6'>
-                      <div className='single-input-unit'>
-                        <label>Username IG</label>
-                        {user && (
-                          <input
-                            type='text'
-                            defaultValue={user?.data.ig_username}
-                            {...register('ig_username')}
-                          />
+                      <div className='col-md-6 space-y-4'>
+                        <label className=' text-black dark:!text-white'>
+                          Kartu Identitas + Selfie
+                        </label>
+                        <img
+                          src={`${API_URL}/${user?.data.identity_card_validation}`}
+                          alt=''
+                        />
+                        <InputFile
+                          type='file'
+                          onChange={(e) =>
+                            e.target.files &&
+                            setIdentityCardValidation(e.target.files[0])
+                          }
+                          fileName={identityCardValidation?.name}
+                        />
+                      </div>
+                      <div className='col-md-6'>
+                        <h3 className='text-lg'>
+                          Edit password{' '}
+                          {toggleEditPassword ? (
+                            <XButton
+                              onClick={() => {
+                                setToggleEditPassword(false);
+                                unregister('password');
+                                unregister('confirm_password');
+                              }}
+                            />
+                          ) : (
+                            <EditButton
+                              onClick={() => setToggleEditPassword(true)}
+                            />
+                          )}
+                        </h3>
+                        {toggleEditPassword && (
+                          <>
+                            <div>
+                              <div className='single-input-unit'>
+                                <label htmlFor='password'>Password</label>
+                                <input
+                                  type='password'
+                                  placeholder='Password anda'
+                                  {...register('password', {
+                                    required: 'Password harus diisi!',
+                                    minLength: {
+                                      value: 8,
+                                      message:
+                                        'Password harus berisi setidaknya 8 karakter',
+                                    },
+                                  })}
+                                />
+                              </div>
+                              <p className='text-red-500'>
+                                {errors.password?.message}
+                              </p>
+                            </div>
+                            <div>
+                              <div className='single-input-unit'>
+                                <label htmlFor='confirm_password'>
+                                  Konfirmasi Password
+                                </label>
+                                <input
+                                  type='password'
+                                  placeholder='Konfirmasi password anda'
+                                  {...register('confirm_password', {
+                                    required: 'Konfirmasi password anda!',
+                                    validate: (val?: string) => {
+                                      if (watch('password') != val) {
+                                        return 'Konfirmasi password tidak sesuai!';
+                                      }
+                                    },
+                                  })}
+                                />
+                              </div>
+                              <p className='text-red-500'>
+                                {errors.confirm_password?.message}
+                              </p>
+                            </div>
+                          </>
                         )}
                       </div>
-                    </div>
-                    <div className='col-md-6'>
-                      <h3 className='text-lg'>
-                        Edit password{' '}
-                        {toggleEditPassword ? (
-                          <XButton
-                            onClick={() => {
-                              setToggleEditPassword(false);
-                              unregister('password');
-                              unregister('confirm_password');
-                            }}
-                          />
-                        ) : (
-                          <EditButton
-                            onClick={() => setToggleEditPassword(true)}
-                          />
-                        )}
-                      </h3>
-                      {toggleEditPassword && (
-                        <>
-                          <div>
-                            <div className='single-input-unit'>
-                              <label htmlFor='password'>Password</label>
-                              <input
-                                type='password'
-                                placeholder='Password anda'
-                                {...register('password', {
-                                  required: 'Password harus diisi!',
-                                  minLength: {
-                                    value: 8,
-                                    message:
-                                      'Password harus berisi setidaknya 8 karakter',
-                                  },
-                                })}
-                              />
-                            </div>
-                            <p className='text-red-500'>
-                              {errors.password?.message}
-                            </p>
-                          </div>
-                          <div>
-                            <div className='single-input-unit'>
-                              <label htmlFor='confirm_password'>
-                                Konfirmasi Password
-                              </label>
-                              <input
-                                type='password'
-                                placeholder='Konfirmasi password anda'
-                                {...register('confirm_password', {
-                                  required: 'Konfirmasi password anda!',
-                                  validate: (val?: string) => {
-                                    if (watch('password') != val) {
-                                      return 'Konfirmasi password tidak sesuai!';
-                                    }
-                                  },
-                                })}
-                              />
-                            </div>
-                            <p className='text-red-500'>
-                              {errors.confirm_password?.message}
-                            </p>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                    <div className='col-md-6 space-y-4'>
-                      <label className='font-bold text-black'>
-                        Kartu Identitas
-                      </label>
-                      <img
-                        src={`${API_URL}/${user?.data.identity_card}`}
-                        alt=''
-                      />
-                      <input
-                        type='file'
-                        onChange={(e) =>
-                          e.target.files && setIdentityCard(e.target.files[0])
-                        }
-                      />
-                    </div>
-                    <div className='col-md-6 space-y-4'>
-                      <label className='font-bold text-black'>
-                        Kartu Identitas + Selfie
-                      </label>
-                      <img
-                        src={`${API_URL}/${user?.data.identity_card_validation}`}
-                        alt=''
-                      />
-                      <input
-                        type='file'
-                        onChange={(e) =>
-                          e.target.files &&
-                          setIdentityCardValidation(e.target.files[0])
-                        }
-                      />
                     </div>
                   </div>
                   <div className='personal-info-btn mt-4'>
                     <ButtonGradient
                       type='submit'
-                      className='text-black'
+                      className='w-full text-white'
                       disabled={updateBtnDisabled}
                     >
                       Update Profil

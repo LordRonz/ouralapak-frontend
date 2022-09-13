@@ -23,7 +23,7 @@ const ButtonGradient = ({
       disabled={disabled}
       type='button'
       className={clsxm(
-        'relative inline-block h-12 overflow-hidden rounded-md bg-gradient-to-r bg-[length:200%_100%] px-9 text-base font-semibold leading-10 transition-all duration-300',
+        'relative inline-block h-10 overflow-hidden rounded-md bg-gradient-to-r bg-[length:200%_100%] px-7 text-base font-semibold leading-10 text-white transition-all duration-300',
         !disabled ? 'hover:bg-100' : '',
         variant === 'primary' &&
           'from-primary-300 via-primary-400 to-primary-500',
