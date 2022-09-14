@@ -14,7 +14,6 @@ import Pagination from '@/components/Common/Pagination';
 import Spinner from '@/components/Common/Spinner';
 import ButtonLink from '@/components/links/ButtonLink';
 import ProfileCard from '@/components/Profile/ProfileCard';
-import ProfileCardMobile from '@/components/Profile/ProfileCardMobile';
 import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
 import getAuthHeader from '@/lib/getAuthHeader';
@@ -22,6 +21,8 @@ import { StatusIklanEnum } from '@/lib/getStatusIklan';
 import type Iklan from '@/types/iklan';
 import PaginationType from '@/types/pagination';
 import User from '@/types/user';
+
+// const navs = [...new Array(100)].map((_, i) => (i + 1).toString());
 
 const MySwal = withReactContent(Swal);
 
@@ -103,29 +104,13 @@ const SellerMain = () => {
 
   return (
     <main>
-      <Breadcrumbs
-        breadcrumbTitle='Informasi Profil'
-        breadcrumbSubTitle='Informasi Profil'
-      />
-      <div className='creator-cover-img pos-rel'>
-        <img src='images/banner_cover.png' alt='cover-img' />
-      </div>
-      <section className='creator-info-area pb-90 pt-40'>
-        <div className='px-4 md:px-16'>
+      <Breadcrumbs breadcrumbSubTitle={user.data.name} />
+
+      <section className='creator-details-area pb-90 pt-60'>
+        <div className='container'>
           <div className='row'>
-            <div className='col-lg-4'>
-              <ProfileCard
-                user={user?.data}
-                handleLogout={handleLogout}
-                withEdit={false}
-              />
-            </div>
-            <div className='col-lg-8 relative'>
-              <ProfileCardMobile
-                user={user?.data}
-                handleLogout={handleLogout}
-                withEdit={false}
-              />
+            <ProfileCard user={user?.data} handleLogout={handleLogout} />
+            <div className='col-xl-9'>
               <div className='creator-info-bar mb-30 wow fadeInUp'>
                 <div className='artist-meta-info creator-details-meta-info'>
                   <h1 className='text-3xl'>Iklan</h1>

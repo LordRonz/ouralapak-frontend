@@ -16,7 +16,7 @@ export type ProfileCardProp = {
   setFile?: (f: FileList) => void;
 };
 
-const ProfileCard = ({
+const ProfileCardMobile = ({
   user,
   handleLogout,
   withEdit = false,
@@ -36,10 +36,10 @@ const ProfileCard = ({
   };
 
   return (
-    <div className='col-lg-3 col-md-8 absolute top-32 hidden md:block'>
+    <div className='relative top-[-120px] block md:hidden'>
       <div className='creator-info-details wow fadeInUp mb-40'>
-        <div className='creator-img-name flex items-center justify-center rounded-t-lg py-12'>
-          <div className='relative h-[120px] w-[140px]'>
+        <div className='creator-img-name flex items-center justify-center rounded-t-lg py-4'>
+          <div className='relative h-[70px] w-[70px]'>
             <img
               src={
                 user?.profile_picture
@@ -80,8 +80,20 @@ const ProfileCard = ({
               </Tooltip>
             )}
           </div>
+
+          <div className='creator-name-id p-0'>
+            <h4 className='artist-name relative'>
+              {user?.name}
+              {!!user?.is_verified && (
+                <span className='profile-verification verified'>
+                  <i className='fas fa-check'></i>
+                </span>
+              )}
+            </h4>
+            <div className='artist-id'>@{user?.username}</div>
+          </div>
         </div>
-        <div className='profile-setting-list rounded-b-lg pb-4'>
+        <div className='profile-setting-list  rounded-b-lg'>
           <ul>
             <li
               className={clsxm(
@@ -138,4 +150,4 @@ const ProfileCard = ({
   );
 };
 
-export default ProfileCard;
+export default ProfileCardMobile;

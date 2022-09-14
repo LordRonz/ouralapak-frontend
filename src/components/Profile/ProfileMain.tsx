@@ -24,6 +24,8 @@ import toastPromiseError from '@/lib/toastPromiseError';
 import useAuthHeader from '@/services/authHeader';
 import User from '@/types/user';
 
+import ProfileCardMobile from './ProfileCardMobile';
+
 type IFormInput = {
   name?: string;
   ig_username?: string;
@@ -202,11 +204,11 @@ const ProfileMain = () => {
         breadcrumbTitle='Informasi Profil'
         breadcrumbSubTitle='Informasi Profil'
       />
-      <div className='creator-cover-img pos-rel mt-4'>
+      <div className='creator-cover-img pos-rel'>
         <img src='images/banner_cover.png' alt='cover-img' />
       </div>
       <section className='creator-info-area pb-90 pt-40'>
-        <div className='px-16'>
+        <div className='px-4 md:px-16'>
           <div className='row'>
             <div className='col-lg-4'>
               <ProfileCard
@@ -216,8 +218,14 @@ const ProfileMain = () => {
                 setFile={setProfilePicture}
               />
             </div>
-            <div className='col-lg-8'>
-              <div className='absolute top-36 flex flex-col'>
+            <div className='col-lg-8 relative'>
+              <ProfileCardMobile
+                user={user?.data}
+                handleLogout={handleLogout}
+                withEdit
+                setFile={setProfilePicture}
+              />
+              <div className='absolute top-[-120px] hidden flex-col md:flex'>
                 <div className='flex'>
                   <h4 className='artist-name relative text-2xl text-white'>
                     {user?.data.name}
@@ -232,7 +240,7 @@ const ProfileMain = () => {
                   @{user?.data.username}
                 </div>
               </div>
-              <div className='creator-info-personal wow fadeInUp mb-40 rounded-xl bg-white px-3 py-3 dark:!bg-[#1c2434]'>
+              <div className='creator-info-personal wow fadeInUp relative top-[-150px] mb-40 rounded-xl bg-white px-3 py-3 dark:!bg-[#1c2434] md:static'>
                 <h1 className='mb-4 text-3xl text-[#B89C74]'>Profile</h1>
                 <form
                   className='personal-info-form'

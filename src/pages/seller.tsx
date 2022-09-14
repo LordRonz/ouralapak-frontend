@@ -4,7 +4,7 @@ import React from 'react';
 import AnimatePage from '@/components/AnimatePage';
 import SellerMain from '@/components/Iklan/SellerMain';
 import Footer from '@/components/Layout/Footer/FooterOne/Footer';
-import HeaderIklan from '@/components/Layout/Header/HeaderIklan';
+import Header from '@/components/Layout/Header/Header';
 import Seo from '@/components/Seo';
 
 const SellerPage: NextPage = () => {
@@ -12,7 +12,7 @@ const SellerPage: NextPage = () => {
     <>
       <Seo templateTitle='Seller' />
       <AnimatePage>
-        <HeaderIklan />
+        <Header />
         <SellerMain />
         <Footer />
       </AnimatePage>
