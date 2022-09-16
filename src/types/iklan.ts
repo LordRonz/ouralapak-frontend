@@ -23,6 +23,7 @@ type Iklan = {
   platform_id: number;
   recall_effect: string[];
   status: string;
+  status_id: number;
   title: string;
   total_hero: number;
   total_skin: number;

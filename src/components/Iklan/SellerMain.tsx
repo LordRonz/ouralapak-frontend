@@ -21,6 +21,7 @@ import getAuthHeader from '@/lib/getAuthHeader';
 import { StatusIklanEnum } from '@/lib/getStatusIklan';
 import type Iklan from '@/types/iklan';
 import PaginationType from '@/types/pagination';
+import Refund from '@/types/refund';
 import User from '@/types/user';
 
 const MySwal = withReactContent(Swal);
@@ -58,6 +59,12 @@ const SellerMain = () => {
     setMounted(true);
   }, []);
 
+  const { data: refund } = useSWR<{
+    data: { data: Refund[]; pagination: PaginationType };
+    message: string;
+    success: boolean;
+  }>(`${API_URL}/master/refund?perPage=200`);
+
   const { data: iklans } = useSWR<{
     data: { data: Iklan[]; pagination: PaginationType };
     message: string;
@@ -73,6 +80,12 @@ const SellerMain = () => {
         })
       : null
   );
+
+  useEffect(() => {
+    setCurPage(0);
+  }, [curStatus]);
+
+  console.log(iklans);
 
   const { data: user } = useSWR<{
     data: User;
@@ -110,7 +123,7 @@ const SellerMain = () => {
       <div className='creator-cover-img pos-rel'>
         <img src='images/banner_cover.png' alt='cover-img' />
       </div>
-      <section className='creator-info-area pb-90 pt-40'>
+      <section className='creator-info-area pt-40'>
         <div className='px-4 md:px-16'>
           <div className='row'>
             <div className='col-lg-4'>
@@ -126,209 +139,243 @@ const SellerMain = () => {
                 handleLogout={handleLogout}
                 withEdit={false}
               />
-              <div className='creator-info-bar mb-30 wow fadeInUp'>
-                <div className='artist-meta-info creator-details-meta-info'>
-                  <h1 className='text-3xl'>Iklan</h1>
+              <div className='absolute top-[-120px] hidden flex-col md:flex'>
+                <div className='flex'>
+                  <h4 className='artist-name relative text-2xl text-white'>
+                    {user?.data.name}
+                    {!!user?.data.is_verified && (
+                      <span className='profile-verification verified !right-[-30px]'>
+                        <i className='fas fa-check' />
+                      </span>
+                    )}
+                  </h4>
                 </div>
-                <div className='creator-details-action'>
-                  <div className='artist-follow-btn'>
-                    <ButtonLink href='/post-iklan'>Tambah Iklan</ButtonLink>
-                  </div>
+                <div className='artist-id text-white'>
+                  @{user?.data.username}
                 </div>
               </div>
-              <div className='creator-info-tab wow fadeInUp'>
-                <div className='creator-info-tab-nav mb-30'>
-                  <nav>
-                    <div
-                      className='nav nav-tabs flex flex-nowrap gap-x-8 overflow-auto whitespace-nowrap'
-                      id='nav-tab'
-                      role='tablist'
-                    >
-                      <button
-                        className='nav-link active mb-2'
-                        id='nav-created-tab'
-                        data-bs-toggle='tab'
-                        data-bs-target='#tab-nav1'
-                        type='button'
-                        role='tab'
-                        aria-selected='true'
-                        onClick={() => setCurStatus(-1)}
+              <div className='creator-info-personal wow fadeInUp relative top-[-150px] mb-40 rounded-xl bg-white px-6 py-8 dark:!bg-[#1c2434] md:static'>
+                <div className='creator-info-bar wow fadeInUp mb-4 flex-nowrap'>
+                  <div className='artist-meta-info creator-details-meta-info'>
+                    <h1 className='mb-4 text-3xl text-[#B89C74]'>Iklan</h1>
+                  </div>
+                  <div className='creator-details-action'>
+                    <div className='artist-follow-btn'>
+                      <ButtonLink
+                        href='/post-iklan'
+                        className='whitespace-nowrap rounded-lg px-2'
                       >
-                        <span className='profile-nav-button'>
-                          <span className='artist-meta-item'>
-                            <span className='artist-meta-type'>Semua</span>
-                          </span>
-                        </span>
-                      </button>
-                      <button
-                        className='nav-link'
-                        id='nav-collection-tab'
-                        data-bs-toggle='tab'
-                        data-bs-target='#tab-nav2'
-                        type='button'
-                        role='tab'
-                        aria-selected='false'
-                        onClick={() =>
-                          setCurStatus(StatusIklanEnum.DIPUBLIKASI)
-                        }
-                      >
-                        <span className='profile-nav-button'>
-                          <span className='artist-meta-item'>
-                            <span className='artist-meta-type'>
-                              Dipublikasi
-                            </span>
-                            <span className='artist-art-collection'></span>
-                          </span>
-                        </span>
-                      </button>
-                      <button
-                        className='nav-link'
-                        id='nav-featured-tab'
-                        data-bs-toggle='tab'
-                        data-bs-target='#tab-nav3'
-                        type='button'
-                        role='tab'
-                        aria-selected='false'
-                        onClick={() => setCurStatus(StatusIklanEnum.DITOLAK)}
-                      >
-                        <span className='profile-nav-button'>
-                          <span className='artist-meta-item'>
-                            <span className='artist-meta-type'>Ditolak</span>
-                            <span className='artist-art-featured'></span>
-                          </span>
-                        </span>
-                      </button>
-                      <button
-                        className='nav-link'
-                        id='nav-sold-tab'
-                        data-bs-toggle='tab'
-                        data-bs-target='#tab-nav4'
-                        type='button'
-                        role='tab'
-                        aria-selected='false'
-                        onClick={() => setCurStatus(StatusIklanEnum.DIBATALKAN)}
-                      >
-                        <span className='profile-nav-button'>
-                          <span className='artist-meta-item'>
-                            <span className='artist-meta-type'>Dibatalkan</span>
-                            <span className='artist-art-sold'></span>
-                          </span>
-                        </span>
-                      </button>
-                      <button
-                        className='nav-link'
-                        id='nav-bid-tab'
-                        data-bs-toggle='tab'
-                        data-bs-target='#tab-nav5'
-                        type='button'
-                        role='tab'
-                        aria-selected='false'
-                        onClick={() =>
-                          setCurStatus(StatusIklanEnum.MENUNGGU_PEMBAYARAN)
-                        }
-                      >
-                        <span className='profile-nav-button'>
-                          <span className='artist-meta-item'>
-                            <span className='artist-meta-type'>
-                              Menunggu Pembayaran Penjual
-                            </span>
-                            <span className='artist-art-bids'></span>
-                          </span>
-                        </span>
-                      </button>
-                      <button
-                        className='nav-link'
-                        id='nav-sold-tab'
-                        data-bs-toggle='tab'
-                        data-bs-target='#tab-nav6'
-                        type='button'
-                        role='tab'
-                        aria-selected='false'
-                        onClick={() =>
-                          setCurStatus(StatusIklanEnum.MENUNGGU_KONFIRMASI)
-                        }
-                      >
-                        <span className='profile-nav-button'>
-                          <span className='artist-meta-item'>
-                            <span className='artist-meta-type'>
-                              Menunggu Konfirmasi
-                            </span>
-                            <span className='artist-art-sold'></span>
-                          </span>
-                        </span>
-                      </button>
-                      <button
-                        className='nav-link'
-                        id='nav-sold-tab'
-                        data-bs-toggle='tab'
-                        data-bs-target='#tab-nav7'
-                        type='button'
-                        role='tab'
-                        aria-selected='false'
-                        onClick={() => setCurStatus(StatusIklanEnum.SELESAI)}
-                      >
-                        <span className='profile-nav-button'>
-                          <span className='artist-meta-item'>
-                            <span className='artist-meta-type'>Selesai</span>
-                            <span className='artist-art-sold'></span>
-                          </span>
-                        </span>
-                      </button>
-                      <button
-                        className='nav-link'
-                        id='nav-sold-tab'
-                        data-bs-toggle='tab'
-                        data-bs-target='#tab-nav8'
-                        type='button'
-                        role='tab'
-                        aria-selected='false'
-                        onClick={() =>
-                          setCurStatus(
-                            StatusIklanEnum.MENUNGGU_PEMBAYARAN_PEMBELI
-                          )
-                        }
-                      >
-                        <span className='profile-nav-button'>
-                          <span className='artist-meta-item'>
-                            <span className='artist-meta-type'>
-                              Menunggu Pembayaran Pembeli
-                            </span>
-                            <span className='artist-art-sold'></span>
-                          </span>
-                        </span>
-                      </button>
+                        Tambah Iklan
+                      </ButtonLink>
                     </div>
-                  </nav>
+                  </div>
                 </div>
-                <div className='creator-info-tab-contents mb-30'>
-                  <div className='tab-content' id='nav-tabContent'>
-                    <div
-                      className='tab-pane fade active show'
-                      id='tab-nav1'
-                      role='tabpanel'
-                      aria-labelledby='nav-created-tab'
-                    >
-                      <div className='created-items-wrapper'>
-                        <div className='row space-y-4'>
-                          {iklans?.data.data.map((iklan) => (
-                            <IklanCard
-                              iklan={iklan}
-                              key={`${iklan.id}-${iklan.user_id}`}
-                            />
-                          ))}
-                        </div>
-                        <div className='row mt-3'>
-                          <div className='col-12'>
-                            <p>
-                              Menampilkan {iklans?.data.data.length ?? 0} dari{' '}
-                              {iklans?.data.pagination.total ?? 0} iklan
-                            </p>
-                            <Pagination
-                              pageCount={iklans?.data.pagination.lastPage ?? 1}
-                              onPageChange={({ selected }) =>
-                                setCurPage(selected)
-                              }
-                            />
+                <div className='creator-info-tab wow fadeInUp'>
+                  <div className='creator-info-tab-nav mb-30'>
+                    <nav>
+                      <div
+                        className='nav nav-tabs flex flex-nowrap overflow-auto whitespace-nowrap bg-[#F8F8F8] py-2 px-2 dark:bg-gray-700'
+                        id='nav-tab'
+                        role='tablist'
+                      >
+                        <button
+                          className='nav-link active !rounded-lg px-8'
+                          id='nav-created-tab'
+                          data-bs-toggle='tab'
+                          data-bs-target='#tab-nav1'
+                          type='button'
+                          role='tab'
+                          aria-selected='true'
+                          onClick={() => setCurStatus(-1)}
+                        >
+                          <span className='profile-nav-button'>
+                            <span className='artist-meta-item'>
+                              <span className='artist-meta-type'>Semua</span>
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          className='nav-link !rounded-lg'
+                          id='nav-collection-tab'
+                          data-bs-toggle='tab'
+                          data-bs-target='#tab-nav1'
+                          type='button'
+                          role='tab'
+                          aria-selected='false'
+                          onClick={() =>
+                            setCurStatus(StatusIklanEnum.DIPUBLIKASI)
+                          }
+                        >
+                          <span className='profile-nav-button'>
+                            <span className='artist-meta-item'>
+                              <span className='artist-meta-type'>
+                                Dipublikasi
+                              </span>
+                              <span className='artist-art-collection'></span>
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          className='nav-link !rounded-lg'
+                          id='nav-featured-tab'
+                          data-bs-toggle='tab'
+                          data-bs-target='#tab-nav1'
+                          type='button'
+                          role='tab'
+                          aria-selected='false'
+                          onClick={() => setCurStatus(StatusIklanEnum.DITOLAK)}
+                        >
+                          <span className='profile-nav-button'>
+                            <span className='artist-meta-item'>
+                              <span className='artist-meta-type'>Ditolak</span>
+                              <span className='artist-art-featured'></span>
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          className='nav-link !rounded-lg'
+                          id='nav-sold-tab'
+                          data-bs-toggle='tab'
+                          data-bs-target='#tab-nav1'
+                          type='button'
+                          role='tab'
+                          aria-selected='false'
+                          onClick={() =>
+                            setCurStatus(StatusIklanEnum.DIBATALKAN)
+                          }
+                        >
+                          <span className='profile-nav-button'>
+                            <span className='artist-meta-item'>
+                              <span className='artist-meta-type'>
+                                Dibatalkan
+                              </span>
+                              <span className='artist-art-sold'></span>
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          className='nav-link !rounded-lg'
+                          id='nav-bid-tab'
+                          data-bs-toggle='tab'
+                          data-bs-target='#tab-nav1'
+                          type='button'
+                          role='tab'
+                          aria-selected='false'
+                          onClick={() =>
+                            setCurStatus(StatusIklanEnum.MENUNGGU_PEMBAYARAN)
+                          }
+                        >
+                          <span className='profile-nav-button'>
+                            <span className='artist-meta-item'>
+                              <span className='artist-meta-type'>
+                                Menunggu Pembayaran Penjual
+                              </span>
+                              <span className='artist-art-bids'></span>
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          className='nav-link !rounded-lg'
+                          id='nav-sold-tab'
+                          data-bs-toggle='tab'
+                          data-bs-target='#tab-nav1'
+                          type='button'
+                          role='tab'
+                          aria-selected='false'
+                          onClick={() =>
+                            setCurStatus(StatusIklanEnum.MENUNGGU_KONFIRMASI)
+                          }
+                        >
+                          <span className='profile-nav-button'>
+                            <span className='artist-meta-item'>
+                              <span className='artist-meta-type'>
+                                Menunggu Konfirmasi
+                              </span>
+                              <span className='artist-art-sold'></span>
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          className='nav-link !rounded-lg'
+                          id='nav-sold-tab'
+                          data-bs-toggle='tab'
+                          data-bs-target='#tab-nav1'
+                          type='button'
+                          role='tab'
+                          aria-selected='false'
+                          onClick={() => setCurStatus(StatusIklanEnum.SELESAI)}
+                        >
+                          <span className='profile-nav-button'>
+                            <span className='artist-meta-item'>
+                              <span className='artist-meta-type'>Selesai</span>
+                              <span className='artist-art-sold'></span>
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          className='nav-link !rounded-lg'
+                          id='nav-sold-tab'
+                          data-bs-toggle='tab'
+                          data-bs-target='#tab-nav1'
+                          type='button'
+                          role='tab'
+                          aria-selected='false'
+                          onClick={() =>
+                            setCurStatus(
+                              StatusIklanEnum.MENUNGGU_PEMBAYARAN_PEMBELI
+                            )
+                          }
+                        >
+                          <span className='profile-nav-button'>
+                            <span className='artist-meta-item'>
+                              <span className='artist-meta-type'>
+                                Menunggu Pembayaran Pembeli
+                              </span>
+                              <span className='artist-art-sold'></span>
+                            </span>
+                          </span>
+                        </button>
+                      </div>
+                    </nav>
+                  </div>
+                  <div className='creator-info-tab-contents'>
+                    <div className='tab-content'>
+                      <div
+                        className='tab-pane fade active show'
+                        id='tab-nav1'
+                        role='tabpanel'
+                        aria-labelledby='nav-created-tab'
+                      >
+                        <div className='created-items-wrapper'>
+                          <div className='grid grid-cols-2 gap-y-4 md:grid-cols-1'>
+                            {iklans?.data.data.map((iklan) => (
+                              <IklanCard
+                                iklan={{
+                                  ...iklan,
+                                  refund_title: refund?.data.data.find(
+                                    (v) => v.id === iklan.jenis_refund
+                                  )?.name,
+                                }}
+                                key={`${iklan.id}-${iklan.user_id}`}
+                              />
+                            ))}
+                          </div>
+                          <div className='row mt-3'>
+                            <div className='col-12 flex flex-col items-center justify-center'>
+                              <p>
+                                Menampilkan {iklans?.data.data.length ?? 0} dari{' '}
+                                {iklans?.data.pagination.total ?? 0} iklan
+                              </p>
+                              <Pagination
+                                containerClassName='mb-0 mt-0'
+                                pageCount={
+                                  iklans?.data.pagination.lastPage ?? 1
+                                }
+                                onPageChange={({ selected }) =>
+                                  setCurPage(selected)
+                                }
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
