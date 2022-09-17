@@ -8,7 +8,7 @@ const ErrorPageMain = () => {
     <main>
       <Breadcrumbs breadcrumbTitle='404 Error' breadcrumbSubTitle='404 Error' />
 
-      <section className='error-404-area pt-130 pb-90'>
+      <section className='error-404-area'>
         <div className='container'>
           <div className='row justify-content-center wow fadeInUp'>
             <div className='col-lg-8'>

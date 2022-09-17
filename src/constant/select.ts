@@ -17,6 +17,7 @@ export const customSelectStyles: StylesConfig<SelectOption, false> = {
     paddingBottom: 0,
     marginTop: 0,
     marginBottom: 0,
+    height: 46,
   }),
   valueContainer: (provided) => ({
     ...provided,

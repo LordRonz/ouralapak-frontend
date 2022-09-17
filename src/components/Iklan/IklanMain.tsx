@@ -27,11 +27,13 @@ import Captcha from '@/components/Common/Captcha';
 import Breadcrumbs from '@/components/Common/PageTitle';
 import Spinner from '@/components/Common/Spinner';
 import XButton from '@/components/Common/XButton';
+import ErrorPageMain from '@/components/ErrorPage/ErrorPageMain';
 import ButtonLink from '@/components/links/ButtonLink';
 import UnstyledLink from '@/components/links/UnstyledLink';
 import { API_URL } from '@/constant/config';
 import { customSelectStyles } from '@/constant/select';
 import clsxm from '@/lib/clsxm';
+import getAuthHeader from '@/lib/getAuthHeader';
 import { calculateTimeLeft } from '@/lib/timeStuff';
 import toastPromiseError from '@/lib/toastPromiseError';
 import toIDRCurrency from '@/lib/toIDRCurrency';
@@ -61,11 +63,11 @@ type CarouselNode = {
 };
 
 const IklanMain = ({ id }: { id: number }) => {
-  const { data: iklan } = useSWR<{
+  const { data: iklan, error } = useSWR<{
     data: IklanDetail;
     message: string;
     success: boolean;
-  }>(`${API_URL}/iklan/${id}`);
+  }>(`${API_URL}${getAuthHeader() ? '/user' : ''}/iklan/${id}`);
 
   const { data: iklans } = useSWR<{
     data: { data: IklanHome[]; pagination: Pagination };
@@ -258,6 +260,10 @@ const IklanMain = ({ id }: { id: number }) => {
     const res = refund.data.data.find((x) => +x.id === +id);
     return res?.name ?? '';
   };
+
+  if (error) {
+    return <ErrorPageMain />;
+  }
 
   if (!jenisPembayaranOpts?.[0] || !iklan || !iklans) {
     return <Spinner />;

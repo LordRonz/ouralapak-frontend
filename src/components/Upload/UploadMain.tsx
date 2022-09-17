@@ -12,6 +12,7 @@ import {
   useFieldArray,
   useForm,
 } from 'react-hook-form';
+import { FiChevronLeft } from 'react-icons/fi';
 import { HiPlus } from 'react-icons/hi';
 import Lightbox from 'react-image-lightbox';
 import Select, { SingleValue } from 'react-select';
@@ -493,10 +494,20 @@ const UploadMain = () => {
       />
 
       <div className='upload-area pb-90 pt-12'>
-        <div className='container'>
+        <div className='container p-0'>
           <div className='upload-wrapper mb-10'>
-            <form className='upload-form' onSubmit={handleSubmit(onSubmit)}>
-              <div className='row'>
+            <span
+              className='mb-4 flex cursor-pointer items-center gap-x-3'
+              onClick={() => router.back()}
+            >
+              <FiChevronLeft className='font-bold' />
+              <p className='m-0 font-bold'>Kembali</p>
+            </span>
+            <form className='upload-form p-0' onSubmit={handleSubmit(onSubmit)}>
+              <div className='row rounded-xl bg-white p-4 py-6 dark:!bg-gray-800'>
+                <div className='artist-meta-info creator-details-meta-info mb-4'>
+                  <h1 className='text-3xl text-[#B89C74]'>Posting Iklan</h1>
+                </div>
                 <div className=''>
                   <div className='row wow fadeInUp gap-y-3'>
                     <div className='col-md-8'>
@@ -504,10 +515,11 @@ const UploadMain = () => {
                         <label>Judul</label>
                         <input
                           type='text'
-                          placeholder='Isi Judul'
+                          placeholder='Masukkan judul iklan'
                           {...register('title', {
                             required: 'Judul harus diisi',
                           })}
+                          className='border border-2 dark:!border-gray-700'
                         />
                       </div>
                       <p className='text-red-500'>{errors.title?.message}</p>
@@ -521,7 +533,9 @@ const UploadMain = () => {
                           name='jenis_refund'
                           render={({ field: { onChange, value } }) => (
                             <Select
-                              className={clsxm('py-3 pt-0')}
+                              className={clsxm(
+                                'rounded-md border border-2 pt-0 dark:!border-gray-700'
+                              )}
                               options={jenisRefundOpts}
                               value={jenisRefundOpts.find(
                                 (c) => c.value === value
@@ -558,7 +572,9 @@ const UploadMain = () => {
                           name='first_hand_status'
                           render={({ field: { onChange, value } }) => (
                             <Select
-                              className={clsxm('py-3 pt-0')}
+                              className={clsxm(
+                                'rounded-md border border-2 pt-0 dark:!border-gray-700'
+                              )}
                               options={firstHandStatusOpts}
                               value={firstHandStatusOpts.find(
                                 (c) => c.value === value
@@ -581,14 +597,14 @@ const UploadMain = () => {
                     <div className='col-md-4'>
                       <div className='single-input-unit'>
                         <label>Win Rate</label>
-                        <div className='flex gap-x-1'>
+                        <div className='flex'>
                           <input
                             type='number'
                             step='any'
                             onWheel={(e) =>
                               e.target instanceof HTMLElement && e.target.blur()
                             }
-                            placeholder='0'
+                            placeholder='Masukkan win rate'
                             {...register('win_rate', {
                               required: 'Win rate harus diisi',
                               pattern: {
@@ -598,8 +614,9 @@ const UploadMain = () => {
                               },
                               valueAsNumber: true,
                             })}
+                            className='rounded-md border border-2 dark:!border-gray-700'
                           />
-                          <div className='extension flex items-center justify-center'>
+                          <div className='extension flex items-center justify-center  border border-2 pt-0 dark:!border-gray-700'>
                             %
                           </div>
                         </div>
@@ -616,7 +633,9 @@ const UploadMain = () => {
                           render={({ field: { onChange, value } }) => (
                             <Select
                               styles={customSelectStyles}
-                              className={clsxm('py-3 pt-0')}
+                              className={clsxm(
+                                'rounded-md border border-2 pt-0 dark:!border-gray-700'
+                              )}
                               options={packageId}
                               value={packageId.find((c) => c.value === value)}
                               onChange={(val) => onChange(val?.value)}
@@ -640,7 +659,9 @@ const UploadMain = () => {
                           render={({ field: { onChange, value } }) => (
                             <Select
                               styles={customSelectStyles}
-                              className={clsxm('py-3 pt-0')}
+                              className={clsxm(
+                                'rounded-md border border-2 pt-0 dark:!border-gray-700'
+                              )}
                               options={platformId}
                               value={platformId.find((c) => c.value === value)}
                               onChange={(val) => onChange(val?.value)}
@@ -665,7 +686,7 @@ const UploadMain = () => {
                           onWheel={(e) =>
                             e.target instanceof HTMLElement && e.target.blur()
                           }
-                          placeholder='0'
+                          placeholder='Masukkan jumlah skin'
                           {...register('total_skin', {
                             required: 'Total skin harus diisi',
                             min: {
@@ -674,6 +695,7 @@ const UploadMain = () => {
                             },
                             valueAsNumber: true,
                           })}
+                          className='rounded-md border border-2 pt-0 dark:!border-gray-700'
                         />
                       </div>
                       <p className='text-red-500'>
@@ -692,7 +714,9 @@ const UploadMain = () => {
                           render={({ field: { onChange, value } }) => (
                             <Select
                               styles={customSelectStyles}
-                              className={clsxm('py-3 pt-0')}
+                              className={clsxm(
+                                'rounded-md border border-2 pt-0 dark:!border-gray-700'
+                              )}
                               options={jenisPembayaranOpts}
                               value={jenisPembayaranOpts.find(
                                 (c) => c.value === value
@@ -721,7 +745,9 @@ const UploadMain = () => {
                           render={({ field: { onChange, value } }) => (
                             <Select
                               styles={customSelectStyles}
-                              className={clsxm('py-3 pt-0')}
+                              className={clsxm(
+                                'rounded-md border border-2 pt-0 dark:!border-gray-700'
+                              )}
                               options={changeNameOpts}
                               value={changeNameOpts.find(
                                 (c) => c.value === value
@@ -753,7 +779,7 @@ const UploadMain = () => {
                           onWheel={(e) =>
                             e.target instanceof HTMLElement && e.target.blur()
                           }
-                          placeholder='0'
+                          placeholder='Masukkan jumlah hero'
                           {...register('total_hero', {
                             required: 'Total hero harus diisi',
                             min: {
@@ -762,6 +788,7 @@ const UploadMain = () => {
                             },
                             valueAsNumber: true,
                           })}
+                          className='rounded-md border border-2 pt-0 dark:!border-gray-700'
                         />
                       </div>
                       <p className='text-red-500'>
@@ -771,8 +798,8 @@ const UploadMain = () => {
                     <div className='col-md-4'>
                       <div className='single-input-unit'>
                         <label>Harga Akun (IDR)</label>
-                        <div className='flex gap-x-1'>
-                          <div className='extension flex items-center justify-center'>
+                        <div className='flex'>
+                          <div className='extension flex items-center justify-center rounded-md border border-2 pt-0 dark:!border-gray-700'>
                             Rp.
                           </div>
                           <input
@@ -780,7 +807,7 @@ const UploadMain = () => {
                             onWheel={(e) =>
                               e.target instanceof HTMLElement && e.target.blur()
                             }
-                            placeholder='10000'
+                            placeholder='Masukkan harga akun'
                             {...register('harga_akun', {
                               required: 'Harga akun harus diisi',
                               min: {
@@ -789,6 +816,7 @@ const UploadMain = () => {
                               },
                               valueAsNumber: true,
                             })}
+                            className='rounded-md border border-2 pt-0 dark:!border-gray-700'
                           />
                         </div>
                       </div>
@@ -805,8 +833,11 @@ const UploadMain = () => {
                           name='account_bind'
                           render={({ field: { onChange, value } }) => (
                             <Select
+                              placeholder='Pilih binding account'
                               styles={customSelectStylesMulti}
-                              className={clsxm('py-3 pt-0')}
+                              className={clsxm(
+                                'rounded-md border border-2 pt-0 dark:!border-gray-700'
+                              )}
                               options={accountBindOpts}
                               value={accountBindOpts.filter((c) =>
                                 value.includes(c.value)
@@ -834,8 +865,11 @@ const UploadMain = () => {
                           name='favorite_heroes'
                           render={({ field: { onChange, value } }) => (
                             <Select
+                              placeholder='Pilih hero favorit'
                               styles={customSelectStylesMulti}
-                              className={clsxm('py-3 pt-0')}
+                              className={clsxm(
+                                'rounded-md border border-2 pt-0 dark:!border-gray-700'
+                              )}
                               options={favHeroesOpts}
                               value={favHeroesOpts.filter((c) =>
                                 value.includes(c.value)
@@ -862,14 +896,14 @@ const UploadMain = () => {
                     <div className='col-md-6'>
                       <div className='single-input-unit space-y-4'>
                         <div className='flex items-center space-x-4'>
-                          <label>Skin Rare</label>
+                          <label className='m-0'>Skin Rare</label>
                           <Button
                             variant='success'
-                            className='!rounded-full !p-1'
+                            className='!rounded-full !bg-[#16B81C] !p-1'
                             onClick={() =>
                               totalSkinRareFields.append({
                                 jenis: 'medium',
-                                total_skin: undefined,
+                                total_skin: 1,
                               })
                             }
                           >
@@ -879,15 +913,15 @@ const UploadMain = () => {
                         <div className='max-h-80 space-y-4 overflow-auto'>
                           <div className='rounded-xl border-primary-200'>
                             {!!totalSkinRareFields.fields.length && (
-                              <div className='flex justify-around'>
+                              <div className='flex'>
                                 <label
-                                  className='mr-2 basis-3/4'
+                                  className='mr-2 basis-full !text-sm'
                                   htmlFor='jenis'
                                 >
                                   Jenis
                                 </label>
                                 <label
-                                  className='mr-2 basis-1/4'
+                                  className='mr-2 !hidden'
                                   htmlFor='total_skin'
                                 >
                                   Total Skin
@@ -897,11 +931,8 @@ const UploadMain = () => {
                             <div className='flex flex-col gap-y-3'>
                               {totalSkinRareFields.fields.map(
                                 (field, index) => (
-                                  <div
-                                    className='flex justify-around'
-                                    key={field.id}
-                                  >
-                                    <div className='mr-2 basis-3/4'>
+                                  <div className='flex gap-x-2' key={field.id}>
+                                    <div className='basis-full'>
                                       <input
                                         type='text'
                                         placeholder='Jenis'
@@ -911,10 +942,10 @@ const UploadMain = () => {
                                             required: 'Jenis harus diisi',
                                           }
                                         )}
-                                        className='mb-0'
+                                        className='mb-0 rounded-md border border-2 pt-0 dark:!border-gray-700'
                                       />
                                     </div>
-                                    <div className='mr-2 basis-1/4'>
+                                    <div className='mr-2 hidden basis-1/4'>
                                       <input
                                         type='number'
                                         onWheel={(e) =>
@@ -957,12 +988,12 @@ const UploadMain = () => {
                     <div className='col-md-6 mb-4'>
                       <div className='single-input-unit space-y-4'>
                         <div className='flex items-center space-x-4'>
-                          <label>Emblem</label>
+                          <label className='m-0'>Emblem</label>
                           {totalEmblemFields.fields.length <
                             emblemOpts.length && (
                             <Button
                               variant='success'
-                              className='!rounded-full !p-1'
+                              className='!rounded-full !bg-[#16B81C] !p-1'
                               onClick={() =>
                                 totalEmblemFields.append({
                                   id_emblem: emblemOpts.filter(
@@ -983,14 +1014,11 @@ const UploadMain = () => {
                           <div className='rounded-xl border-primary-200'>
                             {!!totalEmblemFields.fields.length && (
                               <div className='flex justify-around'>
-                                <label
-                                  className='mr-2 basis-3/4'
-                                  htmlFor='jenis'
-                                >
+                                <label className='basis-3/4' htmlFor='jenis'>
                                   Nama
                                 </label>
                                 <label
-                                  className='mr-2 basis-1/4'
+                                  className='basis-1/4'
                                   htmlFor='total_skin'
                                 >
                                   Level
@@ -1000,7 +1028,7 @@ const UploadMain = () => {
                             <div className='space-y-2'>
                               {totalEmblemFields.fields.map((field, index) => (
                                 <div className='flex gap-x-1' key={field.id}>
-                                  <div className='mr-2 basis-3/4'>
+                                  <div className='basis-3/4'>
                                     <Controller
                                       control={control}
                                       defaultValue={
@@ -1024,7 +1052,9 @@ const UploadMain = () => {
                                       }) => (
                                         <Select
                                           styles={customSelectStyles}
-                                          className={clsxm('py-2 pt-0')}
+                                          className={clsxm(
+                                            'rounded-md border border-2 pt-0 dark:!border-gray-700'
+                                          )}
                                           options={emblemOpts.filter(
                                             (x) =>
                                               !getValues('total_emblem')
@@ -1053,7 +1083,7 @@ const UploadMain = () => {
                                       )}
                                     />
                                   </div>
-                                  <div className='mr-2 basis-1/4'>
+                                  <div className='basis-1/4'>
                                     <input
                                       type='number'
                                       onWheel={(e) =>
@@ -1072,7 +1102,7 @@ const UploadMain = () => {
                                           valueAsNumber: true,
                                         }
                                       )}
-                                      className='mb-0'
+                                      className='mb-0 rounded-md border border-2 pt-0 dark:!border-gray-700'
                                     />
                                   </div>
                                   {totalEmblemFields.fields.length > 1 && (
@@ -1097,7 +1127,7 @@ const UploadMain = () => {
                           <Button
                             variant='success'
                             onClick={() => setRecallEffectCnt((v) => v + 1)}
-                            className='!rounded-full !p-1'
+                            className='!rounded-full !bg-[#16B81C] !p-1'
                           >
                             <HiPlus />
                           </Button>
@@ -1109,11 +1139,11 @@ const UploadMain = () => {
                                 <input
                                   key={index}
                                   type='text'
-                                  placeholder={`Recall effect #${index + 1}`}
+                                  placeholder={`Masukkan recall effect`}
                                   {...register(`recall_effect.${index}`, {
                                     required: 'Recall effect harus diisi',
                                   })}
-                                  className='mb-0'
+                                  className='mb-0 rounded-md border border-2 pt-0 dark:!border-gray-700'
                                 />
                                 {recallEffectCnt > 1 && (
                                   <XButton
@@ -1160,7 +1190,7 @@ const UploadMain = () => {
                             >
                               {imageWinRateHero
                                 ? (imageWinRateHero as File).name
-                                : 'Silahkan pilih gambar'}
+                                : 'Pilih file gambar'}
                             </StyledInputFile>
                             {imageWinRateHero && (
                               <Button
@@ -1185,7 +1215,7 @@ const UploadMain = () => {
                       <div>
                         <div className=''>
                           <label className='mb-2 text-base font-bold text-[#171717] dark:text-white'>
-                            Win Rate
+                            Win Rate All Season
                           </label>
                           <div className='single-input-unit flex items-center gap-x-2'>
                             <StyledInputFile
@@ -1199,7 +1229,7 @@ const UploadMain = () => {
                             >
                               {imageWinRate
                                 ? (imageWinRate as File).name
-                                : 'Silahkan pilih gambar'}
+                                : 'Pilih file gambar'}
                             </StyledInputFile>
                             {imageWinRate && (
                               <Button
@@ -1236,7 +1266,7 @@ const UploadMain = () => {
                             >
                               {imageProfile
                                 ? (imageProfile as File).name
-                                : 'Silahkan pilih gambar'}
+                                : 'Pilih file gambar'}
                             </StyledInputFile>
                             {imageProfile && (
                               <Button
@@ -1273,7 +1303,7 @@ const UploadMain = () => {
                             >
                               {imageEmblem
                                 ? (imageEmblem as File).name
-                                : 'Silahkan pilih gambar'}
+                                : 'Pilih file gambar'}
                             </StyledInputFile>
                             {imageEmblem && (
                               <Button
@@ -1299,7 +1329,7 @@ const UploadMain = () => {
                             <span>Skin</span>{' '}
                             <Button
                               variant='success'
-                              className='!rounded-full !p-1'
+                              className='!rounded-full !bg-[#16B81C] !p-1'
                               onClick={() =>
                                 imgSkinField < 4 &&
                                 setImgSkinField(imgSkinField + 1)
@@ -1335,12 +1365,10 @@ const UploadMain = () => {
                                 >
                                   {imageSkin && (imageSkin as File[])[i]
                                     ? (imageSkin as File[])[i].name
-                                    : 'Silahkan pilih gambar'}
+                                    : 'Pilih file gambar'}
                                 </StyledInputFile>
                                 {imgSkinField > 0 && (
-                                  <Button
-                                    variant='danger'
-                                    className='h-[50px] !rounded-md'
+                                  <XButton
                                     onClick={() => {
                                       const b = [
                                         ...((imageSkin as File[]) ?? []),
@@ -1350,9 +1378,7 @@ const UploadMain = () => {
                                         setImgSkinField(imgSkinField - 1);
                                       setImageSkin(b);
                                     }}
-                                  >
-                                    Cancel
-                                  </Button>
+                                  />
                                 )}
                                 {imageSkin && (imageSkin as File[])[i] && (
                                   <>
@@ -1444,7 +1470,7 @@ const UploadMain = () => {
                   <div className='upload-btn wow fadeInUp mt-4 !hidden md:!block'>
                     <ButtonGradient
                       disabled={submitBtnDisabled}
-                      className='w-full text-black'
+                      className='w-full'
                       type='submit'
                       onClick={() => setIsChecked(false)}
                     >
@@ -1530,7 +1556,7 @@ const UploadMain = () => {
                             </p>
                           </div>
                           <div>
-                            <label>Harga Akun (IDR)</label>
+                            <label>Harga Akun</label>
                             <p className='text-2xl font-bold text-black dark:!text-white'>
                               {new Intl.NumberFormat('id-ID', {
                                 style: 'currency',
@@ -1933,7 +1959,7 @@ const UploadMain = () => {
                       type='submit'
                       onClick={() => setIsChecked(false)}
                     >
-                      Submit Iklan
+                      Preview
                     </ButtonGradient>
                   </div>
                 </div>

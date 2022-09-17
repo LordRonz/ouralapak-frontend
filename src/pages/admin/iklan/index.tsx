@@ -216,8 +216,6 @@ const IndexPage = () => {
     [getJenisRefund, iklans?.data.data]
   );
 
-  console.log(data);
-
   const columns = React.useMemo<Column<typeof data[number]>[]>(
     () => [
       {

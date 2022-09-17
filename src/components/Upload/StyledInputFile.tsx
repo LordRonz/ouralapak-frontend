@@ -12,7 +12,12 @@ const StyledInputFile = ({
   children,
 }: StyledInputFileProps) => {
   return (
-    <label className={clsxm('file-input', labelClassName)}>
+    <label
+      className={clsxm(
+        'file-input !rounded-lg !bg-[#87A4E9] text-white',
+        labelClassName
+      )}
+    >
       <input
         type='file'
         onChange={onChange}
