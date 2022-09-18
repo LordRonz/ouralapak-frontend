@@ -126,7 +126,7 @@ const SellerMain = () => {
       <section className='creator-info-area pt-40'>
         <div className='px-4 md:px-16'>
           <div className='row'>
-            <div className='col-lg-4'>
+            <div className='col-lg-4 flex justify-center'>
               <ProfileCard
                 user={user?.data}
                 handleLogout={handleLogout}

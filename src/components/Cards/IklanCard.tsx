@@ -17,8 +17,8 @@ const IklanCard = ({ iklan }: { iklan: Iklan & { refund_title?: string } }) => {
             <div className='h-full w-full overflow-hidden rounded-lg md:!h-48 md:!w-48'>
               <Image
                 src={
-                  iklan.user.profile_picture
-                    ? `${API_URL}/${iklan.user.profile_picture}`
+                  iklan.image_profile
+                    ? `${API_URL}/${iklan.image_profile}`
                     : `/images/pfp.jpg`
                 }
                 alt='Picture of the author'

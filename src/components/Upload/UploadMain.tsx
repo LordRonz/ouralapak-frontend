@@ -12,9 +12,10 @@ import {
   useFieldArray,
   useForm,
 } from 'react-hook-form';
-import { FiChevronLeft } from 'react-icons/fi';
+import { FiChevronLeft, FiInfo } from 'react-icons/fi';
 import { HiPlus } from 'react-icons/hi';
 import Lightbox from 'react-image-lightbox';
+import Modal from 'react-responsive-modal';
 import Select, { SingleValue } from 'react-select';
 import { Theme, toast } from 'react-toastify';
 import { useLifecycles, useSessionStorage } from 'react-use';
@@ -219,8 +220,8 @@ const UploadMain = () => {
   );
 
   const changeNameOpts = [
-    { value: 0, label: 'Non-aktif' },
-    { value: 1, label: 'Aktif' },
+    { value: 0, label: 'OFF' },
+    { value: 1, label: 'ON' },
   ];
 
   const accountBindOpts = bindingAcc?.data.data.map((acc) => ({
@@ -270,11 +271,11 @@ const UploadMain = () => {
   const firstHandStatusOpts = [
     {
       value: 0,
-      label: 'Akun pribadi',
+      label: 'Akun Pribadi',
     },
     {
       value: 1,
-      label: 'Akun beli',
+      label: 'Akun Hasil Beli',
     },
   ];
 
@@ -404,6 +405,35 @@ const UploadMain = () => {
 
   const [emblemOptsSet, setEmblemOptsSet] = useState(false);
 
+  const [openJenisRefund, setOpenJenisRefund] = useState(false);
+
+  const onCloseJenisRefund = () => setOpenJenisRefund(false);
+
+  const [openChangeNameStatus, setOpenChangeNameStatus] = useState(false);
+
+  const onCloseChangeNameStatus = () => setOpenChangeNameStatus(false);
+
+  const [openUploadCaptureProfile, setOpenUploadCaptureProfile] =
+    useState(false);
+
+  const onCloseUploadCaptureProfile = () => setOpenUploadCaptureProfile(false);
+
+  const [openWinRate, setOpenWinRate] = useState(false);
+
+  const onCloseWinRate = () => setOpenWinRate(false);
+
+  const [openFavHero, setOpenFavHero] = useState(false);
+
+  const onCloseFavHero = () => setOpenFavHero(false);
+
+  const [openEmblem, setOpenEmblem] = useState(false);
+
+  const onCloseEmblem = () => setOpenEmblem(false);
+
+  const [openSkin, setOpenSkin] = useState(false);
+
+  const onCloseSkin = () => setOpenSkin(false);
+
   useEffect(() => {
     if (
       emblemOpts &&
@@ -526,7 +556,13 @@ const UploadMain = () => {
                     </div>
                     <div className='col-md-4'>
                       <div className='single-input-unit'>
-                        <label htmlFor='jenis_refund'>Jenis Refund</label>
+                        <label htmlFor='jenis_refund' className='!flex gap-x-2'>
+                          <span>Jenis Refund</span>
+                          <FiInfo
+                            className='cursor-pointer'
+                            onClick={() => setOpenJenisRefund(true)}
+                          />
+                        </label>
                         <Controller
                           control={control}
                           defaultValue={jenisRefundOpts[0].value}
@@ -615,8 +651,13 @@ const UploadMain = () => {
                               valueAsNumber: true,
                             })}
                             className='rounded-md border border-2 dark:!border-gray-700'
+                            style={{
+                              borderTopRightRadius: 0,
+                              borderBottomRightRadius: 0,
+                              borderRightWidth: 0,
+                            }}
                           />
-                          <div className='extension flex items-center justify-center  border border-2 pt-0 dark:!border-gray-700'>
+                          <div className='extension flex items-center justify-center rounded-r-md border border-2 pt-0 dark:!border-gray-700'>
                             %
                           </div>
                         </div>
@@ -737,7 +778,16 @@ const UploadMain = () => {
                     </div>
                     <div className='col-md-4'>
                       <div className='single-input-unit'>
-                        <label>Status Ganti Nama Akun</label>
+                        <label
+                          htmlFor='change_name_status'
+                          className='!flex gap-x-2'
+                        >
+                          <span>Change Name Status</span>
+                          <FiInfo
+                            className='cursor-pointer'
+                            onClick={() => setOpenChangeNameStatus(true)}
+                          />
+                        </label>
                         <Controller
                           control={control}
                           defaultValue={changeNameOpts[0].value}
@@ -797,9 +847,9 @@ const UploadMain = () => {
                     </div>
                     <div className='col-md-4'>
                       <div className='single-input-unit'>
-                        <label>Harga Akun (IDR)</label>
+                        <label>Harga Akun</label>
                         <div className='flex'>
-                          <div className='extension flex items-center justify-center rounded-md border border-2 pt-0 dark:!border-gray-700'>
+                          <div className='extension flex items-center justify-center rounded-l-md border border-2 pt-0 dark:!border-gray-700'>
                             Rp.
                           </div>
                           <input
@@ -816,7 +866,12 @@ const UploadMain = () => {
                               },
                               valueAsNumber: true,
                             })}
-                            className='rounded-md border border-2 pt-0 dark:!border-gray-700'
+                            className='!rounded-r-md border border-2 pt-0 dark:!border-gray-700'
+                            style={{
+                              borderTopLeftRadius: 0,
+                              borderBottomLeftRadius: 0,
+                              borderLeftWidth: 0,
+                            }}
                           />
                         </div>
                       </div>
@@ -858,7 +913,16 @@ const UploadMain = () => {
                     </div>
                     <div className='col-md-6'>
                       <div className='single-input-unit'>
-                        <label htmlFor='favorite_heroes'>Hero Favorit</label>
+                        <label
+                          htmlFor='favorite_heroes'
+                          className='!flex gap-x-2'
+                        >
+                          <span>Change Name Status</span>
+                          <FiInfo
+                            className='cursor-pointer'
+                            onClick={() => setOpenChangeNameStatus(true)}
+                          />
+                        </label>
                         <Controller
                           control={control}
                           defaultValue={[]}
@@ -953,15 +1017,10 @@ const UploadMain = () => {
                                           e.target.blur()
                                         }
                                         placeholder='0'
+                                        defaultValue={1}
                                         {...register(
                                           `total_skin_rare.${index}.total_skin` as const,
                                           {
-                                            required: 'Total skin harus diisi',
-                                            min: {
-                                              value: 1,
-                                              message:
-                                                'Minimum jumlah skin adalah 1',
-                                            },
                                             valueAsNumber: true,
                                           }
                                         )}
@@ -1014,11 +1073,14 @@ const UploadMain = () => {
                           <div className='rounded-xl border-primary-200'>
                             {!!totalEmblemFields.fields.length && (
                               <div className='flex justify-around'>
-                                <label className='basis-3/4' htmlFor='jenis'>
+                                <label
+                                  className='basis-3/4 !text-sm'
+                                  htmlFor='jenis'
+                                >
                                   Nama
                                 </label>
                                 <label
-                                  className='basis-1/4'
+                                  className='basis-1/4 !text-sm'
                                   htmlFor='total_skin'
                                 >
                                   Level
@@ -1175,8 +1237,17 @@ const UploadMain = () => {
                     <div className='col-md-6 grid grid-cols-2 gap-y-4 gap-x-4'>
                       <div>
                         <div className=''>
-                          <label className='mb-2 text-base font-bold text-[#171717] dark:text-white'>
-                            Win Rate Hero
+                          <label
+                            htmlFor='change_name_status'
+                            className='mb-2 !flex items-center gap-x-2'
+                          >
+                            <span className='text-base font-bold text-[#171717] dark:text-white'>
+                              Hero Favorit
+                            </span>
+                            <FiInfo
+                              className='cursor-pointer'
+                              onClick={() => setOpenFavHero(true)}
+                            />
                           </label>
                           <div className='single-input-unit flex items-center gap-x-2'>
                             <StyledInputFile
@@ -1214,8 +1285,17 @@ const UploadMain = () => {
                       </div>
                       <div>
                         <div className=''>
-                          <label className='mb-2 text-base font-bold text-[#171717] dark:text-white'>
-                            Win Rate All Season
+                          <label
+                            htmlFor='change_name_status'
+                            className='mb-2 !flex items-center gap-x-2'
+                          >
+                            <span className='text-base font-bold text-[#171717] dark:text-white'>
+                              Win Rate All Season
+                            </span>
+                            <FiInfo
+                              className='cursor-pointer'
+                              onClick={() => setOpenWinRate(true)}
+                            />
                           </label>
                           <div className='single-input-unit flex items-center gap-x-2'>
                             <StyledInputFile
@@ -1251,8 +1331,17 @@ const UploadMain = () => {
                       </div>
                       <div>
                         <div className=''>
-                          <label className='mb-2 text-base font-bold text-[#171717] dark:text-white'>
-                            Profile
+                          <label
+                            htmlFor='change_name_status'
+                            className='mb-2 !flex items-center gap-x-2'
+                          >
+                            <span className='text-base font-bold text-[#171717] dark:text-white'>
+                              Profile
+                            </span>
+                            <FiInfo
+                              className='cursor-pointer'
+                              onClick={() => setOpenUploadCaptureProfile(true)}
+                            />
                           </label>
                           <div className='single-input-unit flex items-center gap-x-2'>
                             <StyledInputFile
@@ -1288,8 +1377,17 @@ const UploadMain = () => {
                       </div>
                       <div>
                         <div className=''>
-                          <label className='mb-2 text-base font-bold text-[#171717] dark:text-white'>
-                            Emblem
+                          <label
+                            htmlFor='change_name_status'
+                            className='mb-2 !flex items-center gap-x-2'
+                          >
+                            <span className='text-base font-bold text-[#171717] dark:text-white'>
+                              Emblem
+                            </span>
+                            <FiInfo
+                              className='cursor-pointer'
+                              onClick={() => setOpenEmblem(true)}
+                            />
                           </label>
                           <div className='single-input-unit flex items-center gap-x-2'>
                             <StyledInputFile
@@ -1325,11 +1423,17 @@ const UploadMain = () => {
                       </div>
                       <div className='col-span-2'>
                         <div className=''>
-                          <label className='mb-2 space-x-4 text-base font-bold text-[#171717] dark:text-white'>
-                            <span>Skin</span>{' '}
+                          <div className='mb-2 flex items-center gap-x-2 '>
+                            <label className='flex items-center gap-x-2 text-base font-bold text-[#171717] dark:text-white'>
+                              <span>Skin</span>{' '}
+                              <FiInfo
+                                className='cursor-pointer'
+                                onClick={() => setOpenSkin(true)}
+                              />
+                            </label>
                             <Button
                               variant='success'
-                              className='!rounded-full !bg-[#16B81C] !p-1'
+                              className='h-[26px] w-[26px] !rounded-full !bg-[#16B81C] !p-1'
                               onClick={() =>
                                 imgSkinField < 4 &&
                                 setImgSkinField(imgSkinField + 1)
@@ -1338,9 +1442,9 @@ const UploadMain = () => {
                               <HiPlus />
                             </Button>
                             <span className='text-neutral-400'>
-                              * dapat memilih lebih dari satu
+                              * Dapat memasukkan gambar lebih dari satu
                             </span>
-                          </label>
+                          </div>
                           <div className='flex flex-col gap-y-2'>
                             {[...Array(imgSkinField + 1)].map((f, i) => (
                               <div
@@ -1472,7 +1576,9 @@ const UploadMain = () => {
                       disabled={submitBtnDisabled}
                       className='w-full'
                       type='submit'
-                      onClick={() => setIsChecked(false)}
+                      onClick={() => {
+                        setIsChecked(false);
+                      }}
                     >
                       Preview
                     </ButtonGradient>
@@ -1968,6 +2074,153 @@ const UploadMain = () => {
           </div>
         </div>
       </div>
+      <Modal
+        open={openJenisRefund}
+        onClose={onCloseJenisRefund}
+        center
+        classNames={{
+          modal: 'rounded-xl p-0 overflow-y-auto',
+          root: 'overflow-y-auto',
+          modalContainer: 'overflow-y-auto',
+        }}
+        closeIcon={<XButton />}
+      >
+        <div className='p-6'>
+          <h1 className='mb-4 text-2xl'>Jenis Refund</h1>
+          <h2 className='mb-4 text-xl font-normal'>
+            Berikut adalah penjelasan jenis-jenis refund yang yang terdapat
+            dalam penjualan akun
+          </h2>
+          <div className='flex gap-x-2'>
+            <p className='m-0'>1. </p>
+            <p className='m-0'>
+              <span className='font-bold'>Refund player</span> yaitu
+              pengembalian dana untuk pembeli jika terjadi problem pada akun
+              yang dibeli, namun jika akunnya dijual lagi oleh si pembeli refund
+              akan tidak berlaku
+            </p>
+          </div>
+          <div className='flex gap-x-2'>
+            <p className='m-0'>2. </p>
+            <p className='m-0'>
+              <span className='font-bold'>Refund full</span> yaitu pengembalian
+              dana secara penuh apapun kondisinya
+            </p>
+          </div>
+          <div className='flex gap-x-2'>
+            <p className='m-0'>3. </p>
+            <p className='m-0'>
+              <span className='font-bold'>No Refund</span> yaitu tidak ada
+              refund setelah transaksi berhasil
+            </p>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        open={openChangeNameStatus}
+        onClose={onCloseChangeNameStatus}
+        center
+        classNames={{
+          modal: 'rounded-xl p-0 overflow-y-auto',
+          root: 'overflow-y-auto',
+          modalContainer: 'overflow-y-auto',
+        }}
+        closeIcon={<XButton />}
+      >
+        <div className='p-6'>
+          <h1 className='mb-4 text-2xl'>Change Name Status</h1>
+          <h2 className='mb-4 text-xl font-normal'>
+            Change Name ON artinya masih bisa ganti nama dari event top up
+            setiap ganti season yang misinya disuru top up 3 hari berturut turut
+            itu, jika OFF berarti sudah digunakan change name nya
+          </h2>
+        </div>
+      </Modal>
+      <Modal
+        open={openUploadCaptureProfile}
+        onClose={onCloseUploadCaptureProfile}
+        center
+        classNames={{
+          modal: 'rounded-xl p-0 overflow-y-auto',
+          root: 'overflow-y-auto',
+          modalContainer: 'overflow-y-auto',
+        }}
+        closeIcon={<XButton />}
+      >
+        <div className='p-6'>
+          <h1 className='mb-4 text-2xl'>Cara Upload Capture Profile</h1>
+          <h2 className='mb-4 text-xl font-normal'>
+            ID harap ditutup sesuai dengan contoh berikut!!!
+          </h2>
+          <img src='/images/posting/PROFILE.jpg' alt='profile' />
+        </div>
+      </Modal>
+      <Modal
+        open={openWinRate}
+        onClose={onCloseWinRate}
+        center
+        classNames={{
+          modal: 'rounded-xl p-0 overflow-y-auto',
+          root: 'overflow-y-auto',
+          modalContainer: 'overflow-y-auto',
+        }}
+        closeIcon={<XButton />}
+      >
+        <div className='p-6'>
+          <h1 className='mb-4 text-2xl'>
+            Cara Upload Capture Win Rate All Season
+          </h1>
+          <img src='/images/posting/WIN_RATE_ALL_SEASON.jpg' alt='profile' />
+        </div>
+      </Modal>
+      <Modal
+        open={openFavHero}
+        onClose={onCloseFavHero}
+        center
+        classNames={{
+          modal: 'rounded-xl p-0 overflow-y-auto',
+          root: 'overflow-y-auto',
+          modalContainer: 'overflow-y-auto',
+        }}
+        closeIcon={<XButton />}
+      >
+        <div className='p-6'>
+          <h1 className='mb-4 text-2xl'>Cara Upload Capture Hero Favorit</h1>
+          <img src='/images/posting/HERO_FAV.jpg' alt='profile' />
+        </div>
+      </Modal>
+      <Modal
+        open={openEmblem}
+        onClose={onCloseEmblem}
+        center
+        classNames={{
+          modal: 'rounded-xl p-0 overflow-y-auto',
+          root: 'overflow-y-auto',
+          modalContainer: 'overflow-y-auto',
+        }}
+        closeIcon={<XButton />}
+      >
+        <div className='p-6'>
+          <h1 className='mb-4 text-2xl'>Cara Upload Emblem</h1>
+          <img src='/images/posting/EMBLEM.jpg' alt='profile' />
+        </div>
+      </Modal>
+      <Modal
+        open={openSkin}
+        onClose={onCloseSkin}
+        center
+        classNames={{
+          modal: 'rounded-xl p-0 overflow-y-auto',
+          root: 'overflow-y-auto',
+          modalContainer: 'overflow-y-auto',
+        }}
+        closeIcon={<XButton />}
+      >
+        <div className='p-6'>
+          <h1 className='mb-4 text-2xl'>Cara Upload Skin</h1>
+          <img src='/images/posting/SKIN.jpg' alt='profile' />
+        </div>
+      </Modal>
     </main>
   );
 };
