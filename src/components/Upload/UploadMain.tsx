@@ -1639,22 +1639,247 @@ const UploadMain = () => {
                           Preview Iklan
                         </h1>
                       </div>
+                      <div className='grid grid-cols-2 gap-x-3 md:grid-cols-3'>
+                        <div>
+                          <label>Judul</label>
+                          <p className='text-2xl font-bold text-black dark:!text-white'>
+                            {getValues('title')}
+                          </p>
+                        </div>
+                        <div>
+                          <label>Penjual</label>
+                          <p className='text-2xl font-bold text-black dark:!text-white'>
+                            {user?.data.name} - @{user?.data.ig_username}
+                          </p>
+                        </div>
+                        <div>
+                          <label>Jenis Refund</label>
+                          <p className='text-2xl font-bold text-black dark:!text-white'>
+                            {
+                              jenisRefundOpts.find(
+                                (p) => p.value === getValues('jenis_refund')
+                              )?.label
+                            }
+                          </p>
+                        </div>
+                        <div>
+                          <label>Status Akun</label>
+                          <p className='text-2xl font-bold text-black dark:!text-white'>
+                            {getValues('first_hand_status') === 0
+                              ? 'Pribadi'
+                              : 'Beli'}
+                          </p>
+                        </div>
+                        <div>
+                          <label>Win Rate</label>
+                          <p className='text-2xl font-bold text-black dark:!text-white'>
+                            {getValues('win_rate')} %
+                          </p>
+                        </div>
+                        <div>
+                          <label>Paket Posting Akun</label>
+                          <p className='text-2xl font-bold text-black dark:!text-white'>
+                            {
+                              packageId.find(
+                                (p) => p.value === getValues('package_id')
+                              )?.label
+                            }
+                          </p>
+                        </div>
+                        <div>
+                          <label>Change Name Status</label>
+                          <p className='text-2xl font-bold text-black dark:!text-white'>
+                            {
+                              changeNameOpts.find(
+                                (p) =>
+                                  p.value === getValues('change_name_status')
+                              )?.label
+                            }
+                          </p>
+                        </div>
+                        <div>
+                          <label>Platform</label>
+                          <p className='text-2xl font-bold text-black dark:!text-white'>
+                            {
+                              platformId.find(
+                                (p) => p.value === getValues('platform_id')
+                              )?.label
+                            }
+                          </p>
+                        </div>
+                        <div>
+                          <label>Harga Akun</label>
+                          <p className='text-2xl font-bold text-black dark:!text-white'>
+                            {new Intl.NumberFormat('id-ID', {
+                              style: 'currency',
+                              currency: 'IDR',
+                            }).format(getValues('harga_akun'))}
+                          </p>
+                        </div>
+                        <div>
+                          <label>Jenis Pembayaran</label>
+                          <p className='text-2xl font-bold text-black dark:!text-white'>
+                            {
+                              jenisPembayaranOpts.find(
+                                (p) => p.value === getValues('jenis_pembayaran')
+                              )?.label
+                            }
+                          </p>
+                        </div>
+                        <div>
+                          <label>Screenshot profile</label>
+                          <MyButton
+                            className={clsxm(
+                              'block',
+                              'bg-[#87A4E9]',
+                              'border border-tertiary-400',
+                              'hover:bg-tertiary-300',
+                              'active:bg-tertiary-400',
+                              'disabled:bg-tertiary-200 disabled:hover:bg-tertiary-200 disabled:hover:text-black',
+                              'py-1'
+                            )}
+                            onClick={() => setPreviewImgProfile(true)}
+                          >
+                            Preview
+                          </MyButton>
+                          {previewImgProfile && (
+                            <Lightbox
+                              mainSrc={URL.createObjectURL(
+                                imageProfile as File
+                              )}
+                              onCloseRequest={() => setPreviewImgProfile(false)}
+                            />
+                          )}
+                        </div>
+                        <div>
+                          <label>Screenshot win rate</label>
+                          <MyButton
+                            className={clsxm(
+                              'block',
+                              'bg-[#87A4E9]',
+                              'border border-tertiary-400',
+                              'hover:bg-tertiary-300',
+                              'active:bg-tertiary-400',
+                              'disabled:bg-tertiary-200 disabled:hover:bg-tertiary-200 disabled:hover:text-black',
+                              'py-1'
+                            )}
+                            onClick={() => setPreviewWinRate(true)}
+                          >
+                            Preview
+                          </MyButton>
+                          {previewWinRate && (
+                            <Lightbox
+                              mainSrc={URL.createObjectURL(
+                                imageWinRate as File
+                              )}
+                              onCloseRequest={() => setPreviewWinRate(false)}
+                            />
+                          )}
+                        </div>
+                        <div>
+                          <label>Screenshot win rate hero</label>
+                          <MyButton
+                            className={clsxm(
+                              'block',
+                              'bg-[#87A4E9]',
+                              'border border-tertiary-400',
+                              'hover:bg-tertiary-300',
+                              'active:bg-tertiary-400',
+                              'disabled:bg-tertiary-200 disabled:hover:bg-tertiary-200 disabled:hover:text-black',
+                              'py-1'
+                            )}
+                            onClick={() => setPreviewWinRateHero(true)}
+                          >
+                            Preview
+                          </MyButton>
+                          {previewWinRateHero && (
+                            <Lightbox
+                              mainSrc={URL.createObjectURL(
+                                imageWinRateHero as File
+                              )}
+                              onCloseRequest={() =>
+                                setPreviewWinRateHero(false)
+                              }
+                            />
+                          )}
+                        </div>
+                        <div>
+                          <label>Screenshot emblem</label>
+                          <MyButton
+                            className={clsxm(
+                              'block',
+                              'bg-[#87A4E9]',
+                              'border border-tertiary-400',
+                              'hover:bg-tertiary-300',
+                              'active:bg-tertiary-400',
+                              'disabled:bg-tertiary-200 disabled:hover:bg-tertiary-200 disabled:hover:text-black',
+                              'py-1'
+                            )}
+                            onClick={() => setPreviewEmblem(true)}
+                          >
+                            Preview
+                          </MyButton>
+                          {previewEmblem && (
+                            <Lightbox
+                              mainSrc={URL.createObjectURL(imageEmblem as File)}
+                              onCloseRequest={() => setPreviewEmblem(false)}
+                            />
+                          )}
+                        </div>
+                        <div>
+                          <label>Screenshot skin</label>
+                          <MyButton
+                            className={clsxm(
+                              'block',
+                              'bg-[#87A4E9]',
+                              'border border-tertiary-400',
+                              'hover:bg-tertiary-300',
+                              'active:bg-tertiary-400',
+                              'disabled:bg-tertiary-200 disabled:hover:bg-tertiary-200 disabled:hover:text-black',
+                              'py-1'
+                            )}
+                            onClick={() => setPreviewSkin(true)}
+                          >
+                            Preview
+                          </MyButton>
+                          {previewSkin && (
+                            <Lightbox
+                              mainSrc={URL.createObjectURL(
+                                (imageSkin as File[])[skinIndex] as File
+                              )}
+                              nextSrc={URL.createObjectURL(
+                                (imageSkin as File[])[
+                                  (skinIndex + 1) % (imageSkin as File[]).length
+                                ] as File
+                              )}
+                              prevSrc={URL.createObjectURL(
+                                (imageSkin as File[])[
+                                  (skinIndex +
+                                    (imageSkin as File[]).length -
+                                    1) %
+                                    (imageSkin as File[]).length
+                                ] as File
+                              )}
+                              onCloseRequest={() => setPreviewSkin(false)}
+                              onMovePrevRequest={() =>
+                                setSkinIndex(
+                                  (skinIndex +
+                                    (imageSkin as File[]).length -
+                                    1) %
+                                    (imageSkin as File[]).length
+                                )
+                              }
+                              onMoveNextRequest={() =>
+                                setSkinIndex(
+                                  (skinIndex + 1) % (imageSkin as File[]).length
+                                )
+                              }
+                            />
+                          )}
+                        </div>
+                      </div>
                       <div className='grid gap-x-12 gap-y-4 md:grid-cols-3'>
                         <div className='space-y-4'>
-                          <div>
-                            <label>Judul Iklan</label>
-                            <p className='text-2xl font-bold text-black dark:!text-white'>
-                              {getValues('title')}
-                            </p>
-                          </div>
-                          <div>
-                            <label>Status Akun</label>
-                            <p className='text-2xl font-bold text-black dark:!text-white'>
-                              {getValues('first_hand_status') === 0
-                                ? 'Pribadi'
-                                : 'Beli'}
-                            </p>
-                          </div>
                           <div>
                             <label>Platform</label>
                             <p className='text-2xl font-bold text-black dark:!text-white'>
@@ -1720,11 +1945,11 @@ const UploadMain = () => {
                             <MyButton
                               className={clsxm(
                                 'block',
-                                'bg-green-300 text-black',
+                                'bg-tertiary-300 text-black',
                                 'border border-green-500',
-                                'hover:bg-green-500 hover:text-green-50',
-                                'active:bg-green-600',
-                                'disabled:bg-green-300 disabled:hover:bg-green-300 disabled:hover:text-black',
+                                'hover:bg-tertiary-500 hover:text-green-50',
+                                'active:bg-tertiary-600',
+                                'disabled:bg-tertiary-300 disabled:hover:bg-tertiary-300 disabled:hover:text-black',
                                 'py-1'
                               )}
                               onClick={() => setPreviewImgProfile(true)}
@@ -1747,11 +1972,11 @@ const UploadMain = () => {
                             <MyButton
                               className={clsxm(
                                 'block',
-                                'bg-green-300 text-black',
+                                'bg-tertiary-300 text-black',
                                 'border border-green-500',
-                                'hover:bg-green-500 hover:text-green-50',
-                                'active:bg-green-600',
-                                'disabled:bg-green-300 disabled:hover:bg-green-300 disabled:hover:text-black',
+                                'hover:bg-tertiary-500 hover:text-green-50',
+                                'active:bg-tertiary-600',
+                                'disabled:bg-tertiary-300 disabled:hover:bg-tertiary-300 disabled:hover:text-black',
                                 'py-1'
                               )}
                               onClick={() => setPreviewWinRate(true)}
@@ -1772,11 +1997,11 @@ const UploadMain = () => {
                             <MyButton
                               className={clsxm(
                                 'block',
-                                'bg-green-300 text-black',
+                                'bg-tertiary-300 text-black',
                                 'border border-green-500',
-                                'hover:bg-green-500 hover:text-green-50',
-                                'active:bg-green-600',
-                                'disabled:bg-green-300 disabled:hover:bg-green-300 disabled:hover:text-black',
+                                'hover:bg-tertiary-500 hover:text-green-50',
+                                'active:bg-tertiary-600',
+                                'disabled:bg-tertiary-300 disabled:hover:bg-tertiary-300 disabled:hover:text-black',
                                 'py-1'
                               )}
                               onClick={() => setPreviewWinRateHero(true)}
@@ -1799,11 +2024,11 @@ const UploadMain = () => {
                             <MyButton
                               className={clsxm(
                                 'block',
-                                'bg-green-300 text-black',
+                                'bg-tertiary-300 text-black',
                                 'border border-green-500',
-                                'hover:bg-green-500 hover:text-green-50',
-                                'active:bg-green-600',
-                                'disabled:bg-green-300 disabled:hover:bg-green-300 disabled:hover:text-black',
+                                'hover:bg-tertiary-500 hover:text-green-50',
+                                'active:bg-tertiary-600',
+                                'disabled:bg-tertiary-300 disabled:hover:bg-tertiary-300 disabled:hover:text-black',
                                 'py-1'
                               )}
                               onClick={() => setPreviewEmblem(true)}
@@ -1824,11 +2049,11 @@ const UploadMain = () => {
                             <MyButton
                               className={clsxm(
                                 'block',
-                                'bg-green-300 text-black',
+                                'bg-tertiary-300 text-black',
                                 'border border-green-500',
-                                'hover:bg-green-500 hover:text-green-50',
-                                'active:bg-green-600',
-                                'disabled:bg-green-300 disabled:hover:bg-green-300 disabled:hover:text-black',
+                                'hover:bg-tertiary-500 hover:text-green-50',
+                                'active:bg-tertiary-600',
+                                'disabled:bg-tertiary-300 disabled:hover:bg-tertiary-300 disabled:hover:text-black',
                                 'py-1'
                               )}
                               onClick={() => setPreviewSkin(true)}
