@@ -66,6 +66,7 @@ type IFormInput = {
     jenis: string;
     total_skin?: number;
   }[];
+  first_top_up_exist: number;
   total_emblem: {
     id_emblem: number;
     level: number;
@@ -276,6 +277,17 @@ const UploadMain = () => {
     {
       value: 1,
       label: 'Akun Hasil Beli',
+    },
+  ];
+
+  const firstTopUpOpts = [
+    {
+      value: 0,
+      label: 'Tidak Ada',
+    },
+    {
+      value: 1,
+      label: 'Ada',
     },
   ];
 
@@ -1233,6 +1245,37 @@ const UploadMain = () => {
                           ))}
                         </div>
                       </div>
+                      <div className='single-input-unit mt-2'>
+                        <label htmlFor='platform_id'>
+                          Bukti Top Up Pertama
+                        </label>
+                        <Controller
+                          control={control}
+                          defaultValue={firstTopUpOpts[0].value}
+                          name='first_top_up_exist'
+                          render={({ field: { onChange, value } }) => (
+                            <Select
+                              className={clsxm(
+                                'rounded-md border border-2 pt-0 dark:!border-gray-700'
+                              )}
+                              options={firstTopUpOpts}
+                              value={firstTopUpOpts.find(
+                                (c) => c.value === value
+                              )}
+                              onChange={(val) => onChange(val?.value)}
+                              theme={
+                                mounted && theme === 'dark'
+                                  ? selectDarkTheme
+                                  : undefined
+                              }
+                              styles={customSelectStyles}
+                            />
+                          )}
+                        />
+                      </div>
+                      <p className='text-red-500'>
+                        {errors.first_top_up_exist?.message}
+                      </p>
                     </div>
                     <div className='col-md-6 grid grid-cols-2 gap-y-4 gap-x-4'>
                       <div>
