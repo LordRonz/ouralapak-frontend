@@ -1634,12 +1634,12 @@ const UploadMain = () => {
                     }}
                   >
                     <div className='space-y-4'>
-                      <div className='mb-8 flex items-center justify-center'>
-                        <h1 className='!text-black dark:!text-white'>
+                      <div className='mb-8 flex items-center justify-start p-3'>
+                        <h1 className='pb-0 text-3xl !text-black dark:!text-white'>
                           Preview Iklan
                         </h1>
                       </div>
-                      <div className='grid grid-cols-2 gap-x-3 md:grid-cols-3'>
+                      <div className='grid grid-cols-2 gap-x-3 gap-y-3 p-3 md:grid-cols-3'>
                         <div>
                           <label>Judul</label>
                           <p className='text-2xl font-bold text-black dark:!text-white'>
@@ -1727,7 +1727,7 @@ const UploadMain = () => {
                           </p>
                         </div>
                         <div>
-                          <label>Screenshot profile</label>
+                          <label>Screenshot Profile</label>
                           <MyButton
                             className={clsxm(
                               'block',
@@ -1752,7 +1752,7 @@ const UploadMain = () => {
                           )}
                         </div>
                         <div>
-                          <label>Screenshot win rate</label>
+                          <label>Screenshot Win Rate</label>
                           <MyButton
                             className={clsxm(
                               'block',
@@ -1777,7 +1777,7 @@ const UploadMain = () => {
                           )}
                         </div>
                         <div>
-                          <label>Screenshot win rate hero</label>
+                          <label>Screenshot Hero Favorit</label>
                           <MyButton
                             className={clsxm(
                               'block',
@@ -1804,7 +1804,7 @@ const UploadMain = () => {
                           )}
                         </div>
                         <div>
-                          <label>Screenshot emblem</label>
+                          <label>Screenshot Emblem</label>
                           <MyButton
                             className={clsxm(
                               'block',
@@ -1827,7 +1827,7 @@ const UploadMain = () => {
                           )}
                         </div>
                         <div>
-                          <label>Screenshot skin</label>
+                          <label>Screenshot Skin</label>
                           <MyButton
                             className={clsxm(
                               'block',
@@ -1877,363 +1877,101 @@ const UploadMain = () => {
                             />
                           )}
                         </div>
-                      </div>
-                      <div className='grid gap-x-12 gap-y-4 md:grid-cols-3'>
-                        <div className='space-y-4'>
-                          <div>
-                            <label>Platform</label>
-                            <p className='text-2xl font-bold text-black dark:!text-white'>
-                              {
-                                platformId.find(
-                                  (p) => p.value === getValues('platform_id')
-                                )?.label
-                              }
-                            </p>
-                          </div>
-                          <div>
-                            <label>Status Ganti Nama Akun</label>
-                            <p className='text-2xl font-bold text-black dark:!text-white'>
-                              {
-                                changeNameOpts.find(
-                                  (p) =>
-                                    p.value === getValues('change_name_status')
-                                )?.label
-                              }
-                            </p>
-                          </div>
-                          <div>
-                            <label>Win Rate</label>
-                            <p className='text-2xl font-bold text-black dark:!text-white'>
-                              {getValues('win_rate')} %
-                            </p>
-                          </div>
-                          <div>
-                            <label>Jumlah Hero</label>
-                            <p className='text-2xl font-bold text-black dark:!text-white'>
-                              {getValues('total_hero')}
-                            </p>
-                          </div>
-                          <div>
-                            <label>Jumlah Skin</label>
-                            <p className='text-2xl font-bold text-black dark:!text-white'>
-                              {getValues('total_skin')}
-                            </p>
-                          </div>
-                          <div>
-                            <label>Jenis Refund</label>
-                            <p className='text-2xl font-bold text-black dark:!text-white'>
-                              {
-                                jenisRefundOpts.find(
-                                  (p) => p.value === getValues('jenis_refund')
-                                )?.label
-                              }
-                            </p>
-                          </div>
-                          <div>
-                            <label>Harga Akun</label>
-                            <p className='text-2xl font-bold text-black dark:!text-white'>
-                              {new Intl.NumberFormat('id-ID', {
-                                style: 'currency',
-                                currency: 'IDR',
-                              }).format(getValues('harga_akun'))}
-                            </p>
-                          </div>
-                        </div>
-                        <div className='space-y-4'>
-                          <div>
-                            <label>Screenshot profile</label>
-                            <MyButton
-                              className={clsxm(
-                                'block',
-                                'bg-tertiary-300 text-black',
-                                'border border-green-500',
-                                'hover:bg-tertiary-500 hover:text-green-50',
-                                'active:bg-tertiary-600',
-                                'disabled:bg-tertiary-300 disabled:hover:bg-tertiary-300 disabled:hover:text-black',
-                                'py-1'
-                              )}
-                              onClick={() => setPreviewImgProfile(true)}
-                            >
-                              Preview
-                            </MyButton>
-                            {previewImgProfile && (
-                              <Lightbox
-                                mainSrc={URL.createObjectURL(
-                                  imageProfile as File
-                                )}
-                                onCloseRequest={() =>
-                                  setPreviewImgProfile(false)
-                                }
-                              />
-                            )}
-                          </div>
-                          <div>
-                            <label>Screenshot win rate</label>
-                            <MyButton
-                              className={clsxm(
-                                'block',
-                                'bg-tertiary-300 text-black',
-                                'border border-green-500',
-                                'hover:bg-tertiary-500 hover:text-green-50',
-                                'active:bg-tertiary-600',
-                                'disabled:bg-tertiary-300 disabled:hover:bg-tertiary-300 disabled:hover:text-black',
-                                'py-1'
-                              )}
-                              onClick={() => setPreviewWinRate(true)}
-                            >
-                              Preview
-                            </MyButton>
-                            {previewWinRate && (
-                              <Lightbox
-                                mainSrc={URL.createObjectURL(
-                                  imageWinRate as File
-                                )}
-                                onCloseRequest={() => setPreviewWinRate(false)}
-                              />
-                            )}
-                          </div>
-                          <div>
-                            <label>Screenshot win rate hero</label>
-                            <MyButton
-                              className={clsxm(
-                                'block',
-                                'bg-tertiary-300 text-black',
-                                'border border-green-500',
-                                'hover:bg-tertiary-500 hover:text-green-50',
-                                'active:bg-tertiary-600',
-                                'disabled:bg-tertiary-300 disabled:hover:bg-tertiary-300 disabled:hover:text-black',
-                                'py-1'
-                              )}
-                              onClick={() => setPreviewWinRateHero(true)}
-                            >
-                              Preview
-                            </MyButton>
-                            {previewWinRateHero && (
-                              <Lightbox
-                                mainSrc={URL.createObjectURL(
-                                  imageWinRateHero as File
-                                )}
-                                onCloseRequest={() =>
-                                  setPreviewWinRateHero(false)
-                                }
-                              />
-                            )}
-                          </div>
-                          <div>
-                            <label>Screenshot emblem</label>
-                            <MyButton
-                              className={clsxm(
-                                'block',
-                                'bg-tertiary-300 text-black',
-                                'border border-green-500',
-                                'hover:bg-tertiary-500 hover:text-green-50',
-                                'active:bg-tertiary-600',
-                                'disabled:bg-tertiary-300 disabled:hover:bg-tertiary-300 disabled:hover:text-black',
-                                'py-1'
-                              )}
-                              onClick={() => setPreviewEmblem(true)}
-                            >
-                              Preview
-                            </MyButton>
-                            {previewEmblem && (
-                              <Lightbox
-                                mainSrc={URL.createObjectURL(
-                                  imageEmblem as File
-                                )}
-                                onCloseRequest={() => setPreviewEmblem(false)}
-                              />
-                            )}
-                          </div>
-                          <div>
-                            <label>Screenshot skin</label>
-                            <MyButton
-                              className={clsxm(
-                                'block',
-                                'bg-tertiary-300 text-black',
-                                'border border-green-500',
-                                'hover:bg-tertiary-500 hover:text-green-50',
-                                'active:bg-tertiary-600',
-                                'disabled:bg-tertiary-300 disabled:hover:bg-tertiary-300 disabled:hover:text-black',
-                                'py-1'
-                              )}
-                              onClick={() => setPreviewSkin(true)}
-                            >
-                              Preview
-                            </MyButton>
-                            {previewSkin && (
-                              <Lightbox
-                                mainSrc={URL.createObjectURL(
-                                  (imageSkin as File[])[skinIndex] as File
-                                )}
-                                nextSrc={URL.createObjectURL(
-                                  (imageSkin as File[])[
-                                    (skinIndex + 1) %
-                                      (imageSkin as File[]).length
-                                  ] as File
-                                )}
-                                prevSrc={URL.createObjectURL(
-                                  (imageSkin as File[])[
-                                    (skinIndex +
-                                      (imageSkin as File[]).length -
-                                      1) %
-                                      (imageSkin as File[]).length
-                                  ] as File
-                                )}
-                                onCloseRequest={() => setPreviewSkin(false)}
-                                onMovePrevRequest={() =>
-                                  setSkinIndex(
-                                    (skinIndex +
-                                      (imageSkin as File[]).length -
-                                      1) %
-                                      (imageSkin as File[]).length
-                                  )
-                                }
-                                onMoveNextRequest={() =>
-                                  setSkinIndex(
-                                    (skinIndex + 1) %
-                                      (imageSkin as File[]).length
-                                  )
-                                }
-                              />
-                            )}
-                          </div>
-                          <div>
-                            <label>Paket Posting Akun</label>
-                            <p className='text-2xl font-bold text-black dark:!text-white'>
-                              {
-                                packageId.find(
-                                  (p) => p.value === getValues('package_id')
-                                )?.label
-                              }
-                            </p>
-                          </div>
-                          <div>
-                            <label className='font-bold'>
-                              Jenis Pembayaran
-                            </label>
-                            <p className='text-2xl font-bold text-black dark:!text-white'>
-                              {
-                                jenisPembayaranOpts.find(
-                                  (p) =>
-                                    p.value === getValues('jenis_pembayaran')
-                                )?.label
-                              }
-                            </p>
-                          </div>
-                        </div>
-                        <div className='space-y-4'>
-                          <div>
-                            <label>Binding Account</label>
-                            <div className='flex max-h-36 flex-wrap gap-x-1 gap-y-1 overflow-auto'>
-                              {getValues('account_bind')
-                                ?.map(
-                                  (v) =>
-                                    accountBindOpts.find((p) => p.value === v)
-                                      ?.label
-                                )
-                                .map((v, i) => (
-                                  <div
-                                    className='rounded-xl bg-neutral-600 px-2 py-1 dark:bg-neutral-200'
-                                    key={i}
-                                  >
-                                    <p className='m-0 text-white dark:!text-black'>
-                                      {v}
-                                    </p>
-                                  </div>
-                                ))}
-                            </div>
-                          </div>
-                          <div>
-                            <label>Favorite Heroes</label>
-                            <div className='flex max-h-36 flex-wrap gap-x-1 gap-y-1 overflow-auto rounded-xl border-2 p-1'>
-                              {getValues('favorite_heroes')
-                                ?.map(
-                                  (v) =>
-                                    favHeroesOpts.find((p) => p.value === v)
-                                      ?.label
-                                )
-                                .map((v, i) => (
-                                  <div
-                                    className='rounded-xl bg-neutral-600 px-2 py-1 dark:bg-neutral-200'
-                                    key={i}
-                                  >
-                                    <p className='m-0 text-white dark:!text-black'>
-                                      {v}
-                                    </p>
-                                  </div>
-                                ))}
-                            </div>
-                          </div>
-                          <div>
-                            <label>Emblem</label>
-                            <div className='flex max-h-36 flex-wrap gap-x-2 gap-y-1 overflow-auto rounded-xl border-2 p-1'>
-                              {getValues('total_emblem')?.map(
-                                ({ id_emblem, level }, i) => (
-                                  <div
-                                    key={`${id_emblem}${i}`}
-                                    className='flex gap-x-1'
-                                  >
-                                    <div className='self-end rounded-xl bg-neutral-600 px-2 py-1 dark:bg-neutral-200'>
-                                      <p className='m-0 text-white dark:!text-black'>
-                                        {
-                                          emblemOpts.find(
-                                            (v) => v.value == id_emblem
-                                          )?.label
-                                        }
-                                      </p>
-                                    </div>
-                                    <div className='self-end rounded-xl bg-neutral-600 px-2 py-1 dark:bg-neutral-200'>
-                                      <p className='m-0 text-white dark:!text-black'>
-                                        {level}
-                                      </p>
-                                    </div>
-                                  </div>
-                                )
-                              )}
-                            </div>
-                          </div>
-                          <div>
-                            <label>Skin Rare</label>
-                            <div className='flex max-h-36 flex-wrap gap-x-2 gap-y-1 overflow-auto rounded-xl border-2 p-1'>
-                              {getValues('total_skin_rare')?.map(
-                                ({ jenis, total_skin }, i) => (
-                                  <div
-                                    key={`${jenis}${i}`}
-                                    className='flex gap-x-1'
-                                  >
-                                    <div className='self-end rounded-xl bg-neutral-600 px-2 py-1 dark:bg-neutral-200'>
-                                      <p className='m-0 text-white dark:!text-black'>
-                                        {jenis}
-                                      </p>
-                                    </div>
-                                    <div className='self-end rounded-xl bg-neutral-600 px-2 py-1 dark:bg-neutral-200'>
-                                      <p className='m-0 text-white dark:!text-black'>
-                                        {total_skin}
-                                      </p>
-                                    </div>
-                                  </div>
-                                )
-                              )}
-                            </div>
-                          </div>
-                          <div>
-                            <label>Recall Effect</label>
-                            <div className='flex max-h-36 flex-wrap gap-x-1 gap-y-1 overflow-auto rounded-xl border-2 p-1'>
-                              {getValues('recall_effect').map((v, i) => (
+                        <div>
+                          <label>Binding Account</label>
+                          <div className='mt-2 flex max-h-36 flex-wrap gap-x-1 gap-y-1 overflow-auto'>
+                            {getValues('account_bind')
+                              ?.map(
+                                (v) =>
+                                  accountBindOpts.find((p) => p.value === v)
+                                    ?.label
+                              )
+                              .map((v, i) => (
                                 <div
-                                  className='rounded-xl bg-neutral-600 px-2 py-1 dark:bg-neutral-200'
+                                  className='rounded bg-[#EFEFEF] p-[4px_15px] dark:bg-neutral-200'
                                   key={i}
                                 >
-                                  <p className='m-0 text-white dark:!text-black'>
-                                    {v}
-                                  </p>
+                                  <p className='m-0'>{v}</p>
                                 </div>
                               ))}
-                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <label>Favorite Heroes</label>
+                          <div className='mt-2 flex max-h-36 flex-wrap gap-x-1 gap-y-1 overflow-auto'>
+                            {getValues('favorite_heroes')
+                              ?.map(
+                                (v) =>
+                                  favHeroesOpts.find((p) => p.value === v)
+                                    ?.label
+                              )
+                              .map((v, i) => (
+                                <div
+                                  className='rounded bg-[#EFEFEF] p-[4px_15px] dark:bg-neutral-200'
+                                  key={i}
+                                >
+                                  <p className='m-0'>{v}</p>
+                                </div>
+                              ))}
+                          </div>
+                        </div>
+                        <div>
+                          <label>Emblem</label>
+                          <div className='flex max-h-36 flex-wrap gap-x-2 gap-y-1 overflow-auto rounded-xl p-1'>
+                            {getValues('total_emblem')?.map(
+                              ({ id_emblem, level }, i) => (
+                                <div
+                                  className='flex items-center justify-center gap-x-3 rounded bg-[#EFEFEF] p-[4px_15px] dark:bg-neutral-200'
+                                  key={`${id_emblem}${i}`}
+                                >
+                                  <p className='m-0'>
+                                    {
+                                      emblemOpts.find(
+                                        (v) => v.value == id_emblem
+                                      )?.label
+                                    }
+                                  </p>
+                                  <p className='className text-[]] m-0 flex h-[20px] w-[20px] items-center justify-center rounded-full bg-[#D3EBF8] !text-sm'>
+                                    {level}
+                                  </p>
+                                </div>
+                              )
+                            )}
+                          </div>
+                        </div>
+                        <div>
+                          <label>Skin Rare</label>
+                          <div className='flex max-h-36 flex-wrap gap-x-2 gap-y-1 overflow-auto rounded-xl p-1'>
+                            {getValues('total_skin_rare')?.map(
+                              ({ jenis, total_skin }, i) => (
+                                <div
+                                  className='flex items-center justify-center gap-x-3 rounded bg-[#EFEFEF] p-[4px_15px] dark:bg-neutral-200'
+                                  key={`${jenis}${i}`}
+                                >
+                                  <p className='m-0'>{jenis}</p>
+                                  <p className='className text-[]] m-0 flex h-[20px] w-[20px] items-center justify-center rounded-full bg-[#D3EBF8] !text-sm'>
+                                    {total_skin}
+                                  </p>
+                                </div>
+                              )
+                            )}
+                          </div>
+                        </div>
+                        <div>
+                          <label>Recall</label>
+                          <div className='flex max-h-36 flex-wrap gap-x-1 gap-y-1 overflow-auto'>
+                            {getValues('recall_effect').map((v, i) => (
+                              <div
+                                className='rounded bg-[#EFEFEF] p-[4px_15px] dark:bg-neutral-200'
+                                key={i}
+                              >
+                                <p className='m-0'>{v}</p>
+                              </div>
+                            ))}
                           </div>
                         </div>
                       </div>
-                      <div className='flex flex-col items-center justify-center gap-y-4'>
+                      <div className='flex flex-col items-center justify-center gap-y-4 bg-[#F1F1F1] p-3'>
                         <div className='space-y-4'>
                           <div className='text-center'>
                             <h3>Rincian Pembayaran</h3>
@@ -2312,15 +2050,15 @@ const UploadMain = () => {
                             jika sudah disubmit
                           </p>
                         </div>
-                      </div>
-                      <div className='flex items-center justify-center'>
-                        <ButtonGradient
-                          disabled={!isChecked || submitBtnDisabled}
-                          className='text-black'
-                          onClick={() => handleSubmit(onSubmit)()}
-                        >
-                          Submit Iklan
-                        </ButtonGradient>
+                        <div className='flex items-center justify-center'>
+                          <ButtonGradient
+                            disabled={!isChecked || submitBtnDisabled}
+                            className='text-black'
+                            onClick={() => handleSubmit(onSubmit)()}
+                          >
+                            Submit Iklan
+                          </ButtonGradient>
+                        </div>
                       </div>
                     </div>
                   </ConfirmationDialog>

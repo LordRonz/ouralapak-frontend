@@ -33,7 +33,7 @@ const ConfirmationDialog = ({
       aria-describedby={description}
       classNames={{
         root: 'text-black dark:!text-white',
-        modal: 'rounded-xl bg-white dark:!bg-dark',
+        modal: 'rounded-xl bg-white dark:!bg-dark p-0',
       }}
       closeIcon={<XButton />}
     >
