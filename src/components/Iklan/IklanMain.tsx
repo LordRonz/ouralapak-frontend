@@ -63,11 +63,19 @@ type CarouselNode = {
 };
 
 const IklanMain = ({ id }: { id: number }) => {
+  const router = useRouter();
+  const { authUser } = router.query;
   const { data: iklan, error } = useSWR<{
     data: IklanDetail;
     message: string;
     success: boolean;
-  }>(`${API_URL}${getAuthHeader() ? '/user' : ''}/iklan/${id}`);
+  }>(
+    id
+      ? `${API_URL}${
+          authUser === 'true' && getAuthHeader() ? '/user' : ''
+        }/iklan/${id}`
+      : null
+  );
 
   const { data: iklans } = useSWR<{
     data: { data: IklanHome[]; pagination: Pagination };
@@ -146,8 +154,6 @@ const IklanMain = ({ id }: { id: number }) => {
     getValues,
     formState: { errors },
   } = useForm<IFormInput>();
-
-  const router = useRouter();
 
   const [beliBtnDisabled, setBeliBtnDisabled] = React.useState(false);
   const [recaptchaResponse, setRecaptchaResponse] = useState<string | null>(

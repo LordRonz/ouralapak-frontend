@@ -11,7 +11,7 @@ import Iklan from '@/types/iklan';
 const IklanCard = ({ iklan }: { iklan: Iklan & { refund_title?: string } }) => {
   return (
     <>
-      <UnstyledLink href={`/iklan/${iklan.id}`}>
+      <UnstyledLink href={`/iklan/${iklan.id}?authUser=true`}>
         <div className='card-container flex flex-col gap-x-4 rounded-lg bg-[#f8f8f8] dark:bg-gray-800 md:flex-row'>
           <div className='flex flex-col items-start justify-center'>
             <div className='h-full w-full overflow-hidden rounded-lg md:!h-48 md:!w-48'>

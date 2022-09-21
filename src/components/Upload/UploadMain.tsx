@@ -1997,7 +1997,7 @@ const UploadMain = () => {
                                 }
                               </p>
                               <p className='mt-12 text-xl font-bold text-black dark:!text-white'>
-                                TOTAL
+                                Total
                               </p>
                             </div>
                             <div className='text-right'>
@@ -2037,15 +2037,15 @@ const UploadMain = () => {
                           ref={recaptchaRef}
                           onChange={(token) => setResponseCapthca(token)}
                         />
-                        <div>
+                        <div className='flex items-center justify-center gap-x-4'>
                           <input
                             type='checkbox'
                             value='agreed'
                             checked={isChecked}
                             onChange={() => setIsChecked((v) => !v)}
-                            className='mr-4'
+                            className=''
                           />
-                          <p className='inline rounded-md bg-rose-100 text-red-500'>
+                          <p className='m-0 inline rounded-md font-bold text-red-500'>
                             Data yang diisi sudah benar dan tidak dapat diubah
                             jika sudah disubmit
                           </p>
