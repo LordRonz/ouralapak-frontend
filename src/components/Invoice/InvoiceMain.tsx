@@ -62,81 +62,141 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
     <main>
       <section className='pb-12'>
         <div className='items-center justify-center'>
-          <div className='space-y-10 overflow-auto rounded-xl border border-primary-400 bg-neutral-100 pb-8 dark:bg-neutral-800'>
-            <div className='flex flex-wrap justify-between gap-y-4 p-8 md:px-16'>
-              <div>
-                <div className='mb-6 space-x-4'>
-                  <h1 className='inline'>INVOICE</h1>
-                  <p className='inline rounded-lg bg-neutral-300 py-0 px-2'>
+          <div className='mx-3 !mt-40 overflow-auto rounded-xl border border-primary-400 bg-neutral-100 pb-8 dark:bg-neutral-800 md:mx-8'>
+            <div className='hidden flex-wrap justify-between gap-y-4 bg-[#B89C74] p-8 md:flex md:px-16'>
+              <div className='mb-6 flex w-full items-center justify-between space-x-4'>
+                <h1 className='m-0 text-white'>INVOICE</h1>
+                <div>
+                  <p className='m-0 inline rounded-3xl bg-[#D3EBF8] py-1 px-3 font-bold text-[#2EA0DE]'>
                     Penjualan Akun
                   </p>
                 </div>
+              </div>
+              <div className='flex w-full items-center justify-between'>
                 <div className='flex gap-x-4'>
                   <div>
-                    <p className='mb-0'>Created</p>
-                    <h3>
+                    <p className='mb-0 text-white'>Created</p>
+                    <h3 className=' text-white'>
                       {invoice?.data.created_at &&
                         formatDateStrId(invoice?.data.created_at)}
                     </h3>
                   </div>
                   <div>
-                    <p className='mb-0'>Expired</p>
-                    <h3>
+                    <p className='mb-0 text-white'>Expired</p>
+                    <h3 className=' text-white'>
                       {invoice?.data.expired_at &&
                         formatDateStrId(invoice?.data.expired_at)}
                     </h3>
                   </div>
                 </div>
-              </div>
-              <div className='flex flex-col items-end'>
-                <TooltipTippy
-                  trigger='mouseenter'
-                  hideOnClick={false}
-                  interactive
-                  html={
-                    <div className='inline-block rounded-md border bg-white p-2 text-gray-600 shadow-md dark:!border-primary-500 dark:!bg-dark dark:!text-gray-200'>
-                      {copyStatus}
-                    </div>
-                  }
-                >
-                  <CopyToClipboard
-                    text={invoice?.data.no_invoice ?? ''}
-                    onCopy={() => {
-                      setCopyStatus('Copied to clipboard ✅');
-                      setTimeout(() => setCopyStatus('Click to copy'), 1469);
-                    }}
+                <div className='flex flex-col items-end justify-center'>
+                  <TooltipTippy
+                    trigger='mouseenter'
+                    hideOnClick={false}
+                    interactive
+                    html={
+                      <div className='inline-block rounded-md border bg-white p-2 text-gray-600 shadow-md dark:!border-primary-500 dark:!bg-dark dark:!text-gray-200'>
+                        {copyStatus}
+                      </div>
+                    }
                   >
-                    <h1 className='cursor-pointer rounded-lg border-gray-700 p-1 text-dark outline dark:!text-light'>
-                      {invoice?.data.no_invoice ?? ''}
-                    </h1>
-                  </CopyToClipboard>
-                </TooltipTippy>
+                    <CopyToClipboard
+                      text={invoice?.data.no_invoice ?? ''}
+                      onCopy={() => {
+                        setCopyStatus('Copied to clipboard ✅');
+                        setTimeout(() => setCopyStatus('Click to copy'), 1469);
+                      }}
+                    >
+                      <h1 className='cursor-pointer text-3xl text-white'>
+                        {invoice?.data.no_invoice ?? ''}
+                      </h1>
+                    </CopyToClipboard>
+                  </TooltipTippy>
+                </div>
               </div>
             </div>
-            <hr className='w-full border-2 border-neutral-900 dark:border-neutral-200' />
-            <div className='grid gap-x-12 gap-y-10 p-8 md:grid-cols-2 md:px-16'>
+            <div className='flex flex-col flex-wrap justify-center gap-y-4 bg-[#B89C74] p-3 md:hidden md:px-16'>
+              <div className='mb-2 flex w-full items-center justify-center space-x-4'>
+                <h1 className='m-0 text-xl text-white'>INVOICE</h1>
+              </div>
+              <div className='grid grid-cols-2'>
+                <div>
+                  <p className='mb-0 text-xs text-white'>Created</p>
+                  <h3 className='text-sm text-white'>
+                    {invoice?.data.created_at &&
+                      formatDateStrId(invoice?.data.created_at)}
+                  </h3>
+                </div>
+                <div>
+                  <p className='mb-0 text-xs text-white'>Expired</p>
+                  <h3 className='text-sm text-white'>
+                    {invoice?.data.expired_at &&
+                      formatDateStrId(invoice?.data.expired_at)}
+                  </h3>
+                </div>
+              </div>
+              <div className='grid grid-cols-2 items-center'>
+                <div>
+                  <p className='m-0 inline rounded-3xl bg-[#D3EBF8] py-1 px-3 text-sm font-bold text-[#2EA0DE]'>
+                    Penjualan Akun
+                  </p>
+                </div>
+                <div className='flex flex-col justify-center'>
+                  <TooltipTippy
+                    trigger='mouseenter'
+                    hideOnClick={false}
+                    interactive
+                    html={
+                      <div className='inline-block rounded-md border bg-white p-2 text-gray-600 shadow-md dark:!border-primary-500 dark:!bg-dark dark:!text-gray-200'>
+                        {copyStatus}
+                      </div>
+                    }
+                  >
+                    <CopyToClipboard
+                      text={invoice?.data.no_invoice ?? ''}
+                      onCopy={() => {
+                        setCopyStatus('Copied to clipboard ✅');
+                        setTimeout(() => setCopyStatus('Click to copy'), 1469);
+                      }}
+                    >
+                      <h1 className='m-0 cursor-pointer text-sm text-white'>
+                        {invoice?.data.no_invoice ?? ''}
+                      </h1>
+                    </CopyToClipboard>
+                  </TooltipTippy>
+                </div>
+              </div>
+            </div>
+            <hr className='mt-0 w-full border-2 border-neutral-900 dark:border-neutral-200' />
+            <div className='mt-10 grid gap-x-12 gap-y-10 p-8 md:grid-cols-2 md:px-16'>
               <div className='space-y-8'>
                 <div>
                   <h2 className='text-lg md:text-3xl'>Detail Pesanan</h2>
                 </div>
-                <div className='divide-0 grid grid-cols-1 gap-y-2 divide-y divide-neutral-400 md:grid-cols-3 md:divide-x md:divide-y-0'>
-                  <div className='flex flex-col justify-center px-4'>
-                    <h4 className='text-base md:text-lg'>Judul</h4>
-                    <h3 className='text-dark dark:!text-light'>
-                      {invoice?.data.title}
-                    </h3>
+                <div className='grid grid-cols-2 gap-y-4 gap-x-1'>
+                  <div>
+                    <h3 className='m-0 text-xl font-normal'>Judul Iklan</h3>
+                    <p className='m-0 text-2xl font-semibold text-black'>
+                      {invoice.data.title}
+                    </p>
                   </div>
-                  <div className='flex flex-col justify-center px-4 pt-2'>
-                    <h4 className='text-base md:text-lg'>Win Rate</h4>
-                    <h3 className='text-dark dark:!text-light'>
-                      {invoice?.data.win_rate} %
-                    </h3>
+                  <div>
+                    <h3 className='m-0 text-xl font-normal'>Jenis Refund</h3>
+                    <p className='m-0 text-2xl font-semibold text-black'>
+                      {invoice.data.jenis_refund}
+                    </p>
                   </div>
-                  <div className='flex flex-col justify-center px-4 pt-2'>
-                    <h4 className='text-base md:text-lg'>Jenis Refund</h4>
-                    <h3 className='text-dark dark:!text-light'>
-                      {invoice?.data.jenis_refund}
+                  <div>
+                    <h3 className='m-0 text-xl font-normal'>Win Rate</h3>
+                    <p className='m-0 text-2xl font-semibold text-black'>
+                      {invoice.data.win_rate} %
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className='m-0 text-xl font-normal'>
+                      Paket Posting Iklan
                     </h3>
+                    <p className='m-0 text-2xl font-semibold text-black'></p>
                   </div>
                 </div>
               </div>
@@ -214,7 +274,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                     {invoice.data.jenis_pembayaran.name}
                   </h3>
                 </div>
-                <div className='rounded-xl bg-neutral-300 px-4 py-3'>
+                <div className='rounded-xl bg-[#EDD9BC] px-4 py-3'>
                   <div className='grid grid-cols-2'>
                     {invoice.data.va ? (
                       <div>
