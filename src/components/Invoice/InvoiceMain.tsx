@@ -14,27 +14,54 @@ import toIDRCurrency from '@/lib/toIDRCurrency';
 import { Config } from '@/types/config';
 import Iklan from '@/types/iklan';
 import Invoice from '@/types/invoice';
+import { Roles } from '@/types/roles';
+import User from '@/types/user';
 
 const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
   const router = useRouter();
+
+  const { data: user } = useSWR<{
+    data: User;
+    message: string;
+    success: boolean;
+  }>(() => `${API_URL}/profile`);
 
   const { data: invoice, error } = useSWR<{
     data: Invoice;
     message: string;
     success: boolean;
-  }>(`${API_URL}/user/check-invoice/${no_invoice}`);
+  }>(
+    `${API_URL}/${
+      user?.data.role.includes(Roles.ADMIN) ||
+      user?.data.role.includes(Roles.SUPERUSER)
+        ? 'admin'
+        : 'user'
+    }/check-invoice/${no_invoice}`
+  );
 
   const { data: iklan } = useSWR<{
     data: Iklan;
     message: string;
     success: boolean;
-  }>(() => `${API_URL}/user/iklan/` + invoice!.data.iklan_id);
+  }>(
+    () =>
+      `${API_URL}/${
+        user?.data.role.includes(Roles.ADMIN) ||
+        user?.data.role.includes(Roles.SUPERUSER)
+          ? 'admin'
+          : 'user'
+      }/iklan/` + invoice!.data.iklan_id
+  );
 
   const { data: config } = useSWR<{
     data: Config;
     message: string;
     success: boolean;
   }>(() => `${API_URL}/master/config/4`);
+
+  const { data: qris_image } = useSWR<string>(
+    invoice?.data.qris ? invoice?.data.qris : null
+  );
 
   const [copyStatus, setCopyStatus] = useState<string>('Click to copy');
 
@@ -62,7 +89,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
     <main>
       <section className='pb-12'>
         <div className='items-center justify-center'>
-          <div className='mx-3 !mt-40 overflow-auto rounded-xl border border-primary-400 bg-neutral-100 pb-8 dark:bg-neutral-800 md:mx-8'>
+          <div className='mx-[0.75rem] !mt-24 overflow-auto rounded-xl border border-primary-400 bg-white pb-8 dark:!bg-neutral-800 md:!mx-16'>
             <div className='hidden flex-wrap justify-between gap-y-4 bg-[#B89C74] p-8 md:flex md:px-16'>
               <div className='mb-6 flex w-full items-center justify-between space-x-4'>
                 <h1 className='m-0 text-white'>INVOICE</h1>
@@ -168,35 +195,41 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
               </div>
             </div>
             <hr className='mt-0 w-full border-2 border-neutral-900 dark:border-neutral-200' />
-            <div className='mt-10 grid gap-x-12 gap-y-10 p-8 md:grid-cols-2 md:px-16'>
+            <div className='mt-10 grid gap-x-12 gap-y-10 p-[0.75rem] md:grid-cols-2 md:px-[4rem]'>
               <div className='space-y-8'>
                 <div>
                   <h2 className='text-lg md:text-3xl'>Detail Pesanan</h2>
                 </div>
                 <div className='grid grid-cols-2 gap-y-4 gap-x-1'>
                   <div>
-                    <h3 className='m-0 text-xl font-normal'>Judul Iklan</h3>
-                    <p className='m-0 text-2xl font-semibold text-black'>
+                    <h3 className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
+                      Judul Iklan
+                    </h3>
+                    <h3 className='whitespace-normal text-base text-dark dark:!text-light md:text-2xl'>
                       {invoice.data.title}
-                    </p>
+                    </h3>
                   </div>
                   <div>
-                    <h3 className='m-0 text-xl font-normal'>Jenis Refund</h3>
-                    <p className='m-0 text-2xl font-semibold text-black'>
+                    <h3 className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
+                      Jenis Refund
+                    </h3>
+                    <h3 className='whitespace-normal text-base text-dark dark:!text-light md:text-2xl'>
                       {invoice.data.jenis_refund}
-                    </p>
+                    </h3>
                   </div>
                   <div>
-                    <h3 className='m-0 text-xl font-normal'>Win Rate</h3>
-                    <p className='m-0 text-2xl font-semibold text-black'>
+                    <h3 className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
+                      Win Rate
+                    </h3>
+                    <h3 className='whitespace-normal text-base text-dark dark:!text-light md:text-2xl'>
                       {invoice.data.win_rate} %
-                    </p>
+                    </h3>
                   </div>
                   <div>
-                    <h3 className='m-0 text-xl font-normal'>
+                    <h3 className='text-base font-medium text-[#85878E] dark:text-white md:text-lg'>
                       Paket Posting Iklan
                     </h3>
-                    <p className='m-0 text-2xl font-semibold text-black'></p>
+                    <h3 className='whitespace-normal text-base text-dark dark:!text-light md:text-2xl'></h3>
                   </div>
                 </div>
               </div>
@@ -204,111 +237,161 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                 <div>
                   <h2 className='text-lg md:text-3xl'>Detail Penjual</h2>
                 </div>
-                <div className='flex flex-wrap justify-between gap-y-4'>
-                  <div className='flex flex-col justify-center px-4'>
-                    <h4 className='text-base md:text-lg'>Nama</h4>
-                    <h3 className='text-dark dark:!text-light'>
+                <div className='grid grid-cols-2 gap-y-4'>
+                  <div className='break-words'>
+                    <h4 className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
+                      Nama Penjual
+                    </h4>
+                    <h3 className='whitespace-normal text-base text-dark dark:!text-light md:text-2xl'>
                       {iklan?.data.user.name}
                     </h3>
                   </div>
-                  <div className='flex flex-col justify-center px-4'>
-                    <h4 className='text-base md:text-lg'>Email</h4>
-                    <h3 className='text-dark dark:!text-light'>
+                  <div className='break-words'>
+                    <h4 className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
+                      Email Penjual
+                    </h4>
+                    <h3 className='whitespace-normal text-base text-dark dark:!text-light md:text-2xl'>
                       {iklan?.data.user.email}
                     </h3>
                   </div>
-                  <div className='flex flex-col justify-center px-4'>
-                    <h4 className='text-base md:text-lg'>Telp.</h4>
-                    <h3 className='text-dark dark:!text-light'>
+                  <div className='break-words'>
+                    <h4 className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
+                      No. Kontak/Whatsapp
+                    </h4>
+                    <h3 className='whitespace-normal text-base text-dark dark:!text-light md:text-2xl'>
                       {iklan?.data.user.phone}
                     </h3>
                   </div>
                 </div>
               </div>
-              <div className='grid grid-cols-1 divide-y divide-neutral-400'>
+              <div className='grid grid-cols-1'>
                 <div>
                   <h2 className='text-lg md:text-3xl'>Rincian Pembayaran</h2>
                 </div>
-                <div className='grid grid-cols-2 pt-3'>
-                  <p className='text-lg font-extrabold text-dark dark:!text-light'>
-                    Biaya Paket
-                  </p>
-                  <p className='text-right text-dark dark:!text-light'>
-                    {toIDRCurrency(invoice?.data.biaya_penjualan)}
-                  </p>
-                </div>
-                <div className='grid grid-cols-2 pt-3'>
-                  <p className='text-lg font-extrabold text-dark dark:!text-light'>
-                    {invoice.data.va || invoice.data.qris
-                      ? 'Biaya Admin'
-                      : 'Kode Unik'}
-                  </p>
-                  <p className='text-right text-dark dark:!text-light'>
-                    {toIDRCurrency(
-                      invoice.data.va || invoice.data.qris
-                        ? invoice.data.biaya_admin
-                        : invoice.data.kode_unik
-                    )}
-                  </p>
-                </div>
-                <div className='grid grid-cols-2 pt-3'>
-                  <p className='text-2xl font-extrabold text-dark dark:!text-light'>
-                    TOTAL
-                  </p>
-                  <p className='text-right text-2xl font-extrabold text-dark dark:!text-light'>
-                    {toIDRCurrency(
-                      +invoice.data.biaya_penjualan +
-                        +(invoice.data.va || invoice.data.qris
+                <div>
+                  <div className='grid grid-cols-2 pt-3'>
+                    <p className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
+                      Biaya Paket
+                    </p>
+                    <p className='text-right text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
+                      {toIDRCurrency(invoice?.data.biaya_penjualan)}
+                    </p>
+                  </div>
+                  <div className='grid grid-cols-2 pt-3'>
+                    <p className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
+                      {invoice.data.va || invoice.data.qris
+                        ? 'Biaya Admin'
+                        : 'Kode Unik'}
+                    </p>
+                    <p className='text-right text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
+                      {toIDRCurrency(
+                        invoice.data.va || invoice.data.qris
                           ? invoice.data.biaya_admin
-                          : invoice.data.kode_unik)
-                    )}
-                  </p>
+                          : invoice.data.kode_unik
+                      )}
+                    </p>
+                  </div>
+                  <div className='grid grid-cols-2 pt-3'>
+                    <p className='text-lg font-bold text-dark dark:!text-light md:text-2xl'>
+                      Total
+                    </p>
+                    <p className='text-right text-lg font-bold text-dark dark:!text-light md:text-2xl'>
+                      {toIDRCurrency(
+                        +invoice.data.biaya_penjualan +
+                          +(invoice.data.va || invoice.data.qris
+                            ? invoice.data.biaya_admin
+                            : invoice.data.kode_unik)
+                      )}
+                    </p>
+                  </div>
                 </div>
               </div>
               <div className='space-y-4'>
-                <div>
-                  <h2 className='text-lg md:text-3xl'>Metode Pembayaran</h2>
+                <div className='flex items-center gap-x-3'>
+                  <h2 className='m-0 text-lg md:text-3xl'>Metode Pembayaran</h2>
+                  <div className=''>
+                    <p className='m-0 rounded-3xl bg-[#EFEFEF] px-3'>
+                      {invoice.data.va || invoice.data.qris
+                        ? 'Virtual Account'
+                        : 'Transfer'}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className='font-medium md:text-4xl'>
-                    {invoice.data.jenis_pembayaran.name}
-                  </h3>
-                </div>
-                <div className='rounded-xl bg-[#EDD9BC] px-4 py-3'>
-                  <div className='grid grid-cols-2'>
+                {invoice.data.qris ? (
+                  <div>
+                    <h4 className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
+                      Scan QR Code untuk pembayaran
+                    </h4>
+                    <div className='flex items-center gap-x-4'>
+                      <img
+                        src={
+                          qris_image
+                            ?.split('<img src="')[1]
+                            .split('" style=')[0]
+                        }
+                        alt='qris'
+                        height={169}
+                        width={169}
+                      />
+                      <div>
+                        <p className='m-0 text-2xl font-semibold'>QRIS</p>
+                        <p className='m-0 text-base font-medium'>
+                          NMID 169696969
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className='w-full rounded-xl bg-[#EDD9BC] px-4 py-3'>
                     {invoice.data.va ? (
                       <div>
                         <h4 className='font-medium'>No. Virtual Account</h4>
                         <p>{invoice.data.va}</p>
                       </div>
                     ) : (
-                      <>
-                        <div>
-                          <h5 className='font-medium'>Nama</h5>
-                          <p className='m-0 text-2xl font-bold text-black'>
-                            {invoice.data.jenis_pembayaran.rekening_name}
-                          </p>
-                        </div>
-                        <div>
-                          <h5 className='font-medium'>No. Rekening</h5>
-                          <p className='m-0 text-2xl font-bold text-black'>
-                            {invoice.data.jenis_pembayaran.rekening_number}
-                          </p>
-                        </div>
-                      </>
+                      <div className='!flex-now !wrap grid w-full grid-cols-12 whitespace-normal'>
+                        <p className='col-span-4 m-0 text-sm font-medium text-black md:col-span-3 md:text-lg'>
+                          Bank
+                        </p>
+                        <p className='col-span-1 m-0 text-sm font-medium text-black md:text-lg'>
+                          :
+                        </p>
+                        <p className='col-span-7 m-0 text-sm font-bold text-black md:col-span-8 md:text-lg'>
+                          {invoice.data.jenis_pembayaran.rekening_name}
+                        </p>
+                        <p className='col-span-4 m-0 text-sm font-medium text-black md:col-span-3 md:text-lg'>
+                          No. Rekening
+                        </p>
+                        <p className='col-span-1 m-0 text-sm font-medium text-black md:text-lg'>
+                          :
+                        </p>
+                        <p className='col-span-7 m-0 text-sm font-bold text-black md:col-span-8 md:text-lg'>
+                          {invoice.data.jenis_pembayaran.rekening_number}
+                        </p>
+                        <p className='col-span-4 m-0 text-sm font-medium text-black md:col-span-3 md:text-lg'>
+                          Atas Nama
+                        </p>
+                        <p className='col-span-1 m-0 text-sm font-medium text-black md:text-lg'>
+                          :
+                        </p>
+                        <p className='col-span-7 m-0 text-sm font-bold text-black md:col-span-8 md:text-lg'>
+                          {invoice.data.jenis_pembayaran.name}
+                        </p>
+                      </div>
                     )}
                   </div>
+                )}
+                <div className=''>
+                  <h4 className='inline rounded-md text-sm text-red-500 md:text-lg'>
+                    Harap dibayar sesuai dengan nominal yang tertera pada {'"'}
+                    TOTAL
+                    {'"'} sebelum invoice kadaluarsa.
+                  </h4>
                 </div>
               </div>
             </div>
-            <div className='text-center'>
-              <h4 className='inline rounded-md  text-red-500'>
-                Harap dibayar sesuai dengan nominal yang tertera pada {'"'}TOTAL
-                {'"'} sebelum invoice kadaluarsa.
-              </h4>
-            </div>
-            <div className='text-center'>
-              <ButtonLinkGradient href={getWaLink()} className='text-black'>
+            <div className='mt-6 text-center'>
+              <ButtonLinkGradient href={getWaLink()} className=''>
                 Konfirmasi Pembayaran
               </ButtonLinkGradient>
             </div>

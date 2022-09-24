@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { stringifyUrl } from 'query-string';
 import * as React from 'react';
@@ -233,17 +232,16 @@ const IndexPage = () => {
                 </Tooltip>
               )}
               <Tooltip interactive={false} content='Lihat'>
-                <Link
+                <UnstyledLink
+                  openNewTab
                   href={`/invoice${
                     row.original.jenisInvoice === JenisInvoice.PEMBELI
                       ? '-beli'
                       : ''
-                  }/${row.original.id}`}
+                  }/${row.original.noInvoice}`}
                 >
-                  <a>
-                    <DetailIcon />
-                  </a>
-                </Link>
+                  <DetailIcon />
+                </UnstyledLink>
               </Tooltip>
               <Tooltip interactive={false} content='Whatsapp'>
                 <UnstyledLink

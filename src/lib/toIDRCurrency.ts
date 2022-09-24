@@ -1,5 +1,5 @@
 export const toIDRCurrency = (num: number | string | undefined) =>
-  num
+  num !== undefined
     ? new Intl.NumberFormat('id-ID', {
         style: 'currency',
         currency: 'IDR',
