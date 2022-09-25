@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
 import { FaPhoneAlt } from 'react-icons/fa';
 import useSWR from 'swr';
@@ -8,6 +9,7 @@ import MobileMenu from '@/components/Layout/Header/MobileMenu';
 import ButtonLinkGradient from '@/components/links/ButtonLinkGradient';
 import { API_URL } from '@/constant/config';
 import useSticky from '@/hooks/useSticky';
+import clsxm from '@/lib/clsxm';
 import getWaLink from '@/lib/getWhatsappLink';
 import Config from '@/types/config';
 
@@ -33,6 +35,8 @@ const Header = ({ HeaderStatic, setHeight }: HeaderProps) => {
     message: string;
     success: boolean;
   }>(() => `${API_URL}/master/config/4`);
+
+  const router = useRouter();
 
   return (
     <>
@@ -86,7 +90,12 @@ const Header = ({ HeaderStatic, setHeight }: HeaderProps) => {
                       <ul>
                         <li>
                           <Link href='/'>
-                            <a className='animated-underline py-0 !text-sm !font-bold !text-primary-600 dark:!text-primary-300'>
+                            <a
+                              className={clsxm(
+                                'animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300',
+                                router.pathname === '/' && '!font-bold'
+                              )}
+                            >
                               Home
                             </a>
                           </Link>
@@ -105,7 +114,12 @@ const Header = ({ HeaderStatic, setHeight }: HeaderProps) => {
                         </li>
                         <li>
                           <Link href='/seller'>
-                            <a className='animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300'>
+                            <a
+                              className={clsxm(
+                                'animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300',
+                                router.pathname === '/seller' && '!font-bold'
+                              )}
+                            >
                               Jual Akun
                             </a>
                           </Link>
@@ -121,6 +135,18 @@ const Header = ({ HeaderStatic, setHeight }: HeaderProps) => {
                           <Link href='/#jelajah_akun'>
                             <a className='animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300'>
                               Cek Invoice
+                            </a>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link href='/tutorial'>
+                            <a
+                              className={clsxm(
+                                'animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300',
+                                router.pathname === '/tutorial' && '!font-bold'
+                              )}
+                            >
+                              Tutorial
                             </a>
                           </Link>
                         </li>

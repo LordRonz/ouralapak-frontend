@@ -44,3 +44,7 @@ sitemap*.xml
 # cypress
 cypress/videos
 cypress/screenshots
+
+# next pwa
+public/sw.js
+public/workbox*.js
