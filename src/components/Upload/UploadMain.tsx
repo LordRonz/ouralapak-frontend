@@ -1634,12 +1634,12 @@ const UploadMain = () => {
                     }}
                   >
                     <div className='space-y-4'>
-                      <div className='mb-8 flex items-center justify-start p-3'>
+                      <div className='mb-8 flex items-center justify-start px-10 !pt-10'>
                         <h1 className='pb-0 text-3xl !text-black dark:!text-white'>
                           Preview Iklan
                         </h1>
                       </div>
-                      <div className='grid grid-cols-2 gap-x-3 gap-y-3 p-3 md:grid-cols-3'>
+                      <div className='grid grid-cols-2 gap-x-3 gap-y-3 px-10 !pb-10 md:grid-cols-3'>
                         <div>
                           <label>Judul</label>
                           <p className='text-2xl font-bold text-black dark:!text-white'>
@@ -1752,7 +1752,7 @@ const UploadMain = () => {
                           )}
                         </div>
                         <div>
-                          <label>Screenshot Win Rate</label>
+                          <label>Win Rate All Season</label>
                           <MyButton
                             className={clsxm(
                               'block',
@@ -1777,32 +1777,17 @@ const UploadMain = () => {
                           )}
                         </div>
                         <div>
-                          <label>Screenshot Hero Favorit</label>
-                          <MyButton
-                            className={clsxm(
-                              'block',
-                              'bg-[#87A4E9]',
-                              'border border-tertiary-400',
-                              'hover:bg-tertiary-300',
-                              'active:bg-tertiary-400',
-                              'disabled:bg-tertiary-200 disabled:hover:bg-tertiary-200 disabled:hover:text-black',
-                              'py-1'
-                            )}
-                            onClick={() => setPreviewWinRateHero(true)}
-                          >
-                            Preview
-                          </MyButton>
-                          {previewWinRateHero && (
-                            <Lightbox
-                              mainSrc={URL.createObjectURL(
-                                imageWinRateHero as File
-                              )}
-                              onCloseRequest={() =>
-                                setPreviewWinRateHero(false)
-                              }
-                            />
-                          )}
+                          <label>Bukti Top Up Pertama</label>
+                          <p className='text-2xl font-bold text-black dark:!text-white'>
+                            {
+                              firstTopUpOpts.find(
+                                (p) =>
+                                  p.value === getValues('first_top_up_exist')
+                              )?.label
+                            }
+                          </p>
                         </div>
+
                         <div>
                           <label>Screenshot Emblem</label>
                           <MyButton
@@ -1877,25 +1862,7 @@ const UploadMain = () => {
                             />
                           )}
                         </div>
-                        <div>
-                          <label>Binding Account</label>
-                          <div className='mt-2 flex max-h-36 flex-wrap gap-x-1 gap-y-1 overflow-auto'>
-                            {getValues('account_bind')
-                              ?.map(
-                                (v) =>
-                                  accountBindOpts.find((p) => p.value === v)
-                                    ?.label
-                              )
-                              .map((v, i) => (
-                                <div
-                                  className='rounded bg-[#EFEFEF] p-[4px_15px] dark:bg-neutral-200'
-                                  key={i}
-                                >
-                                  <p className='m-0'>{v}</p>
-                                </div>
-                              ))}
-                          </div>
-                        </div>
+
                         <div>
                           <label>Favorite Heroes</label>
                           <div className='mt-2 flex max-h-36 flex-wrap gap-x-1 gap-y-1 overflow-auto'>
@@ -1940,18 +1907,61 @@ const UploadMain = () => {
                           </div>
                         </div>
                         <div>
+                          <label>Screenshot Hero Favorit</label>
+                          <MyButton
+                            className={clsxm(
+                              'block',
+                              'bg-[#87A4E9]',
+                              'border border-tertiary-400',
+                              'hover:bg-tertiary-300',
+                              'active:bg-tertiary-400',
+                              'disabled:bg-tertiary-200 disabled:hover:bg-tertiary-200 disabled:hover:text-black',
+                              'py-1'
+                            )}
+                            onClick={() => setPreviewWinRateHero(true)}
+                          >
+                            Preview
+                          </MyButton>
+                          {previewWinRateHero && (
+                            <Lightbox
+                              mainSrc={URL.createObjectURL(
+                                imageWinRateHero as File
+                              )}
+                              onCloseRequest={() =>
+                                setPreviewWinRateHero(false)
+                              }
+                            />
+                          )}
+                        </div>
+                        <div>
+                          <label>Binding Account</label>
+                          <div className='mt-2 flex max-h-36 flex-wrap gap-x-1 gap-y-1 overflow-auto'>
+                            {getValues('account_bind')
+                              ?.map(
+                                (v) =>
+                                  accountBindOpts.find((p) => p.value === v)
+                                    ?.label
+                              )
+                              .map((v, i) => (
+                                <div
+                                  className='rounded bg-[#EFEFEF] p-[4px_15px] dark:bg-neutral-200'
+                                  key={i}
+                                >
+                                  <p className='m-0'>{v}</p>
+                                </div>
+                              ))}
+                          </div>
+                        </div>
+                        <div>
                           <label>Skin Rare</label>
                           <div className='flex max-h-36 flex-wrap gap-x-2 gap-y-1 overflow-auto rounded-xl p-1'>
                             {getValues('total_skin_rare')?.map(
-                              ({ jenis, total_skin }, i) => (
+                              ({ jenis }, i) => (
                                 <div
                                   className='flex items-center justify-center gap-x-3 rounded bg-[#EFEFEF] p-[4px_15px] dark:bg-neutral-200'
                                   key={`${jenis}${i}`}
                                 >
                                   <p className='m-0'>{jenis}</p>
-                                  <p className='className text-[]] m-0 flex h-[20px] w-[20px] items-center justify-center rounded-full bg-[#D3EBF8] !text-sm'>
-                                    {total_skin}
-                                  </p>
                                 </div>
                               )
                             )}

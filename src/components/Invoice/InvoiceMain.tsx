@@ -205,7 +205,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                     <h3 className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
                       Judul Iklan
                     </h3>
-                    <h3 className='whitespace-normal text-base text-dark dark:!text-light md:text-2xl'>
+                    <h3 className='whitespace-normal text-base font-normal text-dark dark:!text-light md:text-2xl'>
                       {invoice.data.title}
                     </h3>
                   </div>
@@ -213,7 +213,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                     <h3 className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
                       Jenis Refund
                     </h3>
-                    <h3 className='whitespace-normal text-base text-dark dark:!text-light md:text-2xl'>
+                    <h3 className='whitespace-normal text-base font-normal text-dark dark:!text-light md:text-2xl'>
                       {invoice.data.jenis_refund}
                     </h3>
                   </div>
@@ -221,7 +221,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                     <h3 className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
                       Win Rate
                     </h3>
-                    <h3 className='whitespace-normal text-base text-dark dark:!text-light md:text-2xl'>
+                    <h3 className='whitespace-normal text-base font-normal text-dark dark:!text-light md:text-2xl'>
                       {invoice.data.win_rate} %
                     </h3>
                   </div>
@@ -229,7 +229,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                     <h3 className='text-base font-medium text-[#85878E] dark:text-white md:text-lg'>
                       Paket Posting Iklan
                     </h3>
-                    <h3 className='whitespace-normal text-base text-dark dark:!text-light md:text-2xl'></h3>
+                    <h3 className='whitespace-normal text-base font-normal text-dark dark:!text-light md:text-2xl'></h3>
                   </div>
                 </div>
               </div>
@@ -242,7 +242,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                     <h4 className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
                       Nama Penjual
                     </h4>
-                    <h3 className='whitespace-normal text-base text-dark dark:!text-light md:text-2xl'>
+                    <h3 className='whitespace-normal text-base font-normal text-dark dark:!text-light md:text-2xl'>
                       {iklan?.data.user.name}
                     </h3>
                   </div>
@@ -250,7 +250,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                     <h4 className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
                       Email Penjual
                     </h4>
-                    <h3 className='whitespace-normal text-base text-dark dark:!text-light md:text-2xl'>
+                    <h3 className='whitespace-normal text-base font-normal text-dark dark:!text-light md:text-2xl'>
                       {iklan?.data.user.email}
                     </h3>
                   </div>
@@ -258,7 +258,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                     <h4 className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
                       No. Kontak/Whatsapp
                     </h4>
-                    <h3 className='whitespace-normal text-base text-dark dark:!text-light md:text-2xl'>
+                    <h3 className='whitespace-normal text-base font-normal text-dark dark:!text-light md:text-2xl'>
                       {iklan?.data.user.phone}
                     </h3>
                   </div>

@@ -173,7 +173,7 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
                     <h3 className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
                       Judul Iklan
                     </h3>
-                    <h3 className='whitespace-normal text-base text-dark dark:!text-light md:text-2xl'>
+                    <h3 className='whitespace-normal text-base font-normal text-dark dark:!text-light md:text-2xl'>
                       {invoice.data.title}
                     </h3>
                   </div>
@@ -181,7 +181,7 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
                     <h3 className='text-base font-medium text-[#85878E] dark:text-white md:text-lg'>
                       Penjual
                     </h3>
-                    <h3 className='whitespace-normal text-base text-dark dark:!text-light md:text-2xl'>
+                    <h3 className='whitespace-normal text-base font-normal text-dark dark:!text-light md:text-2xl'>
                       {}
                     </h3>
                   </div>
@@ -189,7 +189,7 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
                     <h3 className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
                       Win Rate
                     </h3>
-                    <h3 className='whitespace-normal text-base text-dark dark:!text-light md:text-2xl'>
+                    <h3 className='whitespace-normal text-base font-normal text-dark dark:!text-light md:text-2xl'>
                       {invoice.data.win_rate} %
                     </h3>
                   </div>
@@ -197,7 +197,7 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
                     <h3 className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
                       Jenis Refund
                     </h3>
-                    <h3 className='whitespace-normal text-base text-dark dark:!text-light md:text-2xl'>
+                    <h3 className='whitespace-normal text-base font-normal text-dark dark:!text-light md:text-2xl'>
                       {invoice.data.jenis_refund}
                     </h3>
                   </div>
@@ -212,7 +212,7 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
                     <h4 className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
                       Nama Pembeli
                     </h4>
-                    <h3 className='whitespace-normal text-base text-dark dark:!text-light md:text-2xl'>
+                    <h3 className='whitespace-normal text-base font-normal text-dark dark:!text-light md:text-2xl'>
                       {invoice?.data.name}
                     </h3>
                   </div>
@@ -220,7 +220,7 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
                     <h4 className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
                       Email Pembeli
                     </h4>
-                    <h3 className='whitespace-normal text-base text-dark dark:!text-light md:text-2xl'>
+                    <h3 className='whitespace-normal text-base font-normal text-dark dark:!text-light md:text-2xl'>
                       {invoice?.data.email}
                     </h3>
                   </div>
@@ -228,7 +228,7 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
                     <h4 className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
                       No. Handphone
                     </h4>
-                    <h3 className='whitespace-normal text-base text-dark dark:!text-light md:text-2xl'>
+                    <h3 className='whitespace-normal text-base font-normal text-dark dark:!text-light md:text-2xl'>
                       {invoice?.data.phone}
                     </h3>
                   </div>

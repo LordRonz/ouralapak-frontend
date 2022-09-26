@@ -24,6 +24,7 @@ const IklanCard = ({ iklan }: { iklan: Iklan & { refund_title?: string } }) => {
                 alt='Picture of the author'
                 width={500}
                 height={500}
+                quality={40}
               />
             </div>
           </div>

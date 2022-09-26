@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { FiCheckCircle, FiXCircle } from 'react-icons/fi';
@@ -33,7 +34,7 @@ const IklanCardSingle = ({
                 <div className='art-item-img h-30 relative flex items-center justify-center md:h-60'>
                   <Link href={`/iklan/${iklan.id}`}>
                     <a>
-                      <img
+                      <Image
                         src={
                           iklan.image_profile
                             ? `${API_URL}/${iklan.image_profile}`
@@ -41,6 +42,11 @@ const IklanCardSingle = ({
                         }
                         alt='art-img'
                         className='w-30 h-30 object-cover md:h-60 md:w-60'
+                        quality={10}
+                        placeholder='blur'
+                        blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUqQcAAK0AlWMXHzkAAAAASUVORK5CYII='
+                        width={240}
+                        height={240}
                       />
                     </a>
                   </Link>
@@ -59,8 +65,8 @@ const IklanCardSingle = ({
                 <div className='relative py-3'>
                   <div className='mb-3 flex w-full items-center justify-between'>
                     <div className='artist overflow-hidden text-ellipsis whitespace-nowrap'>
-                      <div className='profile-img relative'>
-                        <img
+                      <div className='profile-img relative !h-4 !w-4 rounded-full object-cover md:!h-8 md:!w-8'>
+                        <Image
                           src={
                             iklan.user.profile_picture
                               ? `${API_URL}/${iklan.user.profile_picture}`
@@ -68,6 +74,10 @@ const IklanCardSingle = ({
                           }
                           className='!h-4 !w-4 rounded-full object-cover md:!h-8 md:!w-8'
                           alt='profile-img'
+                          blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUqQcAAK0AlWMXHzkAAAAASUVORK5CYII='
+                          width={32}
+                          height={32}
+                          layout='responsive'
                         />
                       </div>
                       <div className='artist-id !text-[0.6rem] md:!text-sm'>
