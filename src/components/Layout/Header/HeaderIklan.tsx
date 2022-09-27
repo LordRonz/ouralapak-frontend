@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { FaPlus } from 'react-icons/fa';
+import { GoTriangleDown } from 'react-icons/go';
 import { useLocalStorage } from 'react-use';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -9,9 +11,11 @@ import useSWR from 'swr';
 
 import ColorModeToggle from '@/components/ColorModeToggle';
 import MobileMenu from '@/components/Layout/Header/MobileMenu';
+import ButtonLinkGradient from '@/components/links/ButtonLinkGradient';
 import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
 import useSticky from '@/hooks/useSticky';
+import clsxm from '@/lib/clsxm';
 import User from '@/types/user';
 
 type HeaderProps = {
@@ -24,6 +28,8 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
   const { theme } = useTheme();
   const [isActive11, setActive11] = useState(true);
   const [, , removeToken] = useLocalStorage('token');
+
+  const ref = useRef<HTMLDivElement>(null);
 
   const { data: user } = useSWR<{
     data: User;
@@ -58,7 +64,7 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
 
   return (
     <>
-      <header className={`header1 ${HeaderStatic ? HeaderStatic : ''}`}>
+      <header className={`${HeaderStatic ? HeaderStatic : ''}`}>
         <div
           id='header-sticky'
           className={
@@ -66,6 +72,7 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
               ? 'header-main header-main1 sticky'
               : 'header-main header-main1 sticky'
           }
+          ref={ref}
         >
           <div className='header-container container'>
             <div className='row align-items-center'>
@@ -93,22 +100,74 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
               </div>
               <div className='col-xl-10 col-lg-10 col-md-8 col-8'>
                 <div className='header-main-right py-3'>
-                  <form
-                    action='#'
-                    className='filter-search-input header-search d-none d-xl-inline-block'
-                  >
-                    <input type='text' placeholder='Search keyword' />
-                    <button>
-                      <i className='fal fa-search'></i>
-                    </button>
-                  </form>
-                  <div className='main-menu main-menu1 d-none d-lg-block'>
+                  <div className='main-menu main-menu1 d-none d-lg-block uppercase'>
                     <nav id='mobile-menu'>
-                      <ul></ul>
+                      <ul>
+                        <li>
+                          <Link href='/'>
+                            <a
+                              className={clsxm(
+                                'animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300',
+                                router.pathname === '/' && '!font-bold'
+                              )}
+                            >
+                              Home
+                            </a>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link href='/seller'>
+                            <a
+                              className={clsxm(
+                                'animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300',
+                                router.pathname === '/seller' && '!font-bold'
+                              )}
+                            >
+                              Iklan
+                            </a>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link href='/cek-invoice'>
+                            <a className='animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300'>
+                              Cek Invoice
+                            </a>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link href='/tutorial'>
+                            <a
+                              className={clsxm(
+                                'animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300',
+                                router.pathname === '/tutorial' && '!font-bold'
+                              )}
+                            >
+                              Tutorial
+                            </a>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link href='#footer'>
+                            <a className='animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300'>
+                              Contact Us
+                            </a>
+                          </Link>
+                        </li>
+                      </ul>
                     </nav>
                   </div>
+                  <ButtonLinkGradient
+                    href='/post-iklan'
+                    className='hidden px-3 text-xs font-medium uppercase text-white md:block'
+                  >
+                    <div className='flex items-center justify-center gap-x-2'>
+                      <FaPlus />
+                      Tambah Iklan
+                    </div>
+                  </ButtonLinkGradient>
                   <ColorModeToggle className='mx-2' />
-                  <div className='profile-item profile-item-header d-none d-md-inline-block relative ml-20'>
+                  <div className='h-10 border-l-2 border-[#D9D9D9]' />
+                  <div className='profile-item profile-item-header relative ml-20 hidden items-center md:flex'>
                     <div
                       className={`profile-img relative ${
                         isActive11 ? '' : 'show-element'
@@ -136,19 +195,29 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
                           </li>
                         </ul>
                       </div>
-                      <img
-                        src={
-                          user?.data.profile_picture
-                            ? `${API_URL}/${user.data.profile_picture}`
-                            : `/images/pfp.jpg`
-                        }
-                        alt='profile-img'
-                      />
-                      {!!user?.data.is_verified && (
-                        <div className='profile-verification verified'>
-                          <i className='fas fa-check'></i>
+                      <div className='flex items-center gap-x-3'>
+                        <div className='relative'>
+                          <img
+                            src={
+                              user?.data.profile_picture
+                                ? `${API_URL}/${user.data.profile_picture}`
+                                : `/images/pfp.jpg`
+                            }
+                            alt='profile-img'
+                          />
+                          {!!user?.data.is_verified && (
+                            <div className='profile-verification verified'>
+                              <i className='fas fa-check'></i>
+                            </div>
+                          )}
                         </div>
-                      )}
+                        <p className='m-0 max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap p-0'>
+                          {user?.data.name}
+                        </p>
+                        <span>
+                          <GoTriangleDown />
+                        </span>
+                      </div>
                     </div>
                   </div>
                   <div className='menu-bar d-xl-none ml-20'>

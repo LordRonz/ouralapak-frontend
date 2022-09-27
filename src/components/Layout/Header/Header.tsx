@@ -132,7 +132,7 @@ const Header = ({ HeaderStatic, setHeight }: HeaderProps) => {
                           </Link>
                         </li>
                         <li>
-                          <Link href='/#jelajah_akun'>
+                          <Link href='/cek-invoice'>
                             <a className='animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300'>
                               Cek Invoice
                             </a>
