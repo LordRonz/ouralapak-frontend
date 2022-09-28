@@ -740,6 +740,16 @@ const IklanMain = ({ id }: { id: number }) => {
                               </div>
                               <div>
                                 <h5 className='text-xs font-normal md:text-lg'>
+                                  Bukti Top Up Pertama
+                                </h5>
+                                <h4 className='text-sm md:text-xl'>
+                                  {iklan.data.first_top_up_exist
+                                    ? 'Ada'
+                                    : 'Tidak Ada'}
+                                </h4>
+                              </div>
+                              <div>
+                                <h5 className='text-xs font-normal md:text-lg'>
                                   Binding Account
                                 </h5>
                                 <div className='flex gap-x-2'>

@@ -1,13 +1,15 @@
+import { Dialog, Transition } from '@headlessui/react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
 import queryString, { stringifyUrl } from 'query-string';
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useLocalStorage } from 'react-use';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import useSWR from 'swr';
 
+import Button from '@/components/buttons/Button';
 import IklanCard from '@/components/Cards/IklanCard';
 import Breadcrumbs from '@/components/Common/PageTitle';
 import Pagination from '@/components/Common/Pagination';
@@ -36,6 +38,8 @@ const SellerMain = () => {
   const [curStatus, setCurStatus] = useState(-1);
 
   const [authorized, setAuthorized] = useState(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -161,12 +165,12 @@ const SellerMain = () => {
                   </div>
                   <div className='creator-details-action'>
                     <div className='artist-follow-btn'>
-                      <ButtonLink
-                        href='/post-iklan'
+                      <Button
                         className='whitespace-nowrap rounded-lg px-2'
+                        onClick={() => setIsModalOpen(true)}
                       >
                         Tambah Iklan
-                      </ButtonLink>
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -387,6 +391,64 @@ const SellerMain = () => {
           </div>
         </div>
       </section>
+      <Transition appear show={isModalOpen} as={Fragment}>
+        <Dialog
+          as='div'
+          className='relative z-10'
+          onClose={() => setIsModalOpen(false)}
+        >
+          <Transition.Child
+            as={Fragment}
+            enter='ease-out duration-300'
+            enterFrom='opacity-0'
+            enterTo='opacity-100'
+            leave='ease-in duration-200'
+            leaveFrom='opacity-100'
+            leaveTo='opacity-0'
+          >
+            <div className='fixed inset-0 bg-black bg-opacity-25' />
+          </Transition.Child>
+          <div className='fixed inset-0 overflow-y-auto'>
+            <div className='flex min-h-full items-center justify-center p-4 text-center'>
+              <Transition.Child
+                as={Fragment}
+                enter='ease-out duration-300'
+                enterFrom='opacity-0 scale-95'
+                enterTo='opacity-100 scale-100'
+                leave='ease-in duration-200'
+                leaveFrom='opacity-100 scale-100'
+                leaveTo='opacity-0 scale-95'
+              >
+                <Dialog.Panel className='w-full max-w-md transform overflow-visible rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:!bg-neutral-800'>
+                  <Dialog.Title
+                    as='h3'
+                    className='mb-2 text-lg font-bold leading-6 text-gray-900 dark:text-white'
+                  >
+                    Syarat Penjualan Akun
+                  </Dialog.Title>
+                  <ol className='list-decimal space-y-2 pl-4'>
+                    <li className='list-decimal pr-8'>
+                      Diusahakan Akun No Minus Moonton (ada akses ke Akun
+                      Moonton dan Akun Gmail yang digunakan untuk daftar akun
+                      Moonton)
+                    </li>
+                    <li className='list-decimal pr-8'>
+                      NO Minus BIND (Jika ada bind misal FB/Tiktok bisa di lepas
+                      terlebih dahulu karena prosesnya membutuhkan waktu 7 Hari)
+                    </li>
+                  </ol>
+                  <ButtonLink
+                    href='/post-iklan'
+                    className='flex w-full items-center justify-center border-0 text-center'
+                  >
+                    Lanjutkan
+                  </ButtonLink>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
     </main>
   );
 };
