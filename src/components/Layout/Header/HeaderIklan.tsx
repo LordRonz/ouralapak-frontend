@@ -1,7 +1,9 @@
+import { Dialog, Transition } from '@headlessui/react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
-import React, { useRef, useState } from 'react';
+import React, { Fragment, useRef, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { GoTriangleDown } from 'react-icons/go';
 import { useLocalStorage } from 'react-use';
@@ -9,9 +11,10 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import useSWR from 'swr';
 
+import ButtonGradient from '@/components/buttons/ButtonGradient';
 import ColorModeToggle from '@/components/ColorModeToggle';
 import MobileMenu from '@/components/Layout/Header/MobileMenu';
-import ButtonLinkGradient from '@/components/links/ButtonLinkGradient';
+import ButtonLink from '@/components/links/ButtonLink';
 import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
 import useSticky from '@/hooks/useSticky';
@@ -28,6 +31,8 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
   const { theme } = useTheme();
   const [isActive11, setActive11] = useState(true);
   const [, , removeToken] = useLocalStorage('token');
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -98,8 +103,8 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
                   </div>
                 </div>
               </div>
-              <div className='col-xl-10 col-lg-10 col-md-8 col-8'>
-                <div className='header-main-right py-3'>
+              <div className='col-xl-10 col-lg-10 col-md-8 col-8 py-2'>
+                <div className='header-main-right'>
                   <div className='main-menu main-menu1 d-none d-lg-block uppercase'>
                     <nav id='mobile-menu'>
                       <ul>
@@ -156,15 +161,15 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
                       </ul>
                     </nav>
                   </div>
-                  <ButtonLinkGradient
-                    href='/post-iklan'
+                  <ButtonGradient
                     className='hidden px-3 text-xs font-medium uppercase text-white md:block'
+                    onClick={() => setIsModalOpen(true)}
                   >
                     <div className='flex items-center justify-center gap-x-2'>
                       <FaPlus />
                       Tambah Iklan
                     </div>
-                  </ButtonLinkGradient>
+                  </ButtonGradient>
                   <ColorModeToggle className='mx-2' />
                   <div className='h-10 border-l-2 border-[#D9D9D9]' />
                   <div className='profile-item profile-item-header relative ml-20 hidden items-center md:flex'>
@@ -197,13 +202,15 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
                       </div>
                       <div className='flex items-center gap-x-3'>
                         <div className='relative'>
-                          <img
+                          <Image
                             src={
                               user?.data.profile_picture
                                 ? `${API_URL}/${user.data.profile_picture}`
                                 : `/images/pfp.jpg`
                             }
                             alt='profile-img'
+                            width={35}
+                            height={35}
                           />
                           {!!user?.data.is_verified && (
                             <div className='profile-verification verified'>
@@ -240,6 +247,65 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
             </div>
           </div>
         </div>
+        <Transition appear show={isModalOpen} as={Fragment}>
+          <Dialog
+            as='div'
+            className='relative z-10'
+            onClose={() => setIsModalOpen(false)}
+          >
+            <Transition.Child
+              as={Fragment}
+              enter='ease-out duration-300'
+              enterFrom='opacity-0'
+              enterTo='opacity-100'
+              leave='ease-in duration-200'
+              leaveFrom='opacity-100'
+              leaveTo='opacity-0'
+            >
+              <div className='fixed inset-0 bg-black bg-opacity-25' />
+            </Transition.Child>
+            <div className='fixed inset-0 overflow-y-auto'>
+              <div className='flex min-h-full items-center justify-center p-4 text-center'>
+                <Transition.Child
+                  as={Fragment}
+                  enter='ease-out duration-300'
+                  enterFrom='opacity-0 scale-95'
+                  enterTo='opacity-100 scale-100'
+                  leave='ease-in duration-200'
+                  leaveFrom='opacity-100 scale-100'
+                  leaveTo='opacity-0 scale-95'
+                >
+                  <Dialog.Panel className='w-full max-w-md transform overflow-visible rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:!bg-neutral-800'>
+                    <Dialog.Title
+                      as='h3'
+                      className='mb-2 text-lg font-bold leading-6 text-gray-900 dark:text-white'
+                    >
+                      Syarat Penjualan Akun
+                    </Dialog.Title>
+                    <ol className='list-decimal space-y-2 pl-4'>
+                      <li className='list-decimal pr-8'>
+                        Diusahakan Akun No Minus Moonton (ada akses ke Akun
+                        Moonton dan Akun Gmail yang digunakan untuk daftar akun
+                        Moonton)
+                      </li>
+                      <li className='list-decimal pr-8'>
+                        NO Minus BIND (Jika ada bind misal FB/Tiktok bisa di
+                        lepas terlebih dahulu karena prosesnya membutuhkan waktu
+                        7 Hari)
+                      </li>
+                    </ol>
+                    <ButtonLink
+                      href='/post-iklan'
+                      className='flex w-full items-center justify-center border-0 text-center'
+                    >
+                      Lanjutkan
+                    </ButtonLink>
+                  </Dialog.Panel>
+                </Transition.Child>
+              </div>
+            </div>
+          </Dialog>
+        </Transition>
       </header>
 
       <MobileMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />

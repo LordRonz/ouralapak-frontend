@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import { stringifyUrl } from 'query-string';
 import React, { useState } from 'react';
@@ -8,6 +7,7 @@ import { toast } from 'react-toastify';
 import ButtonGradient from '@/components/buttons/ButtonGradient';
 import ParticleComponent from '@/components/Common/ParticleComponent';
 import { API_URL } from '@/constant/config';
+import customAxios from '@/lib/customAxios';
 import toastPromiseError from '@/lib/toastPromiseError';
 import { JenisInvoice } from '@/types/invoice';
 
@@ -29,7 +29,7 @@ const CekInvoice = () => {
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
       await toast.promise(
-        axios.get(
+        customAxios.get(
           stringifyUrl({
             url: `${API_URL}/check-invoice/${data.no_invoice}`,
           })

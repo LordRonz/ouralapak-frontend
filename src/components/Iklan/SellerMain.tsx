@@ -89,8 +89,6 @@ const SellerMain = () => {
     setCurPage(0);
   }, [curStatus]);
 
-  console.log(iklans);
-
   const { data: user } = useSWR<{
     data: User;
     message: string;
