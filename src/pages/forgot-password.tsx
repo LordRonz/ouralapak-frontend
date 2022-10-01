@@ -4,7 +4,7 @@ import React from 'react';
 import AnimatePage from '@/components/AnimatePage';
 import ForgotPasswordComponent from '@/components/ForgotPassword/ForgotPassword';
 import Footer from '@/components/Layout/Footer/FooterOne/Footer';
-import Header from '@/components/Layout/Header/Header';
+import HeaderIklan from '@/components/Layout/Header/HeaderIklan';
 import Seo from '@/components/Seo';
 
 const ForgotPassword: NextPage = () => {
@@ -12,7 +12,7 @@ const ForgotPassword: NextPage = () => {
     <>
       <Seo templateTitle='Lupa Password' />
       <AnimatePage>
-        <Header />
+        <HeaderIklan />
         <ForgotPasswordComponent />
         <Footer />
       </AnimatePage>

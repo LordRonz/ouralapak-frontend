@@ -3,8 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
-import React, { Fragment, useRef, useState } from 'react';
-import { FaPlus } from 'react-icons/fa';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { FaPhoneAlt, FaPlus } from 'react-icons/fa';
 import { GoTriangleDown } from 'react-icons/go';
 import { useLocalStorage } from 'react-use';
 import Swal from 'sweetalert2';
@@ -15,19 +15,23 @@ import ButtonGradient from '@/components/buttons/ButtonGradient';
 import ColorModeToggle from '@/components/ColorModeToggle';
 import MobileMenu from '@/components/Layout/Header/MobileMenu';
 import ButtonLink from '@/components/links/ButtonLink';
+import ButtonLinkGradient from '@/components/links/ButtonLinkGradient';
 import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
 import useSticky from '@/hooks/useSticky';
 import clsxm from '@/lib/clsxm';
+import getWaLink from '@/lib/getWhatsappLink';
+import Config from '@/types/config';
 import User from '@/types/user';
 
 type HeaderProps = {
   HeaderStatic?: string;
-};
+  setHeight?: (a?: number) => void;
+} & React.ComponentPropsWithRef<'div'>;
 
 const MySwal = withReactContent(Swal);
 
-const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
+const HeaderIklan = ({ HeaderStatic, setHeight }: HeaderProps) => {
   const { theme } = useTheme();
   const [isActive11, setActive11] = useState(true);
   const [, , removeToken] = useLocalStorage('token');
@@ -35,6 +39,10 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setHeight && setHeight(ref.current?.clientHeight);
+  }, [ref, setHeight]);
 
   const { data: user } = useSWR<{
     data: User;
@@ -49,6 +57,12 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
   const { sticky } = useSticky();
 
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const { data: config } = useSWR<{
+    data: Config;
+    message: string;
+    success: boolean;
+  }>(() => `${API_URL}/master/config/4`);
 
   const router = useRouter();
 
@@ -120,113 +134,190 @@ const HeaderIklan = ({ HeaderStatic }: HeaderProps) => {
                             </a>
                           </Link>
                         </li>
-                        <li>
-                          <Link href='/seller'>
-                            <a
-                              className={clsxm(
-                                'animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300',
-                                router.pathname === '/seller' && '!font-bold'
-                              )}
-                            >
-                              Iklan
-                            </a>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href='/cek-invoice'>
-                            <a className='animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300'>
-                              Cek Invoice
-                            </a>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href='/tutorial'>
-                            <a
-                              className={clsxm(
-                                'animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300',
-                                router.pathname === '/tutorial' && '!font-bold'
-                              )}
-                            >
-                              Tutorial
-                            </a>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href='#footer'>
-                            <a className='animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300'>
-                              Contact Us
-                            </a>
-                          </Link>
-                        </li>
+                        {user ? (
+                          <>
+                            <li>
+                              <Link href='/seller'>
+                                <a
+                                  className={clsxm(
+                                    'animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300',
+                                    router.pathname === '/seller' &&
+                                      '!font-bold'
+                                  )}
+                                >
+                                  Iklan
+                                </a>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link href='/cek-invoice'>
+                                <a className='animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300'>
+                                  Cek Invoice
+                                </a>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link href='/tutorial'>
+                                <a
+                                  className={clsxm(
+                                    'animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300',
+                                    router.pathname === '/tutorial' &&
+                                      '!font-bold'
+                                  )}
+                                >
+                                  Tutorial
+                                </a>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link href='#footer'>
+                                <a className='animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300'>
+                                  Contact Us
+                                </a>
+                              </Link>
+                            </li>
+                          </>
+                        ) : (
+                          <>
+                            <li>
+                              <Link href='/seller'>
+                                <a
+                                  className={clsxm(
+                                    'animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300',
+                                    router.pathname === '/seller' &&
+                                      '!font-bold'
+                                  )}
+                                >
+                                  Jual Akun
+                                </a>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link href='/#jelajah_akun'>
+                                <a className='animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300'>
+                                  Beli Akun
+                                </a>
+                              </Link>
+                            </li>
+                            <li>
+                              <a
+                                href={getWaLink(
+                                  config?.data?.value ?? '+62816969696'
+                                )}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                                className='animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300'
+                              >
+                                Jasa Rekber
+                              </a>
+                            </li>
+                            <li>
+                              <Link href='/cek-invoice'>
+                                <a className='animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300'>
+                                  Cek Invoice
+                                </a>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link href='/tutorial'>
+                                <a
+                                  className={clsxm(
+                                    'animated-underline py-0 !text-sm !font-medium !text-primary-600 dark:!text-primary-300',
+                                    router.pathname === '/tutorial' &&
+                                      '!font-bold'
+                                  )}
+                                >
+                                  Tutorial
+                                </a>
+                              </Link>
+                            </li>
+                          </>
+                        )}
                       </ul>
                     </nav>
                   </div>
-                  <ButtonGradient
-                    className='hidden px-3 text-xs font-medium uppercase text-white md:block'
-                    onClick={() => setIsModalOpen(true)}
-                  >
-                    <div className='flex items-center justify-center gap-x-2'>
-                      <FaPlus />
-                      Tambah Iklan
-                    </div>
-                  </ButtonGradient>
-                  <ColorModeToggle className='mx-2' />
-                  <div className='h-10 border-l-2 border-[#D9D9D9]' />
-                  <div className='profile-item profile-item-header relative ml-20 hidden items-center md:flex'>
-                    <div
-                      className={`profile-img relative ${
-                        isActive11 ? '' : 'show-element'
-                      }`}
-                      onClick={handleToggle11}
+                  {user ? (
+                    <ButtonGradient
+                      className='hidden px-3 text-xs font-medium uppercase text-white md:block'
+                      onClick={() => setIsModalOpen(true)}
                     >
-                      <div className='profile-action'>
-                        <ul>
-                          <li>
-                            <Link href='/profile'>
-                              <a>
-                                <i className='fal fa-user'></i>Profile
-                              </a>
-                            </Link>
-                          </li>
-                          <li>
-                            <button
-                              className='hover:text-primary-400'
-                              onClick={() => handleLogout()}
-                            >
-                              <a>
-                                <i className='fal fa-sign-out'></i>Logout
-                              </a>
-                            </button>
-                          </li>
-                        </ul>
+                      <div className='flex items-center justify-center gap-x-2'>
+                        <FaPlus />
+                        Tambah Iklan
                       </div>
-                      <div className='flex items-center gap-x-3'>
-                        <div className='relative'>
-                          <Image
-                            src={
-                              user?.data.profile_picture
-                                ? `${API_URL}/${user.data.profile_picture}`
-                                : `/images/pfp.jpg`
-                            }
-                            alt='profile-img'
-                            width={35}
-                            height={35}
-                          />
-                          {!!user?.data.is_verified && (
-                            <div className='profile-verification verified'>
-                              <i className='fas fa-check'></i>
+                    </ButtonGradient>
+                  ) : (
+                    <ButtonLinkGradient
+                      href='#footer'
+                      className='hidden px-3 text-xs font-medium uppercase text-white md:block'
+                    >
+                      <div className='flex items-center justify-center gap-x-2'>
+                        <FaPhoneAlt />
+                        Contact Us
+                      </div>
+                    </ButtonLinkGradient>
+                  )}
+                  <ColorModeToggle className='mx-2' />
+                  {user && (
+                    <>
+                      <div className='h-10 border-l-2 border-[#D9D9D9]' />
+                      <div className='profile-item profile-item-header relative ml-20 hidden items-center md:flex'>
+                        <div
+                          className={`profile-img relative ${
+                            isActive11 ? '' : 'show-element'
+                          }`}
+                          onClick={handleToggle11}
+                        >
+                          <div className='profile-action'>
+                            <ul>
+                              <li>
+                                <Link href='/profile'>
+                                  <a>
+                                    <i className='fal fa-user'></i>Profile
+                                  </a>
+                                </Link>
+                              </li>
+                              <li>
+                                <button
+                                  className='hover:text-primary-400'
+                                  onClick={() => handleLogout()}
+                                >
+                                  <a>
+                                    <i className='fal fa-sign-out'></i>Logout
+                                  </a>
+                                </button>
+                              </li>
+                            </ul>
+                          </div>
+                          <div className='flex items-center gap-x-3'>
+                            <div className='relative'>
+                              <Image
+                                src={
+                                  user?.data.profile_picture
+                                    ? `${API_URL}/${user.data.profile_picture}`
+                                    : `/images/pfp.jpg`
+                                }
+                                alt='profile-img'
+                                width={35}
+                                height={35}
+                              />
+                              {!!user?.data.is_verified && (
+                                <div className='profile-verification verified'>
+                                  <i className='fas fa-check'></i>
+                                </div>
+                              )}
                             </div>
-                          )}
+                            <p className='m-0 max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap p-0'>
+                              {user?.data.name}
+                            </p>
+                            <span>
+                              <GoTriangleDown />
+                            </span>
+                          </div>
                         </div>
-                        <p className='m-0 max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap p-0'>
-                          {user?.data.name}
-                        </p>
-                        <span>
-                          <GoTriangleDown />
-                        </span>
                       </div>
-                    </div>
-                  </div>
+                    </>
+                  )}
                   <div className='menu-bar d-xl-none ml-20'>
                     <a
                       className='side-toggle'

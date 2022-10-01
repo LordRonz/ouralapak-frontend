@@ -1,7 +1,7 @@
 import ContentLoader, { IContentLoaderProps } from 'react-content-loader';
 
 const IklanCardLoader = (props: IContentLoaderProps) => (
-  <div className='col-xl-3 col-lg-4 col-md-6 col-sm-6'>
+  <div className='col-span-6 md:col-span-3'>
     <ContentLoader viewBox='0 0 400 675' height='100%' width='100%' {...props}>
       <circle cx='30' cy='440' r='30' />
       <rect x='0' y='490' rx='4' ry='4' width='100' height='33' />

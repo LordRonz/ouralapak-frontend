@@ -1,6 +1,6 @@
 import AnimatePage from '@/components/AnimatePage';
 import Footer from '@/components/Layout/Footer/FooterOne/Footer';
-import Header from '@/components/Layout/Header/Header';
+import HeaderIklan from '@/components/Layout/Header/HeaderIklan';
 import Seo from '@/components/Seo';
 import Tutorial from '@/components/Tutorial/InvoiceMain';
 
@@ -9,7 +9,7 @@ const TutorialPage = () => {
     <>
       <Seo templateTitle='Tutorial' />
       <AnimatePage>
-        <Header />
+        <HeaderIklan />
         <Tutorial />
         <Footer />
       </AnimatePage>

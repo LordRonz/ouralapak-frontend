@@ -817,9 +817,6 @@ const IklanMain = ({ id }: { id: number }) => {
                                         >
                                           <span className='flex items-center justify-center gap-x-2 overflow-hidden rounded-2xl bg-neutral-300 px-3 py-1'>
                                             <span className=''>{a.jenis}</span>
-                                            <span className='flex h-8 w-8 items-center justify-center rounded-full bg-[#D3EBF8] text-[#2EA0DE]'>
-                                              {a.total_skin}
-                                            </span>
                                           </span>
                                         </div>
                                       ))

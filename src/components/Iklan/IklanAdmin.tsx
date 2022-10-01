@@ -317,6 +317,16 @@ const IklanAdmin = ({ id }: { id: number }) => {
                               </div>
                               <div>
                                 <h5 className='text-xs font-normal md:text-lg'>
+                                  Bukti Top Up Pertama
+                                </h5>
+                                <h4 className='text-sm md:text-xl'>
+                                  {iklan.data.first_top_up_exist
+                                    ? 'Ada'
+                                    : 'Tidak Ada'}
+                                </h4>
+                              </div>
+                              <div>
+                                <h5 className='text-xs font-normal md:text-lg'>
                                   Binding Account
                                 </h5>
                                 <div className='flex gap-x-2'>
@@ -384,9 +394,6 @@ const IklanAdmin = ({ id }: { id: number }) => {
                                         >
                                           <span className='flex items-center justify-center gap-x-2 overflow-hidden rounded-2xl bg-neutral-300 px-3 py-1'>
                                             <span className=''>{a.jenis}</span>
-                                            <span className='flex h-8 w-8 items-center justify-center rounded-full bg-[#D3EBF8] text-[#2EA0DE]'>
-                                              {a.total_skin}
-                                            </span>
                                           </span>
                                         </div>
                                       ))

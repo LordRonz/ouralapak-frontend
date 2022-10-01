@@ -4,7 +4,7 @@ import React from 'react';
 import AnimatePage from '@/components/AnimatePage';
 import CekInvoice from '@/components/CekInvoice/CekInvoice';
 import Footer from '@/components/Layout/Footer/FooterOne/Footer';
-import Header from '@/components/Layout/Header/Header';
+import HeaderIklan from '@/components/Layout/Header/HeaderIklan';
 import Seo from '@/components/Seo';
 
 const CekInvoicePage: NextPage = () => {
@@ -12,7 +12,7 @@ const CekInvoicePage: NextPage = () => {
     <>
       <Seo templateTitle='Cek Invoice' />
       <AnimatePage>
-        <Header />
+        <HeaderIklan />
         <CekInvoice />
         <Footer />
       </AnimatePage>

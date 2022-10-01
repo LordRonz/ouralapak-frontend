@@ -16,6 +16,12 @@ module.exports = withPWA({
     return config;
   },
   images: {
-    domains: ['robohash.org', 'cdn.myanimelist.net', '101.50.0.50'],
+    domains: [
+      'robohash.org',
+      'cdn.myanimelist.net',
+      '101.50.0.50',
+      'ouralapak.id',
+      'ouralapak.com',
+    ],
   },
 });

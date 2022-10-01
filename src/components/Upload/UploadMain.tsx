@@ -929,7 +929,7 @@ const UploadMain = () => {
                           htmlFor='favorite_heroes'
                           className='!flex gap-x-2'
                         >
-                          <span>Change Name Status</span>
+                          <span>Hero Favorit</span>
                           <FiInfo
                             className='cursor-pointer'
                             onClick={() => setOpenChangeNameStatus(true)}

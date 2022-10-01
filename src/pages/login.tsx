@@ -3,7 +3,7 @@ import React from 'react';
 
 import AnimatePage from '@/components/AnimatePage';
 import Footer from '@/components/Layout/Footer/FooterOne/Footer';
-import Header from '@/components/Layout/Header/Header';
+import HeaderIklan from '@/components/Layout/Header/HeaderIklan';
 import LoginMain from '@/components/Login/LoginMain';
 import Seo from '@/components/Seo';
 
@@ -12,7 +12,7 @@ const Login: NextPage = () => {
     <>
       <Seo templateTitle='Login' />
       <AnimatePage>
-        <Header />
+        <HeaderIklan />
         <LoginMain />
         <Footer />
       </AnimatePage>

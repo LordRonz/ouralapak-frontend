@@ -5,7 +5,7 @@ import React from 'react';
 import AnimatePage from '@/components/AnimatePage';
 import BeliAkunMain from '@/components/BeliAkun/BeliAkunMain';
 import Footer from '@/components/Layout/Footer/FooterOne/Footer';
-import Header from '@/components/Layout/Header/Header';
+import HeaderIklan from '@/components/Layout/Header/HeaderIklan';
 import Seo from '@/components/Seo';
 
 const BeliAkun: NextPage = () => {
@@ -16,7 +16,7 @@ const BeliAkun: NextPage = () => {
     <>
       <Seo templateTitle='Iklan' />
       <AnimatePage>
-        <Header />
+        <HeaderIklan />
         <BeliAkunMain id={+(slug as string)} />
         <Footer />
       </AnimatePage>

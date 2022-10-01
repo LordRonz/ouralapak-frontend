@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import AnimatePage from '@/components/AnimatePage';
 import InvoiceBeli from '@/components/Invoice/InvoiceBeli';
 import Footer from '@/components/Layout/Footer/FooterOne/Footer';
-import HeaderMain from '@/components/Layout/Header/Header';
+import Header from '@/components/Layout/Header/HeaderIklan';
 import Seo from '@/components/Seo';
 
 const Invoice = () => {
@@ -14,7 +14,7 @@ const Invoice = () => {
     <>
       <Seo templateTitle='Invoice' />
       <AnimatePage>
-        <HeaderMain />
+        <Header />
         {slug && <InvoiceBeli no_invoice={slug as string} />}
         <Footer />
       </AnimatePage>

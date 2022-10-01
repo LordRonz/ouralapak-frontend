@@ -7,7 +7,7 @@ import ClipLoader from 'react-spinners/ClipLoader';
 
 import AnimatePage from '@/components/AnimatePage';
 import Footer from '@/components/Layout/Footer/FooterOne/Footer';
-import Header from '@/components/Layout/Header/Header';
+import HeaderIklan from '@/components/Layout/Header/HeaderIklan';
 import ArrowLink from '@/components/links/ArrowLink';
 import Seo from '@/components/Seo';
 import { PRIMARY } from '@/constant/colors';
@@ -38,7 +38,7 @@ const Verify: NextPage = () => {
     <>
       <Seo templateTitle='Verify' />
       <AnimatePage>
-        <Header />
+        <HeaderIklan />
         <div className='flex h-80 items-center justify-center'>
           {loading ? (
             <ClipLoader size={100} color={PRIMARY['400']} />

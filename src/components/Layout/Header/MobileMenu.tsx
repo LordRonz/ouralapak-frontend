@@ -1,8 +1,11 @@
+import { Dialog, Transition } from '@headlessui/react';
 import Link from 'next/link';
-import React, { useState } from 'react';
-import { FaPhoneAlt } from 'react-icons/fa';
+import React, { Fragment, useState } from 'react';
+import { FaPhoneAlt, FaPlus } from 'react-icons/fa';
 import useSWR from 'swr';
 
+import ButtonGradient from '@/components/buttons/ButtonGradient';
+import ButtonLink from '@/components/links/ButtonLink';
 import ButtonLinkGradient from '@/components/links/ButtonLinkGradient';
 import { API_URL } from '@/constant/config';
 import getWaLink from '@/lib/getWhatsappLink';
@@ -19,6 +22,8 @@ const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
   const handleToggle14 = () => {
     setActive14((a) => !a);
   };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data: user } = useSWR<{
     data: User;
@@ -58,50 +63,93 @@ const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
             </div>
             <div className='mm-menu mm-menu-1 d-lg-none mb-60'>
               <ul>
+                {user ? (
+                  <>
+                    <li>
+                      <Link href='/seller'>
+                        <a className='animated-underline !text-base !font-medium !text-primary-600 dark:!text-primary-300'>
+                          Iklan
+                        </a>
+                      </Link>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li>
+                      <a
+                        href={getWaLink(config?.data?.value ?? '+62869696969')}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='animated-underline !text-base !font-medium !text-primary-600 dark:!text-primary-300'
+                      >
+                        Jasa Rekber
+                      </a>
+                    </li>
+                    <li>
+                      <Link href='/seller'>
+                        <a className='animated-underline !text-base !font-medium !text-primary-600 dark:!text-primary-300'>
+                          Jual Akun
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href='/#jelajah_akun'>
+                        <a className='animated-underline !text-base !font-medium !text-primary-600 dark:!text-primary-300'>
+                          Beli Akun
+                        </a>
+                      </Link>
+                    </li>
+                  </>
+                )}
+
                 <li>
-                  <a
-                    href={getWaLink(config?.data?.value ?? '+62869696969')}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='animated-underline !text-base !font-medium !text-primary-600 dark:!text-primary-300'
-                  >
-                    Jasa Rekber
-                  </a>
-                </li>
-                <li>
-                  <Link href='/seller'>
-                    <a className='animated-underline !text-base !font-medium !text-primary-600 dark:!text-primary-300'>
-                      Jual Akun
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href='/#jelajah_akun'>
-                    <a className='animated-underline !text-base !font-medium !text-primary-600 dark:!text-primary-300'>
-                      Beli Akun
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href='/#jelajah_akun'>
+                  <Link href='/cek-invoice'>
                     <a className='animated-underline !text-base !font-medium !text-primary-600 dark:!text-primary-300'>
                       Cek Invoice
                     </a>
                   </Link>
                 </li>
+                <li>
+                  <Link href='/tutorial'>
+                    <a className='animated-underline !text-base !font-medium !text-primary-600 dark:!text-primary-300'>
+                      Tutorial
+                    </a>
+                  </Link>
+                </li>
+                {user && (
+                  <li>
+                    <Link href='/#footer'>
+                      <a className='animated-underline !text-base !font-medium !text-primary-600 dark:!text-primary-300'>
+                        Contact Us
+                      </a>
+                    </Link>
+                  </li>
+                )}
               </ul>
             </div>
-            <ButtonLinkGradient
-              href='/seller'
-              className='px-3 font-medium uppercase text-white'
-            >
-              <div className='flex items-center justify-center gap-x-2'>
-                <FaPhoneAlt />
-                Contact Us
-              </div>
-            </ButtonLinkGradient>
+            {user ? (
+              <ButtonGradient
+                className='px-3 text-xs font-medium uppercase text-white'
+                onClick={() => setIsModalOpen(true)}
+              >
+                <div className='flex items-center justify-center gap-x-2'>
+                  <FaPlus />
+                  Tambah Iklan
+                </div>
+              </ButtonGradient>
+            ) : (
+              <ButtonLinkGradient
+                href='/seller'
+                className='px-3 font-medium uppercase text-white'
+              >
+                <div className='flex items-center justify-center gap-x-2'>
+                  <FaPhoneAlt />
+                  Contact Us
+                </div>
+              </ButtonLinkGradient>
+            )}
             <div className='offset-profile-action d-md-none'>
-              <div className='offset-widget mb-40'>
+              <div className='offset-widget mb-40 mt-20'>
                 {user && (
                   <div className='profile-item profile-item-header into-sidebar d-md-none'>
                     <div
@@ -131,7 +179,7 @@ const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
                       <img
                         src={
                           user?.data.profile_picture
-                            ? `${API_URL}${user.data.profile_picture}`
+                            ? `${API_URL}/${user.data.profile_picture}`
                             : `/images/pfp.jpg`
                         }
                         alt='profile-img'
@@ -146,22 +194,9 @@ const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
                 )}
               </div>
             </div>
-            <div className='offset-widget offset_searchbar mb-30'>
-              <form action='#' className='filter-search-input'>
-                <input type='text' placeholder='Search keyword' />
-                <button>
-                  <i className='fal fa-search'></i>
-                </button>
-              </form>
-            </div>
             <div className='offset-widget d-none d-lg-block mb-40'>
               <div className='info-widget'>
                 <h4 className='offset-title d-none mb-20'>Contact Info</h4>
-                <p className='mb-30'>
-                  Non-fungible tokens and their smart contracts allow for
-                  detailed attributes to be added, like the identity of the
-                  owner, rich metadata, or secure file links.
-                </p>
                 <Link href='/contact'>
                   <a className='fill-btn'>Contact Us</a>
                 </Link>
@@ -169,6 +204,65 @@ const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
             </div>
           </div>
         </div>
+        <Transition appear show={isModalOpen} as={Fragment}>
+          <Dialog
+            as='div'
+            className='relative z-10'
+            onClose={() => setIsModalOpen(false)}
+          >
+            <Transition.Child
+              as={Fragment}
+              enter='ease-out duration-300'
+              enterFrom='opacity-0'
+              enterTo='opacity-100'
+              leave='ease-in duration-200'
+              leaveFrom='opacity-100'
+              leaveTo='opacity-0'
+            >
+              <div className='fixed inset-0 bg-black bg-opacity-25' />
+            </Transition.Child>
+            <div className='fixed inset-0 overflow-y-auto'>
+              <div className='flex min-h-full items-center justify-center p-4 text-center'>
+                <Transition.Child
+                  as={Fragment}
+                  enter='ease-out duration-300'
+                  enterFrom='opacity-0 scale-95'
+                  enterTo='opacity-100 scale-100'
+                  leave='ease-in duration-200'
+                  leaveFrom='opacity-100 scale-100'
+                  leaveTo='opacity-0 scale-95'
+                >
+                  <Dialog.Panel className='w-full max-w-md transform overflow-visible rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:!bg-neutral-800'>
+                    <Dialog.Title
+                      as='h3'
+                      className='mb-2 text-lg font-bold leading-6 text-gray-900 dark:text-white'
+                    >
+                      Syarat Penjualan Akun
+                    </Dialog.Title>
+                    <ol className='list-decimal space-y-2 pl-4'>
+                      <li className='list-decimal pr-8'>
+                        Diusahakan Akun No Minus Moonton (ada akses ke Akun
+                        Moonton dan Akun Gmail yang digunakan untuk daftar akun
+                        Moonton)
+                      </li>
+                      <li className='list-decimal pr-8'>
+                        NO Minus BIND (Jika ada bind misal FB/Tiktok bisa di
+                        lepas terlebih dahulu karena prosesnya membutuhkan waktu
+                        7 Hari)
+                      </li>
+                    </ol>
+                    <ButtonLink
+                      href='/post-iklan'
+                      className='flex w-full items-center justify-center border-0 text-center'
+                    >
+                      Lanjutkan
+                    </ButtonLink>
+                  </Dialog.Panel>
+                </Transition.Child>
+              </div>
+            </div>
+          </Dialog>
+        </Transition>
       </div>
       <div className='offcanvas-overlay'></div>
       <div className='offcanvas-overlay-white'></div>
