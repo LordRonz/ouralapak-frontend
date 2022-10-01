@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import { stringifyUrl } from 'query-string';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
@@ -32,9 +31,7 @@ const DashboardLayout = ({
     setMounted(true);
   }, []);
 
-  const router = useRouter();
-
-  const { data: profile, error } = useSWR<{
+  const { data: profile } = useSWR<{
     data: User;
     message: string;
     success: boolean;
@@ -45,10 +42,6 @@ const DashboardLayout = ({
         })
       : null
   );
-
-  if (error) {
-    router.push('/');
-  }
 
   return (
     <DashboardProvider>
