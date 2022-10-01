@@ -125,8 +125,6 @@ const IndexPage = () => {
     })
   );
 
-  console.log(feePayments);
-
   const isActiveOpts = [
     {
       value: true,

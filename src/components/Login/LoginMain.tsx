@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -12,6 +12,7 @@ import ButtonGradient from '@/components/buttons/ButtonGradient';
 import Breadcrumbs from '@/components/Common/PageTitle';
 import ParticleComponent from '@/components/Common/ParticleComponent';
 import { API_URL } from '@/constant/config';
+import customAxios from '@/lib/customAxios';
 import toastPromiseError from '@/lib/toastPromiseError';
 import APIResponse from '@/types/response';
 import Roles from '@/types/roles';
@@ -46,11 +47,8 @@ const LoginMain = () => {
   const [passMode, setPassMode] = useState(true);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    const res: AxiosResponse<
-      APIResponse<{ user: UserLogin; token: string }>,
-      any
-    > = await toast.promise(
-      axios.post<APIResponse<{ user: UserLogin; token: string }>>(
+    await toast.promise(
+      customAxios.post<APIResponse<{ user: UserLogin; token: string }>>(
         `${API_URL}/auth/login`,
         data
       ),
@@ -62,19 +60,21 @@ const LoginMain = () => {
           },
         },
         success: {
-          render: () => {
+          render: ({ data }) => {
             setLoginBtnDisabled(false);
-            if (res.data.data?.token) {
-              setToken(res.data.data.token as string);
+            if (data?.data?.data?.user) {
+              setToken(data?.data?.data?.token as string);
               axios.defaults.headers.common['Authorization'] =
-                res.data.data.token;
+                data?.data?.data?.token;
             }
             if (
-              (res.data.data?.user.roles as string[]).includes(Roles.SUPERUSER)
+              (data?.data?.data?.user.roles as string[]).includes(
+                Roles.SUPERUSER
+              )
             ) {
               router.push('/admin');
             } else if (
-              (res.data.data?.user.roles as string[]).includes(Roles.ADMIN)
+              (data?.data?.data?.user.roles as string[]).includes(Roles.ADMIN)
             ) {
               router.push('/admin');
             } else {

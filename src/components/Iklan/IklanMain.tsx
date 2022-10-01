@@ -190,7 +190,7 @@ const IklanMain = ({ id }: { id: number }) => {
       toast.warn('Captcha harus diselesaikan');
       return;
     }
-    const res = await toast.promise(
+    await toast.promise(
       axios.post<{ data: InvoicePembeli; message: string; success: boolean }>(
         stringifyUrl({
           url: `${API_URL}/invoice/${id}`,
@@ -206,9 +206,9 @@ const IklanMain = ({ id }: { id: number }) => {
           },
         },
         success: {
-          render: () => {
+          render: ({ data }) => {
             setBeliBtnDisabled(false);
-            router.push(`/invoice-beli/${res.data.data.no_invoice}`);
+            router.push(`/invoice-beli/${data?.data.data.no_invoice}`);
             return 'Berhasil beli, menuju laman invoice';
           },
         },
@@ -219,7 +219,6 @@ const IklanMain = ({ id }: { id: number }) => {
         },
       }
     );
-    console.log(res);
   };
 
   const verifyEmail = async () => {

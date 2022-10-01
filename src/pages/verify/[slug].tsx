@@ -22,7 +22,6 @@ const Verify: NextPage = () => {
 
   useEffect(() => {
     if (!token) return;
-    console.log(token);
     (async () => {
       const res = await axios.put(`${API_URL}/auth/user/activate/${token}`);
       setLoading(false);

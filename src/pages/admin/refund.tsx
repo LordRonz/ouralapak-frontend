@@ -159,7 +159,6 @@ const IndexPage = () => {
   );
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    console.log(data);
     await toast.promise(
       customAxios.post<{ data: Refund; message: string; success: boolean }>(
         stringifyUrl({

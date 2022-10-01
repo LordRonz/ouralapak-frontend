@@ -149,7 +149,6 @@ const IndexPage = () => {
   );
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    console.log(data);
     await toast.promise(
       customAxios.post<{
         data: MessageTemplate;

@@ -110,7 +110,7 @@ const IndexPage = () => {
       };
 
       if (isConfirmed) {
-        const res = await toast.promise(
+        await toast.promise(
           customAxios.put(
             `${API_URL}/admin/invoice-${
               inv.jenis_invoice === JenisInvoice.PEMBELI ? 'pembeli' : 'penjual'
@@ -138,7 +138,6 @@ const IndexPage = () => {
             },
           }
         );
-        console.log(res);
       }
     },
     [mutate, theme]
@@ -289,8 +288,6 @@ const IndexPage = () => {
       value: 100,
     },
   ];
-
-  console.log(invoices);
 
   return (
     <>

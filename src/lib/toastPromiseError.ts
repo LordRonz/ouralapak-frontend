@@ -7,7 +7,6 @@ export const toastPromiseError = (fn?: () => any, defaultRes?: string) => {
     const [returnMessage, ...messages] = e.data.response.data
       .message as string[];
     messages.forEach((message) => {
-      console.log('worrr');
       toast.error(message, { toastId: message });
     });
     return returnMessage || defaultRes || 'Error';

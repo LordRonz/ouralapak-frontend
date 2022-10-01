@@ -112,8 +112,6 @@ const IndexPage = () => {
       : null
   );
 
-  console.log(feeRekbers);
-
   const { data: banks } = useSWR<{
     data: { data: Bank[]; pagination: Pagination };
     message: string;
@@ -126,8 +124,6 @@ const IndexPage = () => {
       },
     })
   );
-
-  console.log(feeRekbers);
 
   const isActiveOpts = [
     {
