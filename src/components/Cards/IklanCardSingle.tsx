@@ -7,7 +7,6 @@ import ThumbnailChip from '@/components/Cards/ThumbnailChip';
 import RefundChip from '@/components/HomeOne/RefundChip';
 import { API_URL } from '@/constant/config';
 import clsxm from '@/lib/clsxm';
-import { StatusIklanEnum } from '@/lib/getStatusIklan';
 import toIDRCurrency from '@/lib/toIDRCurrency';
 import Capote from '@/svgs/capote.svg';
 import Superhero from '@/svgs/superhero.svg';
@@ -58,9 +57,7 @@ const IklanCardSingle = ({
                   >
                     Sold Out
                   </div>
-                  {iklan.status_id === StatusIklanEnum.PROSES_REKBER && (
-                    <ThumbnailChip />
-                  )}
+                  <ThumbnailChip status_id={iklan.status_id} />
                 </div>
                 <div className='relative py-3'>
                   <div className='mb-3 flex w-full items-center justify-between'>
