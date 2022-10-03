@@ -65,8 +65,6 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
 
   const [copyStatus, setCopyStatus] = useState<string>('Click to copy');
 
-  console.log(invoice?.data);
-
   const getWaLink = () =>
     queryString.stringifyUrl({
       url: `https://wa.me/${config?.data?.value}`,

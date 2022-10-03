@@ -4,10 +4,15 @@ import type SkinRare from './skinRare';
 import type User from './user';
 
 type Iklan = {
+  account_bind: {
+    name: string;
+    id: number;
+  }[];
   change_name_status: number;
   created_at: string;
   created_by: string;
   emblems: Emblem[];
+  emblem: Emblem[];
   first_top_up_exist: null;
   first_top_up_image: null;
   harga_akun: string;

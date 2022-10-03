@@ -5,14 +5,13 @@ import { useTheme } from 'next-themes';
 import queryString, { stringifyUrl } from 'query-string';
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import ReCAPTCHA from 'react-google-recaptcha';
 import {
   Controller,
   SubmitHandler,
   useFieldArray,
   useForm,
 } from 'react-hook-form';
-import { FiChevronLeft, FiInfo } from 'react-icons/fi';
+import { FiInfo } from 'react-icons/fi';
 import { HiPlus } from 'react-icons/hi';
 import Lightbox from 'react-image-lightbox';
 import Modal from 'react-responsive-modal';
@@ -22,11 +21,8 @@ import useSWR from 'swr';
 
 import MyButton from '@/components/buttons/Button';
 import ButtonGradient from '@/components/buttons/ButtonGradient';
-import Captcha from '@/components/Common/Captcha';
-import Breadcrumbs from '@/components/Common/PageTitle';
 import Spinner from '@/components/Common/Spinner';
 import XButton from '@/components/Common/XButton';
-import UnstyledLink from '@/components/links/UnstyledLink';
 import ConfirmationDialog from '@/components/Upload/Dialog';
 import StyledInputFile from '@/components/Upload/StyledInputFile';
 import { selectDarkTheme } from '@/constant/colors';
@@ -43,13 +39,12 @@ import toIDRCurrency from '@/lib/toIDRCurrency';
 import Bank from '@/types/bank';
 import BindingAcc from '@/types/bindingAccount';
 import EmblemMaster from '@/types/emblemMaster';
-import FeePayment from '@/types/feePayment';
 import HeroMaster from '@/types/heroMaster';
+import Iklan from '@/types/iklan';
 import Packages from '@/types/packages';
 import Pagination from '@/types/pagination';
 import Platform from '@/types/platform';
 import Refund from '@/types/refund';
-import User from '@/types/user';
 
 type IFormInput = {
   title: string;
@@ -80,11 +75,9 @@ type IFormInput = {
 // const SUPPORTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
 
 const UpdateIklan = () => {
-  const [saveData, setSaveData] = useState<IFormInput | undefined>();
   const [openDialog, setOpenDialog] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
 
-  const [selectedBank, setSelectedBank] = useState<number>();
+  const [, setSelectedBank] = useState<number>();
 
   const {
     control,
@@ -143,28 +136,6 @@ const UpdateIklan = () => {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (!router.query.iklanId) {
-      return;
-    }
-    (async () => {
-      const res = customAxios.get(
-        `${API_URL}/admin/iklan/${router.query.iklanId}`
-      );
-      console.log(res);
-      // if (saveData) {
-      //   reset(saveData);
-      //   setRecallEffectCnt(saveData.recall_effect.length);
-      // }
-    })();
-  }, [reset, router.query.iklanId, saveData]);
-
-  const { data: user } = useSWR<{
-    data: User;
-    message: string;
-    success: boolean;
-  }>(mounted ? `${API_URL}/profile` : null);
-
   const { data: banks } = useSWR<{
     data: { data: Bank[]; pagination: Pagination };
     message: string;
@@ -215,16 +186,6 @@ const UpdateIklan = () => {
     success: boolean;
   }>(`${API_URL}/master/refund?perPage=200`);
 
-  const { data: feePayment } = useSWR<{
-    data: { data: FeePayment[]; pagination: Pagination };
-    message: string;
-    success: boolean;
-  }>(
-    selectedBank
-      ? `${API_URL}/master/fee-payment?id_bank=${selectedBank}`
-      : null
-  );
-
   const changeNameOpts = [
     { value: 0, label: 'OFF' },
     { value: 1, label: 'ON' },
@@ -245,17 +206,10 @@ const UpdateIklan = () => {
     label: e.name,
   }));
 
-  const jenisRefundOpts = user?.data.is_verified
-    ? refund?.data.data.map((re) => ({
-        value: re.id,
-        label: re.desc,
-      }))
-    : refund?.data.data
-        .map((re) => ({
-          value: re.id,
-          label: re.desc,
-        }))
-        .slice(0, 1);
+  const jenisRefundOpts = refund?.data.data.map((re) => ({
+    value: re.id,
+    label: re.desc,
+  }));
 
   const jenisPembayaranOpts = banks?.data.data
     .filter((b) => !!b.is_active)
@@ -302,6 +256,7 @@ const UpdateIklan = () => {
   const [previewEmblem, setPreviewEmblem] = useState(false);
   const [previewSkin, setPreviewSkin] = useState(false);
   const [skinIndex, setSkinIndex] = useState(0);
+  const [fieldSet, setFieldSet] = useState(false);
 
   const [imageProfile, setImageProfile] = useState<File | File[] | null>(null);
   const [imageWinRate, setImageWinRate] = useState<File | File[] | null>(null);
@@ -313,13 +268,56 @@ const UpdateIklan = () => {
 
   const [imgSkinField, setImgSkinField] = useState(0);
 
-  const [responseCaptcha, setResponseCapthca] = useState<string | null>(null);
+  useEffect(() => {
+    if (!router.query.slug || fieldSet || !jenisRefundOpts) {
+      return;
+    }
+    (async () => {
+      const { data } = await customAxios.get<{ data: Iklan }>(
+        `${API_URL}/admin/iklan/${router.query.slug}`
+      );
+      if (data.data) {
+        const payload = { ...data.data, total_emblem: data.data.emblem };
+        delete (payload as Partial<typeof payload>).status;
+        reset(payload as unknown as IFormInput);
+        setRecallEffectCnt(data.data.recall_effect.length);
+        if (jenisRefundOpts) {
+          setValue(
+            'jenis_refund',
+            jenisRefundOpts?.find(
+              (v) => v.label === payload.jenis_refund.toString()
+            )?.value ?? 0
+          );
+        }
+        setValue(
+          'account_bind',
+          payload.account_bind.map((v) => v.id)
+        );
+        setValue(
+          'favorite_heroes',
+          payload.hero.map((v) => v.id)
+        );
+        setFieldSet(true);
+      }
+    })();
+  }, [
+    accountBindOpts,
+    fieldSet,
+    jenisRefundOpts,
+    reset,
+    router.query.slug,
+    setValue,
+  ]);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     const form = new FormData();
 
     Object.entries(data).forEach((v) => {
-      if ((Array.isArray(v[1]) && v[1].length === 0) || v[1] === undefined) {
+      if (
+        (Array.isArray(v[1]) && v[1].length === 0) ||
+        v[1] === undefined ||
+        v[1] === null
+      ) {
         return;
       }
       form.append(
@@ -358,21 +356,12 @@ const UpdateIklan = () => {
       setOpenDialog(true);
       return;
     }
-    if (!responseCaptcha) {
-      if (!recaptchaRef.current) {
-        toast.warn('Captcha harus diselesaikan');
-      } else {
-        recaptchaRef.current.execute();
-      }
-      return;
-    }
-    const res = await toast.promise(
-      customAxios.post(
+    await toast.promise(
+      customAxios.put(
         stringifyUrl({
-          url: `${API_URL}/user/iklan`,
+          url: `${API_URL}/admin/iklan/${router.query.slug}`,
         }),
-        form,
-        { headers: { recaptcha_response: responseCaptcha } }
+        form
       ),
       {
         pending: {
@@ -397,12 +386,7 @@ const UpdateIklan = () => {
         },
       }
     );
-    const no_invoice = res.data.data.no_invoice as string;
-
-    router.push(`/invoice/${no_invoice}`);
   };
-
-  const recaptchaRef = React.createRef<ReCAPTCHA>();
 
   const [emblemOptsSet, setEmblemOptsSet] = useState(false);
 
@@ -440,8 +424,7 @@ const UpdateIklan = () => {
       emblemOpts &&
       emblemOpts.length > 0 &&
       totalEmblemFields.fields.length < 1 &&
-      !emblemOptsSet &&
-      !saveData
+      !emblemOptsSet
     ) {
       setEmblemOptsSet(true);
       totalEmblemFields.append({
@@ -454,7 +437,7 @@ const UpdateIklan = () => {
         level: 1,
       });
     }
-  }, [emblemOpts, emblemOptsSet, getValues, saveData, totalEmblemFields]);
+  }, [emblemOpts, emblemOptsSet, getValues, totalEmblemFields]);
 
   const twibbonize = async (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -519,25 +502,13 @@ const UpdateIklan = () => {
 
   return (
     <main>
-      <Breadcrumbs
-        breadcrumbTitle='Posting Iklan'
-        breadcrumbSubTitle='Posting Iklan'
-      />
-
-      <div className='upload-area pb-90 pt-12'>
+      <div className='upload-area pb-90'>
         <div className='container p-0'>
           <div className='upload-wrapper mb-10'>
-            <span
-              className='mb-4 flex cursor-pointer items-center gap-x-3'
-              onClick={() => router.back()}
-            >
-              <FiChevronLeft className='font-bold' />
-              <p className='m-0 font-bold'>Kembali</p>
-            </span>
             <form className='upload-form p-0' onSubmit={handleSubmit(onSubmit)}>
               <div className='row rounded-xl bg-white p-4 py-6 dark:!bg-gray-800'>
                 <div className='artist-meta-info creator-details-meta-info mb-4'>
-                  <h1 className='text-3xl text-[#B89C74]'>Posting Iklan</h1>
+                  <h1 className='text-3xl text-[#B89C74]'>Edit Iklan</h1>
                 </div>
                 <div className=''>
                   <div className='row wow fadeInUp gap-y-3'>
@@ -547,6 +518,7 @@ const UpdateIklan = () => {
                         <input
                           type='text'
                           placeholder='Masukkan judul iklan'
+                          {...register('title')}
                           className='border border-2 dark:!border-gray-700'
                         />
                       </div>
@@ -584,17 +556,6 @@ const UpdateIklan = () => {
                             />
                           )}
                         />
-                        {!user?.data.is_verified && (
-                          <UnstyledLink
-                            href='/profile'
-                            className='text-sm text-yellow-500'
-                            onClick={() => setSaveData(getValues())}
-                          >
-                            Akun anda belum diverifikasi, silahkan upload
-                            identitas terlebih dahulu agar dapat memilih opsi
-                            Refund lainnya
-                          </UnstyledLink>
-                        )}
                       </div>
                     </div>
                     <div className='col-md-4'>
@@ -1603,9 +1564,6 @@ const UpdateIklan = () => {
                       disabled={submitBtnDisabled}
                       className='w-full'
                       type='submit'
-                      onClick={() => {
-                        setIsChecked(false);
-                      }}
                     >
                       Preview
                     </ButtonGradient>
@@ -1628,12 +1586,6 @@ const UpdateIklan = () => {
                           <label>Judul</label>
                           <p className='text-2xl font-bold text-black dark:!text-white'>
                             {getValues('title')}
-                          </p>
-                        </div>
-                        <div>
-                          <label>Penjual</label>
-                          <p className='text-2xl font-bold text-black dark:!text-white'>
-                            {user?.data.name} - @{user?.data.ig_username}
                           </p>
                         </div>
                         <div>
@@ -1965,88 +1917,9 @@ const UpdateIklan = () => {
                           </div>
                         </div>
                       </div>
-                      <div className='flex flex-col items-center justify-center gap-y-4 bg-[#F1F1F1] p-3'>
-                        <div className='space-y-4'>
-                          <div className='text-center'>
-                            <h3>Rincian Pembayaran</h3>
-                          </div>
-                          <div className='grid grid-cols-2'>
-                            <div>
-                              <p className='text-black dark:!text-white'>
-                                Biaya Posting -{' '}
-                                {
-                                  packages?.data.data.find(
-                                    (v) => v.id === getValues('package_id')
-                                  )?.name
-                                }
-                              </p>
-                              <hr />
-                              <p className='text-black dark:!text-white'>
-                                Biaya Admin -{' '}
-                                {
-                                  banks?.data.data.find(
-                                    (v) =>
-                                      v.id === getValues('jenis_pembayaran')
-                                  )?.name
-                                }
-                              </p>
-                              <p className='mt-12 text-xl font-bold text-black dark:!text-white'>
-                                Total
-                              </p>
-                            </div>
-                            <div className='text-right'>
-                              <p className='text-black dark:!text-white'>
-                                {toIDRCurrency(
-                                  packages?.data.data.find(
-                                    (v) => v.id === getValues('package_id')
-                                  )?.price
-                                )}
-                              </p>
-                              <hr />
-                              <p className='text-black dark:!text-white'>
-                                {toIDRCurrency(
-                                  feePayment?.data.data &&
-                                    feePayment?.data.data.length > 0
-                                    ? feePayment?.data.data[0].fee_flat
-                                    : 0
-                                )}
-                              </p>
-                              <p className='mt-12 text-xl font-bold text-black dark:!text-white'>
-                                {toIDRCurrency(
-                                  packages?.data.data.find(
-                                    (v) => v.id === getValues('package_id')
-                                  )?.price ??
-                                    0 +
-                                      (feePayment?.data.data &&
-                                      feePayment?.data.data.length > 0
-                                        ? feePayment?.data.data[0].fee_flat
-                                        : 0)
-                                )}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                        <Captcha
-                          show={openDialog}
-                          ref={recaptchaRef}
-                          onChange={(token) => setResponseCapthca(token)}
-                        />
-                        <div className='flex items-center justify-center gap-x-4'>
-                          <input
-                            type='checkbox'
-                            value='agreed'
-                            checked={isChecked}
-                            onChange={() => setIsChecked((v) => !v)}
-                            className=''
-                          />
-                          <p className='m-0 inline rounded-md font-bold text-red-500'>
-                            Data yang diisi sudah benar dan tidak dapat diubah
-                            jika sudah disubmit
-                          </p>
-                        </div>
+                      <div className='flex flex-col items-center justify-center gap-y-4 p-3'>
                         <div className='flex items-center justify-center'>
                           <ButtonGradient
-                            disabled={!isChecked || submitBtnDisabled}
                             className='text-black'
                             onClick={() => handleSubmit(onSubmit)()}
                           >
@@ -2063,7 +1936,6 @@ const UpdateIklan = () => {
                       disabled={submitBtnDisabled}
                       className='text-black'
                       type='submit'
-                      onClick={() => setIsChecked(false)}
                     >
                       Preview
                     </ButtonGradient>

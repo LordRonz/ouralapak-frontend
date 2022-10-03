@@ -24,13 +24,17 @@ const SidenavItems = ({ superAdmin }: { superAdmin?: boolean }) => {
                 <a
                   className={clsxm(
                     style.link,
-                    item.link === asPath && style.active
+                    (item.link === '/admin'
+                      ? asPath === item.link
+                      : asPath.startsWith(item.link)) && style.active
                   )}
                 >
                   <div
                     className={clsxm(
                       'flex',
-                      item.link === asPath &&
+                      (item.link === '/admin'
+                        ? asPath === item.link
+                        : asPath.startsWith(item.link)) &&
                         'rounded  bg-primary-300 px-2 py-1'
                     )}
                   >
