@@ -52,6 +52,8 @@ type Invoice = {
     updated_by: string;
   };
   no_invoice: string;
+  package: string;
+  package_id: number;
   status: number;
   updated_at: string;
   updated_by: number;

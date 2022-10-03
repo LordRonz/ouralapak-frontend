@@ -65,6 +65,8 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
 
   const [copyStatus, setCopyStatus] = useState<string>('Click to copy');
 
+  console.log(invoice?.data);
+
   const getWaLink = () =>
     queryString.stringifyUrl({
       url: `https://wa.me/${config?.data?.value}`,
@@ -229,7 +231,9 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                     <h3 className='text-base font-medium text-[#85878E] dark:text-white md:text-lg'>
                       Paket Posting Iklan
                     </h3>
-                    <h3 className='whitespace-normal text-base font-normal text-dark dark:!text-light md:text-2xl'></h3>
+                    <h3 className='whitespace-normal text-base font-normal text-dark dark:!text-light md:text-2xl'>
+                      {invoice.data.package}
+                    </h3>
                   </div>
                 </div>
               </div>

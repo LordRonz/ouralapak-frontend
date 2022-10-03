@@ -34,6 +34,7 @@ import getWaLink from '@/lib/getWhatsappLink';
 import toastPromiseError from '@/lib/toastPromiseError';
 import useAuthHeader from '@/services/authHeader';
 import Detail from '@/svgs/detail.svg';
+import Edit from '@/svgs/edit.svg';
 import EditStatus from '@/svgs/editStatus.svg';
 import Whatsapp from '@/svgs/whatsapp.svg';
 import { IklanAdmin } from '@/types/iklan';
@@ -288,6 +289,13 @@ const IndexPage = () => {
                 >
                   <EditStatus />
                 </div>
+              </Tooltip>
+              <Tooltip interactive={false} content='Edit'>
+                <Link href={`/admin/iklan/edit/${row.original.id}`}>
+                  <a>
+                    <Edit />
+                  </a>
+                </Link>
               </Tooltip>
               <Tooltip interactive={false} content='Detail'>
                 <Link href={`/admin/iklan/${row.original.id}`}>
