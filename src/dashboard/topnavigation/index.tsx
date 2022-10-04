@@ -35,7 +35,7 @@ const TopNavigation = ({ user }: { user?: User }) => {
     });
     if (isConfirmed) {
       removeToken();
-      router.push('/login');
+      window.location.replace(router.basePath + '/login');
     }
   };
   return (

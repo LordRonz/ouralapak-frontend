@@ -30,7 +30,7 @@ const IklanCardSingle = ({
           <div className='art-item-single'>
             <div className='rounded-xl bg-white p-[0.7rem] dark:!bg-gray-800'>
               <div className='art-item-inner'>
-                <div className='art-item-img h-30 relative flex items-center justify-center md:h-60'>
+                <div className='art-item-img h-30 w-30 relative flex items-center justify-center md:h-60 md:w-60'>
                   <Link href={`/iklan/${iklan.id}`}>
                     <a>
                       <Image
@@ -47,6 +47,7 @@ const IklanCardSingle = ({
                         width={240}
                         height={240}
                       />
+                      <ThumbnailChip status_id={iklan.status_id} />
                     </a>
                   </Link>
                   <div
@@ -57,7 +58,6 @@ const IklanCardSingle = ({
                   >
                     Sold Out
                   </div>
-                  <ThumbnailChip status_id={iklan.status_id} />
                 </div>
                 <div className='relative py-3'>
                   <div className='mb-3 flex w-full items-center justify-between'>

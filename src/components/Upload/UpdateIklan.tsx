@@ -875,10 +875,6 @@ const UpdateIklan = () => {
                           className='!flex gap-x-2'
                         >
                           <span>Hero Favorit</span>
-                          <FiInfo
-                            className='cursor-pointer'
-                            onClick={() => setOpenChangeNameStatus(true)}
-                          />
                         </label>
                         <Controller
                           control={control}

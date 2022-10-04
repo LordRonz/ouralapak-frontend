@@ -3,6 +3,7 @@ import { stringifyUrl } from 'query-string';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import useSWR from 'swr';
 
 import ButtonGradient from '@/components/buttons/ButtonGradient';
 import ParticleComponent from '@/components/Common/ParticleComponent';
@@ -10,6 +11,8 @@ import { API_URL } from '@/constant/config';
 import customAxios from '@/lib/customAxios';
 import toastPromiseError from '@/lib/toastPromiseError';
 import { JenisInvoice } from '@/types/invoice';
+import Roles from '@/types/roles';
+import User from '@/types/user';
 
 type IFormInput = {
   no_invoice: string;
@@ -25,13 +28,25 @@ const CekInvoice = () => {
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
 
   const router = useRouter();
+  const { data: user } = useSWR<{
+    data: User;
+    message: string;
+    success: boolean;
+  }>(() => `${API_URL}/profile`);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
       await toast.promise(
         customAxios.get(
           stringifyUrl({
-            url: `${API_URL}/check-invoice/${data.no_invoice}`,
+            url: `${API_URL}/${
+              user?.data.role.includes(Roles.ADMIN) ||
+              user?.data.role.includes(Roles.SUPERUSER)
+                ? 'admin'
+                : user
+                ? 'user'
+                : ''
+            }/check-invoice/${data.no_invoice}`,
           })
         ),
         {

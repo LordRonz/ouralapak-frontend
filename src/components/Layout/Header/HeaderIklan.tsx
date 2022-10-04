@@ -76,8 +76,6 @@ const HeaderIklan = ({ HeaderStatic, setHeight }: HeaderProps) => {
     });
     if (isConfirmed) {
       removeToken();
-      //setTimeout(() => router.push('/login'), 100);
-      router.push('/login');
       window.location.replace(router.basePath + '/login');
     }
   };

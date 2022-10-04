@@ -108,7 +108,7 @@ const SellerMain = () => {
     });
     if (isConfirmed) {
       removeToken();
-      router.push('/login');
+      window.location.replace(router.basePath + '/login');
     }
   };
 

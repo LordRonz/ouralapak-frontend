@@ -1,13 +1,19 @@
 import { Dialog, Transition } from '@headlessui/react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useTheme } from 'next-themes';
 import React, { Fragment, useState } from 'react';
 import { FaPhoneAlt, FaPlus } from 'react-icons/fa';
+import { useLocalStorage } from 'react-use';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import useSWR from 'swr';
 
 import ButtonGradient from '@/components/buttons/ButtonGradient';
 import ButtonLink from '@/components/links/ButtonLink';
 import ButtonLinkGradient from '@/components/links/ButtonLinkGradient';
 import { API_URL } from '@/constant/config';
+import { mySwalOpts } from '@/constant/swal';
 import getWaLink from '@/lib/getWhatsappLink';
 import Config from '@/types/config';
 import User from '@/types/user';
@@ -17,6 +23,8 @@ type MobileMenuProps = {
   menuOpen: boolean;
 };
 
+const MySwal = withReactContent(Swal);
+
 const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
   const [isActive14, setActive14] = useState(false);
   const handleToggle14 = () => {
@@ -24,6 +32,11 @@ const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [, , removeToken] = useLocalStorage('token');
+  const { theme } = useTheme();
+
+  const router = useRouter();
 
   const { data: user } = useSWR<{
     data: User;
@@ -36,6 +49,23 @@ const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
     message: string;
     success: boolean;
   }>(() => `${API_URL}/master/config/4`);
+
+  const handleLogout = async () => {
+    const { isConfirmed } = await MySwal.fire({
+      title: 'Yakin ingin logout?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Logout',
+      ...mySwalOpts(theme),
+      customClass: {
+        container: 'zIndex99999999',
+      },
+    });
+    if (isConfirmed) {
+      removeToken();
+      window.location.replace(router.basePath + '/login');
+    }
+  };
 
   return (
     <>
@@ -168,11 +198,14 @@ const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
                             </Link>
                           </li>
                           <li>
-                            <Link href='/login'>
+                            <button
+                              className='hover:text-primary-400'
+                              onClick={() => handleLogout()}
+                            >
                               <a>
                                 <i className='fal fa-sign-out'></i>Logout
                               </a>
-                            </Link>
+                            </button>
                           </li>
                         </ul>
                       </div>
@@ -266,6 +299,11 @@ const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
       </div>
       <div className='offcanvas-overlay'></div>
       <div className='offcanvas-overlay-white'></div>
+      <style jsx>{`
+        .zIndex99999999 {
+          z-index: 99999999 !important;
+        }
+      `}</style>
     </>
   );
 };
