@@ -11,7 +11,7 @@ const ThumbnailChip = ({ status_id }: { status_id: number }) => {
         </div>
       ) : status_id === StatusIklanEnum.MENUNGGU_PEMBAYARAN_PEMBELI ? (
         <div className='absolute top-0 left-0 w-24 rounded-br-xl bg-[#34C454] py-2 text-center text-white'>
-          <p className='m-0 p-0 text-xs'>Waiting List</p>
+          <p className='m-0 p-0 text-xs'>Menunggu Pembayaran Pembeli</p>
         </div>
       ) : null}
     </>

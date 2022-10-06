@@ -85,6 +85,8 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
     return <Spinner />;
   }
 
+  console.log(invoice);
+
   return (
     <main>
       <section className='pb-12'>
@@ -346,9 +348,25 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                 ) : (
                   <div className='w-full rounded-xl bg-[#EDD9BC] px-4 py-3'>
                     {invoice.data.va ? (
-                      <div>
-                        <h4 className='font-medium'>No. Virtual Account</h4>
-                        <p>{invoice.data.va}</p>
+                      <div className='!flex-now !wrap grid w-full grid-cols-12 whitespace-normal'>
+                        <p className='col-span-4 m-0 text-sm font-medium text-black md:col-span-5 md:text-lg'>
+                          Bank
+                        </p>
+                        <p className='col-span-1 m-0 text-sm font-medium text-black md:text-lg'>
+                          :
+                        </p>
+                        <p className='col-span-7 m-0 text-sm font-bold text-black md:col-span-6 md:text-lg'>
+                          {invoice.data.jenis_pembayaran.name}
+                        </p>
+                        <p className='col-span-4 m-0 text-sm font-medium text-black md:col-span-5 md:text-lg'>
+                          No. Virtual Account
+                        </p>
+                        <p className='col-span-1 m-0 text-sm font-medium text-black md:text-lg'>
+                          :
+                        </p>
+                        <p className='col-span-7 m-0 text-sm font-bold text-black md:col-span-6 md:text-lg'>
+                          {invoice.data.va}
+                        </p>
                       </div>
                     ) : (
                       <div className='!flex-now !wrap grid w-full grid-cols-12 whitespace-normal'>
@@ -359,7 +377,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                           :
                         </p>
                         <p className='col-span-7 m-0 text-sm font-bold text-black md:col-span-8 md:text-lg'>
-                          {invoice.data.jenis_pembayaran.rekening_name}
+                          {invoice.data.jenis_pembayaran.name}
                         </p>
                         <p className='col-span-4 m-0 text-sm font-medium text-black md:col-span-3 md:text-lg'>
                           No. Rekening
@@ -377,7 +395,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                           :
                         </p>
                         <p className='col-span-7 m-0 text-sm font-bold text-black md:col-span-8 md:text-lg'>
-                          {invoice.data.jenis_pembayaran.name}
+                          {invoice.data.jenis_pembayaran.rekening_name}
                         </p>
                       </div>
                     )}
@@ -393,6 +411,9 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
               </div>
             </div>
             <div className='mt-6 text-center'>
+              <p className='text-lg'>
+                Harap konfirmasi pembayaran dengan klik tombol di bawah
+              </p>
               <ButtonLinkGradient href={getWaLink()} className=''>
                 Konfirmasi Pembayaran
               </ButtonLinkGradient>
