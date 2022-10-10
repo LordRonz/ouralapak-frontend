@@ -511,24 +511,6 @@ const IndexPage = () => {
                         </div>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='email'>Price</label>
-                            <input
-                              type='number'
-                              step='any'
-                              onWheel={(e) =>
-                                e.target instanceof HTMLElement &&
-                                e.target.blur()
-                              }
-                              placeholder='0'
-                              {...(register('price'), { valueAsNumber: true })}
-                            />
-                          </div>
-                          <p className='text-red-500'>
-                            {errors.price?.message}
-                          </p>
-                        </div>
-                        <div className='col-md-12'>
-                          <div className='single-input-unit'>
                             <label htmlFor='email'>Fee Flat</label>
                             <input
                               type='number'
@@ -680,7 +662,7 @@ const IndexPage = () => {
                                 e.target.blur()
                               }
                               placeholder='0'
-                              {...(register('price'), { valueAsNumber: true })}
+                              {...register('price', { valueAsNumber: true })}
                             />
                           </div>
                           <p className='text-red-500'>

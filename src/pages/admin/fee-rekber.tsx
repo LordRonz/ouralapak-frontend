@@ -45,8 +45,6 @@ type IFormInput = {
   price: number;
   start: number;
   end: number;
-  name: string;
-  rekening_number: string | null;
   is_active: number;
 };
 
@@ -360,21 +358,12 @@ const IndexPage = () => {
                   className='cursor-pointer'
                   onClick={() => {
                     setOpen2(true);
-                    const {
-                      is_active,
-                      name,
-                      start,
-                      end,
-                      rekening_number,
-                      id_bank,
-                      price,
-                    } = row.original.feeRekber;
+                    const { is_active, start, end, id_bank, price } =
+                      row.original.feeRekber;
                     setValue('is_active', is_active);
                     setValue('id_bank', id_bank);
-                    setValue('name', name);
                     setValue('start', start);
                     setValue('end', end);
-                    setValue('rekening_number', rekening_number);
                     setValue('price', price);
                     setActiveId(row.original.id);
                   }}
@@ -468,20 +457,6 @@ const IndexPage = () => {
                       <div className='row gap-y-6'>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='email'>Nama</label>
-                            <input
-                              type='text'
-                              placeholder='Masukkan Nama Fee Rekber'
-                              autoFocus
-                              {...register('name', {
-                                required: 'Nama fee rekber harus diisi',
-                              })}
-                            />
-                          </div>
-                          <p className='text-red-500'>{errors.name?.message}</p>
-                        </div>
-                        <div className='col-md-12'>
-                          <div className='single-input-unit'>
                             <label htmlFor='id_bank'>Bank</label>
                             <Controller
                               control={control}
@@ -502,7 +477,7 @@ const IndexPage = () => {
                         </div>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='email'>Price</label>
+                            <label htmlFor='price'>Price</label>
                             <input
                               type='number'
                               step='any'
@@ -511,7 +486,10 @@ const IndexPage = () => {
                                 e.target.blur()
                               }
                               placeholder='0'
-                              {...(register('price'), { valueAsNumber: true })}
+                              {...register('price', {
+                                required: 'Price harus diisi',
+                                valueAsNumber: true,
+                              })}
                             />
                           </div>
                           <p className='text-red-500'>
@@ -529,7 +507,10 @@ const IndexPage = () => {
                                 e.target.blur()
                               }
                               placeholder='0'
-                              {...(register('start'), { valueAsNumber: true })}
+                              {...register('start', {
+                                required: 'Start harus diisi',
+                                valueAsNumber: true,
+                              })}
                             />
                           </div>
                           <p className='text-red-500'>
@@ -547,7 +528,10 @@ const IndexPage = () => {
                                 e.target.blur()
                               }
                               placeholder='0'
-                              {...(register('end'), { valueAsNumber: true })}
+                              {...register('end', {
+                                required: 'End harus diisi',
+                                valueAsNumber: true,
+                              })}
                             />
                           </div>
                           <p className='text-red-500'>{errors.end?.message}</p>
@@ -606,20 +590,6 @@ const IndexPage = () => {
                       <div className='row'>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='email'>Nama</label>
-                            <input
-                              type='text'
-                              placeholder='Masukkan Nama fee rekber'
-                              autoFocus
-                              {...register('name', {
-                                required: 'Nama fee rekber harus diisi',
-                              })}
-                            />
-                          </div>
-                          <p className='text-red-500'>{errors.name?.message}</p>
-                        </div>
-                        <div className='col-md-12'>
-                          <div className='single-input-unit'>
                             <label htmlFor='id_bank'>Bank</label>
                             <Controller
                               control={control}
@@ -649,7 +619,9 @@ const IndexPage = () => {
                                 e.target.blur()
                               }
                               placeholder='0'
-                              {...(register('price'), { valueAsNumber: true })}
+                              {...register('price', {
+                                valueAsNumber: true,
+                              })}
                             />
                           </div>
                           <p className='text-red-500'>
@@ -667,7 +639,9 @@ const IndexPage = () => {
                                 e.target.blur()
                               }
                               placeholder='0'
-                              {...(register('start'), { valueAsNumber: true })}
+                              {...register('start', {
+                                valueAsNumber: true,
+                              })}
                             />
                           </div>
                           <p className='text-red-500'>
@@ -685,7 +659,9 @@ const IndexPage = () => {
                                 e.target.blur()
                               }
                               placeholder='0'
-                              {...(register('end'), { valueAsNumber: true })}
+                              {...register('end', {
+                                valueAsNumber: true,
+                              })}
                             />
                           </div>
                           <p className='text-red-500'>{errors.end?.message}</p>
