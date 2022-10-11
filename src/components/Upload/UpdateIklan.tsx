@@ -266,6 +266,20 @@ const UpdateIklan = () => {
   const [imageEmblem, setImageEmblem] = useState<File | File[] | null>(null);
   const [imageSkin, setImageSkin] = useState<File | File[] | null>(null);
 
+  const [imageDefProfile, setImageDefProfile] = useState<File | File[] | null>(
+    null
+  );
+  const [imageDefWinRate, setImageDefWinRate] = useState<File | File[] | null>(
+    null
+  );
+  const [imageDefWinRateHero, setImageDefWinRateHero] = useState<
+    File | File[] | null
+  >(null);
+  const [imageDefEmblem, setImageDefEmblem] = useState<File | File[] | null>(
+    null
+  );
+  const [imageDefSkin, setImageDefSkin] = useState<File | File[] | null>(null);
+
   const [imgSkinField, setImgSkinField] = useState(0);
 
   useEffect(() => {
@@ -276,6 +290,7 @@ const UpdateIklan = () => {
       const { data } = await customAxios.get<{ data: Iklan }>(
         `${API_URL}/admin/iklan/${router.query.slug}`
       );
+      console.log(data.data);
       if (data.data) {
         const payload = { ...data.data, total_emblem: data.data.emblem };
         delete (payload as Partial<typeof payload>).status;
@@ -297,6 +312,68 @@ const UpdateIklan = () => {
           'favorite_heroes',
           payload.hero.map((v) => v.id)
         );
+        {
+          const response = await axios.get(
+            `${API_URL}/${data.data.image_profile}`,
+            {
+              responseType: 'blob',
+            }
+          );
+          const file = new File([response.data], 'imageProfile', {
+            type: response.headers['content-type'],
+          });
+          setImageDefProfile(file);
+        }
+        {
+          const response = await axios.get(
+            `${API_URL}/${data.data.image_win_rate}`,
+            {
+              responseType: 'blob',
+            }
+          );
+          const file = new File([response.data], 'imageWinRate', {
+            type: response.headers['content-type'],
+          });
+          setImageDefWinRate(file);
+        }
+        {
+          const response = await axios.get(
+            `${API_URL}/${data.data.image_win_rate_hero}`,
+            {
+              responseType: 'blob',
+            }
+          );
+          const file = new File([response.data], 'imageWinRateHero', {
+            type: response.headers['content-type'],
+          });
+          setImageDefWinRateHero(file);
+        }
+        {
+          const response = await axios.get(
+            `${API_URL}/${data.data.image_emblem}`,
+            {
+              responseType: 'blob',
+            }
+          );
+          const file = new File([response.data], 'imageEmblem', {
+            type: response.headers['content-type'],
+          });
+          setImageDefEmblem(file);
+        }
+        {
+          const files = await Promise.all(
+            data.data.image_skin.map(async (img, i) => {
+              const response = await axios.get(`${API_URL}/${img}`, {
+                responseType: 'blob',
+              });
+              const file = new File([response.data], `imageSkin${i}`, {
+                type: response.headers['content-type'],
+              });
+              return file;
+            })
+          );
+          setImageDefSkin(files);
+        }
         setFieldSet(true);
       }
     })();
@@ -1677,7 +1754,8 @@ const UpdateIklan = () => {
                           {previewImgProfile && (
                             <Lightbox
                               mainSrc={URL.createObjectURL(
-                                imageProfile as File
+                                (imageProfile as File) ??
+                                  (imageDefProfile as File)
                               )}
                               onCloseRequest={() => setPreviewImgProfile(false)}
                             />
@@ -1702,7 +1780,8 @@ const UpdateIklan = () => {
                           {previewWinRate && (
                             <Lightbox
                               mainSrc={URL.createObjectURL(
-                                imageWinRate as File
+                                (imageWinRate as File) ??
+                                  (imageDefWinRate as File)
                               )}
                               onCloseRequest={() => setPreviewWinRate(false)}
                             />
@@ -1738,7 +1817,10 @@ const UpdateIklan = () => {
                           </MyButton>
                           {previewEmblem && (
                             <Lightbox
-                              mainSrc={URL.createObjectURL(imageEmblem as File)}
+                              mainSrc={URL.createObjectURL(
+                                (imageEmblem as File) ??
+                                  (imageDefEmblem as File)
+                              )}
                               onCloseRequest={() => setPreviewEmblem(false)}
                             />
                           )}
@@ -1762,33 +1844,56 @@ const UpdateIklan = () => {
                           {previewSkin && (
                             <Lightbox
                               mainSrc={URL.createObjectURL(
-                                (imageSkin as File[])[skinIndex] as File
+                                ((imageSkin as File[]) ??
+                                  (imageDefSkin as File[]))[skinIndex] as File
                               )}
                               nextSrc={URL.createObjectURL(
-                                (imageSkin as File[])[
-                                  (skinIndex + 1) % (imageSkin as File[]).length
+                                ((imageSkin as File[]) ??
+                                  (imageDefSkin as File[]))[
+                                  (skinIndex + 1) %
+                                    (
+                                      (imageSkin as File[]) ??
+                                      (imageDefSkin as File[])
+                                    ).length
                                 ] as File
                               )}
                               prevSrc={URL.createObjectURL(
-                                (imageSkin as File[])[
+                                ((imageSkin as File[]) ??
+                                  (imageDefSkin as File[]))[
                                   (skinIndex +
-                                    (imageSkin as File[]).length -
+                                    (
+                                      (imageSkin as File[]) ??
+                                      (imageDefSkin as File[])
+                                    ).length -
                                     1) %
-                                    (imageSkin as File[]).length
+                                    (
+                                      (imageSkin as File[]) ??
+                                      (imageDefSkin as File[])
+                                    ).length
                                 ] as File
                               )}
                               onCloseRequest={() => setPreviewSkin(false)}
                               onMovePrevRequest={() =>
                                 setSkinIndex(
                                   (skinIndex +
-                                    (imageSkin as File[]).length -
+                                    (
+                                      (imageSkin as File[]) ??
+                                      (imageDefSkin as File[])
+                                    ).length -
                                     1) %
-                                    (imageSkin as File[]).length
+                                    (
+                                      (imageSkin as File[]) ??
+                                      (imageDefSkin as File[])
+                                    ).length
                                 )
                               }
                               onMoveNextRequest={() =>
                                 setSkinIndex(
-                                  (skinIndex + 1) % (imageSkin as File[]).length
+                                  (skinIndex + 1) %
+                                    (
+                                      (imageSkin as File[]) ??
+                                      (imageDefSkin as File[])
+                                    ).length
                                 )
                               }
                             />
@@ -1857,7 +1962,8 @@ const UpdateIklan = () => {
                           {previewWinRateHero && (
                             <Lightbox
                               mainSrc={URL.createObjectURL(
-                                imageWinRateHero as File
+                                (imageWinRateHero as File) ??
+                                  (imageDefWinRateHero as File)
                               )}
                               onCloseRequest={() =>
                                 setPreviewWinRateHero(false)
