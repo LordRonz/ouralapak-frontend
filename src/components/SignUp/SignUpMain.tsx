@@ -98,18 +98,32 @@ const SignUpMain = () => {
         <div className='container'>
           <div className='row justify-content-center'>
             <div className='col-xxl-6 col-xl-7 col-lg-8'>
-              <div className='sign-up-wrapper wow fadeInUp relative mb-40 !bg-neutral-200 dark:!bg-neutral-800'>
+              <div className='sign-up-wrapper wow fadeInUp relative mb-40 !bg-white dark:!bg-neutral-800'>
                 <div className='sign-up-inner'>
                   <div className='sign-up-content'>
-                    <h4>Buat Akun</h4>
+                    <h4 className='!mb-10'>Buat Akun</h4>
                     <form
                       className='sign-up-form'
                       onSubmit={handleSubmit(onSubmit)}
                     >
                       <div className='row gap-y-6'>
+                        <div className='col-md-12'>
+                          <div className='single-input-unit'>
+                            <label htmlFor='name'>Nama</label>
+                            <input
+                              type='text'
+                              placeholder='Nama anda'
+                              {...register('name', {
+                                required: 'Nama harus diisi',
+                              })}
+                              className='border'
+                            />
+                          </div>
+                          <p className='text-red-500'>{errors.name?.message}</p>
+                        </div>
                         <div className='col-md-6'>
                           <div className='single-input-unit'>
-                            <label htmlFor='email'>Email</label>
+                            <label htmlFor='email'>Alamat Email</label>
                             <input
                               type='email'
                               placeholder='Email anda'
@@ -122,24 +136,12 @@ const SignUpMain = () => {
                                   message: 'Email tidak valid!',
                                 },
                               })}
+                              className='border'
                             />
                           </div>
                           <p className='text-red-500'>
                             {errors.email?.message}
                           </p>
-                        </div>
-                        <div className='col-md-6'>
-                          <div className='single-input-unit'>
-                            <label htmlFor='name'>Nama</label>
-                            <input
-                              type='text'
-                              placeholder='Nama anda'
-                              {...register('name', {
-                                required: 'Nama harus diisi',
-                              })}
-                            />
-                          </div>
-                          <p className='text-red-500'>{errors.name?.message}</p>
                         </div>
                         <div className='col-md-6'>
                           <div className='single-input-unit'>
@@ -156,6 +158,7 @@ const SignUpMain = () => {
                                     : 'Invalid phone number'
                                   : 'Phone number required'
                               }
+                              className='h-[50px] overflow-hidden rounded-[5px] border pl-1'
                             />
                           </div>
                           <p className='text-red-500'>
@@ -173,6 +176,7 @@ const SignUpMain = () => {
                               {...register('username', {
                                 required: 'Username harus diisi',
                               })}
+                              className='border'
                             />
                           </div>
                           <p className='text-red-500'>
@@ -181,13 +185,16 @@ const SignUpMain = () => {
                         </div>
                         <div className='col-md-6'>
                           <div className='single-input-unit'>
-                            <label htmlFor='ig_username'>IG Username</label>
+                            <label htmlFor='ig_username'>
+                              Username Instagram
+                            </label>
                             <input
                               type='text'
                               placeholder='Username IG anda'
                               {...register('ig_username', {
                                 required: 'Username instagram harus diisi',
                               })}
+                              className='border'
                             />
                           </div>
                           <p className='text-red-500'>
@@ -209,6 +216,7 @@ const SignUpMain = () => {
                                       'Password harus berisi setidaknya 8 karakter',
                                   },
                                 })}
+                                className='border'
                               />
                               <div
                                 className='flex min-h-full cursor-pointer items-center justify-center rounded border-2 px-1 hover:border-primary-200 dark:border-transparent hover:dark:border-primary-600'
@@ -238,6 +246,7 @@ const SignUpMain = () => {
                                   }
                                 },
                               })}
+                              className='border'
                             />
                           </div>
                           <p className='text-red-500'>
@@ -248,9 +257,9 @@ const SignUpMain = () => {
                       <Captcha
                         onChange={(token) => setRecaptchaResponse(token)}
                       />
-                      <div className='sign-up-btn mt-4'>
+                      <div className='sign-up-btn mt-4 flex-col items-center justify-center !gap-y-2'>
                         <ButtonGradient
-                          className='text-white'
+                          className='w-full text-white'
                           type='submit'
                           disabled={signUpBtnDisabled}
                         >
