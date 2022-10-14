@@ -86,7 +86,7 @@ const SignUpAdmin = () => {
         <div className='container'>
           <div className='row justify-content-center'>
             <div className='col-xxl-6 col-xl-7 col-lg-8'>
-              <div className='sign-up-wrapper wow fadeInUp relative mb-40 !bg-neutral-200 dark:!bg-neutral-800'>
+              <div className='sign-up-wrapper wow fadeInUp relative mb-40 !bg-white dark:!bg-neutral-800'>
                 <div className='sign-up-inner'>
                   <div className='sign-up-content'>
                     <h4>Buat Akun Admin</h4>
@@ -110,6 +110,7 @@ const SignUpAdmin = () => {
                                   message: 'Email tidak valid!',
                                 },
                               })}
+                              className='border'
                             />
                           </div>
                           <p className='text-red-500'>
@@ -125,6 +126,7 @@ const SignUpAdmin = () => {
                               {...register('name', {
                                 required: 'Nama harus diisi',
                               })}
+                              className='border'
                             />
                           </div>
                           <p className='text-red-500'>{errors.name?.message}</p>
@@ -138,6 +140,7 @@ const SignUpAdmin = () => {
                               {...register('username', {
                                 required: 'Username harus diisi',
                               })}
+                              className='border'
                             />
                           </div>
                           <p className='text-red-500'>
@@ -159,6 +162,7 @@ const SignUpAdmin = () => {
                                       'Password harus berisi setidaknya 8 karakter',
                                   },
                                 })}
+                                className='border'
                               />
                               <div
                                 className='flex min-h-full cursor-pointer items-center justify-center rounded border-2 px-1 hover:border-primary-200 dark:border-transparent hover:dark:border-primary-600'
@@ -188,6 +192,7 @@ const SignUpAdmin = () => {
                                   }
                                 },
                               })}
+                              className='border'
                             />
                           </div>
                           <p className='text-red-500'>

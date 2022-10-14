@@ -362,9 +362,10 @@ const IndexPage = () => {
                             },
                           },
                           ...(chartData && {
-                            max: Math.round(
-                              Math.max(...chartData.datasets[0].data) * 1.5
-                            ),
+                            max:
+                              Math.round(
+                                Math.max(...chartData.datasets[0].data) * 1.5
+                              ) + 10000,
                           }),
                         },
                       },
