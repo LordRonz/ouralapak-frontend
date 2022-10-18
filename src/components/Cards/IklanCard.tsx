@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
+import { IoCopyOutline } from 'react-icons/io5';
 
 import UnstyledLink from '@/components/links/UnstyledLink';
 import { API_URL } from '@/constant/config';
@@ -72,6 +73,17 @@ const IklanCard = ({ iklan }: { iklan: Iklan & { refund_title?: string } }) => {
             <p className='m-0 text-[10px] leading-4 dark:!text-light md:text-base'>
               Change Name Status:{' '}
               {iklan.change_name_status ? 'Aktif' : 'Nonaktif'}
+            </p>
+            <p className='m-0 text-[10px] leading-4 dark:!text-light md:text-base'>
+              Token:{' '}
+              <span className='flex gap-x-2'>
+                <span className='text-[#316BC2] dark:!text-blue-300'>
+                  {iklan.kode_iklan}
+                </span>
+                <span>
+                  <IoCopyOutline />
+                </span>
+              </span>
             </p>
           </div>
           {/* <div className='flex flex-col items-end justify-between'>

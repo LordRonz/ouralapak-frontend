@@ -24,6 +24,7 @@ type Iklan = {
   image_win_rate: string;
   image_win_rate_hero: string;
   jenis_refund: number;
+  kode_iklan: string;
   package_id: number;
   platform_id: number;
   recall_effect: string[];

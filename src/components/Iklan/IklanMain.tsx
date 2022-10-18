@@ -50,6 +50,7 @@ type IFormInput = {
   email: string;
   phone: string;
   token: string;
+  kode_iklan: string;
 };
 
 type CarouselNode = {
@@ -563,6 +564,25 @@ const IklanMain = ({ id }: { id: number }) => {
                                             )}
                                           />
                                         </div>
+                                      </div>
+                                      <div className='col-md-12'>
+                                        <div className='single-input-unit'>
+                                          <label htmlFor='kode_iklan'>
+                                            Token Akun
+                                          </label>
+                                          <input
+                                            type='text'
+                                            placeholder='Masukkan Token Akun dari Penjual'
+                                            autoFocus
+                                            {...register('kode_iklan', {
+                                              required:
+                                                'Token akun harus diisi',
+                                            })}
+                                          />
+                                        </div>
+                                        <p className='text-red-500'>
+                                          {errors.kode_iklan?.message}
+                                        </p>
                                       </div>
                                     </div>
                                     <Captcha
