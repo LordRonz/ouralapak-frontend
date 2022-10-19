@@ -31,6 +31,7 @@ type Iklan = {
   status: string;
   status_id: number;
   title: string;
+  token: string;
   total_hero: number;
   total_skin: number;
   total_skin_rare: SkinRare[];
