@@ -80,6 +80,8 @@ const SellerMain = () => {
           query: {
             page: curPage + 1,
             status: curStatus === -1 ? undefined : curStatus,
+            orderBy: 'created_at',
+            orderDir: 'desc',
           },
         })
       : null
