@@ -746,6 +746,8 @@ p {
 
 // section-title style end
 
+$medium: 768px;
+
 //pagination css
 .basic-pagination ul li {
   display: inline-block;
@@ -757,11 +759,17 @@ p {
     overflow: hidden;
     background: var(--clr-bg-white);
     color: var(--clr-common-heading);
-    font-size: 16px;
+    font-size: 12px;
     display: inline-block;
-    width: 50px;
-    height: 50px;
-    line-height: 50px;
+    width: 40px;
+    height: 40px;
+    @media screen and (min-width: $medium) {
+      //do Smth
+      width: 50px;
+      height: 50px;
+      font-size: 16px;
+    }
+    line-height: 40px;
     text-align: center;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;

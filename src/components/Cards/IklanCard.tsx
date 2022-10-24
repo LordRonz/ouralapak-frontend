@@ -36,7 +36,7 @@ const IklanCard = ({ iklan }: { iklan: Iklan & { refund_title?: string } }) => {
         </UnstyledLink>
         <div className='flex flex-col justify-between'>
           <h1 className='h-14 text-lg leading-7 md:text-3xl'>{iklan.title}</h1>
-          <div className='flex items-center gap-x-4'>
+          <div className='flex flex-wrap items-center gap-x-4'>
             <p className='text-xs font-[700] text-[#1E53A3] md:text-[21px]'>
               {toIDRCurrency(iklan.harga_akun)}
             </p>

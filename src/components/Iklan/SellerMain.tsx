@@ -128,7 +128,7 @@ const SellerMain = () => {
         <img src='images/banner_cover.png' alt='cover-img' />
       </div>
       <section className='creator-info-area pt-40'>
-        <div className='px-4 md:px-16'>
+        <div className='px-2 md:px-16'>
           <div className='row'>
             <div className='col-lg-4 flex justify-center'>
               <ProfileCard
@@ -158,7 +158,7 @@ const SellerMain = () => {
                   @{user?.data.username}
                 </div>
               </div>
-              <div className='creator-info-personal wow fadeInUp relative top-[-150px] mb-40 rounded-xl bg-white px-6 py-8 dark:!bg-[#1c2434] md:static'>
+              <div className='creator-info-personal wow fadeInUp relative top-[-150px] mb-40 rounded-xl bg-white px-[0.75rem] py-8 dark:!bg-[#1c2434] md:static md:px-[1.5rem]'>
                 <div className='creator-info-bar wow fadeInUp mb-4 flex-nowrap'>
                   <div className='artist-meta-info creator-details-meta-info'>
                     <h1 className='mb-4 text-3xl text-[#B89C74]'>Iklan</h1>
@@ -351,7 +351,7 @@ const SellerMain = () => {
                         aria-labelledby='nav-created-tab'
                       >
                         <div className='created-items-wrapper'>
-                          <div className='grid grid-cols-2 gap-y-4 md:grid-cols-1'>
+                          <div className='grid grid-cols-2 gap-y-4 gap-x-2 md:grid-cols-1'>
                             {iklans?.data.data.map((iklan) => (
                               <IklanCard
                                 iklan={{

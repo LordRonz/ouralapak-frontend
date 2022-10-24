@@ -208,7 +208,7 @@ const ProfileMain = () => {
         <img src='images/banner_cover.png' alt='cover-img' />
       </div>
       <section className='creator-info-area pt-40'>
-        <div className='px-4 md:px-16'>
+        <div className='px-2 md:px-16'>
           <div className='row'>
             <div className='col-lg-4 flex justify-center'>
               <ProfileCard
@@ -240,7 +240,7 @@ const ProfileMain = () => {
                   @{user?.data.username}
                 </div>
               </div>
-              <div className='creator-info-personal wow fadeInUp relative top-[-150px] mb-40 rounded-xl bg-white px-6 py-8 dark:!bg-[#1c2434] md:static'>
+              <div className='creator-info-personal wow fadeInUp relative top-[-150px] mb-40 rounded-xl bg-white px-3 py-8 dark:!bg-[#1c2434] md:static'>
                 <h1 className='mb-4 text-3xl text-[#B89C74]'>Profile</h1>
                 <form
                   className='personal-info-form'
