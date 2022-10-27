@@ -182,7 +182,7 @@ const InvoiceBeli = ({ no_invoice }: { no_invoice: string }) => {
                       Penjual
                     </h3>
                     <h3 className='whitespace-normal text-base font-normal text-dark dark:!text-light md:text-2xl'>
-                      {}
+                      {invoice.data.nama_penjual}
                     </h3>
                   </div>
                   <div>

@@ -645,11 +645,11 @@ const IklanMain = ({ id }: { id: number }) => {
                       </div>
                     </div>
                   </div>
-                  <div className='art-details-information'>
-                    <div className='art-information-tab-nav'>
+                  <div className='art-details-information dark:!bg-dark'>
+                    <div className='art-information-tab-nav dark:!bg-dark'>
                       <nav>
                         <div
-                          className='nav-tabs grid w-full grid-cols-5'
+                          className='nav-tabs grid w-full grid-cols-5 dark:!bg-dark'
                           id='nav-tab'
                           role='tablist'
                         >
@@ -711,16 +711,19 @@ const IklanMain = ({ id }: { id: number }) => {
                         </div>
                       </nav>
                     </div>
-                    <div className='art-information-tab-contents mb-0'>
-                      <div className='tab-content ' id='nav-tabContent'>
+                    <div className='art-information-tab-contents mb-0 dark:!bg-dark'>
+                      <div
+                        className='tab-content dark:!bg-dark'
+                        id='nav-tabContent'
+                      >
                         <div
-                          className='tab-pane fade active show'
+                          className='tab-pane fade active show  dark:!bg-dark'
                           id='tab-nav1'
                           role='tabpanel'
                           aria-labelledby='nav-bid-tab'
                         >
-                          <div className='art-user-wrapper'>
-                            <div className='flex flex-wrap gap-x-10 gap-y-4 border-b border-neutral-400 pb-3'>
+                          <div className='art-user-wrapper dark:!bg-dark'>
+                            <div className='flex flex-wrap gap-x-10 gap-y-4 border-b border-neutral-400 pb-3 dark:!bg-dark'>
                               <div>
                                 <h5 className='text-xs font-normal md:text-lg'>
                                   Status Akun
@@ -788,12 +791,12 @@ const IklanMain = ({ id }: { id: number }) => {
                           </div>
                         </div>
                         <div
-                          className='tab-pane fade'
+                          className='tab-pane fade dark:!bg-dark'
                           id='tab-nav2'
                           role='tabpanel'
                           aria-labelledby='nav-info-tab'
                         >
-                          <div className='art-user-wrapper'>
+                          <div className='art-user-wrapper dark:!bg-dark'>
                             <div className='flex flex-wrap gap-x-10 gap-y-4 border-b border-neutral-400 pb-3'>
                               <div>
                                 <h5 className='text-xs font-normal md:text-lg'>
@@ -816,12 +819,12 @@ const IklanMain = ({ id }: { id: number }) => {
                           </div>
                         </div>
                         <div
-                          className='tab-pane fade'
+                          className='tab-pane fade dark:!bg-dark'
                           id='tab-nav3'
                           role='tabpanel'
                           aria-labelledby='nav-details-tab'
                         >
-                          <div className='art-user-wrapper overflow-auto'>
+                          <div className='art-user-wrapper overflow-auto dark:!bg-dark'>
                             <div className='flex flex-wrap gap-x-10 gap-y-4 border-b border-neutral-400 pb-3'>
                               <div>
                                 <h5 className='text-xs font-normal md:text-lg'>
@@ -846,12 +849,12 @@ const IklanMain = ({ id }: { id: number }) => {
                           </div>
                         </div>
                         <div
-                          className='tab-pane fade'
+                          className='tab-pane fade dark:!bg-dark'
                           id='tab-nav4'
                           role='tabpanel'
                           aria-labelledby='nav-details-tab'
                         >
-                          <div className='art-user-wrapper overflow-auto'>
+                          <div className='art-user-wrapper overflow-auto dark:!bg-dark'>
                             <div className='flex flex-wrap gap-x-10 gap-y-4 border-b border-neutral-400 pb-3'>
                               <div>
                                 <h5 className='text-xs font-normal md:text-lg'>
@@ -874,12 +877,12 @@ const IklanMain = ({ id }: { id: number }) => {
                           </div>
                         </div>
                         <div
-                          className='tab-pane fade'
+                          className='tab-pane fade dark:!bg-dark'
                           id='tab-nav5'
                           role='tabpanel'
                           aria-labelledby='nav-details-tab'
                         >
-                          <div className='art-user-wrapper overflow-auto'>
+                          <div className='art-user-wrapper overflow-auto dark:!bg-dark'>
                             <div className='flex flex-wrap gap-x-10 gap-y-4 border-b border-neutral-400 pb-3'>
                               <div>
                                 <h5 className='text-xs font-normal md:text-lg'>
@@ -909,7 +912,7 @@ const IklanMain = ({ id }: { id: number }) => {
                       </div>
                     </div>
                   </div>
-                  <div className='flex gap-x-3'>
+                  <div className='flex gap-x-3 dark:!bg-dark'>
                     {iklan.data.status.toString().toLowerCase() ===
                       'dipublikasi' && (
                       <>

@@ -51,6 +51,7 @@ type Invoice = {
     updated_at: string;
     updated_by: string;
   };
+  nama_penjual: string;
   no_invoice: string;
   package: string;
   package_id: number;
@@ -79,6 +80,7 @@ export type InvoicePembeli = {
   iklan_id: number;
   jenis_invoice: JenisInvoice;
   jenis_pembayaran: number;
+  nama_penjual: string;
   no_invoice: string;
   status: number;
   updated_at: string;
