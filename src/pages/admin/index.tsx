@@ -270,10 +270,10 @@ const IndexPage = () => {
             </div>
           </div>
           <div className='flex flex-col gap-y-4'>
-            <div className='grid grid-cols-4 gap-x-2 divide-x-2 rounded-lg bg-white p-4 dark:!bg-neutral-800'>
+            <div className='gap-x-2 rounded-lg bg-white p-4 dark:!bg-neutral-800 md:grid md:grid-cols-4 md:divide-x-2'>
               <div>
                 <h2 className='text-xl'>Revenue statistics</h2>
-                <div>
+                <div className='hidden md:block'>
                   <div
                     className={clsxm(
                       'flex cursor-pointer flex-col gap-y-1 p-3',
@@ -313,9 +313,9 @@ const IndexPage = () => {
                   </div>
                 </div>
               </div>
-              <div className='col-span-3 flex flex-col pl-2'>
-                <div className='flex justify-end'>
-                  <div className='flex items-center justify-center gap-x-4'>
+              <div className='col-span-3 mt-3 flex flex-col md:mt-0 md:pl-2'>
+                <div className='flex md:justify-end'>
+                  <div className='flex flex-col items-center justify-center gap-x-4 gap-y-2 md:flex-row'>
                     <div className='flex items-center justify-center gap-x-1'>
                       <p className='m-0 inline whitespace-nowrap text-xs'>
                         Start Date:
@@ -340,10 +340,11 @@ const IndexPage = () => {
                     </div>
                   </div>
                 </div>
-                <div>
+                <div className='mt-3 md:mt-0'>
                   <Line
                     id='mainChart'
                     data={chartData ?? data}
+                    style={{ maxWidth: '100%' }}
                     options={{
                       scales: {
                         x: {
@@ -396,10 +397,51 @@ const IndexPage = () => {
                     }}
                   />
                 </div>
+                <div className='mt-3 grid grid-cols-3 md:hidden'>
+                  <div
+                    className={clsxm(
+                      'flex cursor-pointer flex-col gap-y-1 p-3',
+                      activeChart === 0 && 'activeChart'
+                    )}
+                    onClick={() => setActiveChart(0)}
+                  >
+                    <h3 className='m-0 text-sm md:text-base'>Nett Revenue</h3>
+                    <p className='m-0 text-xs text-neutral-500 md:text-sm'>
+                      Shows total nett ad post revenue (no admin fees)
+                    </p>
+                  </div>
+                  <div
+                    className={clsxm(
+                      'flex cursor-pointer flex-col gap-y-1 p-3',
+                      activeChart === 1 && 'activeChart'
+                    )}
+                    onClick={() => setActiveChart(1)}
+                  >
+                    <h3 className='m-0 text-sm md:text-base'>Gross Revenue</h3>
+                    <p className='m-0 text-xs text-neutral-500 md:text-sm'>
+                      Shows total gross ad post revenue (package fee + admin
+                      fee)
+                    </p>
+                  </div>
+                  <div
+                    className={clsxm(
+                      'flex cursor-pointer flex-col gap-y-1 p-3',
+                      activeChart === 2 && 'activeChart'
+                    )}
+                    onClick={() => setActiveChart(2)}
+                  >
+                    <h3 className='m-0 text-sm md:text-base'>
+                      Admin Fee Revenue
+                    </h3>
+                    <p className='m-0 text-xs text-neutral-500 md:text-sm'>
+                      Displays total ad post admin fee revenue
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className='grid grid-cols-3 gap-x-2 rounded-lg bg-white p-4 dark:!bg-neutral-800'>
-              <div className='flex w-full items-center justify-center gap-x-3'>
+            <div className='grid gap-x-2 rounded-lg bg-white p-4 dark:!bg-neutral-800 md:grid-cols-3'>
+              <div className='flex w-full items-center gap-x-3 md:justify-center'>
                 <div>
                   <AiFillDollarCircle className='text-4xl text-[#7366FF]' />
                 </div>
@@ -410,7 +452,7 @@ const IndexPage = () => {
                   </p>
                 </div>
               </div>
-              <div className='flex w-full items-center justify-center gap-x-3'>
+              <div className='flex w-full items-center gap-x-3 md:justify-center'>
                 <div>
                   <AiFillDollarCircle className='text-4xl text-[#F73164]' />
                 </div>
@@ -423,7 +465,7 @@ const IndexPage = () => {
                   </p>
                 </div>
               </div>
-              <div className='flex w-full items-center justify-center gap-x-3'>
+              <div className='flex w-full items-center gap-x-3 md:justify-center'>
                 <div>
                   <AiFillDollarCircle className='text-4xl text-[#7366FF]' />
                 </div>
@@ -449,106 +491,118 @@ const IndexPage = () => {
                 <div className='grid grid-cols-2 divide-x divide-y'>
                   {dashboardType === 0 ? (
                     <>
-                      <div className='grid grid-cols-12 items-center justify-center gap-x-2 py-4 px-4'>
-                        <div className='col-span-5'>
+                      <div className='grid grid-cols-12 items-center justify-center gap-x-2 py-4 px-4 md:gap-x-10'>
+                        <div className='col-span-5 flex items-center'>
                           <Chart1 />
                         </div>
                         <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                          <h5 className='m-0'>
+                          <h5 className='m-0 text-sm md:text-lg'>
                             {totalDipublikasi?.data?.total}
                           </h5>
-                          <p className='m-0 text-sm'>Dipublikasi</p>
+                          <p className='m-0 text-xs md:text-sm'>Dipublikasi</p>
                         </div>
                       </div>
-                      <div className='grid grid-cols-12 gap-x-2 !border-t-0 py-4 px-4'>
-                        <div className='col-span-5'>
+                      <div className='grid grid-cols-12 gap-x-2 !border-t-0 py-4 px-4 md:gap-x-10'>
+                        <div className='col-span-5 flex items-center'>
                           <Chart2 />
                         </div>
                         <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                          <h5 className='m-0'>
+                          <h5 className='m-0 text-sm md:text-lg'>
                             {totalMenungguKonfirmasi?.data?.total}
                           </h5>
-                          <p className='m-0 text-sm'>Menunggu Konfirmasi</p>
+                          <p className='m-0 text-xs md:text-sm'>
+                            Menunggu Konfirmasi
+                          </p>
                         </div>
                       </div>
-                      <div className='grid grid-cols-12 gap-x-2 py-4 px-4'>
-                        <div className='col-span-5'>
+                      <div className='grid grid-cols-12 gap-x-2 py-4 px-4 md:gap-x-10'>
+                        <div className='col-span-5 flex items-center'>
                           <Chart3 />
                         </div>
                         <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                          <h5 className='m-0'>
+                          <h5 className='m-0 text-sm md:text-lg'>
                             {totalMenungguPembayaranPenjual?.data?.total}
                           </h5>
-                          <p className='m-0 text-sm'>
+                          <p className='m-0 text-xs md:text-sm'>
                             Menunggu Pembayaran Penjual
                           </p>
                         </div>
                       </div>
-                      <div className='grid grid-cols-12 gap-x-2 py-4 px-4'>
-                        <div className='col-span-5'>
+                      <div className='grid grid-cols-12 gap-x-2 py-4 px-4 md:gap-x-10'>
+                        <div className='col-span-5 flex items-center'>
                           <Chart4 />
                         </div>
                         <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                          <h5 className='m-0'>
+                          <h5 className='m-0 text-sm md:text-lg'>
                             {totalMenungguPembayaranPembeli?.data?.total}
                           </h5>
-                          <p className='m-0 text-sm'>
+                          <p className='m-0 text-xs md:text-sm'>
                             Menunggu Pembayaran Pembeli
                           </p>
                         </div>
                       </div>
-                      <div className='grid grid-cols-12 gap-x-2 py-4 px-4'>
-                        <div className='col-span-5'>
+                      <div className='grid grid-cols-12 gap-x-2 py-4 px-4 md:gap-x-10'>
+                        <div className='col-span-5 flex items-center'>
                           <Chart3 />
                         </div>
                         <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                          <h5 className='m-0'>{totalTerjual?.data?.total}</h5>
-                          <p className='m-0 text-sm'>Terjual</p>
+                          <h5 className='m-0 text-sm md:text-lg'>
+                            {totalTerjual?.data?.total}
+                          </h5>
+                          <p className='m-0 text-xs md:text-sm'>Terjual</p>
                         </div>
                       </div>
-                      <div className='grid grid-cols-12 gap-x-2 py-4 px-4'>
-                        <div className='col-span-5'>
+                      <div className='grid grid-cols-12 gap-x-2 py-4 px-4 md:gap-x-10'>
+                        <div className='col-span-5 flex items-center'>
                           <Chart4 />
                         </div>
                         <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                          <h5 className='m-0'>
+                          <h5 className='m-0 text-sm md:text-lg'>
                             {totalProsesRekber?.data?.total}
                           </h5>
-                          <p className='m-0 text-sm'>Proses Rekber</p>
+                          <p className='m-0 text-xs md:text-sm'>
+                            Proses Rekber
+                          </p>
                         </div>
                       </div>
                     </>
                   ) : (
                     <>
-                      <div className='grid grid-cols-12 items-center justify-center gap-x-2 py-4 px-4'>
-                        <div className='col-span-5'>
+                      <div className='grid grid-cols-12 items-center justify-center gap-x-2 py-4 px-4 md:gap-x-10'>
+                        <div className='col-span-5 flex items-center'>
                           <Chart1 />
                         </div>
                         <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                          <h5 className='m-0'>
+                          <h5 className='m-0 text-sm md:text-lg'>
                             {totalMenungguPembayaran?.data?.total}
                           </h5>
-                          <p className='m-0 text-sm'>Menunggu Pembayaran</p>
+                          <p className='m-0 text-xs md:text-sm'>
+                            Menunggu Pembayaran
+                          </p>
                         </div>
                       </div>
-                      <div className='grid grid-cols-12 items-center justify-center gap-x-2 py-4 px-4'>
-                        <div className='col-span-5'>
+                      <div className='grid grid-cols-12 items-center justify-center gap-x-2 py-4 px-4 md:gap-x-10'>
+                        <div className='col-span-5 flex items-center'>
                           <Chart2 />
                         </div>
                         <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                          <h5 className='m-0'>
+                          <h5 className='m-0 text-sm md:text-lg'>
                             {totalSudahDibayar?.data?.total}
                           </h5>
-                          <p className='m-0 text-sm'>Sudah Dibayar</p>
+                          <p className='m-0 text-xs md:text-sm'>
+                            Sudah Dibayar
+                          </p>
                         </div>
                       </div>
-                      <div className='grid grid-cols-12 items-center justify-center gap-x-2 py-4 px-4'>
-                        <div className='col-span-5'>
+                      <div className='grid grid-cols-12 items-center justify-center gap-x-2 py-4 px-4 md:gap-x-10'>
+                        <div className='col-span-5 flex items-center'>
                           <Chart3 />
                         </div>
                         <div className='col-span-7 flex flex-col items-start justify-center gap-y-1'>
-                          <h5 className='m-0'>{totalExpired?.data?.total}</h5>
-                          <p className='m-0 text-sm'>Expired</p>
+                          <h5 className='m-0 text-sm md:text-lg'>
+                            {totalExpired?.data?.total}
+                          </h5>
+                          <p className='m-0 text-xs md:text-sm'>Expired</p>
                         </div>
                       </div>
                     </>
