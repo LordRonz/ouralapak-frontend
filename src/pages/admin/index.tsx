@@ -315,24 +315,24 @@ const IndexPage = () => {
               </div>
               <div className='col-span-3 mt-3 flex flex-col md:mt-0 md:pl-2'>
                 <div className='flex md:justify-end'>
-                  <div className='flex flex-col items-center justify-center gap-x-4 gap-y-2 md:flex-row'>
-                    <div className='flex items-center justify-center gap-x-1'>
-                      <p className='m-0 inline whitespace-nowrap text-xs'>
+                  <div className='flex flex-col items-start justify-center gap-x-4 gap-y-2 md:flex-row'>
+                    <div className='grid w-3/4 grid-cols-2 items-center gap-x-1'>
+                      <p className='m-0 inline whitespace-nowrap text-left text-xs'>
                         Start Date:
                       </p>
                       <DatePicker
-                        className='w-28 rounded-lg p-1'
+                        className='w-28 justify-end rounded-lg p-1'
                         selected={mainChartStartDate}
                         onChange={(date: Date) => setMainChartStartDate(date)}
                         dateFormat='dd/MM/yyyy'
                       />
                     </div>
-                    <div className='flex items-center justify-center gap-x-1'>
-                      <p className='m-0 inline whitespace-nowrap text-xs'>
+                    <div className='grid w-3/4 grid-cols-2 items-center gap-x-1'>
+                      <p className='m-0 inline whitespace-nowrap text-left text-xs'>
                         End Date:
                       </p>
                       <DatePicker
-                        className='w-28 rounded-lg p-1'
+                        className='w-28 justify-end rounded-lg p-1'
                         selected={mainChartEndDate}
                         onChange={(date: Date) => setMainChartEndDate(date)}
                         dateFormat='dd/MM/yyyy'
