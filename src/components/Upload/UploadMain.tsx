@@ -1007,7 +1007,7 @@ const UploadMain = () => {
                                     <div className='basis-full'>
                                       <input
                                         type='text'
-                                        placeholder='Jenis'
+                                        placeholder='Contoh : Saint Seiya Badang'
                                         {...register(
                                           `total_skin_rare.${index}.jenis` as const,
                                           {

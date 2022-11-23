@@ -11,6 +11,7 @@ import {
   Tooltip,
 } from 'chart.js';
 import { sub } from 'date-fns';
+import { useRouter } from 'next/router';
 import { stringifyUrl } from 'query-string';
 import * as React from 'react';
 import { Line } from 'react-chartjs-2';
@@ -20,6 +21,7 @@ import Select from 'react-select';
 import useSWR from 'swr';
 
 import AnimatePage from '@/components/AnimatePage';
+import Spinner from '@/components/Common/Spinner';
 import Seo from '@/components/Seo';
 import { selectPrimaryTheme } from '@/constant/colors';
 import { API_URL } from '@/constant/config';
@@ -61,16 +63,20 @@ const IndexPage = () => {
   );
   const [mainChartEndDate, setMainChartEndDate] = React.useState(new Date());
 
-  const { data: mainChart } = useSWR<APIResponse<Revenue>>(
-    stringifyUrl({
-      url: `${API_URL}/admin/statistik/${
-        ['iklan', 'rekber'][dashboardType]
-      }-revenue/${['net', 'gross', 'admin-fee'][activeChart]}`,
-      query: {
-        start_date: getEpochSecond(mainChartStartDate),
-        end_date: getEpochSecond(mainChartEndDate),
-      },
-    })
+  const router = useRouter();
+
+  const { data: mainChart, error } = useSWR<APIResponse<Revenue>>(
+    typeof localStorage !== undefined
+      ? stringifyUrl({
+          url: `${API_URL}/admin/statistik/${
+            ['iklan', 'rekber'][dashboardType]
+          }-revenue/${['net', 'gross', 'admin-fee'][activeChart]}`,
+          query: {
+            start_date: getEpochSecond(mainChartStartDate),
+            end_date: getEpochSecond(mainChartEndDate),
+          },
+        })
+      : null
   );
 
   const { data: accumulatedNetRevenue } = useSWR<APIResponse<Revenue>>(
@@ -250,6 +256,14 @@ const IndexPage = () => {
       value: 1,
     },
   ];
+
+  if (error) {
+    router.push('/');
+  }
+
+  if (!mainChart) {
+    return <Spinner />;
+  }
 
   return (
     <>

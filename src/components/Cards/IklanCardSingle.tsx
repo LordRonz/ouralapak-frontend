@@ -113,7 +113,8 @@ const IklanCardSingle = ({
                         <Superhero />
                       </div>
                       <p className='m-0 p-0 text-[0.5rem] md:text-xs'>
-                        Hero {iklan.total_hero > 99 ? '99+' : iklan.total_hero}
+                        Hero{' '}
+                        {iklan.total_hero > 999 ? '999+' : iklan.total_hero}
                       </p>
                     </div>
                     <div className='flex items-center justify-center gap-x-1 whitespace-nowrap text-center'>
@@ -121,7 +122,8 @@ const IklanCardSingle = ({
                         <Capote />
                       </div>
                       <p className='m-0 p-0 text-[0.5rem] md:text-xs'>
-                        Skin {iklan.total_skin > 99 ? '99+' : iklan.total_skin}
+                        Skin{' '}
+                        {iklan.total_skin > 999 ? '999+' : iklan.total_skin}
                       </p>
                     </div>
                     <div className='flex items-center justify-center gap-x-1 whitespace-nowrap text-center'>

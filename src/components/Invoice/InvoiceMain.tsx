@@ -69,11 +69,11 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
     queryString.stringifyUrl({
       url: `https://wa.me/${config?.data?.value}`,
       query: {
-        text: `Halo admin,\n\nSaya melakukan order dengan nomor invoice ${
+        text: `Halo admin ouralapak,\n\nSaya melakukan order PENJUALAN AKUN dengan nomor invoice ${
           invoice?.data.no_invoice
         } (${typeof window !== 'undefined' ? window.location.origin : ''}${
           router.asPath
-        }))`,
+        }). Mohon dicek berikut bukti pembayaran saya. Terimakasih`,
       },
     });
 

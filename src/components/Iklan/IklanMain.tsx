@@ -380,9 +380,11 @@ const IklanMain = ({ id }: { id: number }) => {
                                 width={64}
                               />
                             </UnstyledLink>
-                            <div className='profile-verification verified'>
-                              <i className='fas fa-check'></i>
-                            </div>
+                            {!!iklan.data.user.is_verified && (
+                              <div className='profile-verification verified'>
+                                <i className='fas fa-check'></i>
+                              </div>
+                            )}
                           </div>
                           <div className='creator-name-id'>
                             <h4 className='artist-name'>
@@ -397,9 +399,9 @@ const IklanMain = ({ id }: { id: number }) => {
                                 <FiInstagram />
                               </span>
                               <span>
-                                {iklan.data.user.username.startsWith('@')
+                                {iklan.data.user.ig_username.startsWith('@')
                                   ? ''
-                                  : '@' + iklan.data.user.username}
+                                  : '@' + iklan.data.user.ig_username}
                               </span>
                             </div>
                           </div>

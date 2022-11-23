@@ -8,7 +8,6 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
 import ColorModeToggle from '@/components/ColorModeToggle';
-import { API_URL } from '@/constant/config';
 import { mySwalOpts } from '@/constant/swal';
 import { useToggle } from '@/dashboard/provider/context';
 import Roles from '@/types/roles';
@@ -86,7 +85,7 @@ const TopNavigation = ({ user }: { user?: User }) => {
                   </ul>
                 </div>
                 <div className='flex w-48 items-center justify-center gap-x-3'>
-                  <img
+                  {/* <img
                     src={
                       user?.profile_picture
                         ? `${API_URL}/${user?.profile_picture}`
@@ -94,7 +93,7 @@ const TopNavigation = ({ user }: { user?: User }) => {
                     }
                     alt='profile-img'
                     className='!rounded-xl'
-                  />
+                  /> */}
                   <div className='w-full !overflow-hidden !text-ellipsis !whitespace-nowrap'>
                     <p className='!m-0 font-extrabold dark:!text-white'>
                       {user?.name}

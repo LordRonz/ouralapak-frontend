@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
 import { stringifyUrl } from 'query-string';
@@ -28,18 +29,17 @@ import DashboardLayout from '@/dashboard/layout';
 import clsxm from '@/lib/clsxm';
 import customAxios from '@/lib/customAxios';
 import toastPromiseError from '@/lib/toastPromiseError';
-import toIDRCurrency from '@/lib/toIDRCurrency';
 import Edit from '@/svgs/edit.svg';
 import Trash from '@/svgs/trash.svg';
-import Packages from '@/types/packages';
+import { Info } from '@/types/info';
+import MessageTemplate from '@/types/messageTemplate';
 import Pagination from '@/types/pagination';
 
 const MySwal = withReactContent(Swal);
 
 type IFormInput = {
-  name: string;
-  description: string;
-  price: number;
+  title: string;
+  message: string;
 };
 
 const IndexPage = () => {
@@ -53,7 +53,7 @@ const IndexPage = () => {
 
   const [filter, setFilter] = useState<string>();
 
-  const [activeId, setActiveId] = useState<number>();
+  const [activeId] = useState<number>();
 
   const [maxPerPage, setMaxPerPage] = useState(10);
 
@@ -73,17 +73,16 @@ const IndexPage = () => {
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm<IFormInput>();
 
   const {
-    data: packages,
+    data: infos,
     error,
     mutate,
   } = useSWR<{
     data: {
-      data: Packages[];
+      data: Info[];
       pagination: Pagination;
     };
     message: string;
@@ -91,7 +90,7 @@ const IndexPage = () => {
   }>(
     mounted
       ? stringifyUrl({
-          url: `${API_URL}/master/packages`,
+          url: `${API_URL}/master/info`,
           query: {
             page: curPage + 1,
             ...(filter && { search: filter }),
@@ -103,11 +102,60 @@ const IndexPage = () => {
       : null
   );
 
+  console.log(infos);
+
+  // eslint-disable-next-line unused-imports/no-unused-vars
+  const onToggleStatus = React.useCallback(
+    async (is_active: boolean, id: number) => {
+      const { isConfirmed } = await MySwal.fire({
+        title: `Yakin ingin ubah status info dari ${
+          is_active ? 'aktif' : 'nonaktif'
+        } jadi ${is_active ? 'nonaktif' : 'aktif'}?`,
+        text: 'Tindakan ini bisa diubah nantinya!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Update',
+        ...mySwalOpts(theme),
+      });
+
+      const payload = {
+        is_active: !is_active,
+      };
+
+      if (isConfirmed) {
+        toast.promise(
+          customAxios.put(`${API_URL}/master/info/${id}`, payload),
+          {
+            pending: {
+              render: () => {
+                return 'Loading';
+              },
+            },
+            success: {
+              render: () => {
+                mutate();
+                return 'Berhasil update info!';
+              },
+            },
+            error: {
+              render: toastPromiseError(undefined, 'Gagal update info!'),
+            },
+          }
+        );
+      }
+    },
+    [mutate, theme]
+  );
+
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     await toast.promise(
-      customAxios.post<{ data: Packages; message: string; success: boolean }>(
+      customAxios.post<{
+        data: MessageTemplate;
+        message: string;
+        success: boolean;
+      }>(
         stringifyUrl({
-          url: `${API_URL}/master/packages`,
+          url: `${API_URL}/master/info`,
         }),
         data
       ),
@@ -121,14 +169,11 @@ const IndexPage = () => {
           render: () => {
             mutate();
             setOpen(false);
-            return 'Berhasil tambah package';
+            return 'Berhasil tambah info';
           },
         },
         error: {
-          render: toastPromiseError(
-            () => setOpen(false),
-            'Gagal tambah package!'
-          ),
+          render: toastPromiseError(() => setOpen(false), 'Gagal tambah info!'),
         },
       }
     );
@@ -136,9 +181,13 @@ const IndexPage = () => {
 
   const onSubmit2: SubmitHandler<IFormInput> = async (data) => {
     await toast.promise(
-      customAxios.put<{ data: Packages; message: string; success: boolean }>(
+      customAxios.put<{
+        data: MessageTemplate;
+        message: string;
+        success: boolean;
+      }>(
         stringifyUrl({
-          url: `${API_URL}/master/packages/${activeId}`,
+          url: `${API_URL}/master/info/${activeId}`,
         }),
         data
       ),
@@ -152,13 +201,13 @@ const IndexPage = () => {
           render: () => {
             mutate();
             setOpen2(false);
-            return 'Berhasil update package';
+            return 'Berhasil update info';
           },
         },
         error: {
           render: toastPromiseError(
             () => setOpen2(false),
-            'Gagal update package!'
+            'Gagal update info!'
           ),
         },
       }
@@ -168,7 +217,7 @@ const IndexPage = () => {
   const onClickDelete = React.useCallback(
     async (id: number) => {
       const { isConfirmed } = await MySwal.fire({
-        title: 'Yakin ingin hapus package ini?',
+        title: 'Yakin ingin hapus info ini?',
         text: 'Tindakan ini tidak bisa dibatalkan!',
         icon: 'warning',
         showCancelButton: true,
@@ -177,7 +226,7 @@ const IndexPage = () => {
       });
 
       if (isConfirmed) {
-        toast.promise(customAxios.delete(`${API_URL}/master/packages/${id}`), {
+        toast.promise(customAxios.delete(`${API_URL}/master/info/${id}`), {
           pending: {
             render: () => {
               return 'Loading';
@@ -186,11 +235,11 @@ const IndexPage = () => {
           success: {
             render: () => {
               mutate();
-              return 'Berhasil hapus package!';
+              return 'Berhasil hapus info!';
             },
           },
           error: {
-            render: toastPromiseError(undefined, 'Gagal hapus package!'),
+            render: toastPromiseError(undefined, 'Gagal hapus info!'),
           },
         });
       }
@@ -200,32 +249,28 @@ const IndexPage = () => {
 
   const data = React.useMemo(
     () =>
-      packages?.data.data.map((pkg) => {
+      infos?.data.data.map((info) => {
         return {
-          id: pkg.id,
-          description: pkg.description,
-          price: toIDRCurrency(pkg.price),
-          name: pkg.name,
+          id: info.id,
+          attribute: info.attribute,
+          name: info.name,
+          info: info.info,
           action: {},
-          pkg,
+          infoObject: info,
         };
       }) ?? [],
-    [packages?.data.data]
+    [infos?.data.data]
   );
 
   const columns = React.useMemo<Column<typeof data[number]>[]>(
     () => [
       {
-        Header: 'Nama',
+        Header: 'Name',
         accessor: 'name',
       },
       {
-        Header: 'Description',
-        accessor: 'description',
-      },
-      {
-        Header: 'Price',
-        accessor: 'price',
+        Header: 'Info',
+        accessor: 'info',
       },
       {
         Header: 'Aksi',
@@ -238,12 +283,11 @@ const IndexPage = () => {
                 <div
                   className='cursor-pointer'
                   onClick={() => {
-                    setOpen2(true);
-                    const { description, name, price } = row.original.pkg;
-                    setValue('description', description);
-                    setValue('name', name);
-                    setValue('price', price);
-                    setActiveId(row.original.id);
+                    // setOpen2(true);
+                    // const { message, title } = row.original.infoObject;
+                    // setValue('title', title);
+                    // setValue('message', message);
+                    // setActiveId(row.original.id);
                   }}
                 >
                   <Edit />
@@ -262,7 +306,7 @@ const IndexPage = () => {
         ),
       },
     ],
-    [onClickDelete, setValue]
+    [onClickDelete]
   );
 
   if (error) {
@@ -271,13 +315,13 @@ const IndexPage = () => {
 
   return (
     <>
-      <Seo templateTitle='SuperAdmin | Package Iklan' />
+      <Seo templateTitle='SuperAdmin | Message Template' />
       <AnimatePage>
         <DashboardLayout superAdmin>
           <div className='mb-4 flex items-center justify-between'>
-            <h1 className='text-3xl'>Data Package Iklan</h1>
+            <h1 className='text-3xl'>Data Message Template</h1>
             <Button onClick={() => setOpen(true)} disabled={updBtnDisabled}>
-              Add Package Iklan
+              Add Message Template
             </Button>
           </div>
           <div className='flex items-center justify-between'>
@@ -301,12 +345,12 @@ const IndexPage = () => {
               }}
             />
           </div>
-          {packages && (
+          {infos && (
             <ReactTable data={data} columns={columns} withFooter={false} />
           )}
           <div className='flex items-center justify-center'>
             <PaginationComponent
-              pageCount={packages?.data.pagination.lastPage ?? 1}
+              pageCount={infos?.data.pagination.lastPage ?? 1}
               onPageChange={({ selected }) => setCurPage(selected)}
             />
           </div>
@@ -324,7 +368,7 @@ const IndexPage = () => {
               <div className='login-wrapper wow fadeInUp relative'>
                 <div className=' login-inner'>
                   <div className='login-content'>
-                    <h4>Tambah Package Iklan</h4>
+                    <h4>Tambah Message Template</h4>
                     <form
                       className='login-form'
                       onSubmit={handleSubmit(onSubmit)}
@@ -332,48 +376,34 @@ const IndexPage = () => {
                       <div className='row gap-y-6'>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='name'>Nama</label>
+                            <label htmlFor='title'>Title</label>
                             <input
                               type='text'
-                              placeholder='Masukkan Nama Package Iklan'
+                              placeholder='Masukkan Title Message Template'
                               autoFocus
-                              {...register('name', {
-                                required: 'Nama Package Iklan harus diisi',
-                              })}
-                            />
-                          </div>
-                          <p className='text-red-500'>{errors.name?.message}</p>
-                        </div>
-                        <div className='col-md-12'>
-                          <div className='single-input-unit'>
-                            <label htmlFor='description'>Description</label>
-                            <input
-                              type='text'
-                              placeholder='Masukkan Deskripsi Package Iklan'
-                              autoFocus
-                              {...register('description', {
-                                required: 'Deskripsi Package Iklan harus diisi',
+                              {...register('title', {
+                                required: 'Title Message Template harus diisi',
                               })}
                             />
                           </div>
                           <p className='text-red-500'>
-                            {errors.description?.message}
+                            {errors.title?.message}
                           </p>
                         </div>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='price'>Price (Rp.)</label>
+                            <label htmlFor='message'>Message</label>
                             <input
-                              type='number'
-                              placeholder='Masukkan Harga Package Iklan'
+                              type='text'
+                              placeholder='Masukkan Message'
                               autoFocus
-                              {...register('price', {
-                                required: 'Harga Package Iklan harus diisi',
+                              {...register('message', {
+                                required: 'Message harus diisi',
                               })}
                             />
                           </div>
                           <p className='text-red-500'>
-                            {errors.price?.message}
+                            {errors.message?.message}
                           </p>
                         </div>
                       </div>
@@ -402,7 +432,7 @@ const IndexPage = () => {
               <div className='login-wrapper wow fadeInUp relative'>
                 <div className=' login-inner'>
                   <div className='login-content'>
-                    <h4>Update Package Iklan</h4>
+                    <h4>Update Message Template</h4>
                     <form
                       className='login-form'
                       onSubmit={handleSubmit(onSubmit2)}
@@ -410,42 +440,30 @@ const IndexPage = () => {
                       <div className='row'>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='email'>Nama</label>
+                            <label htmlFor='title'>Title</label>
                             <input
                               type='text'
-                              placeholder='Masukkan Nama Package Iklan'
+                              placeholder='Masukkan Title'
                               autoFocus
-                              {...register('name')}
-                            />
-                          </div>
-                          <p className='text-red-500'>{errors.name?.message}</p>
-                        </div>
-                        <div className='col-md-12'>
-                          <div className='single-input-unit'>
-                            <label htmlFor='description'>Description</label>
-                            <input
-                              type='text'
-                              placeholder='Masukkan Deskripsi Package Iklan'
-                              autoFocus
-                              {...register('description')}
+                              {...register('title')}
                             />
                           </div>
                           <p className='text-red-500'>
-                            {errors.description?.message}
+                            {errors.title?.message}
                           </p>
                         </div>
                         <div className='col-md-12'>
                           <div className='single-input-unit'>
-                            <label htmlFor='price'>Price (Rp.)</label>
+                            <label htmlFor='message'>Message</label>
                             <input
-                              type='number'
-                              placeholder='Masukkan Harga Package Iklan'
+                              type='message'
+                              placeholder='Masukkan Message'
                               autoFocus
-                              {...register('price')}
+                              {...register('message')}
                             />
                           </div>
                           <p className='text-red-500'>
-                            {errors.price?.message}
+                            {errors.message?.message}
                           </p>
                         </div>
                       </div>
