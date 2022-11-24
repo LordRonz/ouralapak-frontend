@@ -160,7 +160,10 @@ const MobileMenu = ({ setMenuOpen, menuOpen }: MobileMenuProps) => {
             {user ? (
               <ButtonGradient
                 className='px-3 text-xs font-medium uppercase text-white'
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => {
+                  setIsModalOpen(true);
+                  setMenuOpen(false);
+                }}
               >
                 <div className='flex items-center justify-center gap-x-2'>
                   <FaPlus />
