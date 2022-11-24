@@ -1638,19 +1638,19 @@ const UploadMain = () => {
                       <div className='grid grid-cols-2 gap-x-3 gap-y-3 px-10 !pb-10 md:grid-cols-3'>
                         <div>
                           <label>Judul</label>
-                          <p className='text-2xl font-bold text-black dark:!text-white'>
+                          <p className='text-xl font-bold text-black dark:!text-white md:text-2xl'>
                             {getValues('title')}
                           </p>
                         </div>
                         <div>
                           <label>Penjual</label>
-                          <p className='text-2xl font-bold text-black dark:!text-white'>
+                          <p className='text-xl font-bold text-black dark:!text-white md:text-2xl'>
                             {user?.data.name} - @{user?.data.ig_username}
                           </p>
                         </div>
                         <div>
                           <label>Jenis Refund</label>
-                          <p className='text-2xl font-bold text-black dark:!text-white'>
+                          <p className='text-xl font-bold text-black dark:!text-white md:text-2xl'>
                             {
                               jenisRefundOpts.find(
                                 (p) => p.value === getValues('jenis_refund')
@@ -1660,7 +1660,7 @@ const UploadMain = () => {
                         </div>
                         <div>
                           <label>Status Akun</label>
-                          <p className='text-2xl font-bold text-black dark:!text-white'>
+                          <p className='text-xl font-bold text-black dark:!text-white md:text-2xl'>
                             {getValues('first_hand_status') === 0
                               ? 'Pribadi'
                               : 'Beli'}
@@ -1668,13 +1668,13 @@ const UploadMain = () => {
                         </div>
                         <div>
                           <label>Win Rate</label>
-                          <p className='text-2xl font-bold text-black dark:!text-white'>
+                          <p className='text-xl font-bold text-black dark:!text-white md:text-2xl'>
                             {getValues('win_rate')} %
                           </p>
                         </div>
                         <div>
                           <label>Paket Posting Akun</label>
-                          <p className='text-2xl font-bold text-black dark:!text-white'>
+                          <p className='text-xl font-bold text-black dark:!text-white md:text-2xl'>
                             {
                               packageId.find(
                                 (p) => p.value === getValues('package_id')
@@ -1684,7 +1684,7 @@ const UploadMain = () => {
                         </div>
                         <div>
                           <label>Change Name Status</label>
-                          <p className='text-2xl font-bold text-black dark:!text-white'>
+                          <p className='text-xl font-bold text-black dark:!text-white md:text-2xl'>
                             {
                               changeNameOpts.find(
                                 (p) =>
@@ -1695,7 +1695,7 @@ const UploadMain = () => {
                         </div>
                         <div>
                           <label>Platform</label>
-                          <p className='text-2xl font-bold text-black dark:!text-white'>
+                          <p className='text-xl font-bold text-black dark:!text-white md:text-2xl'>
                             {
                               platformId.find(
                                 (p) => p.value === getValues('platform_id')
@@ -1705,16 +1705,13 @@ const UploadMain = () => {
                         </div>
                         <div>
                           <label>Harga Akun</label>
-                          <p className='text-2xl font-bold text-black dark:!text-white'>
-                            {new Intl.NumberFormat('id-ID', {
-                              style: 'currency',
-                              currency: 'IDR',
-                            }).format(getValues('harga_akun'))}
+                          <p className='text-xl font-bold text-black dark:!text-white md:text-2xl'>
+                            {toIDRCurrency(getValues('harga_akun'))}
                           </p>
                         </div>
                         <div>
                           <label>Jenis Pembayaran</label>
-                          <p className='text-2xl font-bold text-black dark:!text-white'>
+                          <p className='text-xlmd:text-2xl text-xl font-bold text-black dark:!text-white md:text-2xl'>
                             {
                               jenisPembayaranOpts.find(
                                 (p) => p.value === getValues('jenis_pembayaran')
@@ -1774,7 +1771,7 @@ const UploadMain = () => {
                         </div>
                         <div>
                           <label>Bukti Top Up Pertama</label>
-                          <p className='text-2xl font-bold text-black dark:!text-white'>
+                          <p className='text-xl font-bold text-black dark:!text-white md:text-2xl'>
                             {
                               firstTopUpOpts.find(
                                 (p) =>
