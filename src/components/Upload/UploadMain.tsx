@@ -1077,7 +1077,7 @@ const UploadMain = () => {
                             </Button>
                           )}
                         </div>
-                        <div className='overflow max-h-80 space-y-4'>
+                        <div className='max-h-80 space-y-4 overflow-auto'>
                           <div className='rounded-xl border-primary-200'>
                             {!!totalEmblemFields.fields.length && (
                               <div className='flex justify-around'>
