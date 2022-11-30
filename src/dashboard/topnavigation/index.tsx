@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
 import { useState } from 'react';
@@ -65,13 +64,6 @@ const TopNavigation = ({ user }: { user?: User }) => {
               >
                 <div className='profile-action'>
                   <ul>
-                    <li>
-                      <Link href='/profile'>
-                        <a>
-                          <i className='fal fa-user'></i>Profile
-                        </a>
-                      </Link>
-                    </li>
                     <li>
                       <button
                         className='hover:text-primary-400'

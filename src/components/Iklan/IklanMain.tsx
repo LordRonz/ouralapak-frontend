@@ -9,10 +9,6 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { FaPhoneAlt } from 'react-icons/fa';
 import { FiInstagram } from 'react-icons/fi';
 import Lightbox from 'react-image-lightbox';
-import PhoneInput, {
-  isPossiblePhoneNumber,
-  isValidPhoneNumber,
-} from 'react-phone-number-input';
 import { Carousel } from 'react-responsive-carousel';
 import Modal from 'react-responsive-modal';
 import Select from 'react-select';
@@ -153,6 +149,7 @@ const IklanMain = ({ id }: { id: number }) => {
     register,
     handleSubmit,
     getValues,
+    setValue,
     formState: { errors },
   } = useForm<IFormInput>();
 
@@ -160,8 +157,6 @@ const IklanMain = ({ id }: { id: number }) => {
   const [recaptchaResponse, setRecaptchaResponse] = useState<string | null>(
     null
   );
-
-  const [phone, setPhone] = useState<string>();
 
   const { data: banks } = useSWR<{
     data: { data: Bank[]; pagination: Pagination };
@@ -183,10 +178,6 @@ const IklanMain = ({ id }: { id: number }) => {
   }));
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    if (!phone || (phone && !isPossiblePhoneNumber(phone))) {
-      return;
-    }
-
     if (!recaptchaResponse) {
       toast.warn('Captcha harus diselesaikan');
       return;
@@ -196,7 +187,7 @@ const IklanMain = ({ id }: { id: number }) => {
         stringifyUrl({
           url: `${API_URL}/invoice/${id}`,
         }),
-        { ...data, phone: phone?.replace('+', '') },
+        { ...data, phone: '62' + data.phone?.replace('+', '') },
         { headers: { recaptcha_response: recaptchaResponse } }
       ),
       {
@@ -515,27 +506,46 @@ const IklanMain = ({ id }: { id: number }) => {
                                       )}
                                       <div className='col-md-12'>
                                         <div className='single-input-unit'>
-                                          <label htmlFor='phone'>
-                                            No. Handphone
-                                          </label>
-                                          <PhoneInput
-                                            defaultCountry='ID'
-                                            placeholder='No. Handphone Anda'
-                                            value={phone}
-                                            onChange={setPhone}
-                                            error={
-                                              phone
-                                                ? isValidPhoneNumber(phone)
-                                                  ? undefined
-                                                  : 'Invalid phone number'
-                                                : 'Phone number required'
-                                            }
-                                          />
+                                          <label>No. Handphone</label>
+                                          <div className='flex'>
+                                            <div className='extension flex items-center justify-center rounded-l-md border border-2 px-2 pt-0 dark:!border-gray-700'>
+                                              +62
+                                            </div>
+                                            <input
+                                              type='text'
+                                              onWheel={(e) =>
+                                                e.target instanceof
+                                                  HTMLElement && e.target.blur()
+                                              }
+                                              placeholder='No. Handphone Anda'
+                                              {...register('phone', {
+                                                required:
+                                                  'No. Handphone harus diisi',
+                                                onChange: (e) => {
+                                                  const regExp = /[^0-9]/g;
+                                                  const curPhone =
+                                                    e.target.value;
+                                                  if (
+                                                    !curPhone.startsWith('8')
+                                                  ) {
+                                                    setValue('phone', '');
+                                                  }
+                                                  if (regExp.test(curPhone)) {
+                                                    return 'Nomor telepon harus berisi angka';
+                                                  }
+                                                },
+                                              })}
+                                              className='!rounded-r-md border border-2 px-2 pt-0 dark:!border-gray-700'
+                                              style={{
+                                                borderTopLeftRadius: 0,
+                                                borderBottomLeftRadius: 0,
+                                                borderLeftWidth: 0,
+                                              }}
+                                            />
+                                          </div>
                                         </div>
                                         <p className='text-red-500'>
-                                          {phone &&
-                                            !isPossiblePhoneNumber(phone) &&
-                                            'Nomor telepon tidak valid'}
+                                          {errors.phone?.message}
                                         </p>
                                       </div>
                                       <div className='col-md-12'>

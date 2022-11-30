@@ -1,13 +1,9 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FiEye } from 'react-icons/fi';
-import PhoneInput, {
-  isPossiblePhoneNumber,
-  isValidPhoneNumber,
-} from 'react-phone-number-input';
 import { toast } from 'react-toastify';
 import { useLocalStorage } from 'react-use';
 import Swal from 'sweetalert2';
@@ -30,6 +26,7 @@ type IFormInput = {
   name?: string;
   ig_username?: string;
   password?: string;
+  phone?: string;
   confirm_password?: string;
 };
 
@@ -41,6 +38,7 @@ const ProfileMain = () => {
     handleSubmit,
     formState: { errors },
     watch,
+    setValue,
   } = useForm<IFormInput>();
 
   const [updateBtnDisabled, setUpdateBtnDisabled] = useState(false);
@@ -49,7 +47,6 @@ const ProfileMain = () => {
   >('password');
   const [passwordConfirmationInputType, setPasswordConfirmationInputType] =
     useState<'password' | 'text'>('password');
-  const [phone, setPhone] = useState<string>();
 
   // const [previewIdCard, setPreviewIdCard] = useState(false);
   // const [previewIdCardValidation, setPreviewIdCardValidation] = useState(false);
@@ -68,10 +65,6 @@ const ProfileMain = () => {
     message: string;
     success: boolean;
   }>(() => `${API_URL}/profile`);
-
-  useEffect(() => {
-    setPhone(user?.data.phone);
-  }, [user]);
 
   const headers = useAuthHeader();
 
@@ -132,11 +125,16 @@ const ProfileMain = () => {
     const passwordData = { password, confirm_password };
     await toast.promise(
       Promise.all([
-        ...(data.name ?? data.ig_username ?? phone
+        ...(data.name ?? data.ig_username ?? data.phone
           ? [
               axios.put(
                 `${API_URL}/profile`,
-                { profileData, ...(phone && { phone }) },
+                {
+                  profileData,
+                  ...(data.phone && {
+                    phone: '62' + data.phone?.replace('+', ''),
+                  }),
+                },
                 { headers }
               ),
             ]
@@ -278,29 +276,40 @@ const ProfileMain = () => {
                       </div>
                       <div className='col-md-6'>
                         <div className='single-input-unit'>
-                          <label htmlFor='phone' className='!font-normal'>
-                            No. Handphone
-                          </label>
-                          <PhoneInput
-                            defaultCountry='ID'
-                            placeholder='Masukkan No. Handphone'
-                            value={phone}
-                            onChange={setPhone}
-                            error={
-                              phone
-                                ? isValidPhoneNumber(phone)
-                                  ? undefined
-                                  : 'Invalid phone number'
-                                : 'Phone number required'
-                            }
-                            className='rounded-lg border pl-[20px]'
-                          />
+                          <label>No. Handphone</label>
+                          <div className='flex'>
+                            <div className='extension flex items-center justify-center rounded-l-md border border-2 px-2 pt-0 dark:!border-gray-700'>
+                              +62
+                            </div>
+                            <input
+                              type='text'
+                              onWheel={(e) =>
+                                e.target instanceof HTMLElement &&
+                                e.target.blur()
+                              }
+                              placeholder='No. Handphone Anda'
+                              {...register('phone', {
+                                onChange: (e) => {
+                                  const regExp = /[^0-9]/g;
+                                  const curPhone = e.target.value;
+                                  if (!curPhone.startsWith('8')) {
+                                    setValue('phone', '');
+                                  }
+                                  if (regExp.test(curPhone)) {
+                                    return 'Nomor telepon harus berisi angka';
+                                  }
+                                },
+                              })}
+                              className='!rounded-r-md border border-2 px-2 pt-0 dark:!border-gray-700'
+                              style={{
+                                borderTopLeftRadius: 0,
+                                borderBottomLeftRadius: 0,
+                                borderLeftWidth: 0,
+                              }}
+                            />
+                          </div>
                         </div>
-                        <p className='text-red-500'>
-                          {phone &&
-                            !isPossiblePhoneNumber(phone) &&
-                            'Nomor telepon tidak valid'}
-                        </p>
+                        <p className='text-red-500'>{errors.phone?.message}</p>
                       </div>
                       <div className='col-md-6'>
                         <div className='single-input-unit'>

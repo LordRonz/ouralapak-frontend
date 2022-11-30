@@ -383,6 +383,10 @@ const HeaderIklan = ({ HeaderStatic, setHeight }: HeaderProps) => {
                         lepas terlebih dahulu karena prosesnya membutuhkan waktu
                         7 Hari)
                       </li>
+                      <li className='list-decimal pr-8'>
+                        Jangan lupa sensor ID (Server) ML kalian sebelum
+                        diupload
+                      </li>
                     </ol>
                     <ButtonLink
                       href='/post-iklan'

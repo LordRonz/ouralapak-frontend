@@ -5,10 +5,6 @@ import { stringifyUrl } from 'query-string';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
-import PhoneInput, {
-  isPossiblePhoneNumber,
-  isValidPhoneNumber,
-} from 'react-phone-number-input';
 import { toast } from 'react-toastify';
 
 import ButtonGradient from '@/components/buttons/ButtonGradient';
@@ -23,6 +19,7 @@ type IFormInput = {
   name: string;
   username: string;
   ig_username: string;
+  phone: string;
   password: string;
   confirm_password: string;
 };
@@ -32,6 +29,7 @@ const SignUpMain = () => {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<IFormInput>();
 
@@ -41,15 +39,9 @@ const SignUpMain = () => {
   );
   const [passMode, setPassMode] = useState(true);
 
-  const [phone, setPhone] = useState<string>();
-
   const router = useRouter();
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    if (!phone || (phone && !isPossiblePhoneNumber(phone))) {
-      return;
-    }
-
     if (!recaptchaResponse) {
       toast.warn('Captcha harus diselesaikan');
       return;
@@ -60,7 +52,7 @@ const SignUpMain = () => {
         stringifyUrl({
           url: `${API_URL}/auth/user/register`,
         }),
-        { ...data, phone: phone?.replace('+', '') },
+        { ...data, phone: '62' + data.phone?.replace('+', '') },
         { headers: { recaptcha_response: recaptchaResponse } }
       ),
       {
@@ -116,7 +108,7 @@ const SignUpMain = () => {
                               {...register('name', {
                                 required: 'Nama harus diisi',
                               })}
-                              className='border'
+                              className='border px-2'
                             />
                           </div>
                           <p className='text-red-500'>{errors.name?.message}</p>
@@ -136,7 +128,7 @@ const SignUpMain = () => {
                                   message: 'Email tidak valid!',
                                 },
                               })}
-                              className='border'
+                              className='border px-2'
                             />
                           </div>
                           <p className='text-red-500'>
@@ -145,26 +137,42 @@ const SignUpMain = () => {
                         </div>
                         <div className='col-md-6'>
                           <div className='single-input-unit'>
-                            <label htmlFor='phone'>No. Handphone</label>
-                            <PhoneInput
-                              defaultCountry='ID'
-                              placeholder='Masukkan No. Handphone'
-                              value={phone}
-                              onChange={setPhone}
-                              error={
-                                phone
-                                  ? isValidPhoneNumber(phone)
-                                    ? undefined
-                                    : 'Invalid phone number'
-                                  : 'Phone number required'
-                              }
-                              className='h-[50px] overflow-hidden rounded-[5px] border pl-1'
-                            />
+                            <label>No. Handphone</label>
+                            <div className='flex'>
+                              <div className='extension flex items-center justify-center rounded-l-md border border-2 px-2 pt-0 dark:!border-gray-700'>
+                                +62
+                              </div>
+                              <input
+                                type='text'
+                                onWheel={(e) =>
+                                  e.target instanceof HTMLElement &&
+                                  e.target.blur()
+                                }
+                                placeholder='No. Handphone Anda'
+                                {...register('phone', {
+                                  required: 'No. Handphone harus diisi',
+                                  onChange: (e) => {
+                                    const regExp = /[^0-9]/g;
+                                    const curPhone = e.target.value;
+                                    if (!curPhone.startsWith('8')) {
+                                      setValue('phone', '');
+                                    }
+                                    if (regExp.test(curPhone)) {
+                                      return 'Nomor telepon harus berisi angka';
+                                    }
+                                  },
+                                })}
+                                className='!rounded-r-md border border-2 px-2 pt-0 dark:!border-gray-700'
+                                style={{
+                                  borderTopLeftRadius: 0,
+                                  borderBottomLeftRadius: 0,
+                                  borderLeftWidth: 0,
+                                }}
+                              />
+                            </div>
                           </div>
                           <p className='text-red-500'>
-                            {phone &&
-                              !isPossiblePhoneNumber(phone) &&
-                              'Nomor telepon tidak valid'}
+                            {errors.phone?.message}
                           </p>
                         </div>
                         <div className='col-md-6'>
@@ -176,7 +184,7 @@ const SignUpMain = () => {
                               {...register('username', {
                                 required: 'Username harus diisi',
                               })}
-                              className='border'
+                              className='border px-2'
                             />
                           </div>
                           <p className='text-red-500'>
@@ -194,7 +202,7 @@ const SignUpMain = () => {
                               {...register('ig_username', {
                                 required: 'Username instagram harus diisi',
                               })}
-                              className='border'
+                              className='border px-2'
                             />
                           </div>
                           <p className='text-red-500'>
@@ -216,7 +224,7 @@ const SignUpMain = () => {
                                       'Password harus berisi setidaknya 8 karakter',
                                   },
                                 })}
-                                className='border'
+                                className='border px-2'
                               />
                               <div
                                 className='flex min-h-full cursor-pointer items-center justify-center rounded border-2 px-1 hover:border-primary-200 dark:border-transparent hover:dark:border-primary-600'
@@ -246,7 +254,7 @@ const SignUpMain = () => {
                                   }
                                 },
                               })}
-                              className='border'
+                              className='border px-2'
                             />
                           </div>
                           <p className='text-red-500'>

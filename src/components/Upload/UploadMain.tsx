@@ -220,6 +220,8 @@ const UploadMain = () => {
       : null
   );
 
+  console.log(feePayment?.data.data);
+
   const changeNameOpts = [
     { value: 0, label: 'OFF' },
     { value: 1, label: 'ON' },
@@ -510,7 +512,7 @@ const UploadMain = () => {
 
   if (totalSkinRareFields.fields.length < 1) {
     totalSkinRareFields.append({
-      jenis: 'medium',
+      jenis: '',
       total_skin: undefined,
     });
   }
@@ -599,15 +601,18 @@ const UploadMain = () => {
                           )}
                         />
                         {!user?.data.is_verified && (
-                          <UnstyledLink
-                            href='/profile'
-                            className='text-sm text-yellow-500'
-                            onClick={() => setSaveData(getValues())}
-                          >
-                            Akun anda belum diverifikasi, silahkan upload
-                            identitas terlebih dahulu agar dapat memilih opsi
-                            Refund lainnya
-                          </UnstyledLink>
+                          <span className='text-sm text-black dark:text-white'>
+                            Akun anda belum diverifikasi,{' '}
+                            <UnstyledLink
+                              href='/profile'
+                              className='text-sm text-yellow-500'
+                              onClick={() => setSaveData(getValues())}
+                            >
+                              KLIK DISINI
+                            </UnstyledLink>{' '}
+                            untuk upload identitas terlebih dahulu agar dapat
+                            memilih opsi Refund lainnya.
+                          </span>
                         )}
                       </div>
                     </div>
@@ -968,13 +973,13 @@ const UploadMain = () => {
                     <div className='col-md-6'>
                       <div className='single-input-unit space-y-4'>
                         <div className='flex items-center space-x-4'>
-                          <label className='m-0'>Skin Rare</label>
+                          <label className='m-0'>Skin Rare/Sultan</label>
                           <Button
                             variant='success'
                             className='!rounded-full !bg-[#16B81C] !p-1'
                             onClick={() =>
                               totalSkinRareFields.append({
-                                jenis: 'medium',
+                                jenis: '',
                                 total_skin: 1,
                               })
                             }
@@ -1946,7 +1951,7 @@ const UploadMain = () => {
                           </div>
                         </div>
                         <div>
-                          <label>Skin Rare</label>
+                          <label>Skin Rare/Sultan</label>
                           <div className='flex max-h-36 flex-wrap gap-x-2 gap-y-1 overflow-auto rounded-xl p-1'>
                             {getValues('total_skin_rare')?.map(
                               ({ jenis }, i) => (
@@ -1999,7 +2004,7 @@ const UploadMain = () => {
                                   )?.name
                                 }
                               </p>
-                              <p className='mt-12 text-xl font-bold text-black dark:!text-white'>
+                              <p className='mt-12 !mb-0 text-xl font-bold text-black dark:!text-white'>
                                 Total
                               </p>
                             </div>
@@ -2020,19 +2025,22 @@ const UploadMain = () => {
                                     : 0
                                 )}
                               </p>
-                              <p className='mt-12 text-xl font-bold text-black dark:!text-white'>
+                              <p className='mt-12 !mb-0 text-xl font-bold text-black dark:!text-white'>
                                 {toIDRCurrency(
-                                  packages?.data.data.find(
+                                  (packages?.data.data.find(
                                     (v) => v.id === getValues('package_id')
-                                  )?.price ??
-                                    0 +
-                                      (feePayment?.data.data &&
-                                      feePayment?.data.data.length > 0
-                                        ? feePayment?.data.data[0].fee_flat
-                                        : 0)
+                                  )?.price ?? 0) +
+                                    (feePayment?.data.data &&
+                                    feePayment?.data.data.length > 0
+                                      ? feePayment?.data.data[0].fee_flat
+                                      : 0)
                                 )}
                               </p>
                             </div>
+                            <p className='col-span-2 m-0 mb-2 max-w-full break-all p-0 text-[15px] font-semibold'>
+                              *Total Pembayaran belum termasuk kode unik
+                              pembayaran
+                            </p>
                           </div>
                         </div>
                         <Captcha

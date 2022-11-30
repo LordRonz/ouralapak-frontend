@@ -357,7 +357,7 @@ const IndexPage = () => {
   );
 
   if (error) {
-    router.push('/');
+    router.push('/login');
   }
 
   return (

@@ -85,6 +85,8 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
     return <Spinner />;
   }
 
+  console.log(invoice.data);
+
   return (
     <main>
       <section className='pb-12'>
