@@ -517,6 +517,8 @@ const UploadMain = () => {
     });
   }
 
+  console.log(feePayment?.data);
+
   if (
     !authorized ||
     !accountBindOpts ||
@@ -1994,16 +1996,22 @@ const UploadMain = () => {
                                   )?.name
                                 }
                               </p>
-                              <hr />
-                              <p className='text-black dark:!text-white'>
-                                Biaya Admin -{' '}
-                                {
-                                  banks?.data.data.find(
-                                    (v) =>
-                                      v.id === getValues('jenis_pembayaran')
-                                  )?.name
-                                }
-                              </p>
+                              {feePayment?.data.data &&
+                                feePayment?.data.data.length > 0 && (
+                                  <>
+                                    <hr />
+                                    <p className='text-black dark:!text-white'>
+                                      Biaya Admin -{' '}
+                                      {
+                                        banks?.data.data.find(
+                                          (v) =>
+                                            v.id ===
+                                            getValues('jenis_pembayaran')
+                                        )?.name
+                                      }
+                                    </p>
+                                  </>
+                                )}
                               <p className='mt-12 !mb-0 text-xl font-bold text-black dark:!text-white'>
                                 Total
                               </p>
@@ -2016,15 +2024,20 @@ const UploadMain = () => {
                                   )?.price
                                 )}
                               </p>
-                              <hr />
-                              <p className='text-black dark:!text-white'>
-                                {toIDRCurrency(
-                                  feePayment?.data.data &&
-                                    feePayment?.data.data.length > 0
-                                    ? feePayment?.data.data[0].fee_flat
-                                    : 0
+                              {feePayment?.data.data &&
+                                feePayment?.data.data.length > 0 && (
+                                  <>
+                                    <hr />
+                                    <p className='text-black dark:!text-white'>
+                                      {toIDRCurrency(
+                                        feePayment?.data.data &&
+                                          feePayment?.data.data.length > 0
+                                          ? feePayment?.data.data[0].fee_flat
+                                          : 0
+                                      )}
+                                    </p>
+                                  </>
                                 )}
-                              </p>
                               <p className='mt-12 !mb-0 text-xl font-bold text-black dark:!text-white'>
                                 {toIDRCurrency(
                                   (packages?.data.data.find(
@@ -2037,10 +2050,15 @@ const UploadMain = () => {
                                 )}
                               </p>
                             </div>
-                            <p className='col-span-2 m-0 mb-2 max-w-full break-all p-0 text-[15px] font-semibold'>
-                              *Total Pembayaran belum termasuk kode unik
-                              pembayaran
-                            </p>
+                            {!(
+                              feePayment?.data.data &&
+                              feePayment?.data.data.length > 0
+                            ) && (
+                              <p className='col-span-2 m-0 mb-2 max-w-full break-all p-0 text-[15px] font-semibold'>
+                                *Total Pembayaran belum termasuk kode unik
+                                pembayaran
+                              </p>
+                            )}
                           </div>
                         </div>
                         <Captcha

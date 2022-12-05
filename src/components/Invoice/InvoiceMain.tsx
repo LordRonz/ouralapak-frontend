@@ -13,7 +13,7 @@ import formatDateStrId from '@/lib/formatDateStrId';
 import toIDRCurrency from '@/lib/toIDRCurrency';
 import { Config } from '@/types/config';
 import Iklan from '@/types/iklan';
-import Invoice from '@/types/invoice';
+import Invoice, { StatusInvoice } from '@/types/invoice';
 import { Roles } from '@/types/roles';
 import User from '@/types/user';
 
@@ -136,9 +136,12 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                         setTimeout(() => setCopyStatus('Click to copy'), 1469);
                       }}
                     >
-                      <h1 className='cursor-pointer text-3xl text-white'>
-                        {invoice?.data.no_invoice ?? ''}
-                      </h1>
+                      <>
+                        <p className='mb-0 text-white'>Invoice Number</p>
+                        <h1 className='cursor-pointer text-3xl text-white'>
+                          {invoice?.data.no_invoice ?? ''}
+                        </h1>
+                      </>
                     </CopyToClipboard>
                   </TooltipTippy>
                 </div>
@@ -171,6 +174,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                   </p>
                 </div>
                 <div className='flex flex-col justify-center'>
+                  <p className='mb-0 text-xs text-white'>Invoice Number</p>
                   <TooltipTippy
                     trigger='mouseenter'
                     hideOnClick={false}
@@ -321,84 +325,92 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
                     </p>
                   </div>
                 </div>
-                {invoice.data.qris ? (
-                  <div>
-                    <h4 className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
-                      Scan QR Code untuk pembayaran
-                    </h4>
-                    <div className='flex items-center gap-x-4'>
-                      <img
-                        src={
-                          qris_image
-                            ?.split('<img src="')[1]
-                            .split('" style=')[0]
-                        }
-                        alt='qris'
-                        height={169}
-                        width={169}
-                      />
+                {invoice.data.status !== StatusInvoice.EXPIRED ? (
+                  <>
+                    {invoice.data.qris ? (
                       <div>
-                        <p className='m-0 text-2xl font-semibold'>QRIS</p>
-                        <p className='m-0 text-base font-medium'>
-                          NMID 169696969
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className='w-full rounded-xl bg-[#EDD9BC] px-4 py-3'>
-                    {invoice.data.va ? (
-                      <div className='!flex-now !wrap grid w-full grid-cols-12 whitespace-normal'>
-                        <p className='col-span-4 m-0 text-sm font-medium text-black md:col-span-5 md:text-lg'>
-                          Bank
-                        </p>
-                        <p className='col-span-1 m-0 text-sm font-medium text-black md:text-lg'>
-                          :
-                        </p>
-                        <p className='col-span-7 m-0 text-sm font-bold text-black md:col-span-6 md:text-lg'>
-                          {invoice.data.jenis_pembayaran.name}
-                        </p>
-                        <p className='col-span-4 m-0 text-sm font-medium text-black md:col-span-5 md:text-lg'>
-                          No. Virtual Account
-                        </p>
-                        <p className='col-span-1 m-0 text-sm font-medium text-black md:text-lg'>
-                          :
-                        </p>
-                        <p className='col-span-7 m-0 text-sm font-bold text-black md:col-span-6 md:text-lg'>
-                          {invoice.data.va}
-                        </p>
+                        <h4 className='text-sm font-medium text-[#85878E] dark:text-white md:text-lg'>
+                          Scan QR Code untuk pembayaran
+                        </h4>
+                        <div className='flex items-center gap-x-4'>
+                          <img
+                            src={
+                              qris_image
+                                ?.split('<img src="')[1]
+                                .split('" style=')[0]
+                            }
+                            alt='qris'
+                            height={169}
+                            width={169}
+                          />
+                          <div>
+                            <p className='m-0 text-2xl font-semibold'>QRIS</p>
+                            <p className='m-0 text-base font-medium'>
+                              NMID 169696969
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     ) : (
-                      <div className='!flex-now !wrap grid w-full grid-cols-12 whitespace-normal'>
-                        <p className='col-span-4 m-0 text-sm font-medium text-black md:col-span-3 md:text-lg'>
-                          Bank
-                        </p>
-                        <p className='col-span-1 m-0 text-sm font-medium text-black md:text-lg'>
-                          :
-                        </p>
-                        <p className='col-span-7 m-0 text-sm font-bold text-black md:col-span-8 md:text-lg'>
-                          {invoice.data.jenis_pembayaran.name}
-                        </p>
-                        <p className='col-span-4 m-0 text-sm font-medium text-black md:col-span-3 md:text-lg'>
-                          No. Rekening
-                        </p>
-                        <p className='col-span-1 m-0 text-sm font-medium text-black md:text-lg'>
-                          :
-                        </p>
-                        <p className='col-span-7 m-0 text-sm font-bold text-black md:col-span-8 md:text-lg'>
-                          {invoice.data.jenis_pembayaran.rekening_number}
-                        </p>
-                        <p className='col-span-4 m-0 text-sm font-medium text-black md:col-span-3 md:text-lg'>
-                          Atas Nama
-                        </p>
-                        <p className='col-span-1 m-0 text-sm font-medium text-black md:text-lg'>
-                          :
-                        </p>
-                        <p className='col-span-7 m-0 text-sm font-bold text-black md:col-span-8 md:text-lg'>
-                          {invoice.data.jenis_pembayaran.rekening_name}
-                        </p>
+                      <div className='w-full rounded-xl bg-[#EDD9BC] px-4 py-3'>
+                        {invoice.data.va ? (
+                          <div className='!flex-now !wrap grid w-full grid-cols-12 whitespace-normal'>
+                            <p className='col-span-4 m-0 text-sm font-medium text-black md:col-span-5 md:text-lg'>
+                              Bank
+                            </p>
+                            <p className='col-span-1 m-0 text-sm font-medium text-black md:text-lg'>
+                              :
+                            </p>
+                            <p className='col-span-7 m-0 text-sm font-bold text-black md:col-span-6 md:text-lg'>
+                              {invoice.data.jenis_pembayaran.name}
+                            </p>
+                            <p className='col-span-4 m-0 text-sm font-medium text-black md:col-span-5 md:text-lg'>
+                              No. Virtual Account
+                            </p>
+                            <p className='col-span-1 m-0 text-sm font-medium text-black md:text-lg'>
+                              :
+                            </p>
+                            <p className='col-span-7 m-0 text-sm font-bold text-black md:col-span-6 md:text-lg'>
+                              {invoice.data.va}
+                            </p>
+                          </div>
+                        ) : (
+                          <div className='!flex-now !wrap grid w-full grid-cols-12 whitespace-normal'>
+                            <p className='col-span-4 m-0 text-sm font-medium text-black md:col-span-3 md:text-lg'>
+                              Bank
+                            </p>
+                            <p className='col-span-1 m-0 text-sm font-medium text-black md:text-lg'>
+                              :
+                            </p>
+                            <p className='col-span-7 m-0 text-sm font-bold text-black md:col-span-8 md:text-lg'>
+                              {invoice.data.jenis_pembayaran.name}
+                            </p>
+                            <p className='col-span-4 m-0 text-sm font-medium text-black md:col-span-3 md:text-lg'>
+                              No. Rekening
+                            </p>
+                            <p className='col-span-1 m-0 text-sm font-medium text-black md:text-lg'>
+                              :
+                            </p>
+                            <p className='col-span-7 m-0 text-sm font-bold text-black md:col-span-8 md:text-lg'>
+                              {invoice.data.jenis_pembayaran.rekening_number}
+                            </p>
+                            <p className='col-span-4 m-0 text-sm font-medium text-black md:col-span-3 md:text-lg'>
+                              Atas Nama
+                            </p>
+                            <p className='col-span-1 m-0 text-sm font-medium text-black md:text-lg'>
+                              :
+                            </p>
+                            <p className='col-span-7 m-0 text-sm font-bold text-black md:col-span-8 md:text-lg'>
+                              {invoice.data.jenis_pembayaran.rekening_name}
+                            </p>
+                          </div>
+                        )}
                       </div>
                     )}
+                  </>
+                ) : (
+                  <div className='w-full rounded-xl bg-[#8C8686] px-4 py-7 text-center'>
+                    <h3 className='m-0 p-0 text-4xl'>EXPIRED</h3>
                   </div>
                 )}
                 <div className=''>
@@ -412,7 +424,9 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
             </div>
             <div className='mt-6 text-center'>
               <p className='text-lg'>
-                Harap konfirmasi pembayaran dengan klik tombol di bawah
+                Harap konfirmasi pembayaran dengan klik tombol di bawah atau
+                whatsapp langsung ke nomor{' '}
+                {config?.data?.value.replace('62', '0')}
               </p>
               <ButtonLinkGradient href={getWaLink()} className=''>
                 Konfirmasi Pembayaran
