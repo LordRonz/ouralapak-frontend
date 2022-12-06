@@ -92,11 +92,13 @@ const IklanCardSingle = ({
                       )}
                     </div>
                   </div>
-                  <h4 className='art-name overflow-hidden overflow-ellipsis whitespace-nowrap !text-base md:!text-2xl'>
-                    <Link href={`/iklan/${iklan.id}`}>
-                      <a>{title}</a>
-                    </Link>
-                  </h4>
+                  <div className='h-[3.5rem]'>
+                    <h4 className='art-name overflow-hidden overflow-ellipsis !text-base md:!text-xl'>
+                      <Link href={`/iklan/${iklan.id}`}>
+                        <a>{title}</a>
+                      </Link>
+                    </h4>
+                  </div>
                   <div className='art-meta-info mb-3 !items-center'>
                     <div className='art-meta-item w-1/2'>
                       <h4 className='art-price m-0 overflow-hidden overflow-ellipsis whitespace-nowrap !text-sm md:!text-lg'>
