@@ -73,7 +73,7 @@ const InvoiceMain = ({ no_invoice }: { no_invoice: string }) => {
           invoice?.data.no_invoice
         } (${typeof window !== 'undefined' ? window.location.origin : ''}${
           router.asPath
-        }). Mohon dicek berikut bukti pembayaran saya. Terimakasih`,
+        })\nMohon dicek berikut bukti pembayaran saya. Terimakasih.`,
       },
     });
 

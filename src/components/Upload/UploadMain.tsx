@@ -73,6 +73,7 @@ type IFormInput = {
   }[];
   recall_effect: string[];
   jenis_refund: number;
+  exchange_type: number;
   harga_akun: number;
   jenis_pembayaran: number;
   package_id: number;
@@ -220,8 +221,6 @@ const UploadMain = () => {
       : null
   );
 
-  console.log(feePayment?.data.data);
-
   const changeNameOpts = [
     { value: 0, label: 'OFF' },
     { value: 1, label: 'ON' },
@@ -290,6 +289,17 @@ const UploadMain = () => {
     {
       value: 1,
       label: 'Ada',
+    },
+  ];
+
+  const exchangeTypeOpts = [
+    {
+      value: 0,
+      label: 'Akun Moonton + Akun Gmail Sepaket',
+    },
+    {
+      value: 1,
+      label: 'Tukar Email Moonton',
     },
   ];
 
@@ -448,6 +458,10 @@ const UploadMain = () => {
 
   const onCloseSkin = () => setOpenSkin(false);
 
+  const [openExchangeType, setOpenExchangeType] = useState(false);
+
+  const onCloseExchangeType = () => setOpenExchangeType(false);
+
   useEffect(() => {
     if (
       emblemOpts &&
@@ -516,8 +530,6 @@ const UploadMain = () => {
       total_skin: undefined,
     });
   }
-
-  console.log(feePayment?.data);
 
   if (
     !authorized ||
@@ -1279,6 +1291,44 @@ const UploadMain = () => {
                       <p className='text-red-500'>
                         {errors.first_top_up_exist?.message}
                       </p>
+                      <div className='single-input-unit mt-2'>
+                        <label
+                          htmlFor='exchange_type'
+                          className='!flex gap-x-2'
+                        >
+                          <span>Sistem Pertukaran Akun</span>
+                          <FiInfo
+                            className='cursor-pointer'
+                            onClick={() => setOpenExchangeType(true)}
+                          />
+                        </label>
+                        <Controller
+                          control={control}
+                          defaultValue={exchangeTypeOpts[0].value}
+                          name='exchange_type'
+                          render={({ field: { onChange, value } }) => (
+                            <Select
+                              className={clsxm(
+                                'rounded-md border border-2 pt-0 dark:!border-gray-700'
+                              )}
+                              options={exchangeTypeOpts}
+                              value={exchangeTypeOpts.find(
+                                (c) => c.value === value
+                              )}
+                              onChange={(val) => onChange(val?.value)}
+                              theme={
+                                mounted && theme === 'dark'
+                                  ? selectDarkTheme
+                                  : undefined
+                              }
+                              styles={customSelectStyles}
+                            />
+                          )}
+                        />
+                      </div>
+                      <p className='text-red-500'>
+                        {errors.exchange_type?.message}
+                      </p>
                     </div>
                     <div className='col-md-6 grid grid-cols-2 gap-y-4 gap-x-4'>
                       <div>
@@ -1727,6 +1777,27 @@ const UploadMain = () => {
                           </p>
                         </div>
                         <div>
+                          <label>Bukti Top Up Pertama</label>
+                          <p className='text-xl font-bold text-black dark:!text-white md:text-2xl'>
+                            {
+                              firstTopUpOpts.find(
+                                (p) =>
+                                  p.value === getValues('first_top_up_exist')
+                              )?.label
+                            }
+                          </p>
+                        </div>
+                        <div>
+                          <label>Sistem Pertukaran Akun</label>
+                          <p className='text-xl font-bold text-black dark:!text-white md:text-2xl'>
+                            {
+                              exchangeTypeOpts.find(
+                                (p) => p.value === getValues('exchange_type')
+                              )?.label
+                            }
+                          </p>
+                        </div>
+                        <div>
                           <label>Screenshot Profile</label>
                           <MyButton
                             className={clsxm(
@@ -1776,18 +1847,6 @@ const UploadMain = () => {
                             />
                           )}
                         </div>
-                        <div>
-                          <label>Bukti Top Up Pertama</label>
-                          <p className='text-xl font-bold text-black dark:!text-white md:text-2xl'>
-                            {
-                              firstTopUpOpts.find(
-                                (p) =>
-                                  p.value === getValues('first_top_up_exist')
-                              )?.label
-                            }
-                          </p>
-                        </div>
-
                         <div>
                           <label>Screenshot Emblem</label>
                           <MyButton
@@ -2254,6 +2313,42 @@ const UploadMain = () => {
         <div className='p-6'>
           <h1 className='mb-4 text-2xl'>Cara Upload Skin</h1>
           <img src='/images/posting/SKIN.jpg' alt='profile' />
+        </div>
+      </Modal>
+      <Modal
+        open={openExchangeType}
+        onClose={onCloseExchangeType}
+        center
+        classNames={{
+          modal: 'rounded-xl p-0 overflow-y-auto',
+          root: 'overflow-y-auto',
+          modalContainer: 'overflow-y-auto',
+        }}
+        closeIcon={<XButton />}
+      >
+        <div className='p-6'>
+          <h1 className='mb-4 text-2xl'>Sistem Pertukaran Akun</h1>
+          <div className='flex gap-x-2'>
+            <p className='m-0'>1. </p>
+            <p className='m-0'>
+              <span className='font-bold'>
+                Akun Moonton + Akun Gmail Sepaket:
+              </span>{' '}
+              Penjual memberikan semua akun moonton dan akun gmail yang
+              terhubung ke akun moonton kepada pembeli. Cara ini disarankan
+              karena lebih cepat prosesnya
+            </p>
+          </div>
+          <div className='flex gap-x-2'>
+            <p className='m-0'>2. </p>
+            <p className='m-0'>
+              <span className='font-bold'>Tukar Email Moonton:</span> Penjual
+              tidak memberikan gmail nya sepaket dengan akun moonton dikarenakan
+              email pribadi/masih dipakai sehingga penjual akan menukarkan email
+              moontonnya menjadi email moonton pembeli, penukaran email moonton
+              membutuhkan waktu peninjauan minimal 7 Hari
+            </p>
+          </div>
         </div>
       </Modal>
     </main>

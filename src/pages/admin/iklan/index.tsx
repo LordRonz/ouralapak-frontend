@@ -210,6 +210,7 @@ const IndexPage = () => {
           user: iklan.user,
           userName: iklan.user.name,
           email: iklan.user.email,
+          token: iklan.token,
           jenisRefund: getJenisRefund(iklan.jenis_refund),
           action: {},
         };
@@ -234,6 +235,10 @@ const IndexPage = () => {
       {
         Header: 'Email',
         accessor: 'email',
+      },
+      {
+        Header: 'Token',
+        accessor: 'token  ',
       },
       {
         Header: 'Status',

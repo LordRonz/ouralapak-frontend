@@ -3,7 +3,12 @@ import type Hero from './hero';
 import type SkinRare from './skinRare';
 import type User from './user';
 
-type Iklan = {
+export enum ExchangeTypeEnum {
+  akun_moonton_plus_gmail,
+  email_moonton,
+}
+
+export type Iklan = {
   account_bind: {
     name: string;
     id: number;
@@ -13,6 +18,7 @@ type Iklan = {
   created_by: string;
   emblems: Emblem[];
   emblem: Emblem[];
+  exchange_type: ExchangeTypeEnum;
   first_top_up_exist: null;
   first_top_up_image: null;
   harga_akun: string;
@@ -51,6 +57,7 @@ export type IklanAdmin = {
   }[];
   id: number;
   image_profile: string;
+  exchange_type: ExchangeTypeEnum;
   jenis_refund: number;
   package_id: number;
   platform: string;
@@ -60,6 +67,7 @@ export type IklanAdmin = {
   status_id: number;
   title: string;
   total_hero: number;
+  token: string;
   total_skin: number;
   total_skin_rare: string;
   user: {

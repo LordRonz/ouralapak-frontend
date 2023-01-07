@@ -215,21 +215,20 @@ const IndexPage = () => {
         Cell: ({ row }) => (
           <>
             <div className='flex items-center justify-center gap-x-2'>
-              {row.original.statusCode !== StatusInvoice.EXPIRED && (
-                <Tooltip interactive={false} content='Update'>
-                  <div
-                    className='cursor-pointer'
-                    onClick={() => onClickUpdate(row.original.invoice)}
-                  >
-                    {row.original.statusCode ===
-                    StatusInvoice.MENUNGGU_PEMBAYARAN ? (
-                      <CheckMark />
-                    ) : (
-                      <XMark />
-                    )}
-                  </div>
-                </Tooltip>
-              )}
+              <Tooltip interactive={false} content='Update'>
+                <div
+                  className='cursor-pointer'
+                  onClick={() => onClickUpdate(row.original.invoice)}
+                >
+                  {row.original.statusCode ===
+                    StatusInvoice.MENUNGGU_PEMBAYARAN ||
+                  row.original.statusCode === StatusInvoice.EXPIRED ? (
+                    <CheckMark />
+                  ) : (
+                    <XMark />
+                  )}
+                </div>
+              </Tooltip>
               <Tooltip interactive={false} content='Lihat'>
                 <UnstyledLink
                   openNewTab
