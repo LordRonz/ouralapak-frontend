@@ -8055,6 +8055,11 @@ tsparticles-engine@^2.0.6, tsparticles-engine@^2.1.3:
   resolved "https://registry.yarnpkg.com/tsparticles-engine/-/tsparticles-engine-2.1.3.tgz#d8922cf7811c40e5e9b87b18f9cc86043af8e900"
   integrity sha512-BmCo534tF5yRQofUczGSfCFrdeMYO6e7FXHv6AdRxL+j9NNPH3zF4HX6k24tbO4kmTH8tGX/+F9mugEQVo9AEg==
 
+tsparticles-engine@^2.10.0:
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/tsparticles-engine/-/tsparticles-engine-2.10.0.tgz#16654980e5c36e5d7ca2512cfb783d6ffae37ffb"
+  integrity sha512-9y2w8zeBheeMyM65UeRKpw/fk5WSC00GspPfG2MmtiGUCXReBkirT6ixXDiO3IWL3BF18vVzdYpmKpphjy6dJg==
+
 tsparticles-interaction-external-attract@^2.1.3:
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/tsparticles-interaction-external-attract/-/tsparticles-interaction-external-attract-2.1.3.tgz#9a6be2683d77f9ed214a0ca4d478c40bed87b2f4"
