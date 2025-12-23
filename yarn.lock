@@ -7822,10 +7822,10 @@ sweetalert2-react-content@^5.0.2:
   resolved "https://registry.yarnpkg.com/sweetalert2-react-content/-/sweetalert2-react-content-5.0.2.tgz#5b6ef75df72d5136156c95eee3a5a8fb1852776a"
   integrity sha512-c5nBiqOhBDNaoBuI9x6bYPDlHmaCo1Yd0N4hq+VD2PgZdxIaqRCahjzvsZ0zasT/IRi2vjpntU98Sq/zzNQ2zQ==
 
-sweetalert2@^11.4.24:
-  version "11.4.24"
-  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.4.24.tgz#9dbe1e3096d6fd739e03d5c5fe2d218638fceaf4"
-  integrity sha512-wbD3SbaOhWyebVfnrY9rMjjVf7ZKUHjmn5Ch83NWUg84b/SYn0N4F0Dhxq3QYSAbnAQ7ArovQb2JfxZi5+Ieug==
+sweetalert2@^11.26.17:
+  version "11.26.17"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.26.17.tgz#be5dd2a9b8d1c3b2672de4de4d172e62f7be3a6d"
+  integrity sha512-kkaySn1IRfwNlf9AkZVqDmBINDWw9NRR6Ij0O5dBRBOD1+mbtZJWxxR9/pA90nce9E5tIIkJ7SWij4rMWXtA1g==
 
 swiper@^8.3.2:
   version "8.3.2"
